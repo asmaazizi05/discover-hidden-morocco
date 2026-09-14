@@ -12,8 +12,8 @@
     .hn-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 14px 36px; background: var(--hm-bg-nav); backdrop-filter: blur(20px); border-bottom: 1px solid var(--hm-border); }
     .hn-nav-inner { max-width: 1340px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .hn-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-    .hn-logo img { height: 40px; width: 40px; border-radius: 50%; object-fit: cover; }
-    .hn-logo-text { font-family: var(--hm-font-serif); font-size: 1.2rem; font-weight: 700; color: var(--hm-text-heading); }
+    .hn-logo img { height: 48px; width: auto; object-fit: contain; }
+    .hn-logo-text { font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif); font-size: 1.08rem; font-weight: 600; letter-spacing: 0.03em; color: var(--hm-text-heading); }
     .hn-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .hn-links a { padding: 7px 12px; border-radius: 99px; font-size: 0.875rem; font-weight: 600; color: var(--hm-text-body); text-decoration: none; transition: all 0.25s; }
     .hn-links a:hover, .hn-links a.active { background: var(--hm-bg-card-hover); color: var(--hm-terracotta); }
@@ -80,7 +80,7 @@
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="hidden-removebg-preview.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="destinations.html">Destinations</a></li>
@@ -200,7 +200,7 @@
   </section>
 
   <footer class="footer">
-    <p>© 2026 Hidden Morocco. All Rights Reserved.</p>
+    <p>© 2026 Discover Hidden Morocco. All Rights Reserved.</p>
     <div class="footer-links">
       <a href="index.html">Home</a><a href="destinations.html">Destinations</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
     </div>

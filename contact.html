@@ -40,16 +40,16 @@
     }
 
     .hn-logo img {
-      height: 40px;
-      width: 40px;
-      border-radius: 50%;
-      object-fit: cover;
+      height: 48px;
+      width: auto;
+      object-fit: contain;
     }
 
     .hn-logo-text {
-      font-family: var(--hm-font-serif);
-      font-size: 1.2rem;
-      font-weight: 700;
+      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
       color: var(--hm-text-heading);
     }
 
@@ -588,7 +588,7 @@
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="hidden-removebg-preview.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="destinations.html">Destinations</a></li>
@@ -714,7 +714,7 @@
         <div class="contact-info-card">
           <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
           <h4>Marrakech HQ</h4>
-          <p>Rue Riad Zitoun el Kedim<br>Medina, Marrakech 40000<br>Morocco</p>
+          <p>Avenue Ennakhil<br>Marrakech 40160<br>Morocco</p>
         </div>
         <div class="contact-info-card">
           <div class="contact-info-icon"><i class="fab fa-whatsapp"></i></div>
@@ -727,7 +727,18 @@
         <div class="contact-info-card">
           <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
           <h4>Email Us</h4>
-          <a href="mailto:discoverhiddenmorocco1@gmail.com">discoverhiddenmorocco1@gmail.com</a>
+          <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon"><i class="fa-solid fa-share-nodes"></i></div>
+          <h4>Follow Us</h4>
+          <div class="footer-socials" style="margin-top: 10px;">
+            <a href="https://www.instagram.com/discover_hidden_morocco?stkn=MXFsbDdsbG1jdnNiMg%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/share/1CK3YKm8qu/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.tiktok.com/@discover_hidden_morocco?_r=1&amp;_t=ZN-99hyz6c9kiU" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://youtube.com/@discoverhiddenmorocco?si=d-cf3DbOE5DzVK9N" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
         </div>
         <div class="contact-info-card">
           <div class="contact-info-icon"><i class="fa-solid fa-clock"></i></div>
@@ -794,7 +805,7 @@
   </section>
 
   <footer class="footer">
-    <p>© 2026 Hidden Morocco. All Rights Reserved.</p>
+    <p>© 2026 Discover Hidden Morocco. All Rights Reserved.</p>
     <div class="footer-links">
       <a href="index.html">Home</a><a href="destinations.html">Destinations</a><a href="about.html">About</a><a
         href="booking.html">Book Now</a>

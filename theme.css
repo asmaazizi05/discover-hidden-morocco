@@ -936,13 +936,35 @@ body {
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
     gap: 48px;
     margin-bottom: 64px;
+    align-items: start;
   }
 
-  .footer-brand img {
-    height: 42px;
-    width: auto;
-    margin-bottom: 18px;
-    display: block;
+  .footer-brand .hn-logo {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+    text-decoration: none !important;
+  }
+
+  .footer-brand img,
+  .footer-brand .hn-logo img {
+    height: 48px !important;
+    width: auto !important;
+    max-height: 52px !important;
+    margin: 0 !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    border-radius: 0 !important;
+    object-fit: contain !important;
+  }
+
+  .footer-brand .hn-logo-text {
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
   }
 
   .footer-brand p {
@@ -983,6 +1005,7 @@ body {
     color: #ffffff;
     font-size: 0.95rem;
     font-weight: 700;
+    margin-top: 6px;
     margin-bottom: 20px;
     font-family: var(--hm-font-sans);
   }
@@ -1070,11 +1093,11 @@ body {
     }
   }
 
-  /* ── Ultra-Luxury Horizontal Combination Logo ("Discover Hidden Morocco") ── */
+  /* ── Emblem Logo Icon & Brand Text System ── */
   .hn-logo-text,
   .hn-logo span,
   .auth-brand span {
-    display: none !important;
+    display: inline-block !important;
   }
 
   .hn-logo img,
@@ -1083,8 +1106,7 @@ body {
   .auth-brand img {
     height: 48px !important;
     width: auto !important;
-    max-height: 48px !important;
-    max-width: 280px !important;
+    max-height: 52px !important;
     border-radius: 0 !important;
     background: transparent !important;
     border: none !important;
@@ -1094,7 +1116,6 @@ body {
     display: inline-block !important;
     vertical-align: middle !important;
     flex-shrink: 0 !important;
-    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.3)) !important;
     transition: transform 0.3s ease !important;
   }
 
@@ -1193,21 +1214,20 @@ body {
 
     .hn-logo-text,
     .hn-logo span {
-      display: none !important;
+      display: inline-block !important;
+      font-size: 1.05rem !important;
     }
 
-    /* Mobile Logo Swap: Use geometric emblem symbol icon ONLY on mobile screens */
+    /* Mobile Logo Emblem Icon */
     .hn-logo img,
     .footer-brand img,
     .hn-logo-img,
     .auth-brand img {
-      content: url('favicon.png') !important;
-      height: 40px !important;
-      width: 40px !important;
-      max-height: 40px !important;
-      max-width: 40px !important;
+      height: 42px !important;
+      width: auto !important;
+      max-height: 44px !important;
+      border-radius: 0 !important;
       object-fit: contain !important;
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) !important;
     }
 
     /* Hide desktop nav links from top row on mobile unless active drawer */
@@ -2723,10 +2743,6 @@ a.btn-primary:hover,
 button[onclick*="WhatsApp"],
 button[onclick*="sendWhatsApp"],
 button[onclick*="sendDestBookingWhatsApp"],
-a[href*="wa.me"],
-a[href*="whatsapp"],
-.contact-info-card a[href*="whatsapp"],
-.contact-info-card a[href*="wa.me"],
 #simple-chat-button--button {
   background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
   color: #FFFFFF !important;
@@ -2744,8 +2760,6 @@ a[href*="whatsapp"],
 button[onclick*="WhatsApp"]:hover,
 button[onclick*="sendWhatsApp"]:hover,
 button[onclick*="sendDestBookingWhatsApp"]:hover,
-a[href*="wa.me"]:hover,
-a[href*="whatsapp"]:hover,
 #simple-chat-button--button:hover {
   background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%) !important;
   color: #FFFFFF !important;
@@ -2758,6 +2772,64 @@ a[href*="whatsapp"]:hover,
 .btn-whatsapp i,
 .book-btn i {
   color: #FFFFFF !important;
+}
+
+/* Footer Links & Social Icons Isolation (Prevent unwanted background boxes) */
+.footer-socials a,
+.footer-socials a[href*="wa.me"],
+.footer-socials a[href*="whatsapp"],
+.social-icons a,
+.social-icons a[href*="wa.me"],
+.social-icons a[href*="whatsapp"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94A3B8 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.footer-socials a::before,
+.social-icons a::before {
+  display: none !important;
+}
+
+.footer-socials a:hover,
+.footer-socials a[href*="wa.me"]:hover,
+.footer-socials a[href*="whatsapp"]:hover,
+.social-icons a:hover,
+.social-icons a[href*="wa.me"]:hover,
+.social-icons a[href*="whatsapp"]:hover {
+  background: var(--hm-terracotta) !important;
+  border-color: var(--hm-terracotta) !important;
+  color: #FFFFFF !important;
+}
+
+.footer-contact-item a,
+.footer-contact-item a[href*="wa.me"],
+.footer-contact-item a[href*="whatsapp"],
+.footer-col p a,
+.footer-col p a[href*="wa.me"],
+.footer-col p a[href*="whatsapp"] {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
+  display: inline !important;
+}
+
+.footer-contact-item a:hover,
+.footer-col p a:hover {
+  color: var(--hm-gold) !important;
 }
 
 /* ==========================================================================
@@ -3689,10 +3761,9 @@ html[data-theme="dark"] body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scr
 .footer-brand img,
 .hn-logo-img,
 .auth-brand img {
-  height: 58px !important;
+  height: 48px !important;
   width: auto !important;
-  max-height: 58px !important;
-  max-width: 320px !important;
+  max-height: 52px !important;
   border-radius: 0 !important;
   background: transparent !important;
   border: none !important;
@@ -3702,7 +3773,6 @@ html[data-theme="dark"] body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scr
   display: inline-block !important;
   vertical-align: middle !important;
   flex-shrink: 0 !important;
-  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.3)) !important;
   transition: transform 0.3s ease !important;
 }
 
@@ -3710,18 +3780,39 @@ html[data-theme="dark"] body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scr
 .nav-logo:hover img,
 .footer-brand:hover img,
 .auth-brand:hover img {
-  transform: scale(1.04) !important;
+  transform: scale(1.06) !important;
 }
 
 .hn-logo-text,
 .nav-logo span {
-  font-family: var(--hm-font-serif) !important;
-  font-size: 1.5rem !important;
-  font-weight: 700 !important;
-  color: var(--hm-text-heading) !important;
-  transition: color 0.3s !important;
+  font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif) !important;
+  font-size: 1.08rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  color: var(--hm-text-heading, #0F172A) !important;
+  transition: color 0.3s ease !important;
   display: inline-block !important;
   vertical-align: middle !important;
+}
+
+/* Footer logo text MUST ALWAYS be white because footer background is dark */
+.footer .hn-logo-text,
+.footer-brand .hn-logo-text,
+.footer-brand span,
+.hn-footer .hn-logo-text,
+.hn-footer-brand .hn-logo-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .hn-logo-text,
+[data-theme="dark"] .nav-logo span,
+[data-theme="dark"] .hn-logo span {
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .hn-nav .hn-logo-text,
+[data-theme="light"] .hn-nav .nav-logo span {
+  color: var(--hm-text-heading, #0F172A) !important;
 }
 
 body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-logo-text,
@@ -3930,20 +4021,20 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
   }
 
   .hn-logo img {
-    height: 36px !important;
+    height: 42px !important;
     width: auto !important;
-    max-height: 36px !important;
+    max-height: 44px !important;
     object-fit: contain !important;
     content: none !important;
   }
 
   .hn-logo-text {
     display: inline-block !important;
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
-    font-family: var(--hm-font-serif, "Cormorant Garamond", serif) !important;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif) !important;
     color: var(--hm-text-heading, #0F172A) !important;
-    letter-spacing: 0.3px !important;
+    letter-spacing: 0.03em !important;
     white-space: nowrap !important;
   }
 
