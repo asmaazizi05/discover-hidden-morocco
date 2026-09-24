@@ -428,7 +428,7 @@ window.toggleMobileMenu = function (e) {
   const menus = document.querySelectorAll('.hn-links, .nav-links, #premNavLinks, #navLinks');
   const hburgs = document.querySelectorAll('.hamburger, .hburg');
   const backdrops = document.querySelectorAll('.drawer-backdrop');
-  
+
   let isOpen = false;
   menus.forEach(menu => {
     menu.classList.toggle('hn-links-open');
@@ -623,137 +623,8 @@ function showToast(message) {
 
 // ── Global Interactive Quick Booking Modal Engine ────────────────────────
 window.openQuickBooking = function (destId = 'marrakech') {
-  let modal = document.getElementById('globalQuickBookModal');
-  const dest = DESTINATIONS_DB.find(d => d.id === destId) || DESTINATIONS_DB[0];
-
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'globalQuickBookModal';
-    modal.style.cssText = `
-      position: fixed; inset: 0; z-index: 9999999; display: flex; align-items: center; justify-content: center;
-      padding: 20px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px);
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    `;
-    document.body.appendChild(modal);
-  } else if (modal.parentElement !== document.body) {
-    document.body.appendChild(modal);
-  }
-
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const modalBg = isDark ? '#121724' : '#FFFFFF';
-  const modalBorder = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(15,23,42,0.08)';
-  const textColor = isDark ? '#F8FAFC' : '#0F172A';
-  const subTextColor = isDark ? '#CBD5E1' : '#475569';
-  const inputBg = isDark ? '#1C2333' : '#FFFFFF';
-  const inputBorder = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(15,23,42,0.14)';
-  const priceBoxBg = isDark ? '#1C2333' : 'linear-gradient(135deg, rgba(200, 90, 50, 0.05) 0%, rgba(231, 169, 60, 0.1) 100%)';
-  const priceBoxBorder = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(200, 90, 50, 0.25)';
-
-  modal.innerHTML = `
-    <div class="qb-modal-content" style="
-      background: ${modalBg}; border: 1px solid ${modalBorder}; border-radius: 28px;
-      width: min(580px, 95vw); max-height: 90vh; overflow-y: auto; padding: 36px 32px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.25); position: relative; color: ${textColor}; margin: auto;
-    ">
-      <button onclick="window.closeQuickBooking()" aria-label="Close" style="
-        position: absolute; top: 22px; right: 22px; width: 38px; height: 38px; border-radius: 50%;
-        border: 1px solid ${inputBorder}; background: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.04)'}; color: ${textColor};
-        font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        transition: all 0.2s ease;
-      ">&times;</button>
-
-      <div style="display:flex; align-items:center; gap:12px; margin-bottom: 18px;">
-        <span style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFFFFF; padding: 6px 16px; border-radius: 99px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 14px rgba(200, 90, 50, 0.3);">✦ Instant Booking</span>
-      </div>
-
-      <h3 class="qb-title" style="font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif); font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; color: ${textColor};">Plan Your Moroccan Expedition</h3>
-      <p class="qb-desc" style="color: ${subTextColor}; font-size: 0.92rem; margin-bottom: 26px; line-height: 1.6;">Customize your trip details below. Live pricing updates automatically.</p>
-
-      <form id="quickBookingForm" onsubmit="window.handleQuickBookSubmit(event)">
-        <div style="margin-bottom: 20px;">
-          <label class="qb-label" style="display:block; font-size:0.82rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:${textColor}; margin-bottom:8px;">Select Destination</label>
-          <select id="qb-dest" onchange="window.updateQuickBookPrice()" style="
-            width:100%; padding:13px 16px; border-radius:14px; border:1px solid ${inputBorder};
-            background:${inputBg}; color:${textColor}; font-size:0.95rem; font-weight:600; outline:none; font-family:inherit;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03); cursor:pointer;
-          ">
-            ${DESTINATIONS_DB.map(d => `<option value="${d.id}" ${d.id === dest.id ? 'selected' : ''}>${d.title}</option>`).join('')}
-          </select>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-          <div>
-            <label class="qb-label" style="display:block; font-size:0.82rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:${textColor}; margin-bottom:8px;">Travel Date</label>
-            <input type="date" id="qb-date" required style="
-              width:100%; padding:13px 16px; border-radius:14px; border:1px solid ${inputBorder};
-              background:${inputBg}; color:${textColor}; font-size:0.95rem; font-weight:600; outline:none; font-family:inherit; box-sizing:border-box;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            ">
-          </div>
-          <div>
-            <label class="qb-label" style="display:block; font-size:0.82rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:${textColor}; margin-bottom:8px;">Travelers</label>
-            <div style="display:flex; align-items:center; background:${inputBg}; border:1px solid ${inputBorder}; border-radius:14px; overflow:hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-              <button type="button" onclick="window.changeTravelers(-1)" style="width:44px; height:46px; border:none; background:transparent; color:${textColor}; font-size:1.25rem; font-weight:700; cursor:pointer;">-</button>
-              <input type="number" id="qb-travelers" value="2" min="1" max="20" readonly style="width:100%; text-align:center; border:none; background:transparent; color:${textColor}; font-size:1.05rem; font-weight:800;">
-              <button type="button" onclick="window.changeTravelers(1)" style="width:44px; height:46px; border:none; background:transparent; color:${textColor}; font-size:1.25rem; font-weight:700; cursor:pointer;">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 24px;">
-          <label class="qb-label" style="display:block; font-size:0.82rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:${textColor}; margin-bottom:8px;">Full Name</label>
-          <input type="text" id="qb-name" placeholder="e.g. Sarah Jenkins" required style="
-            width:100%; padding:13px 16px; border-radius:14px; border:1px solid ${inputBorder};
-            background:${inputBg}; color:${textColor}; font-size:0.95rem; font-weight:600; outline:none; font-family:inherit; box-sizing:border-box;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-          ">
-        </div>
-
-        <div class="qb-price-box" style="
-          background: ${priceBoxBg};
-          border: 1px solid ${priceBoxBorder};
-          border-radius: 18px; padding: 20px 24px; margin-bottom: 26px; display:flex; justify-content:space-between; align-items:center;
-          box-shadow: 0 6px 20px rgba(200, 90, 50, 0.06);
-        ">
-          <div>
-            <span style="font-size:0.84rem; font-weight:700; color:${textColor}; display:block; margin-bottom: 2px;">Tailor-Made Expedition Quote</span>
-            <span style="font-size:0.82rem; font-weight:800; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">✦ 100% Private Expedition</span>
-          </div>
-          <div id="qb-total-price" style="font-size: 1.15rem; font-weight: 800; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Price on Request</div>
-        </div>
-
-        <button type="submit" style="
-          width:100%; padding:16px; border-radius:99px; border:none;
-          background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color:#FFFFFF; font-weight:800;
-          font-size:1.02rem; cursor:pointer; box-shadow:0 8px 25px rgba(200,90,50,0.4); transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-          display:flex; align-items:center; justify-content:center; gap:10px;
-        ">
-          Confirm Expedition Request &nbsp;<i class="fa-solid fa-compass"></i>
-        </button>
-      </form>
-    </div>
-  `;
-
-  // Set default tomorrow date
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const dateInput = document.getElementById('qb-date');
-  if (dateInput) dateInput.value = tomorrow.toISOString().split('T')[0];
-
-  window.updateQuickBookPrice();
-  lockBodyScroll(true);
-
-  modal.style.display = 'flex';
-  modal.scrollTop = 0;
-  const content = modal.querySelector('.qb-modal-content');
-  if (content) content.scrollTop = 0;
-
-  requestAnimationFrame(() => {
-    modal.style.opacity = '1';
-    modal.style.pointerEvents = 'auto';
-    modal.setAttribute('tabindex', '-1');
-    modal.focus();
-  });
+  const resolvedId = findDestinationId(destId) || 'marrakech';
+  window.openCustomTourModal(resolvedId);
 };
 
 window.closeQuickBooking = function () {
@@ -834,6 +705,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof filterDestinations === 'function') {
         filterDestinations();
       }
+    }
+  }
+
+  // Handle ?dest= or ?destination= query to auto-open Customize My Tour
+  const destParam = urlParams.get('dest') || urlParams.get('destination') || urlParams.get('city');
+  if (destParam && typeof window.openCustomTourModal === 'function') {
+    const matched = findDestinationId(destParam);
+    if (matched) {
+      setTimeout(() => {
+        window.openCustomTourModal(matched);
+      }, 300);
     }
   }
 });
@@ -1179,26 +1061,8 @@ const DEST_IMAGES = {
 };
 
 window.openDestBooking = function (city) {
-  const modal = document.getElementById('destBookingModal');
-  if (!modal) return;
-  if (modal.parentElement !== document.body) {
-    document.body.appendChild(modal);
-  }
-
-  const titleEl = document.getElementById('destBookingTitle');
-  if (titleEl && city) titleEl.textContent = city + ' Expedition';
-  const img = document.getElementById('destBookingImg');
-  if (img && DEST_IMAGES[city]) img.src = DEST_IMAGES[city];
-
-  modal.style.zIndex = '10000005';
-  modal.style.display = 'flex';
-  modal.scrollTop = 0;
-  const sheet = modal.querySelector('.dest-booking-sheet, .travel-form-container');
-  if (sheet) sheet.scrollTop = 0;
-
-  lockBodyScroll(true);
-  modal.setAttribute('tabindex', '-1');
-  modal.focus();
+  const destId = findDestinationId(city) || 'marrakech';
+  window.openCustomTourModal(destId);
 };
 
 window.closeDestBooking = function () {
@@ -1229,7 +1093,7 @@ window.sendWhatsApp = function () {
   const adults = document.getElementById('fadults')?.value || '1';
   const children = document.getElementById('fchildren')?.value || '0';
   const message = document.getElementById('fmessage')?.value || document.getElementById('c-message')?.value || '';
-  
+
   const destEls = document.querySelectorAll('input[name="destinations"]:checked');
   const dests = Array.from(destEls).map(el => el.value).join(', ');
 
@@ -1243,7 +1107,7 @@ const EXPERIENCES = {
   ourika: {
     title: "Ourika Valley (Setti Fatma)",
     img: "images/Marrakech/ourika_1.png",
-    desc: "Nature excursion 60 km from Marrakech: green valley, Berber villages and Setti Fatma waterfalls.",
+    desc: "Escape the city to the lush Ourika Valley, situated in the foothills of the High Atlas Mountains. Enjoy refreshing waterfalls, traditional Berber villages, and aromatic gardens. It's the perfect day trip for nature lovers seeking tranquility and a taste of authentic mountain life.",
     duration: "1 day",
     timing: "Departure 08:30 • Return ~18:00",
     price: "Price on Request",
@@ -1253,7 +1117,7 @@ const EXPERIENCES = {
   ouzoud: {
     title: "Ouzoud Waterfalls",
     img: "images/Ouzoud/ouzoud-falls.jpg",
-    desc: "The most beautiful waterfalls in Morocco: nature, easy hike and magnificent views.",
+    desc: "Discover the breathtaking Ouzoud Waterfalls, cascading over 100 meters down rugged cliffs. Enjoy a scenic hike through olive groves, spot wild Barbary macaques, and take a refreshing boat ride near the falls. This natural wonder is an unforgettable escape into Morocco's dramatic landscapes.",
     duration: "1 day",
     timing: "Departure 08:00 • Return ~19:00",
     price: "Price on Request",
@@ -1263,7 +1127,7 @@ const EXPERIENCES = {
   agafay: {
     title: "Agafay Desert (Quad + Camel + Dinner)",
     img: "images/Marrakech/agafay.jpg",
-    desc: "Late afternoon adventure: camel, quad, sunset and dinner in a Berber tent.",
+    desc: "Experience the rugged beauty of the Agafay Desert, located just outside Marrakech. Characterized by its rocky dunes and vast barren landscapes, it offers thrilling quad biking, camel rides, and luxury desert camping. Enjoy a magical dinner under the stars with spectacular views of the Atlas Mountains.",
     duration: "≈ 6 hours",
     timing: "Departure 15:30 • Return ~21:30",
     price: "Price on Request",
@@ -1273,7 +1137,7 @@ const EXPERIENCES = {
   imlil: {
     title: "Imlil & Atlas Mountains",
     img: "images/Marrakech/imlil_1.jpg",
-    desc: "Mountain day: hiking, Amazigh villages and panoramas of Toubkal.",
+    desc: "Imlil serves as the primary base camp for trekkers aiming to conquer Mount Toubkal. Surrounded by stunning alpine scenery and terraced walnut groves, this peaceful Berber village offers an immersive cultural experience and breathtaking panoramic views of the Atlas peaks.",
     duration: "1 day",
     timing: "Departure 08:00 • Return ~18:00",
     price: "Price on Request",
@@ -1293,7 +1157,7 @@ const EXPERIENCES = {
   ballon: {
     title: "Sunrise Hot Air Balloon",
     img: "images/Marrakech/montgolfiere.webp",
-    desc: "Sunrise flight + Berber breakfast after landing.",
+    desc: "Experience the magic of Marrakech from the sky with a sunrise hot air balloon flight. Float gently over the Atlas Mountains and the surrounding desert plains as the morning light illuminates the landscape. Conclude your aerial adventure with a traditional Berber breakfast in a local village.",
     duration: "≈ 4–5 hours",
     timing: "Departure ~2h before sunrise",
     price: "Price on Request",
@@ -1359,7 +1223,7 @@ window.openExp = function (key) {
             <span style="font-size: 0.85rem; color: var(--hm-text-muted);">Price per person</span>
             <div style="font-size: 1.8rem; font-weight: 800; color: var(--hm-text-heading);">${exp.price}</div>
           </div>
-          <a href="booking.html" class="btn-primary" style="padding: 12px 30px;">Book this Experience</a>
+          <button type="button" class="btn-primary" style="padding: 12px 30px;" onclick="openDestBooking('${exp.title || 'Marrakech'}')">Book this Experience</button>
         </div>
       </div>
     </div>
@@ -1443,6 +1307,7 @@ const CUSTOM_TOUR_DESTINATIONS = [
   { id: 'fes', name: 'Fès', region: 'Fès-Meknès', img: 'images/Fes/fes_1.jpg' },
   { id: 'chefchaouen', name: 'Chefchaouen', region: 'Rif Mountains', img: 'images/Chfchaouen/chefchaoun.jpg' },
   { id: 'merzouga', name: 'Merzouga', region: 'Sahara Desert', img: 'images/Merzouga/merzouga_1.jpg' },
+  { id: 'zagora', name: 'Zagora', region: 'Draâ Valley & Dunes', img: 'images/Zagora/zagora_hero.png' },
   { id: 'ouarzazate', name: 'Ouarzazate', region: 'Draâ-Tafilalet', img: 'images/Ouarzazat/ouarzazat1.jpeg' },
   { id: 'essaouira', name: 'Essaouira', region: 'Atlantic Coast', img: 'images/Essaouira/essaouira_1.jpg' },
   { id: 'agadir', name: 'Agadir', region: 'Souss-Massa', img: 'images/Agadir/agadir_hero.png' },
@@ -1452,6 +1317,22 @@ const CUSTOM_TOUR_DESTINATIONS = [
   { id: 'atlas', name: 'Atlas Mountains', region: 'High Atlas', img: 'images/Marrakech/imlil_1.jpg' },
   { id: 'sahara', name: 'Sahara Desert', region: 'Erg Chebbi & Dunes', img: 'images/Zagora/zagora_hero.png' }
 ];
+
+const DESTINATION_CATEGORIES = {
+  marrakech: ['medina', 'imperial', 'culture'],
+  fes: ['medina', 'imperial', 'culture'],
+  chefchaouen: ['mountain', 'medina'],
+  merzouga: ['desert', 'dunes'],
+  zagora: ['desert', 'dunes'],
+  ouarzazate: ['desert', 'kasbah'],
+  sahara: ['desert', 'dunes'],
+  essaouira: ['coastal', 'ocean'],
+  agadir: ['coastal', 'ocean'],
+  casablanca: ['coastal', 'imperial'],
+  rabat: ['coastal', 'imperial'],
+  tangier: ['coastal'],
+  atlas: ['mountain', 'hiking']
+};
 
 const CUSTOM_TOUR_DURATIONS = [
   { id: '2-3', title: '2–3 Days', desc: 'Short weekend getaway & city highlights' },
@@ -1472,17 +1353,18 @@ const CUSTOM_TOUR_STYLES = [
 ];
 
 const CUSTOM_TOUR_ACTIVITIES = [
-  { id: 'desert', title: 'Desert Experience', icon: 'fa-sun' },
-  { id: 'camel', title: 'Camel Trek', icon: 'fa-dharmachakra' },
-  { id: 'hiking', title: 'Mountain Hiking', icon: 'fa-mountain' },
-  { id: 'souks', title: 'Medina & Souks', icon: 'fa-store' },
-  { id: 'cooking', title: 'Moroccan Cooking', icon: 'fa-utensils' },
-  { id: 'food', title: 'Local Food Experiences', icon: 'fa-mug-hot' },
-  { id: 'riad', title: 'Riad Stay', icon: 'fa-hotel' },
-  { id: 'beach', title: 'Beach & Coastal', icon: 'fa-umbrella-beach' },
-  { id: 'history', title: 'Historical Sites', icon: 'fa-monument' },
-  { id: 'photo', title: 'Photography Tour', icon: 'fa-camera' },
-  { id: 'wellness', title: 'Wellness & Relaxation', icon: 'fa-leaf' }
+  { id: 'desert', title: 'Desert Experience & Stargazing', icon: 'fa-sun', reqCategory: 'desert' },
+  { id: 'camping', title: 'Luxury Desert Camping', icon: 'fa-campground', reqCategory: 'desert' },
+  { id: 'camel', title: 'Camel Trek & Sunset Ride', icon: 'fa-dharmachakra', reqCategory: 'desert' },
+  { id: 'beach', title: 'Beach & Coastal Watersports', icon: 'fa-umbrella-beach', reqCategory: 'coastal' },
+  { id: 'hiking', title: 'Mountain & Oasis Hiking', icon: 'fa-mountain', reqCategory: null },
+  { id: 'souks', title: 'Medina & Souks Guided Tour', icon: 'fa-store', reqCategory: null },
+  { id: 'cooking', title: 'Moroccan Cooking Masterclass', icon: 'fa-utensils', reqCategory: null },
+  { id: 'food', title: 'Local Street Food & Tasting', icon: 'fa-mug-hot', reqCategory: null },
+  { id: 'riad', title: 'Historic Riad Stay', icon: 'fa-hotel', reqCategory: null },
+  { id: 'history', title: 'Historical Sites & Kasbahs', icon: 'fa-monument', reqCategory: null },
+  { id: 'photo', title: 'Photography Tour & Viewpoints', icon: 'fa-camera', reqCategory: null },
+  { id: 'wellness', title: 'Traditional Hammam & Spa', icon: 'fa-leaf', reqCategory: null }
 ];
 
 const CUSTOM_TOUR_ACCOMMODATION = [
@@ -1519,7 +1401,111 @@ const CustomTourState = {
   contact: { name: '', email: '', phone: '', dates: '' }
 };
 
-window.openCustomTourModal = function () {
+function findDestinationId(input) {
+  if (!input) return null;
+  const str = String(input).trim().toLowerCase();
+
+  let found = CUSTOM_TOUR_DESTINATIONS.find(d => d.id.toLowerCase() === str);
+  if (found) return found.id;
+
+  found = CUSTOM_TOUR_DESTINATIONS.find(d => d.name.toLowerCase() === str);
+  if (found) return found.id;
+
+  const norm = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  found = CUSTOM_TOUR_DESTINATIONS.find(d => {
+    const dNorm = d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return dNorm === norm || norm.includes(dNorm) || dNorm.includes(norm);
+  });
+  if (found) return found.id;
+
+  if (str.includes('zagora')) return 'zagora';
+  if (str.includes('merzouga')) return 'merzouga';
+  if (str.includes('ouarzazat')) return 'ouarzazate';
+  if (str.includes('marrakech')) return 'marrakech';
+  if (str.includes('fes')) return 'fes';
+  if (str.includes('chefchaouen')) return 'chefchaouen';
+  if (str.includes('essaouira')) return 'essaouira';
+  if (str.includes('agadir')) return 'agadir';
+  if (str.includes('casablanca')) return 'casablanca';
+  if (str.includes('rabat')) return 'rabat';
+  if (str.includes('tangier')) return 'tangier';
+
+  return null;
+}
+
+function getAvailableActivities() {
+  const selectedDests = CustomTourState.destinations || [];
+
+  let hasDesert = false;
+  let hasCoastal = false;
+
+  selectedDests.forEach(destId => {
+    const cats = DESTINATION_CATEGORIES[destId] || [];
+    if (cats.includes('desert')) hasDesert = true;
+    if (cats.includes('coastal')) hasCoastal = true;
+  });
+
+  return CUSTOM_TOUR_ACTIVITIES.filter(act => {
+    if (act.reqCategory === 'desert') {
+      return hasDesert;
+    }
+    if (act.reqCategory === 'coastal') {
+      return hasCoastal;
+    }
+    return true;
+  });
+}
+
+function renderCustomTourStep4() {
+  const step4El = document.getElementById('ctStep4');
+  if (!step4El) return;
+
+  const availableActs = getAvailableActivities();
+
+  const availableIds = availableActs.map(a => a.id);
+  CustomTourState.activities = CustomTourState.activities.filter(id => availableIds.includes(id));
+
+  let subtitle = 'Select all activities you would like to experience during your journey.';
+  if (CustomTourState.destinations.length > 0) {
+    const destNames = CUSTOM_TOUR_DESTINATIONS
+      .filter(d => CustomTourState.destinations.includes(d.id))
+      .map(d => d.name)
+      .join(', ');
+    subtitle = `Activities available for <strong>${destNames}</strong>:`;
+  }
+
+  step4El.innerHTML = `
+    <h3 class="ct-step-title">Step 4 — Activities & Experiences</h3>
+    <p class="ct-step-subtitle">${subtitle}</p>
+    <div class="ct-option-grid">
+      ${availableActs.map(act => {
+    const isSel = CustomTourState.activities.includes(act.id);
+    return `
+          <div class="ct-option-card ${isSel ? 'is-selected' : ''}" data-val="${act.id}" onclick="window.toggleCTActivity('${act.id}')">
+            <div class="ct-option-radio"></div>
+            <div class="ct-option-icon"><i class="fa-solid ${act.icon}"></i></div>
+            <div class="ct-option-title">${act.title}</div>
+          </div>
+        `;
+  }).join('')}
+    </div>
+  `;
+}
+
+window.openCustomTourModal = function (initialDestId) {
+  document.querySelectorAll('.hn-links, .nav-links, #premNavLinks, #navLinks').forEach(m => {
+    m.classList.remove('hn-links-open', 'open', 'active');
+  });
+  document.querySelectorAll('.hamburger, .hburg').forEach(btn => {
+    btn.classList.remove('is-active');
+  });
+  document.querySelectorAll('.drawer-backdrop').forEach(bd => {
+    bd.classList.remove('drawer-backdrop-open');
+  });
+  document.querySelectorAll('.modal, .dest-booking-modal-overlay, #globalQuickBookModal, #destModal').forEach(m => {
+    m.style.display = 'none';
+  });
+
   let modal = document.getElementById('customTourModal');
   if (!modal) {
     initCustomTourDOM();
@@ -1529,7 +1515,29 @@ window.openCustomTourModal = function () {
     document.body.appendChild(modal);
   }
 
-  // Reset to Step 1 if opening fresh
+  let destToSelect = null;
+  if (initialDestId) {
+    destToSelect = findDestinationId(initialDestId);
+  } else {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramDest = urlParams.get('dest') || urlParams.get('destination') || urlParams.get('city');
+    if (paramDest) {
+      destToSelect = findDestinationId(paramDest);
+    }
+  }
+
+  if (destToSelect) {
+    CustomTourState.destinations = [destToSelect];
+    try {
+      localStorage.setItem('hm_selected_dest', destToSelect);
+    } catch (e) { }
+  } else if (CustomTourState.destinations.length === 0) {
+    const saved = localStorage.getItem('hm_selected_dest');
+    if (saved && findDestinationId(saved)) {
+      CustomTourState.destinations = [findDestinationId(saved)];
+    }
+  }
+
   CustomTourState.currentStep = 1;
   renderCustomTourStep(1);
 
@@ -1742,13 +1750,25 @@ function initCustomTourDOM() {
           <div class="ct-success-icon"><i class="fa-solid fa-check"></i></div>
           <h3 class="ct-step-title" style="text-align:center;">Request Received! 🎉</h3>
           <p class="ct-step-subtitle" style="text-align:center; max-width:600px; margin:0 auto 24px;">
-            Thank you <strong id="ctSuccessName" style="color:#C85A32;">Traveler</strong>! Your custom Morocco tour request has been successfully submitted. Our boutique travel experts will craft your detailed itinerary and contact you within 2 hours.
+            Thank you <strong id="ctSuccessName" style="color:#C85A32;">Traveler</strong>! Your custom Morocco tour request has been successfully submitted. Choose your preferred contact channel to connect directly with our travel designers:
           </p>
 
-          <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
-            <button onclick="window.sendCustomTourWhatsApp()" class="ct-btn-next" style="background:#25D366; box-shadow:0 6px 20px rgba(37,211,102,0.4);">
-              Send via WhatsApp &nbsp;<i class="fa-brands fa-whatsapp"></i>
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; max-width:640px; margin:0 auto 20px;">
+            <button onclick="window.sendCustomTourWhatsApp()" class="ct-btn-next" style="background:#25D366; box-shadow:0 6px 20px rgba(37,211,102,0.4); flex:1; min-width:130px;">
+              WhatsApp &nbsp;<i class="fa-brands fa-whatsapp"></i>
             </button>
+            <button onclick="window.sendCustomTourEmail()" class="ct-btn-next" style="background:#C85A32; box-shadow:0 6px 20px rgba(200,90,50,0.4); flex:1; min-width:130px;">
+              Email Us &nbsp;<i class="fa-solid fa-envelope"></i>
+            </button>
+            <button onclick="window.sendCustomTourFacebook()" class="ct-btn-next" style="background:#1877F2; box-shadow:0 6px 20px rgba(24,119,242,0.4); flex:1; min-width:130px;">
+              Facebook &nbsp;<i class="fa-brands fa-facebook-f"></i>
+            </button>
+            <button onclick="window.sendCustomTourInstagram()" class="ct-btn-next" style="background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); box-shadow:0 6px 20px rgba(220,39,67,0.4); flex:1; min-width:130px;">
+              Instagram &nbsp;<i class="fa-brands fa-instagram"></i>
+            </button>
+          </div>
+
+          <div style="text-align:center;">
             <button onclick="window.closeCustomTourModal()" class="ct-btn-back">
               Done & Close
             </button>
@@ -1783,6 +1803,14 @@ window.toggleCTDest = function (id) {
     const cardId = card.getAttribute('data-id');
     card.classList.toggle('is-selected', CustomTourState.destinations.includes(cardId));
   });
+
+  const availableActs = getAvailableActivities();
+  const availableIds = availableActs.map(a => a.id);
+  CustomTourState.activities = CustomTourState.activities.filter(actId => availableIds.includes(actId));
+
+  if (CustomTourState.currentStep === 4) {
+    renderCustomTourStep4();
+  }
 };
 
 window.selectCTDuration = function (val) {
@@ -1856,6 +1884,15 @@ function renderCustomTourStep(step) {
   const backBtn = document.getElementById('ctBackBtn');
   const nextBtn = document.getElementById('ctNextBtn');
   const navFooter = document.getElementById('ctNavFooter');
+
+  if (step === 1) {
+    document.querySelectorAll('#ctStep1 .ct-dest-card').forEach(card => {
+      const cardId = card.getAttribute('data-id');
+      card.classList.toggle('is-selected', CustomTourState.destinations.includes(cardId));
+    });
+  } else if (step === 4) {
+    renderCustomTourStep4();
+  }
 
   if (step <= 9) {
     if (navFooter) navFooter.style.display = 'flex';
@@ -2045,6 +2082,25 @@ window.sendCustomTourWhatsApp = function () {
   const text = `Hello 👋 Discover Hidden Morocco!\nI would like to request a Personalized Custom Tour:\n\n📍 Destinations: ${destNames}\n⏱️ Duration: ${durObj ? durObj.title : ''}\n✨ Style: ${styles}\n📅 Dates: ${CustomTourState.contact.dates}\n👤 Name: ${CustomTourState.contact.name}\n📞 Phone: ${CustomTourState.contact.phone}\n📧 Email: ${CustomTourState.contact.email}\n📝 Notes: ${CustomTourState.preferences || 'N/A'}\n\nThank you!`;
 
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+};
+
+window.sendCustomTourEmail = function () {
+  const destNames = CUSTOM_TOUR_DESTINATIONS.filter(d => CustomTourState.destinations.includes(d.id)).map(d => d.name).join(', ');
+  const durObj = CUSTOM_TOUR_DURATIONS.find(d => d.id === CustomTourState.duration);
+  const styles = CUSTOM_TOUR_STYLES.filter(s => CustomTourState.travelStyles.includes(s.id)).map(s => s.title).join(', ');
+
+  const subject = `Custom Tour Request - ${CustomTourState.contact.name || 'Traveler'}`;
+  const body = `Hello Discover Hidden Morocco Team,\n\nI would like to request a Tailor-Made Private Tour:\n\n📍 Selected Destinations: ${destNames}\n⏱️ Duration: ${durObj ? durObj.title : ''}\n✨ Travel Style: ${styles}\n📅 Preferred Dates: ${CustomTourState.contact.dates}\n👤 Traveler Name: ${CustomTourState.contact.name}\n📞 Phone / WhatsApp: ${CustomTourState.contact.phone}\n📧 Email: ${CustomTourState.contact.email}\n📝 Special Requests: ${CustomTourState.preferences || 'None'}\n\nLooking forward to your reply!`;
+
+  window.location.href = `mailto:contact@discoverhiddenmorocco.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
+window.sendCustomTourFacebook = function () {
+  window.open('https://www.facebook.com/discoverhiddenmorocco', '_blank');
+};
+
+window.sendCustomTourInstagram = function () {
+  window.open('https://www.instagram.com/discover_hidden_morocco/', '_blank');
 };
 
 // Wire up openCustomTourModal buttons globally across all pages

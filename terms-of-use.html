@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terms of Use — Discover Hidden Morocco</title>
+  <meta name="description"
+    content="Terms of Use for Discover Hidden Morocco. Rules, booking terms, and conditions for our boutique private travel services.">
+  
+  <!-- Open Graph / Social Media Preview Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discoverhiddenmorocco.com/terms-of-use.html">
+  <meta property="og:title" content="Terms of Use — Discover Hidden Morocco">
+  <meta property="og:description" content="Terms of Use for Discover Hidden Morocco. Rules, booking terms, and conditions for our services.">
+  <meta property="og:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+  <meta property="og:site_name" content="Discover Hidden Morocco">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Terms of Use — Discover Hidden Morocco">
+  <meta name="twitter:description" content="Terms of Use for Discover Hidden Morocco. Rules, booking terms, and conditions for our services.">
+  <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .hn-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 36px;
+      background: var(--hm-bg-nav);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--hm-border);
+    }
+
+    .hn-nav-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hn-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+    }
+
+    .hn-logo img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .hn-logo-text {
+      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--hm-text-heading);
+    }
+
+    .hn-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .hn-links a {
+      padding: 7px 12px;
+      border-radius: 99px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--hm-text-body);
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .hn-links a:hover,
+    .hn-links a.active {
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-terracotta);
+    }
+
+    .hn-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-switcher {
+      background: var(--hm-bg-card-hover);
+      border: 1px solid var(--hm-border);
+      color: var(--hm-text-body);
+      padding: 7px 10px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--hm-border);
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-text-heading);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      border-color: var(--hm-terracotta);
+      color: var(--hm-terracotta);
+    }
+
+    .fav-count-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--hm-terracotta);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--hm-text-heading);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .hn-nav {
+        padding: 12px 18px;
+      }
+
+      .hn-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--hm-bg-nav);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 16px;
+        gap: 4px;
+        border-bottom: 1px solid var(--hm-border);
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+      }
+
+      .hn-links.hn-links-open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .hn-links a {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    body {
+      background: var(--hm-bg-main);
+    }
+
+    .legal-hero {
+      padding: 160px 24px 60px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(200, 90, 50, 0.05) 0%, transparent 100%);
+    }
+
+    .legal-hero h1 {
+      font-family: var(--hm-font-serif);
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      color: var(--hm-text-heading);
+      margin-bottom: 16px;
+    }
+
+    .legal-hero p {
+      font-size: 1.05rem;
+      color: var(--hm-text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .legal-content {
+      max-width: 900px;
+      margin: 0 auto 96px;
+      padding: 0 24px;
+    }
+
+    .legal-card {
+      background: var(--hm-bg-card);
+      border: 1px solid var(--hm-border);
+      border-radius: var(--hm-radius-lg);
+      padding: 44px;
+      box-shadow: var(--hm-shadow-md);
+    }
+
+    .legal-card h2 {
+      font-family: var(--hm-font-serif);
+      font-size: 1.6rem;
+      color: var(--hm-text-heading);
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+
+    .legal-card h2:first-child {
+      margin-top: 0;
+    }
+
+    .legal-card p,
+    .legal-card li {
+      font-size: 0.98rem;
+      line-height: 1.8;
+      color: var(--hm-text-body);
+      margin-bottom: 16px;
+    }
+
+    .legal-card ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      background: var(--hm-bg-footer);
+      color: #94A3B8;
+      padding: 60px 24px 36px;
+    }
+
+    .footer-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-socials a {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .footer-socials a:hover {
+      background: var(--hm-terracotta);
+      border-color: var(--hm-terracotta);
+      color: #fff;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 11px;
+    }
+
+    .footer-col ul li a {
+      color: #94A3B8;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--hm-gold);
+    }
+
+    .footer-contact-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+    }
+
+    .footer-contact-item i {
+      color: var(--hm-terracotta);
+      margin-top: 3px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.84rem;
+      max-width: 1340px;
+      margin: 0 auto;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--hm-gold);
+    }
+
+    @media (max-width: 900px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
+  <nav class="hn-nav" id="siteNav">
+    <div class="hn-nav-inner">
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+          class="hn-logo-text">Discover Hidden Morocco</span></a>
+
+      <ul class="hn-links" id="navLinks">
+        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
+        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
+        <li><a href="testimonials.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+
+        <!-- MORE SETTINGS Section -->
+        <li class="mobile-only-settings-row">
+          <div class="mobile-settings-title">MORE SETTINGS</div>
+          <div class="mobile-settings-icons">
+            <div class="setting-icon-item lang-item">
+              <i class="fa-solid fa-globe"></i>
+              <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
+                <option value="en">EN</option>
+                <option value="fr">FR</option>
+                <option value="es">ES</option>
+              </select>
+            </div>
+            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+            </button>
+            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+              <span class="mobile-fav-badge">0</span>
+            </a>
+          </div>
+        </li>
+
+        <!-- Customize My Tour Button -->
+        <li class="mobile-only-cta">
+          <a href="#" class="mobile-book-btn custom-tour-trigger">
+            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </li>
+      </ul>
+
+      <div class="hn-nav-actions">
+        <div class="lang-wrapper">
+          <i class="fa-solid fa-globe lang-icon"></i>
+          <select class="lang-switcher" id="langSwitcher" aria-label="Language">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="es">ES</option>
+          </select>
+        </div>
+
+        <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <a href="favorites.html" class="nav-icon-btn" aria-label="Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="fav-count-badge">0</span>
+        </a>
+
+        <button class="hamburger" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="legal-hero">
+    <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Terms & Conditions</span>
+    <h1>Terms of Use</h1>
+    <p>Last updated: September 2026. Terms governing our boutique travel services and booking agreement.</p>
+  </header>
+
+  <main class="legal-content">
+    <div class="legal-card">
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing the Discover Hidden Morocco website or booking any private tour, expedition, or transfer service, you agree to be bound by these Terms of Use and our booking policies.</p>
+
+      <h2>2. Booking & Tailor-Made Services</h2>
+      <p>Discover Hidden Morocco specializes in 100% private, tailor-made itineraries. Booking confirmations, custom itineraries, and final pricing are agreed upon prior to departure. Minimum participant requirements (e.g. 2 participants for certain itineraries) may apply as specified during booking.</p>
+
+      <h2>3. Payment & Cancellation Policy</h2>
+      <ul>
+        <li><strong>Deposit:</strong> A deposit or full confirmation via WhatsApp/Email is required to lock in vehicle, guide, and riad reservations.</li>
+        <li><strong>Cancellations 7+ Days Prior:</strong> Eligible for a full refund of deposit payments.</li>
+        <li><strong>Cancellations Within 48 Hours:</strong> Non-refundable due to pre-paid riad and driver commitments.</li>
+        <li><strong>Travel Insurance:</strong> We strongly advise all travelers to purchase comprehensive travel insurance covering trip cancellations, medical emergencies, and luggage.</li>
+      </ul>
+
+      <h2>4. Itinerary Adjustments & Weather</h2>
+      <p>While we make every effort to execute agreed itineraries seamlessly, local weather conditions (such as mountain snow or desert sandstorms) or unexpected road closures may require adjustments. Our local experts reserve the right to modify routes in the interest of traveler safety and comfort.</p>
+
+      <h2>5. Health, Passports & Visas</h2>
+      <p>Travelers are responsible for ensuring they possess a valid passport (valid for at least 6 months beyond travel dates) and any required Moroccan visas. Please inform us in advance of any mobility limits, medical conditions, or dietary restrictions.</p>
+
+      <h2>6. Intellectual Property</h2>
+      <p>All content on this website—including photography, text, branding, graphics, and custom tour wizard workflows—is the property of Discover Hidden Morocco and protected by intellectual property laws.</p>
+
+      <h2>7. Governing Law</h2>
+      <p>These Terms of Use are governed by and construed in accordance with the laws of the Kingdom of Morocco. Any disputes shall be subject to the jurisdiction of the courts of Marrakech.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco">
+          <span class="hn-logo-text">Discover Hidden Morocco</span>
+        </a>
+        <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara dunes, and Atlas mountains.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/discover_hidden_morocco/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.tiktok.com/@discover_hidden_morocco" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.youtube.com/@discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://fr.pinterest.com/DiscoverHiddenMorocco/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Destinations</h4>
+        <ul>
+          <li><a href="destinations.html#marrakech">Marrakech</a></li>
+          <li><a href="destinations.html#merzouga">Merzouga Sahara</a></li>
+          <li><a href="destinations.html#chefchaouen">Chefchaouen</a></li>
+          <li><a href="destinations.html#essaouira">Essaouira</a></li>
+          <li><a href="destinations.html#fes">Fes El Bali</a></li>
+          <li><a href="destinations.html#ouarzazate">Ouarzazate</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="map.html">Interactive Map</a></li>
+          <li><a href="testimonials.html">Reviews</a></li>
+          <li><a href="booking.html">Book Expedition</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="favorites.html">My Wishlist</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Marrakech HQ</h4>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Avenue Ennakhil,<br>Marrakech 40160</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:contact@discoverhiddenmorocco.com" style="color: inherit; text-decoration: none;">contact@discoverhiddenmorocco.com</a>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fab fa-whatsapp"></i>
+          <a href="https://wa.me/212660082066" target="_blank" style="color: inherit; text-decoration: none;">+212 660-082066</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
+      <div class="footer-bottom-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

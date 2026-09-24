@@ -10,6 +10,24 @@
   <title>Hidden Morocco — Discover Extraordinary Authentic Journeys</title>
   <meta name="description"
     content="Boutique Moroccan travel agency. Private tours across imperial cities, Sahara desert, Atlas mountains, and the Atlantic coast.">
+
+  <!-- Open Graph / Social Media Preview Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discoverhiddenmorocco.com/">
+  <meta property="og:title" content="Discover Hidden Morocco — Boutique Private Tours & Tailored Journeys">
+  <meta property="og:description"
+    content="Boutique Moroccan travel agency crafting unforgettable private journeys across imperial cities, Sahara dunes, Atlas mountains, and coastal havens.">
+  <meta property="og:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+  <meta property="og:site_name" content="Discover Hidden Morocco">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Discover Hidden Morocco — Boutique Private Tours">
+  <meta name="twitter:description"
+    content="Boutique Moroccan travel agency crafting unforgettable private journeys across imperial cities, Sahara dunes, and Atlas mountains.">
+  <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -1658,7 +1676,8 @@
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+          class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -1691,10 +1710,10 @@
           </div>
         </li>
 
-        <!-- Book Expedition Button -->
+        <!-- Customize My Tour Button -->
         <li class="mobile-only-cta">
-          <a href="booking.html" class="mobile-book-btn">
-            Book Expedition &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          <a href="#" class="mobile-book-btn custom-tour-trigger">
+            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
           </a>
         </li>
       </ul>
@@ -1718,8 +1737,6 @@
           <span class="fav-count-badge">0</span>
         </a>
 
-        <a href="booking.html" class="btn-primary hn-nav-book" data-i18n="nav_book">Book Now</a>
-
         <button class="hamburger" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
@@ -1731,479 +1748,520 @@
   <main class="site-main">
     <!-- Hero Section -->
     <section class="hero-section">
-    <div class="hero-bg">
-      <img src="images/hero.jpg" alt="Morocco Desert Kasbah — Ait Benhaddou" fetchpriority="high">
-      <div class="hero-overlay"></div>
-    </div>
-
-    <div class="hero-content">
-      <div class="hero-eyebrow">✦ MOROCCO'S BOUTIQUE PRIVATE EXPEDITIONS ✦</div>
-
-      <h1 class="hero-title">
-        <span class="hero-title-discover">Discover</span>
-        <span class="hero-title-hidden">Hidden Morocco</span>
-      </h1>
-
-      <span class="hero-gold-line"></span>
-
-      <p class="hero-subtitle">
-        Uncover secret riads, vast Sahara dunes, and authentic cultural journeys tailored exclusively for you.
-      </p>
-
-      <!-- Ultra-Luxury Search Bar -->
-      <div class="hero-search">
-        <span class="hero-search-icon"><i class="fa-solid fa-compass"></i></span>
-        <input type="text" id="heroSearchInput" placeholder="Where would you like to go? e.g. Sahara, Fès..."
-          autocomplete="off">
-        <a href="destinations.html" class="hero-search-btn">
-          <span>Search</span> &nbsp;<i class="fa-solid fa-arrow-right"></i>
-        </a>
+      <div class="hero-bg">
+        <img src="images/hero.jpg" alt="Morocco Desert Kasbah — Ait Benhaddou" fetchpriority="high">
+        <div class="hero-overlay"></div>
       </div>
 
-      <div style="margin-top: 20px;">
-        <button type="button" class="btn-primary custom-tour-trigger" style="padding: 13px 28px; font-size: 0.95rem; background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%) !important; box-shadow: 0 8px 25px rgba(231, 169, 60, 0.4) !important;">
-          Customize My Tour
-        </button>
-      </div>
-    </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">✦ MOROCCO'S BOUTIQUE PRIVATE EXPEDITIONS ✦</div>
 
-    <div class="scroll-indicator" onclick="document.getElementById('featuresBar').scrollIntoView({behavior:'smooth'})">
-      <span>Scroll</span>
-      <i class="fa-solid fa-chevron-down"></i>
-    </div>
-  </section>
+        <h1 class="hero-title">
+          <span class="hero-title-discover">Discover</span>
+          <span class="hero-title-hidden">Hidden Morocco</span>
+        </h1>
 
-  <!-- Features Bar (dark strip) -->
-  <div class="features-bar" id="featuresBar">
-    <div class="features-bar-inner">
-      <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-location-dot"></i></div>
-        <h4>Handpicked Destinations</h4>
-        <p>Carefully selected locations to show you the real Morocco.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
-        <h4>Authentic Experiences</h4>
-        <p>Live unique moments with locals and traditions.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <h4>Private &amp; Tailor-Made</h4>
-        <p>100% personalized tours designed just for you.</p>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
-        <h4>24/7 Support</h4>
-        <p>We're here for you before, during and after your trip.</p>
-      </div>
-    </div>
-  </div>
+        <span class="hero-gold-line"></span>
 
-  <!-- Stats Strip -->
-  <div class="hero-stats-strip">
-    <div class="hero-stats-inner">
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fa-solid fa-users"></i></div>
-        <div>
-          <div class="hero-stat-val">2500+</div>
-          <small>Happy Travelers</small>
-        </div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fa-regular fa-star"></i></div>
-        <div>
-          <div class="hero-stat-val">4.9/5</div>
-          <small>Average Rating</small>
-        </div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fa-solid fa-location-dot"></i></div>
-        <div>
-          <div class="hero-stat-val">40+</div>
-          <small>Destinations</small>
-        </div>
-      </div>
-      <div class="hero-stat-item">
-        <div class="hero-stat-icon"><i class="fa-regular fa-calendar"></i></div>
-        <div>
-          <div class="hero-stat-val">10+</div>
-          <small>Years of Experience</small>
-        </div>
-      </div>
-    </div>
-    <!-- Blended Luxury Welcome & Our Story Showcase -->
-    <section class="story-welcome-section" id="welcomeSection">
-      <div class="story-welcome-inner">
-        <!-- Left Column: Riad Visual & Badge -->
-        <div class="story-img-wrapper">
-          <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img">
-          <div class="story-img-badge">
-            <i class="fa-solid fa-gem"></i>
-            <span>100% Private Expeditions</span>
-          </div>
-        </div>
+        <p class="hero-subtitle">
+          Uncover secret riads, vast Sahara dunes, and authentic cultural journeys tailored exclusively for you.
+        </p>
 
-        <!-- Right Column: Story & Philosophy -->
-        <div class="story-content-box">
-          <h2 class="story-main-title">
-            Morocco is not just a destination.<br>
-            <span class="story-feeling-text">It's a feeling.</span>
-          </h2>
-          <p class="story-paragraph">
-            We are a team of passionate Moroccan guides and storytellers dedicated to showing you the kingdom beyond the
-            tourist trail — the hidden kasbahs, the silent desert mornings, and the ancient medinas that still breathe
-            history.
-          </p>
-
-          <div class="story-pillars-grid">
-            <div class="story-pillar-item">
-              <div class="story-pillar-icon"><i class="fa-solid fa-user-shield"></i></div>
-              <div>
-                <strong>100% Private Tours</strong>
-                <span>Exclusively for you &amp; your loved ones.</span>
-              </div>
-            </div>
-            <div class="story-pillar-item">
-              <div class="story-pillar-icon"><i class="fa-solid fa-compass"></i></div>
-              <div>
-                <strong>Local Berber Experts</strong>
-                <span>Native storytellers unlocking secret paths.</span>
-              </div>
-            </div>
-          </div>
-
-          <a href="about.html" class="btn-story-cta">
-            Discover Our Story &nbsp;<i class="fa-solid fa-arrow-right"></i>
+        <!-- Ultra-Luxury Search Bar -->
+        <div class="hero-search">
+          <span class="hero-search-icon"><i class="fa-solid fa-compass"></i></span>
+          <input type="text" id="heroSearchInput" placeholder="Where would you like to go? e.g. Sahara, Fès..."
+            autocomplete="off">
+          <a href="destinations.html" class="hero-search-btn">
+            <span>Search</span> &nbsp;<i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-      </div>
-    </section>
 
-
-
-    <!-- Stats section removed — now integrated in hero-stats-strip above -->
-
-    <!-- Featured Experience Categories Overview -->
-    <section class="section" style="padding: 96px 24px; background: var(--hm-bg-main);">
-      <div class="section-header">
-        <span class="badge badge-gold" style="margin-bottom: 14px;">✦ Experience Categories</span>
-        <h2>Ways to Experience Morocco</h2>
-        <p>From silent desert dunes to vibrant imperial medinas, discover the diverse experiences waiting for you.</p>
-      </div>
-
-      <div class="exp-cat-grid">
-        <!-- Category 1: Sahara Desert -->
-        <div class="exp-cat-card">
-          <div class="exp-cat-img">
-            <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition">
-            <span class="badge badge-gold exp-cat-badge">Desert &amp; Dunes</span>
-          </div>
-          <div class="exp-cat-body">
-            <h3>Sahara Desert Expeditions</h3>
-            <p>Sunset camel treks, stargazing at luxury Berber camps, sandboarding, and campfire drumming in Merzouga
-              &amp; Zagora.</p>
-            <a href="destinations.html#merzouga" class="exp-cat-link">Explore Desert Tours <i
-                class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-
-        <!-- Category 2: Imperial Medinas -->
-        <div class="exp-cat-card">
-          <div class="exp-cat-img">
-            <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture">
-            <span class="badge badge-terracotta exp-cat-badge">Cultural Heritage</span>
-          </div>
-          <div class="exp-cat-body">
-            <h3>Imperial Medinas &amp; Palaces</h3>
-            <p>Labyrinthine souks, historic palaces, ancient tanneries, and secret riads across Marrakech, Fès, and
-              Chefchaouen.</p>
-            <a href="destinations.html#marrakech" class="exp-cat-link">Explore Medina Tours <i
-                class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-
-        <!-- Category 3: Atlas Mountains -->
-        <div class="exp-cat-card">
-          <div class="exp-cat-img">
-            <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks">
-            <span class="badge badge-gold exp-cat-badge">Mountain Treks</span>
-          </div>
-          <div class="exp-cat-body">
-            <h3>Atlas Mountains &amp; Valleys</h3>
-            <p>Guided village hikes, Toubkal panoramas, lush green valleys, and authentic Berber tea ceremonies in Imlil
-              &amp; Ourika.</p>
-            <a href="destinations.html#marrakech" class="exp-cat-link">Explore Mountain Treks <i
-                class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-
-        <!-- Category 4: Coastal Escapes -->
-        <div class="exp-cat-card">
-          <div class="exp-cat-img">
-            <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes">
-            <span class="badge badge-terracotta exp-cat-badge">Coastal Escape</span>
-          </div>
-          <div class="exp-cat-body">
-            <h3>Atlantic Coastal Escapes</h3>
-            <p>Historic sea ramparts, fresh grilled harbour seafood, argan forest visits, and ocean breezes in
-              Essaouira.
-            </p>
-            <a href="destinations.html#essaouira" class="exp-cat-link">Explore Coastal Escapes <i
-                class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div style="text-align: center; margin-top: 56px;">
-        <a href="destinations.html" class="btn-primary" style="padding: 14px 36px; font-size: 1rem;">
-          View Full Destinations Catalog &nbsp;<i class="fa-solid fa-compass"></i>
-        </a>
-      </div>
-    </section>
-
-    <!-- Dedicated "Customize My Tour" Feature Banner -->
-    <section class="custom-tour-banner-section" style="background: linear-gradient(135deg, rgba(200, 90, 50, 0.04) 0%, rgba(231, 169, 60, 0.08) 100%); padding: 88px 24px; border-top: 1px solid var(--hm-border); border-bottom: 1px solid var(--hm-border);">
-      <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;" class="ct-home-banner-grid">
-        <div>
-          <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Tailor-Made Morocco Journeys</span>
-          <h2 style="font-family: var(--hm-font-serif); font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1.18; margin-bottom: 20px; color: var(--hm-text-heading);">
-            Create Your Dream Trip With <span style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Customize My Tour</span>
-          </h2>
-          <p style="font-size: 1.05rem; color: var(--hm-text-muted); line-height: 1.75; margin-bottom: 32px;">
-            Prefer a custom itinerary instead of a pre-set tour? Handpick your favorite imperial cities, Sahara desert camps, travel style, activities, accommodation, and transportation in 9 simple steps.
-          </p>
-
-          <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px;">
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;"><i class="fa-solid fa-check"></i></div>
-              <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">12 Authentic Destinations & Multi-City Routing</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;"><i class="fa-solid fa-check"></i></div>
-              <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">Full Flexibility on Duration, Budget & Activities</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;"><i class="fa-solid fa-check"></i></div>
-              <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">Instant Response & 100% Private Itinerary Guarantee</span>
-            </div>
-          </div>
-
-          <button type="button" class="btn-primary custom-tour-trigger" style="padding: 16px 36px; font-size: 1.05rem;">
-            Customize My Tour Now →
+        <div style="margin-top: 20px;">
+          <button type="button" class="btn-primary custom-tour-trigger"
+            style="padding: 13px 28px; font-size: 0.95rem; background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%) !important; box-shadow: 0 8px 25px rgba(231, 169, 60, 0.4) !important;">
+            Customize My Tour
           </button>
         </div>
+      </div>
 
-        <div style="position: relative;">
-          <div style="border-radius: 28px; overflow: hidden; box-shadow: 0 25px 60px rgba(15,23,42,0.18); border: 1px solid rgba(212,175,55,0.3);">
-            <img src="images/hero.jpg" alt="Customize Your Tour — Morocco Expedition" style="width: 100%; height: 480px; object-fit: cover;">
-          </div>
-          <div style="position: absolute; bottom: -20px; left: -20px; background: var(--hm-bg-card); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 18px 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 16px;">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;"><i class="fa-solid fa-sliders"></i></div>
-            <div>
-              <div style="font-size: 1.1rem; font-weight: 800; color: var(--hm-text-heading);">100% Tailor-Made</div>
-              <div style="font-size: 0.85rem; color: var(--hm-text-muted);">Designed step-by-step for you</div>
-            </div>
-          </div>
-        </div>
+      <div class="scroll-indicator"
+        onclick="document.getElementById('featuresBar').scrollIntoView({behavior:'smooth'})">
+        <span>Scroll</span>
+        <i class="fa-solid fa-chevron-down"></i>
       </div>
     </section>
 
-    <!-- Interactive Map Preview -->
-    <section class="map-section">
-      <div class="map-inner">
-        <div class="map-text">
-          <span class="badge badge-gold">🧭 Interactive Exploration</span>
-          <h2>Explore Morocco on an Interactive Map</h2>
-          <p>Plan your route effortlessly. Locate imperial cities, Sahara dunes, and coastal hideaways on our custom
-            spatial map — click any pin for details.</p>
-          <a href="map.html" class="btn-primary">
-            Open Fullscreen Map &nbsp;<i class="fa-solid fa-map"></i>
+    <!-- Features Bar (dark strip) -->
+    <div class="features-bar" id="featuresBar">
+      <div class="features-bar-inner">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <h4>Handpicked Destinations</h4>
+          <p>Carefully selected locations to show you the real Morocco.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
+          <h4>Authentic Experiences</h4>
+          <p>Live unique moments with locals and traditions.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h4>Private &amp; Tailor-Made</h4>
+          <p>100% personalized tours designed just for you.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+          <h4>24/7 Support</h4>
+          <p>We're here for you before, during and after your trip.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="hero-stats-strip">
+      <div class="hero-stats-inner">
+        <div class="hero-stat-item">
+          <div class="hero-stat-icon"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <div class="hero-stat-val">2500+</div>
+            <small>Happy Travelers</small>
+          </div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-icon"><i class="fa-regular fa-star"></i></div>
+          <div>
+            <div class="hero-stat-val">4.9/5</div>
+            <small>Average Rating</small>
+          </div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <div class="hero-stat-val">40+</div>
+            <small>Destinations</small>
+          </div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-icon"><i class="fa-regular fa-calendar"></i></div>
+          <div>
+            <div class="hero-stat-val">10+</div>
+            <small>Years of Experience</small>
+          </div>
+        </div>
+      </div>
+      <!-- Blended Luxury Welcome & Our Story Showcase -->
+      <section class="story-welcome-section" id="welcomeSection">
+        <div class="story-welcome-inner">
+          <!-- Left Column: Riad Visual & Badge -->
+          <div class="story-img-wrapper">
+            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img"
+              loading="lazy">
+            <div class="story-img-badge">
+              <i class="fa-solid fa-gem"></i>
+              <span>100% Private Expeditions</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Story & Philosophy -->
+          <div class="story-content-box">
+            <h2 class="story-main-title">
+              Morocco is not just a destination.<br>
+              <span class="story-feeling-text">It's a feeling.</span>
+            </h2>
+            <p class="story-paragraph">
+              We are a team of passionate Moroccan guides and storytellers dedicated to showing you the kingdom beyond
+              the
+              tourist trail — the hidden kasbahs, the silent desert mornings, and the ancient medinas that still breathe
+              history.
+            </p>
+
+            <div class="story-pillars-grid">
+              <div class="story-pillar-item">
+                <div class="story-pillar-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                  <strong>100% Private Tours</strong>
+                  <span>Exclusively for you &amp; your loved ones.</span>
+                </div>
+              </div>
+              <div class="story-pillar-item">
+                <div class="story-pillar-icon"><i class="fa-solid fa-compass"></i></div>
+                <div>
+                  <strong>Local Berber Experts</strong>
+                  <span>Native storytellers unlocking secret paths.</span>
+                </div>
+              </div>
+            </div>
+
+            <a href="about.html" class="btn-story-cta">
+              Discover Our Story &nbsp;<i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- Stats section removed — now integrated in hero-stats-strip above -->
+
+      <!-- Featured Experience Categories Overview -->
+      <section class="section" style="padding: 96px 24px; background: var(--hm-bg-main);">
+        <div class="section-header">
+          <span class="badge badge-gold" style="margin-bottom: 14px;">✦ Experience Categories</span>
+          <h2>Ways to Experience Morocco</h2>
+          <p>From silent desert dunes to vibrant imperial medinas, discover the diverse experiences waiting for you.</p>
+        </div>
+
+        <div class="exp-cat-grid">
+          <!-- Category 1: Sahara Desert -->
+          <div class="exp-cat-card">
+            <div class="exp-cat-img">
+              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy">
+              <span class="badge badge-gold exp-cat-badge">Desert &amp; Dunes</span>
+            </div>
+            <div class="exp-cat-body">
+              <h3>Sahara Desert Expeditions</h3>
+              <p>Sunset camel treks, stargazing at luxury Berber camps, sandboarding, and campfire drumming in Merzouga
+                &amp; Zagora.</p>
+              <a href="destinations.html#merzouga" class="exp-cat-link">Explore Desert Tours <i
+                  class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <!-- Category 2: Imperial Medinas -->
+          <div class="exp-cat-card">
+            <div class="exp-cat-img">
+              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy">
+              <span class="badge badge-terracotta exp-cat-badge">Cultural Heritage</span>
+            </div>
+            <div class="exp-cat-body">
+              <h3>Imperial Medinas &amp; Palaces</h3>
+              <p>Labyrinthine souks, historic palaces, ancient tanneries, and secret riads across Marrakech, Fès, and
+                Chefchaouen.</p>
+              <a href="destinations.html#marrakech" class="exp-cat-link">Explore Medina Tours <i
+                  class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <!-- Category 3: Atlas Mountains -->
+          <div class="exp-cat-card">
+            <div class="exp-cat-img">
+              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy">
+              <span class="badge badge-gold exp-cat-badge">Mountain Treks</span>
+            </div>
+            <div class="exp-cat-body">
+              <h3>Atlas Mountains &amp; Valleys</h3>
+              <p>Guided village hikes, Toubkal panoramas, lush green valleys, and authentic Berber tea ceremonies in
+                Imlil
+                &amp; Ourika.</p>
+              <a href="destinations.html#marrakech" class="exp-cat-link">Explore Mountain Treks <i
+                  class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <!-- Category 4: Coastal Escapes -->
+          <div class="exp-cat-card">
+            <div class="exp-cat-img">
+              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy">
+              <span class="badge badge-terracotta exp-cat-badge">Coastal Escape</span>
+            </div>
+            <div class="exp-cat-body">
+              <h3>Atlantic Coastal Escapes</h3>
+              <p>Historic sea ramparts, fresh grilled harbour seafood, argan forest visits, and ocean breezes in
+                Essaouira.
+              </p>
+              <a href="destinations.html#essaouira" class="exp-cat-link">Explore Coastal Escapes <i
+                  class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 56px;">
+          <a href="destinations.html" class="btn-primary" style="padding: 14px 36px; font-size: 1rem;">
+            View Full Destinations Catalog &nbsp;<i class="fa-solid fa-compass"></i>
           </a>
         </div>
-        <div id="homeMapPreview"></div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Why Choose Us -->
-    <section class="section" style="background: var(--hm-bg-main);">
-      <div class="section-header">
-        <span class="badge badge-terracotta" style="margin-bottom: 14px;" data-i18n="why_title">✦ Why Hidden
-          Morocco?</span>
-        <h2>Every Detail. Perfectly Crafted.</h2>
-        <p data-i18n="why_sub">Handcrafted boutique private journeys tailored to your rhythm.</p>
-      </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <div class="why-icon"><i class="fa-solid fa-user-tie"></i></div>
-          <h4>Private &amp; Exclusive</h4>
-          <p>Every journey is tailor-made for you alone. No shared buses, no crowds — just you and the real Morocco.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon"><i class="fa-solid fa-compass"></i></div>
-          <h4>Local Expert Guides</h4>
-          <p>Born and raised in Morocco, our guides unlock hidden corners that no tourist map will ever reveal.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon"><i class="fa-solid fa-sliders"></i></div>
-          <h4>Fully Customizable</h4>
-          <p>Want to linger at a viewpoint or skip a crowded site? Your itinerary flexes entirely to your wishes.</p>
-        </div>
-        <div class="why-card">
-          <div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <h4>Safe &amp; Reliable</h4>
-          <p>Modern vehicles, licensed drivers, and 24/7 real-time support throughout your entire journey.</p>
-        </div>
-      </div>
-    </section>
+      <!-- Dedicated "Customize My Tour" Feature Banner -->
+      <section class="custom-tour-banner-section"
+        style="background: linear-gradient(135deg, rgba(200, 90, 50, 0.04) 0%, rgba(231, 169, 60, 0.08) 100%); padding: 88px 24px; border-top: 1px solid var(--hm-border); border-bottom: 1px solid var(--hm-border);">
+        <div
+          style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;"
+          class="ct-home-banner-grid">
+          <div>
+            <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Tailor-Made Morocco Journeys</span>
+            <h2
+              style="font-family: var(--hm-font-serif); font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1.18; margin-bottom: 20px; color: var(--hm-text-heading);">
+              Create Your Dream Trip With <span
+                style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Customize
+                My Tour</span>
+            </h2>
+            <p style="font-size: 1.05rem; color: var(--hm-text-muted); line-height: 1.75; margin-bottom: 32px;">
+              Prefer a custom itinerary instead of a pre-set tour? Handpick your favorite imperial cities, Sahara desert
+              camps, travel style, activities, accommodation, and transportation in 9 simple steps.
+            </p>
 
-    <!-- Inspiring Desert Quote Banner -->
-    <section class="desert-quote-banner">
-      <div class="desert-quote-overlay"></div>
-      <div class="desert-quote-inner">
-        <div class="desert-quote-icon">“</div>
-        <blockquote class="desert-quote-text">
-          "Not all those who wander are lost — some are discovering Morocco."
-        </blockquote>
-        <a href="destinations.html" class="btn-quote-cta">Start Your Journey</a>
-      </div>
-    </section>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div
+                  style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">12 Authentic
+                  Destinations & Multi-City Routing</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div
+                  style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">Full Flexibility on
+                  Duration, Budget & Activities</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div
+                  style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span style="font-size: 0.98rem; font-weight: 700; color: var(--hm-text-heading);">Instant Response &
+                  100% Private Itinerary Guarantee</span>
+              </div>
+            </div>
 
-    <!-- Testimonials -->
-    <section class="section section-alt">
-      <div class="section-header">
-        <span class="badge badge-gold" style="margin-bottom: 14px;">★ Real Stories</span>
-        <h2>What Our Travelers Say</h2>
-        <p>Authentic reviews from people who explored Morocco with us.</p>
-      </div>
-      <div class="reviews-grid">
-        <div class="review-card">
-          <div class="review-stars">★★★★★</div>
-          <p class="review-text">"The Sahara night under the stars was something out of a dream. No shared group,
-            perfect
-            service, and a guide who felt like a lifelong friend. Worth every penny."</p>
-          <div class="review-author">
-            <div class="review-avatar">JL</div>
-            <div>
-              <strong>James &amp; Laura</strong>
-              <span>United Kingdom 🇬🇧 &nbsp;·&nbsp; Merzouga Expedition</span>
+            <button type="button" class="btn-primary custom-tour-trigger"
+              style="padding: 16px 36px; font-size: 1.05rem;">
+              Customize My Tour Now →
+            </button>
+          </div>
+
+          <div style="position: relative;">
+            <div
+              style="border-radius: 28px; overflow: hidden; box-shadow: 0 25px 60px rgba(15,23,42,0.18); border: 1px solid rgba(212,175,55,0.3);">
+              <img src="images/hero.jpg" alt="Customize Your Tour — Morocco Expedition" loading="lazy"
+                style="width: 100%; height: 480px; object-fit: cover;">
+            </div>
+            <div
+              style="position: absolute; bottom: -20px; left: -20px; background: var(--hm-bg-card); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; padding: 18px 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 16px;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                <i class="fa-solid fa-sliders"></i>
+              </div>
+              <div>
+                <div style="font-size: 1.1rem; font-weight: 800; color: var(--hm-text-heading);">100% Tailor-Made</div>
+                <div style="font-size: 0.85rem; color: var(--hm-text-muted);">Designed step-by-step for you</div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="review-card">
-          <div class="review-stars">★★★★★</div>
-          <p class="review-text">"Chefchaouen was magical. The blue alleyways, local food, and the mountain hike were
-            perfect. Our guide knew every secret viewpoint. We're already planning our return trip."</p>
-          <div class="review-author">
-            <div class="review-avatar">SM</div>
-            <div>
-              <strong>Sophie M.</strong>
-              <span>France 🇫🇷 &nbsp;·&nbsp; Chefchaouen Blue Walk</span>
-            </div>
-          </div>
-        </div>
-        <div class="review-card">
-          <div class="review-stars">★★★★★</div>
-          <p class="review-text">"The Marrakech experience was phenomenal — from the spice souks to the Bahia Palace
-            tour.
-            Everything was handled seamlessly. Hidden Morocco truly delivers luxury without pretension."</p>
-          <div class="review-author">
-            <div class="review-avatar">AR</div>
-            <div>
-              <strong>Ahmed &amp; Rida</strong>
-              <span>Canada 🇨🇦 &nbsp;·&nbsp; Marrakech Deep Dive</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="text-align:center; margin-top: 48px;">
-        <a href="testimonials.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
-      </div>
-    </section>
+      </section>
 
-    <!-- CTA Banner -->
-    <section class="cta-banner">
-      <div class="cta-banner-inner">
-        <h2>Ready to Discover Hidden Morocco?</h2>
-        <p>Let us craft your perfect Moroccan adventure — fully private, fully tailored to you.</p>
-        <a href="booking.html" class="btn-cta-white">
-          <i class="fa-solid fa-compass"></i> Plan My Journey
-        </a>
-      </div>
-    </section>
+      <!-- Interactive Map Preview -->
+      <section class="map-section">
+        <div class="map-inner">
+          <div class="map-text">
+            <span class="badge badge-gold">🧭 Interactive Exploration</span>
+            <h2>Explore Morocco on an Interactive Map</h2>
+            <p>Plan your route effortlessly. Locate imperial cities, Sahara dunes, and coastal hideaways on our custom
+              spatial map — click any pin for details.</p>
+            <a href="map.html" class="btn-primary">
+              Open Fullscreen Map &nbsp;<i class="fa-solid fa-map"></i>
+            </a>
+          </div>
+          <div id="homeMapPreview"></div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us -->
+      <section class="section" style="background: var(--hm-bg-main);">
+        <div class="section-header">
+          <span class="badge badge-terracotta" style="margin-bottom: 14px;" data-i18n="why_title">✦ Why Hidden
+            Morocco?</span>
+          <h2>Every Detail. Perfectly Crafted.</h2>
+          <p data-i18n="why_sub">Handcrafted boutique private journeys tailored to your rhythm.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h4>Private &amp; Exclusive</h4>
+            <p>Every journey is tailor-made for you alone. No shared buses, no crowds — just you and the real Morocco.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-compass"></i></div>
+            <h4>Local Expert Guides</h4>
+            <p>Born and raised in Morocco, our guides unlock hidden corners that no tourist map will ever reveal.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-sliders"></i></div>
+            <h4>Fully Customizable</h4>
+            <p>Want to linger at a viewpoint or skip a crowded site? Your itinerary flexes entirely to your wishes.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h4>Safe &amp; Reliable</h4>
+            <p>Modern vehicles, licensed drivers, and 24/7 real-time support throughout your entire journey.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inspiring Desert Quote Banner -->
+      <section class="desert-quote-banner">
+        <div class="desert-quote-overlay"></div>
+        <div class="desert-quote-inner">
+          <div class="desert-quote-icon">“</div>
+          <blockquote class="desert-quote-text">
+            "Not all those who wander are lost — some are discovering Morocco."
+          </blockquote>
+          <a href="destinations.html" class="btn-quote-cta">Start Your Journey</a>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="section section-alt">
+        <div class="section-header">
+          <span class="badge badge-gold" style="margin-bottom: 14px;">★ Real Stories</span>
+          <h2>What Our Travelers Say</h2>
+          <p>Authentic reviews from people who explored Morocco with us.</p>
+        </div>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"The Sahara night under the stars was something out of a dream. No shared group,
+              perfect
+              service, and a guide who felt like a lifelong friend. Worth every penny."</p>
+            <div class="review-author">
+              <div class="review-avatar">JL</div>
+              <div>
+                <strong>James &amp; Laura</strong>
+                <span>United Kingdom 🇬🇧 &nbsp;·&nbsp; Merzouga Expedition</span>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"Chefchaouen was magical. The blue alleyways, local food, and the mountain hike were
+              perfect. Our guide knew every secret viewpoint. We're already planning our return trip."</p>
+            <div class="review-author">
+              <div class="review-avatar">SM</div>
+              <div>
+                <strong>Sophie M.</strong>
+                <span>France 🇫🇷 &nbsp;·&nbsp; Chefchaouen Blue Walk</span>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-text">"The Marrakech experience was phenomenal — from the spice souks to the Bahia Palace
+              tour.
+              Everything was handled seamlessly. Hidden Morocco truly delivers luxury without pretension."</p>
+            <div class="review-author">
+              <div class="review-avatar">AR</div>
+              <div>
+                <strong>Ahmed &amp; Rida</strong>
+                <span>Canada 🇨🇦 &nbsp;·&nbsp; Marrakech Deep Dive</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; margin-top: 48px;">
+          <a href="testimonials.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </section>
+
+      <!-- CTA Banner -->
+      <section class="cta-banner">
+        <div class="cta-banner-inner">
+          <h2>Ready to Discover Hidden Morocco?</h2>
+          <p>Let us craft your perfect Moroccan adventure — fully private, fully tailored to you.</p>
+          <a href="booking.html" class="btn-cta-white">
+            <i class="fa-solid fa-compass"></i> Plan My Journey
+          </a>
+        </div>
+      </section>
   </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
-            <img src="logo-icon.png" alt="Discover Hidden Morocco">
-            <span class="hn-logo-text">Discover Hidden Morocco</span>
-          </a>
-          <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara
-            dunes, and Atlas mountains.</p>
-          <div class="footer-socials">
-            <a href="https://www.instagram.com/discover_hidden_morocco?stkn=MXFsbDdsbG1jdnNiMg%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.facebook.com/share/1CK3YKm8qu/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.tiktok.com/@discover_hidden_morocco?_r=1&amp;_t=ZN-99hyz6c9kiU" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://youtube.com/@discoverhiddenmorocco?si=d-cf3DbOE5DzVK9N" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>Destinations</h4>
-          <ul>
-            <li><a href="destinations.html#marrakech">Marrakech</a></li>
-            <li><a href="destinations.html#merzouga">Merzouga Sahara</a></li>
-            <li><a href="destinations.html#chefchaouen">Chefchaouen</a></li>
-            <li><a href="destinations.html#essaouira">Essaouira</a></li>
-            <li><a href="destinations.html#fes">Fes El Bali</a></li>
-            <li><a href="destinations.html#ouarzazate">Ouarzazate</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="map.html">Interactive Map</a></li>
-            <li><a href="testimonials.html">Reviews</a></li>
-            <li><a href="booking.html">Book Expedition</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
-            <li><a href="favorites.html">My Wishlist</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Marrakech HQ</h4>
-          <div class="footer-contact-item">
-            <i class="fa-solid fa-location-dot"></i>
-            <span>Avenue Ennakhil,<br>Marrakech 40160</span>
-          </div>
-          <div class="footer-contact-item">
-            <i class="fa-solid fa-envelope"></i>
-            <a href="mailto:contact@discoverhiddenmorocco.com" style="color: inherit; text-decoration: none;">contact@discoverhiddenmorocco.com</a>
-          </div>
-          <div class="footer-contact-item">
-            <i class="fab fa-whatsapp"></i>
-            <a href="https://wa.me/212660082066" target="_blank" style="color: inherit; text-decoration: none;">+212 660-082066</a>
-          </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco">
+          <span class="hn-logo-text">Discover Hidden Morocco</span>
+        </a>
+        <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara
+          dunes, and Atlas mountains.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/discover_hidden_morocco/" target="_blank" rel="noopener noreferrer"
+            aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/discoverhiddenmorocco" target="_blank" rel="noopener noreferrer"
+            aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i
+              class="fab fa-whatsapp"></i></a>
+          <a href="https://www.tiktok.com/@discover_hidden_morocco" target="_blank" rel="noopener noreferrer"
+            aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.youtube.com/@discoverhiddenmorocco" target="_blank" rel="noopener noreferrer"
+            aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://fr.pinterest.com/DiscoverHiddenMorocco/" target="_blank" rel="noopener noreferrer"
+            aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Cookie Policy</a>
+      <div class="footer-col">
+        <h4>Destinations</h4>
+        <ul>
+          <li><a href="destinations.html#marrakech">Marrakech</a></li>
+          <li><a href="destinations.html#merzouga">Merzouga Sahara</a></li>
+          <li><a href="destinations.html#chefchaouen">Chefchaouen</a></li>
+          <li><a href="destinations.html#essaouira">Essaouira</a></li>
+          <li><a href="destinations.html#fes">Fes El Bali</a></li>
+          <li><a href="destinations.html#ouarzazate">Ouarzazate</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="map.html">Interactive Map</a></li>
+          <li><a href="testimonials.html">Reviews</a></li>
+          <li><a href="booking.html">Book Expedition</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="favorites.html">My Wishlist</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Marrakech HQ</h4>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Avenue Ennakhil,<br>Marrakech 40160</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <a href="mailto:contact@discoverhiddenmorocco.com"
+            style="color: inherit; text-decoration: none;">contact@discoverhiddenmorocco.com</a>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fab fa-whatsapp"></i>
+          <a href="https://wa.me/212660082066" target="_blank" style="color: inherit; text-decoration: none;">+212
+            660-082066</a>
         </div>
       </div>
-    </footer>
+    </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+    <div class="footer-bottom">
+      <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
+      <div class="footer-bottom-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

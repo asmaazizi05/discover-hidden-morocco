@@ -1,53 +1,296 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Wishlist — Hidden Morocco</title>
-  <meta name="description" content="Your saved Hidden Morocco expeditions and dream destinations wishlist.">
+  <title>My Wishlist — Discover Hidden Morocco</title>
+  <meta name="description" content="Your saved Discover Hidden Morocco expeditions and dream destinations wishlist.">
+  
+  <!-- Open Graph / Social Media Preview Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discoverhiddenmorocco.com/favorites.html">
+  <meta property="og:title" content="My Wishlist — Discover Hidden Morocco">
+  <meta property="og:description" content="Your saved Discover Hidden Morocco expeditions and dream destinations wishlist.">
+  <meta property="og:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+  <meta property="og:site_name" content="Discover Hidden Morocco">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="My Wishlist — Discover Hidden Morocco">
+  <meta name="twitter:description" content="Your saved Discover Hidden Morocco expeditions and dream destinations wishlist.">
+  <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    .hn-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 14px 36px; background: var(--hm-bg-nav); backdrop-filter: blur(20px); border-bottom: 1px solid var(--hm-border); }
-    .hn-nav-inner { max-width: 1340px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .hn-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-    .hn-logo img { height: 48px; width: auto; object-fit: contain; }
-    .hn-logo-text { font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif); font-size: 1.08rem; font-weight: 600; letter-spacing: 0.03em; color: var(--hm-text-heading); }
-    .hn-links { display: flex; align-items: center; gap: 4px; list-style: none; }
-    .hn-links a { padding: 7px 12px; border-radius: 99px; font-size: 0.875rem; font-weight: 600; color: var(--hm-text-body); text-decoration: none; transition: all 0.25s; }
-    .hn-links a:hover, .hn-links a.active { background: var(--hm-bg-card-hover); color: var(--hm-terracotta); }
-    .hn-nav-actions { display: flex; align-items: center; gap: 10px; }
-    .lang-switcher { background: var(--hm-bg-card-hover); border: 1px solid var(--hm-border); color: var(--hm-text-body); padding: 7px 10px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; cursor: pointer; outline: none; }
-    .nav-icon-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--hm-border); background: var(--hm-bg-card-hover); color: var(--hm-text-heading); font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: all 0.25s; position: relative; }
-    .nav-icon-btn:hover { border-color: var(--hm-terracotta); color: var(--hm-terracotta); }
-    .fav-count-badge { position: absolute; top: -4px; right: -4px; background: var(--hm-terracotta); color: #fff; font-size: 0.68rem; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center; border: 2px solid #fff; }
-    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; flex-direction: column; justify-content: center; gap: 5px; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--hm-text-heading); border-radius: 2px; }
-    @media (max-width: 768px) { .hn-nav { padding: 12px 18px; } .hn-links { position: absolute; top: 100%; left: 0; right: 0; background: var(--hm-bg-nav); flex-direction: column; padding: 16px; gap: 4px; border-bottom: 1px solid var(--hm-border); transform: translateY(-10px); opacity: 0; pointer-events: none; transition: all 0.3s; } .hn-links.hn-links-open { transform: translateY(0); opacity: 1; pointer-events: auto; } .hn-links a { width: 100%; padding: 12px 16px; border-radius: 8px; } .hamburger { display: flex; } }
+    .hn-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 36px;
+      background: var(--hm-bg-nav);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--hm-border);
+    }
 
-    body { background: var(--hm-bg-main); }
-    .page-header { padding: 140px 24px 60px; max-width: 1340px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; }
-    .page-header h1 { font-family: var(--hm-font-serif); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px; }
-    .page-header p { color: var(--hm-text-muted); font-size: 1.02rem; }
-    .wishlist-count { display: flex; align-items: center; gap: 8px; background: var(--hm-terracotta-light); border: 1px solid rgba(192,57,43,0.25); border-radius: 99px; padding: 8px 18px; font-size: 0.88rem; font-weight: 700; color: var(--hm-terracotta); white-space: nowrap; }
+    .hn-nav-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
 
-    .favorites-section { padding: 0 24px 96px; }
-    .favorites-container { max-width: 1340px; margin: 0 auto; }
-    #favoritesGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 32px; }
+    .hn-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+    }
 
-    .footer { background: var(--hm-bg-footer); color: #94A3B8; padding: 40px 24px; text-align: center; }
-    .footer-links { display: flex; justify-content: center; gap: 24px; margin-top: 12px; }
-    .footer-links a { color: #94A3B8; text-decoration: none; font-size: 0.85rem; }
-    .footer-links a:hover { color: var(--hm-gold); }
+    .hn-logo img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .hn-logo-text {
+      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--hm-text-heading);
+    }
+
+    .hn-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .hn-links a {
+      padding: 7px 12px;
+      border-radius: 99px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--hm-text-body);
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .hn-links a:hover,
+    .hn-links a.active {
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-terracotta);
+    }
+
+    .hn-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-switcher {
+      background: var(--hm-bg-card-hover);
+      border: 1px solid var(--hm-border);
+      color: var(--hm-text-body);
+      padding: 7px 10px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--hm-border);
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-text-heading);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      border-color: var(--hm-terracotta);
+      color: var(--hm-terracotta);
+    }
+
+    .fav-count-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--hm-terracotta);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--hm-text-heading);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .hn-nav {
+        padding: 12px 18px;
+      }
+
+      .hn-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--hm-bg-nav);
+        flex-direction: column;
+        padding: 16px;
+        gap: 4px;
+        border-bottom: 1px solid var(--hm-border);
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+      }
+
+      .hn-links.hn-links-open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .hn-links a {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    body {
+      background: var(--hm-bg-main);
+    }
+
+    .page-header {
+      padding: 140px 24px 60px;
+      max-width: 1340px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .page-header h1 {
+      font-family: var(--hm-font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      color: var(--hm-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .wishlist-count {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--hm-terracotta-light);
+      border: 1px solid rgba(192, 57, 43, 0.25);
+      border-radius: 99px;
+      padding: 8px 18px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--hm-terracotta);
+      white-space: nowrap;
+    }
+
+    .favorites-section {
+      padding: 0 24px 96px;
+    }
+
+    .favorites-container {
+      max-width: 1340px;
+      margin: 0 auto;
+    }
+
+    #favoritesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 32px;
+    }
+
+    .footer {
+      background: var(--hm-bg-footer);
+      color: #94A3B8;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 12px;
+    }
+
+    .footer-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--hm-gold);
+    }
   </style>
 </head>
+
 <body>
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+          class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html">Home</a></li>
         <li><a href="destinations.html">Destinations</a></li>
@@ -79,10 +322,10 @@
           </div>
         </li>
 
-        <!-- Book Expedition Button -->
+        <!-- Customize My Tour Button -->
         <li class="mobile-only-cta">
-          <a href="booking.html" class="mobile-book-btn">
-            Book Expedition &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          <a href="#" class="mobile-book-btn custom-tour-trigger">
+            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
           </a>
         </li>
       </ul>
@@ -96,7 +339,9 @@
           </select>
         </div>
         <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
-        <a href="favorites.html" class="nav-icon-btn active" style="border-color: var(--hm-terracotta); color: var(--hm-terracotta);" aria-label="Wishlist"><i class="fa-solid fa-heart"></i><span class="fav-count-badge">0</span></a>
+        <a href="favorites.html" class="nav-icon-btn active"
+          style="border-color: var(--hm-terracotta); color: var(--hm-terracotta);" aria-label="Wishlist"><i
+            class="fa-solid fa-heart"></i><span class="fav-count-badge">0</span></a>
         <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -122,9 +367,11 @@
   </section>
 
   <footer class="footer">
-    <p>© 2026 Discover Hidden Morocco. All Rights Reserved.</p>
+    <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
     <div class="footer-links">
-      <a href="index.html">Home</a><a href="destinations.html">Destinations</a><a href="contact.html">Contact</a><a href="booking.html">Book Now</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
     </div>
   </footer>
 
@@ -138,4 +385,5 @@
     });
   </script>
 </body>
+
 </html>
