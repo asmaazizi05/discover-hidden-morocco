@@ -20,7 +20,6 @@
             padding: 40px 20px;
             text-align: center;
         }
-        /* تصميم الإطار ديال الشعار باش يبان نقي وواضح */
         .profile-img {
             width: 150px;
             height: auto;
@@ -39,7 +38,7 @@
             color: #666;
             margin-bottom: 30px;
         }
-        .link-bin {
+        .link-btn {
             display: block;
             width: 100%;
             padding: 16px;
@@ -55,13 +54,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .link-bin:hover {
+        .link-btn:hover {
             background-color: #D4AF37;
             color: #ffffff;
             border-color: #D4AF37;
             transform: translateY(-2px);
         }
-        .primary-bin {
+        .primary-btn {
             background-color: #2C3E50;
             color: #ffffff;
             border-color: #2C3E50;
@@ -71,16 +70,21 @@
 <body>
 
     <div class="container">
-        <!-- رابط الصورة المباشر من نفس المجلد -->
         <img src="logo.png" alt="Discover Hidden Morocco Logo" class="profile-img">
         
         <h1>Discover Hidden Morocco</h1>
         <p>Explore the magic of Morocco, from golden dunes to ancient kasbahs.</p>
 
-        <a href="https://discoverhiddenmorocco.com/tours" class="link-bin primary-bin">Book Your Desert Tour Now</a>
-        <a href="https://youtube.com/channel/..." class="link-bin" target="_blank">Watch Our Latest YouTube Vlogs</a>
-        <a href="https://www.tripadvisor.com/..." class="link-bin" target="_blank">Read Our TripAdvisor Reviews</a>
-        <a href="mailto:contact@discoverhiddenmorocco.com" class="link-bin">Contact Us for Custom Itineraries</a>
+        <!-- زر الحجز المباشر عبر الواتساب -->
+        <a href="https://wa.me/212660082066?text=Hello,%20I%20want%20to%20book%20a%20desert%20tour" class="link-btn primary-btn" target="_blank">Book Your Desert Tour Now (WhatsApp)</a>
+        
+        <!-- منصات التواصل الاجتماعي -->
+        <a href="https://www.instagram.com/discover_hidden_morocco/" class="link-btn" target="_blank">Instagram (@discover_hidden_morocco)</a>
+        <a href="https://www.tiktok.com/@discover_hidden_morocco" class="link-btn" target="_blank">TikTok (@discover_hidden_morocco)</a>
+        <a href="https://www.youtube.com/@discoverhiddenmorocco" class="link-btn" target="_blank">Watch Our YouTube Vlogs</a>
+        <a href="https://www.facebook.com/discoverhiddenmorocco" class="link-btn" target="_blank">Facebook Page</a>
+        <a href="https://fr.pinterest.com/DiscoverHiddenMorocco/" class="link-btn" target="_blank">Pinterest Inspiration</a>
+        
     </div>
 
 </body>
