@@ -5387,3 +5387,171 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
   color: #F8FAFC !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
+
+/* ── Responsive Styling for Customize My Tour Feature Banner ─────── */
+.custom-tour-banner-section {
+  background: linear-gradient(135deg, rgba(200, 90, 50, 0.04) 0%, rgba(231, 169, 60, 0.08) 100%);
+  padding: 88px 24px;
+  border-top: 1px solid var(--hm-border, rgba(0,0,0,0.08));
+  border-bottom: 1px solid var(--hm-border, rgba(0,0,0,0.08));
+}
+
+.ct-home-banner-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.ct-banner-title {
+  font-family: var(--hm-font-serif, serif);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1.18;
+  margin-bottom: 20px;
+  color: var(--hm-text-heading);
+}
+
+.ct-gradient-text {
+  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ct-banner-desc {
+  font-size: 1.05rem;
+  color: var(--hm-text-muted);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.ct-banner-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.ct-feature-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ct-check-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.ct-feature-row span {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--hm-text-heading);
+}
+
+.ct-banner-image-wrapper {
+  position: relative;
+}
+
+.ct-banner-img-box {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.ct-banner-img-box img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+}
+
+.ct-floating-badge {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  background: var(--hm-bg-card, #FFFFFF);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+  padding: 18px 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ct-badge-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 991px) {
+  .custom-tour-banner-section {
+    padding: 56px 20px;
+  }
+
+  .ct-home-banner-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px;
+  }
+
+  .ct-banner-img-box img {
+    height: 340px;
+  }
+
+  .ct-floating-badge {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin-top: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-tour-banner-section {
+    padding: 44px 16px;
+  }
+
+  .ct-banner-img-box img {
+    height: 250px;
+  }
+
+  .ct-banner-title {
+    font-size: 1.85rem !important;
+  }
+
+  .ct-banner-desc {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .ct-feature-row span {
+    font-size: 0.88rem;
+  }
+
+  .ct-floating-badge {
+    padding: 14px 18px;
+    gap: 12px;
+  }
+}
