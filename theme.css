@@ -3846,15 +3846,17 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-logo-text {
   white-space: nowrap !important;
 }
 
-body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a,
-body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a {
-  color: rgba(255, 255, 255, 0.88) !important;
-}
+@media (min-width: 992px) {
+  body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a,
+  body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a {
+    color: rgba(255, 255, 255, 0.88) !important;
+  }
 
-body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover,
-body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #FFFFFF !important;
+  body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover,
+  body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #FFFFFF !important;
+  }
 }
 
 .hn-links a:hover,
@@ -4195,7 +4197,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
   /* Clean, Bold, Left-Aligned Navigation Links (MATCHES SCREENSHOT) */
   body #siteNav .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a,
   body .hn-nav .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a,
-  body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a {
+  body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
@@ -4219,7 +4221,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 
   [data-theme="dark"] body #siteNav .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a,
   [data-theme="dark"] body .hn-nav .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a,
-  [data-theme="dark"] body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a {
+  [data-theme="dark"] body.page-home .hn-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links li:not(.mobile-only-cta):not(.mobile-only-settings-row) a {
     color: #F8FAFC !important;
   }
 

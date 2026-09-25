@@ -105,37 +105,39 @@
       color: var(--hm-text-heading);
     }
 
-    .hn-links {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      list-style: none;
-      transition: all 0.35s ease;
-    }
+    @media (min-width: 992px) {
+      .hn-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        list-style: none;
+        transition: all 0.35s ease;
+      }
 
-    .hn-links a {
-      padding: 7px 13px;
-      border-radius: 99px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.88);
-      text-decoration: none;
-      transition: all 0.25s;
-      white-space: nowrap;
-    }
+      .hn-links a {
+        padding: 7px 13px;
+        border-radius: 99px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.88);
+        text-decoration: none;
+        transition: all 0.25s;
+        white-space: nowrap;
+      }
 
-    .hn-links a:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-    }
+      .hn-links a:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
 
-    .hn-nav.glass-nav .hn-links a {
-      color: var(--hm-text-body);
-    }
+      .hn-nav.glass-nav .hn-links a {
+        color: var(--hm-text-body);
+      }
 
-    .hn-nav.glass-nav .hn-links a:hover {
-      background: var(--hm-bg-card-hover);
-      color: var(--hm-terracotta);
+      .hn-nav.glass-nav .hn-links a:hover {
+        background: var(--hm-bg-card-hover);
+        color: var(--hm-terracotta);
+      }
     }
 
     .hn-nav-actions {
