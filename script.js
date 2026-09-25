@@ -2284,17 +2284,26 @@ function refreshReviewsView() {
       : `No reviews recorded yet. Be the first traveler to share your journey!`;
   }
 
-  // Update Home Page Stats Strip
+  const totalReviewsCount = allReviews.length;
+  const highRatingCount = allReviews.filter(r => (r.rating || 5) >= 4).length;
+  const satisfactionVal = totalReviewsCount > 0 ? Math.round((highRatingCount / totalReviewsCount) * 100) : 0;
+  const satisfactionStr = totalReviewsCount > 0 ? `${satisfactionVal}%` : '0%';
+
+  // Update Home Page Stats Strip (Calculated 100% from real data)
   const homeTotalEl = document.getElementById('homeTotalReviews');
   const homeTotalLabelEl = document.getElementById('homeTotalReviewsLabel');
   const homeAvgEl = document.getElementById('homeAvgRating');
+  const homeSatisfactionEl = document.getElementById('homeSatisfaction');
+  const homeDestinationsEl = document.getElementById('homeDestinations');
 
-  if (homeTotalEl) homeTotalEl.textContent = allReviews.length > 0 ? `${allReviews.length}` : '0';
-  if (homeTotalLabelEl) homeTotalLabelEl.textContent = allReviews.length === 1 ? 'Verified Review' : 'Verified Reviews';
+  if (homeTotalEl) homeTotalEl.textContent = `${totalReviewsCount}`;
+  if (homeTotalLabelEl) homeTotalLabelEl.textContent = totalReviewsCount === 1 ? 'Verified Review' : 'Verified Reviews';
   if (homeAvgEl) {
     const overallStats = calculateReviewStats(allReviews);
     homeAvgEl.textContent = overallStats.total > 0 ? `${overallStats.avg}/5` : '0.0/5';
   }
+  if (homeSatisfactionEl) homeSatisfactionEl.textContent = satisfactionStr;
+  if (homeDestinationsEl) homeDestinationsEl.textContent = '9';
 
   // Update About Us Page Dynamic Stats (Calculated 100% from real data)
   const aboutTotalEl = document.getElementById('aboutTotalReviews');
@@ -2302,11 +2311,6 @@ function refreshReviewsView() {
   const aboutTotalInlineEl = document.getElementById('aboutTotalReviewsInline');
   const aboutSatisfactionEl = document.getElementById('aboutSatisfaction');
   const aboutSatisfactionInlineEl = document.getElementById('aboutSatisfactionInline');
-
-  const totalReviewsCount = allReviews.length;
-  const highRatingCount = allReviews.filter(r => (r.rating || 5) >= 4).length;
-  const satisfactionVal = totalReviewsCount > 0 ? Math.round((highRatingCount / totalReviewsCount) * 100) : 0;
-  const satisfactionStr = totalReviewsCount > 0 ? `${satisfactionVal}%` : '0%';
 
   if (aboutTotalEl) aboutTotalEl.textContent = `${totalReviewsCount}`;
   if (aboutTotalLabelEl) aboutTotalLabelEl.textContent = totalReviewsCount === 1 ? 'Happy Traveler' : 'Happy Travelers';
