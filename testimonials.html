@@ -595,25 +595,20 @@
           <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)">2 ★</button>
           <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)">1 ★</button>
         </div>
-        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
-            <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
-            <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
-              <option value="all">All Destinations</option>
-              <option value="marrakech">Marrakech</option>
-              <option value="merzouga">Merzouga Sahara</option>
-              <option value="chefchaouen">Chefchaouen</option>
-              <option value="fes">Fes</option>
-              <option value="essaouira">Essaouira</option>
-              <option value="casablanca">Casablanca</option>
-              <option value="agadir">Agadir</option>
-              <option value="zagora">Zagora</option>
-              <option value="ouarzazate">Ouarzazate</option>
-            </select>
-          </div>
-          <button onclick="openReviewModal()" style="padding: 9px 22px; border-radius: 99px; border: 1.5px solid #C85A32; background: rgba(200,90,50,0.08); color: #C85A32; font-size: 0.88rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.25s ease;">
-            <i class="fa-solid fa-plus"></i> Write a Review
-          </button>
+        <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
+          <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
+          <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
+            <option value="all">All Destinations</option>
+            <option value="marrakech">Marrakech</option>
+            <option value="merzouga">Merzouga Sahara</option>
+            <option value="chefchaouen">Chefchaouen</option>
+            <option value="fes">Fes</option>
+            <option value="essaouira">Essaouira</option>
+            <option value="casablanca">Casablanca</option>
+            <option value="agadir">Agadir</option>
+            <option value="zagora">Zagora</option>
+            <option value="ouarzazate">Ouarzazate</option>
+          </select>
         </div>
       </div>
 
