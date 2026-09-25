@@ -5229,3 +5229,80 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 .new-user-review {
   animation: fadeInUp 0.5s ease-out forwards;
 }
+
+/* ── Interactive Review Modal Backdrop & Card ─────────────────────── */
+.review-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.review-modal-backdrop.active {
+  display: flex;
+  opacity: 1;
+}
+
+.review-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--hm-bg-card, #FFFFFF);
+  border: 1px solid var(--hm-border, rgba(212, 175, 55, 0.25));
+  border-radius: 28px;
+  padding: 36px 32px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.review-modal-backdrop.active .review-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.review-modal-card .modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--hm-border, rgba(0,0,0,0.1));
+  background: var(--hm-bg-main, #F8FAFC);
+  color: var(--hm-text-heading, #0F172A);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.review-modal-card .modal-close-btn:hover {
+  background: #C85A32;
+  color: #FFFFFF;
+  border-color: #C85A32;
+}
+
+[data-theme="dark"] .review-modal-card {
+  background: #1C2333 !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .review-modal-card .modal-close-btn {
+  background: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}

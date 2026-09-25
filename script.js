@@ -2116,80 +2116,7 @@ document.addEventListener('click', function (e) {
    DYNAMIC REVIEWS & RATING ENGINE (Synchronized, Real-Time & Filterable)
    ========================================================================== */
 
-const INITIAL_SEED_REVIEWS = [
-  {
-    id: "rev_1",
-    author: "James & Laura",
-    avatar: "JL",
-    country: "🇬🇧 United Kingdom · Merzouga Expedition",
-    destination: "merzouga",
-    destinationName: "Merzouga Expedition",
-    rating: 5,
-    verified: true,
-    text: "The Sahara night was life-changing. Sleeping under millions of stars in Merzouga with a private Berber camp, watching sunrise paint the dunes gold. Youssef made every moment perfect.",
-    date: "2026-08-15"
-  },
-  {
-    id: "rev_2",
-    author: "Sophie M.",
-    avatar: "SM",
-    country: "🇫🇷 France · Chefchaouen Blue Walk",
-    destination: "chefchaouen",
-    destinationName: "Chefchaouen Blue Walk",
-    rating: 5,
-    verified: true,
-    text: "Chefchaouen stole our hearts completely. The blue medina, the mountain hike at sunset, the small local restaurant Karim recommended — we didn't want to leave. Already planning to return!",
-    date: "2026-08-20"
-  },
-  {
-    id: "rev_3",
-    author: "Ahmed & Rida",
-    avatar: "AR",
-    country: "🇨🇦 Canada · Marrakech Deep Dive",
-    destination: "marrakech",
-    destinationName: "Marrakech Deep Dive",
-    rating: 5,
-    verified: true,
-    text: "The Marrakech immersion exceeded all expectations. The Bahia Palace private tour, hammam, rooftop dinner — all seamlessly arranged. Hidden Morocco knows how to deliver real luxury.",
-    date: "2026-08-28"
-  },
-  {
-    id: "rev_4",
-    author: "Thomas C.",
-    avatar: "TC",
-    country: "🇩🇪 Germany · Fes Heritage Tour",
-    destination: "fes",
-    destinationName: "Fes Heritage Tour",
-    rating: 5,
-    verified: true,
-    text: "The Fes medina is overwhelming in the best possible way. Our guide Mohammed navigated us through thousands of alleyways and brought us to the most breathtaking tannery viewpoints.",
-    date: "2026-09-02"
-  },
-  {
-    id: "rev_5",
-    author: "Marie-Lise D.",
-    avatar: "ML",
-    country: "🇧🇪 Belgium · Essaouira Coastal Day",
-    destination: "essaouira",
-    destinationName: "Essaouira Coastal Day",
-    rating: 5,
-    verified: true,
-    text: "Essaouira in the evening light is simply magical. Fresh grilled fish on the harbour, Atlantic sea breezes, walking the old ramparts at sunset — a perfect day trip from Marrakech.",
-    date: "2026-09-08"
-  },
-  {
-    id: "rev_6",
-    author: "Rafael S.",
-    avatar: "RS",
-    country: "🇪🇸 Spain · Ouarzazate & Desert Tour",
-    destination: "ouarzazate",
-    destinationName: "Ouarzazate & Desert Tour",
-    rating: 4,
-    verified: true,
-    text: "The Ait Benhaddou Kasbah was absolutely stunning — even more beautiful in real life than in the photos. Ouarzazate deserves far more attention than it gets. Hidden Morocco showed us why.",
-    date: "2026-09-12"
-  }
-];
+const INITIAL_SEED_REVIEWS = [];
 
 const ReviewState = {
   ratingFilter: 'all',
@@ -2200,14 +2127,22 @@ function getReviewsDatabase() {
   const stored = localStorage.getItem('hm_reviews_dataset');
   if (stored !== null) {
     try {
-      return JSON.parse(stored);
+      let parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        // Clean out legacy mock seed reviews (rev_1 through rev_6) if present from previous sessions
+        const seedIds = ['rev_1', 'rev_2', 'rev_3', 'rev_4', 'rev_5', 'rev_6'];
+        const cleaned = parsed.filter(r => !seedIds.includes(r.id));
+        if (cleaned.length !== parsed.length) {
+          localStorage.setItem('hm_reviews_dataset', JSON.stringify(cleaned));
+        }
+        return cleaned;
+      }
     } catch (e) {
       console.error('Error parsing stored reviews:', e);
     }
   }
-  // Initialize with seed database
-  localStorage.setItem('hm_reviews_dataset', JSON.stringify(INITIAL_SEED_REVIEWS));
-  return INITIAL_SEED_REVIEWS;
+  localStorage.setItem('hm_reviews_dataset', JSON.stringify([]));
+  return [];
 }
 
 function saveReviewsDatabase(reviews) {
@@ -2417,13 +2352,32 @@ function renderCardsIntoGrid(container, reviews) {
   });
 }
 
-window.scrollToReviewForm = function () {
-  const formEl = document.getElementById('addReviewForm');
-  if (formEl) {
-    formEl.scrollIntoView({ behavior: 'smooth' });
-  } else {
-    window.location.href = 'testimonials.html#addReviewForm';
+window.openReviewModal = function () {
+  let modal = document.getElementById('reviewModal');
+  if (!modal) {
+    // If modal is not on this page, redirect to testimonials.html with query flag
+    window.location.href = 'testimonials.html?openReviewModal=true';
+    return;
   }
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+};
+
+window.closeReviewModal = function () {
+  let modal = document.getElementById('reviewModal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  setTimeout(() => {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }, 250);
+};
+
+window.scrollToReviewForm = function () {
+  window.openReviewModal();
 };
 
 // ── Submit New Review Handler ────────────────────────────────────────────────
@@ -2479,6 +2433,9 @@ window.handleReviewSubmit = function (event) {
   textInput.value = '';
   window.setReviewRating(5);
 
+  // Close Modal
+  window.closeReviewModal();
+
   if (window.showToast) {
     window.showToast('Thank you! Your review has been published ✨');
   } else {
@@ -2494,5 +2451,10 @@ function escapeHtmlStr(str) {
 // ── Initialize Reviews System on DOM Load ────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
   refreshReviewsView();
+  if (window.location.search.includes('openReviewModal=true') || window.location.hash === '#addReviewForm') {
+    setTimeout(function () {
+      openReviewModal();
+    }, 200);
+  }
 });
 

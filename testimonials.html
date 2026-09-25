@@ -540,6 +540,11 @@
     <span class="badge badge-gold" style="margin-bottom: 20px;">★ Verified Reviews</span>
     <h1>Voices of Our Travelers</h1>
     <p id="heroReviewSubtitle">Authentic reviews shared by travelers exploring Morocco with us.</p>
+    <div style="margin-top: 24px;">
+      <button onclick="openReviewModal()" class="btn-primary" style="padding: 14px 34px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 10px 30px rgba(200,90,50,0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-pen-to-square"></i> Leave a Review
+      </button>
+    </div>
   </header>
 
   <section class="reviews-section">
@@ -590,20 +595,25 @@
           <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)">2 ★</button>
           <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)">1 ★</button>
         </div>
-        <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
-          <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
-          <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
-            <option value="all">All Destinations</option>
-            <option value="marrakech">Marrakech</option>
-            <option value="merzouga">Merzouga Sahara</option>
-            <option value="chefchaouen">Chefchaouen</option>
-            <option value="fes">Fes</option>
-            <option value="essaouira">Essaouira</option>
-            <option value="casablanca">Casablanca</option>
-            <option value="agadir">Agadir</option>
-            <option value="zagora">Zagora</option>
-            <option value="ouarzazate">Ouarzazate</option>
-          </select>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
+            <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
+            <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
+              <option value="all">All Destinations</option>
+              <option value="marrakech">Marrakech</option>
+              <option value="merzouga">Merzouga Sahara</option>
+              <option value="chefchaouen">Chefchaouen</option>
+              <option value="fes">Fes</option>
+              <option value="essaouira">Essaouira</option>
+              <option value="casablanca">Casablanca</option>
+              <option value="agadir">Agadir</option>
+              <option value="zagora">Zagora</option>
+              <option value="ouarzazate">Ouarzazate</option>
+            </select>
+          </div>
+          <button onclick="openReviewModal()" style="padding: 9px 22px; border-radius: 99px; border: 1.5px solid #C85A32; background: rgba(200,90,50,0.08); color: #C85A32; font-size: 0.88rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.25s ease;">
+            <i class="fa-solid fa-plus"></i> Write a Review
+          </button>
         </div>
       </div>
 
@@ -611,66 +621,71 @@
       <div class="reviews-grid" id="reviewsGridContainer">
         <!-- Rendered dynamically via script.js -->
       </div>
+    </div>
+  </section>
 
-      <!-- Interactive Write a Review Form Section -->
-      <section class="write-review-section" id="addReviewForm" style="max-width: 800px; margin: 60px auto 20px; padding: 36px 32px; background: var(--hm-bg-card, #FFFFFF); border: 1px solid var(--hm-border, rgba(212,175,55,0.25)); border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.06);">
-        <div style="text-align: center; margin-bottom: 28px;">
-          <span class="badge badge-gold" style="margin-bottom: 12px; display: inline-block;">✍️ Share Your Experience</span>
-          <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.8rem; color: var(--hm-text-heading); margin-bottom: 8px;">Leave a Review & Comment</h3>
-          <p style="color: var(--hm-text-muted); font-size: 0.95rem;">Have you traveled with Discover Hidden Morocco? We'd love to hear your feedback!</p>
+  <!-- Interactive Write a Review Modal Window -->
+  <div id="reviewModal" class="review-modal-backdrop" onclick="if(event.target===this) closeReviewModal()">
+    <div class="review-modal-card">
+      <button class="modal-close-btn" onclick="closeReviewModal()" aria-label="Close Modal">&times;</button>
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span class="badge badge-gold" style="margin-bottom: 10px; display: inline-block;">✍️ Share Your Experience</span>
+        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.75rem; color: var(--hm-text-heading); margin-bottom: 6px;">Leave a Review & Comment</h3>
+        <p style="color: var(--hm-text-muted); font-size: 0.9rem;">Have you traveled with Discover Hidden Morocco? We'd love to hear your feedback!</p>
+      </div>
+
+      <form onsubmit="handleReviewSubmit(event)" id="addReviewForm">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Name *</label>
+            <input type="text" id="reviewAuthor" required placeholder="e.g. Sarah & Mark" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Country / City *</label>
+            <input type="text" id="reviewLocation" required placeholder="e.g. 🇬🇧 United Kingdom" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Destination / Experience</label>
+            <select id="reviewDestSelect" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+              <option value="general">General Tour Experience</option>
+              <option value="marrakech">Marrakech</option>
+              <option value="merzouga">Merzouga Sahara</option>
+              <option value="chefchaouen">Chefchaouen</option>
+              <option value="fes">Fes</option>
+              <option value="essaouira">Essaouira</option>
+              <option value="casablanca">Casablanca</option>
+              <option value="agadir">Agadir</option>
+              <option value="zagora">Zagora</option>
+              <option value="ouarzazate">Ouarzazate</option>
+            </select>
+          </div>
         </div>
 
-        <form onsubmit="handleReviewSubmit(event)">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 18px;">
-            <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Name *</label>
-              <input type="text" id="reviewAuthor" required placeholder="e.g. Sarah & Mark" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Country / City *</label>
-              <input type="text" id="reviewLocation" required placeholder="e.g. 🇬🇧 United Kingdom" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
-            </div>
-            <div>
-              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Destination / Experience</label>
-              <select id="reviewDestSelect" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
-                <option value="general">General Tour Experience</option>
-                <option value="marrakech">Marrakech</option>
-                <option value="merzouga">Merzouga Sahara</option>
-                <option value="chefchaouen">Chefchaouen</option>
-                <option value="fes">Fes</option>
-                <option value="essaouira">Essaouira</option>
-                <option value="casablanca">Casablanca</option>
-                <option value="agadir">Agadir</option>
-                <option value="zagora">Zagora</option>
-                <option value="ouarzazate">Ouarzazate</option>
-              </select>
-            </div>
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Rating *</label>
+          <div id="starRatingSelect" style="display: flex; gap: 8px; font-size: 1.6rem; color: #E7A93C; cursor: pointer;">
+            <i class="fa-solid fa-star star-btn" data-value="1" onclick="setReviewRating(1)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="2" onclick="setReviewRating(2)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="3" onclick="setReviewRating(3)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="4" onclick="setReviewRating(4)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="5" onclick="setReviewRating(5)"></i>
           </div>
+          <input type="hidden" id="reviewRatingVal" value="5">
+        </div>
 
-          <div style="margin-bottom: 18px;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Rating *</label>
-            <div id="starRatingSelect" style="display: flex; gap: 8px; font-size: 1.6rem; color: #E7A93C; cursor: pointer;">
-              <i class="fa-solid fa-star star-btn" data-value="1" onclick="setReviewRating(1)"></i>
-              <i class="fa-solid fa-star star-btn" data-value="2" onclick="setReviewRating(2)"></i>
-              <i class="fa-solid fa-star star-btn" data-value="3" onclick="setReviewRating(3)"></i>
-              <i class="fa-solid fa-star star-btn" data-value="4" onclick="setReviewRating(4)"></i>
-              <i class="fa-solid fa-star star-btn" data-value="5" onclick="setReviewRating(5)"></i>
-            </div>
-            <input type="hidden" id="reviewRatingVal" value="5">
-          </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Review / Comment *</label>
+          <textarea id="reviewText" required rows="4" placeholder="Tell us about your trip, guide, highlights, and overall experience..." style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none; resize: vertical; line-height: 1.6;"></textarea>
+        </div>
 
-          <div style="margin-bottom: 24px;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Review / Comment *</label>
-            <textarea id="reviewText" required rows="4" placeholder="Tell us about your trip, guide, highlights, and overall experience..." style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none; resize: vertical; line-height: 1.6;"></textarea>
-          </div>
-
-          <div style="text-align: center;">
-            <button type="submit" class="btn-primary" style="padding: 14px 36px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 8px 25px rgba(200,90,50,0.3);">
-              <i class="fa-solid fa-paper-plane"></i> Submit My Review
-            </button>
-          </div>
-        </form>
-      </section>
+        <div style="text-align: center;">
+          <button type="submit" class="btn-primary" style="padding: 14px 36px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 8px 25px rgba(200,90,50,0.3);">
+            <i class="fa-solid fa-paper-plane"></i> Submit My Review
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
     </div>
   </section>
 
