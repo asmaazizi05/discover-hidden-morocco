@@ -4275,9 +4275,15 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
   }
 
   body .hn-links li.mobile-only-settings-row .setting-icon-item,
+  body .hn-links li.mobile-only-settings-row a.setting-icon-item,
+  body .hn-links li.mobile-only-settings-row button.setting-icon-item,
+  body .hn-links li.mobile-only-settings-row div.setting-icon-item,
   .mobile-settings-icons .setting-icon-item,
+  .mobile-settings-icons a.setting-icon-item,
+  .mobile-settings-icons button.setting-icon-item,
+  .mobile-settings-icons div.setting-icon-item,
   .setting-icon-item {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     position: relative !important;
@@ -4299,6 +4305,8 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
     box-sizing: border-box !important;
     transition: all 0.2s ease !important;
     flex-shrink: 0 !important;
+    overflow: visible !important;
+    line-height: 1 !important;
   }
 
   [data-theme="light"] body .hn-links li.mobile-only-settings-row .setting-icon-item,
@@ -4316,19 +4324,20 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 
   .setting-icon-item select.mobile-lang-select {
     position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
+    inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
     opacity: 0 !important;
     cursor: pointer !important;
-    z-index: 2 !important;
+    z-index: 5 !important;
   }
 
   .setting-icon-item .theme-toggle {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    position: absolute !important;
+    inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
     border: none !important;
@@ -4337,9 +4346,17 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
     margin: 0 !important;
   }
 
-  .setting-icon-item i {
+  .setting-icon-item i,
+  .setting-icon-item .theme-toggle i {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
     font-size: 1.05rem !important;
     line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
   }
 
   .setting-icon-item .mobile-fav-badge {
@@ -4350,14 +4367,21 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
     color: #FFFFFF !important;
     font-size: 0.6rem !important;
     font-weight: 800 !important;
-    min-width: 16px !important;
+    width: 16px !important;
     height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    max-width: 16px !important;
+    max-height: 16px !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     border: 1.5px solid #0B101D !important;
-    z-index: 3 !important;
+    z-index: 10 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
   }
 
   /* Compact Book Expedition Button (MATCHES SCREENSHOT) */
