@@ -5182,3 +5182,50 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 #modal-casablanca .timeline-img {
   object-position: center top !important;
 }
+
+/* ── Dynamic Reviews & Filter Controls ─────────────────────── */
+.review-filter-btn {
+  padding: 8px 18px;
+  border-radius: 99px;
+  border: 1px solid var(--hm-border, rgba(212,175,55,0.3));
+  background: var(--hm-bg-card, #FFF);
+  color: var(--hm-text-body, #475569);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.review-filter-btn:hover,
+.review-filter-btn.active {
+  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 15px rgba(200,90,50,0.25);
+}
+
+.rating-bar-fill {
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .review-filter-btn {
+  background: #1E293B;
+  color: #CBD5E1;
+  border-color: rgba(255,255,255,0.15);
+}
+
+[data-theme="dark"] .review-filter-btn:hover,
+[data-theme="dark"] .review-filter-btn.active {
+  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] #reviewDestFilter {
+  background: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+
+.new-user-review {
+  animation: fadeInUp 0.5s ease-out forwards;
+}

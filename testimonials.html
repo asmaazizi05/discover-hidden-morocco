@@ -539,126 +539,138 @@
   <header class="page-hero">
     <span class="badge badge-gold" style="margin-bottom: 20px;">★ Verified Reviews</span>
     <h1>Voices of Our Travelers</h1>
-    <p>Over 2,500 travelers have shared their Hidden Morocco journeys. Here are some of their stories.</p>
+    <p id="heroReviewSubtitle">Authentic reviews shared by travelers exploring Morocco with us.</p>
   </header>
 
   <section class="reviews-section">
     <div class="reviews-container">
-      <div class="rating-summary">
+      <!-- Dynamic Rating Summary Box -->
+      <div class="rating-summary" id="ratingSummaryBox">
         <div class="rating-big">
-          <div class="big-num">4.9</div>
-          <div class="big-stars">★★★★★</div>
-          <p>Based on 340+ reviews</p>
+          <div class="big-num" id="summaryAvgRating">0.0</div>
+          <div class="big-stars" id="summaryAvgStars">☆☆☆☆☆</div>
+          <p id="summaryReviewCount">Loading reviews...</p>
         </div>
         <div class="rating-bars">
           <div class="rating-bar-row"><span>5★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" style="width:88%"></div>
-            </div><span>88%</span>
+              <div class="rating-bar-fill" id="barFill5" style="width:0%"></div>
+            </div><span id="barPercent5">0%</span>
           </div>
           <div class="rating-bar-row"><span>4★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" style="width:9%"></div>
-            </div><span>9%</span>
+              <div class="rating-bar-fill" id="barFill4" style="width:0%"></div>
+            </div><span id="barPercent4">0%</span>
           </div>
           <div class="rating-bar-row"><span>3★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" style="width:2%"></div>
-            </div><span>2%</span>
+              <div class="rating-bar-fill" id="barFill3" style="width:0%"></div>
+            </div><span id="barPercent3">0%</span>
           </div>
           <div class="rating-bar-row"><span>2★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" style="width:1%"></div>
-            </div><span>1%</span>
+              <div class="rating-bar-fill" id="barFill2" style="width:0%"></div>
+            </div><span id="barPercent2">0%</span>
           </div>
           <div class="rating-bar-row"><span>1★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" style="width:0%"></div>
-            </div><span>0%</span>
+              <div class="rating-bar-fill" id="barFill1" style="width:0%"></div>
+            </div><span id="barPercent1">0%</span>
           </div>
         </div>
       </div>
 
-      <div class="reviews-grid">
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"The Sahara night was life-changing. Sleeping under millions of stars in Merzouga with
-            a private Berber camp, watching sunrise paint the dunes gold. Youssef made every moment perfect."</p>
-          <div class="review-author">
-            <div class="review-avatar">JL</div>
-            <div class="review-author-info"><strong>James & Laura</strong><span>🇬🇧 United Kingdom · Merzouga
-                Expedition</span></div>
-          </div>
+      <!-- Interactive Filter Controls Bar -->
+      <div class="review-filters-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 36px 0 24px; flex-wrap: wrap;">
+        <div class="star-filters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="review-filter-btn active" data-rating="all" onclick="filterReviewsByRating('all', this)">All Reviews</button>
+          <button class="review-filter-btn" data-rating="5" onclick="filterReviewsByRating('5', this)">5 ★</button>
+          <button class="review-filter-btn" data-rating="4" onclick="filterReviewsByRating('4', this)">4 ★</button>
+          <button class="review-filter-btn" data-rating="3" onclick="filterReviewsByRating('3', this)">3 ★</button>
+          <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)">2 ★</button>
+          <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)">1 ★</button>
         </div>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"Chefchaouen stole our hearts completely. The blue medina, the mountain hike at sunset,
-            the small local restaurant Karim recommended — we didn't want to leave. Already planning to return!"</p>
-          <div class="review-author">
-            <div class="review-avatar">SM</div>
-            <div class="review-author-info"><strong>Sophie M.</strong><span>🇫🇷 France · Chefchaouen Blue Walk</span>
-            </div>
-          </div>
-        </div>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"The Marrakech immersion exceeded all expectations. The Bahia Palace private tour,
-            hammam, rooftop dinner — all seamlessly arranged. Hidden Morocco knows how to deliver real luxury."</p>
-          <div class="review-author">
-            <div class="review-avatar">AR</div>
-            <div class="review-author-info"><strong>Ahmed & Rida</strong><span>🇨🇦 Canada · Marrakech Deep Dive</span>
-            </div>
-          </div>
-        </div>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"The Fes medina is overwhelming in the best possible way. Our guide Mohammed navigated
-            us through thousands of alleyways and brought us to the most breathtaking tannery viewpoints."</p>
-          <div class="review-author">
-            <div class="review-avatar">TC</div>
-            <div class="review-author-info"><strong>Thomas C.</strong><span>🇩🇪 Germany · Fes Heritage Tour</span>
-            </div>
-          </div>
-        </div>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"Essaouira in the evening light is simply magical. Fresh grilled fish on the harbour,
-            Atlantic sea breezes, walking the old ramparts at sunset — a perfect day trip from Marrakech."</p>
-          <div class="review-author">
-            <div class="review-avatar">ML</div>
-            <div class="review-author-info"><strong>Marie-Lise D.</strong><span>🇧🇪 Belgium · Essaouira Coastal
-                Day</span></div>
-          </div>
-        </div>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
-          </div>
-          <p class="review-text">"The Ait Benhaddou Kasbah was absolutely stunning — even more beautiful in real life
-            than in the photos. Ouarzazate deserves far more attention than it gets. Hidden Morocco showed us why."</p>
-          <div class="review-author">
-            <div class="review-avatar">RS</div>
-            <div class="review-author-info"><strong>Rafael S.</strong><span>🇪🇸 Spain · Ouarzazate & Desert Tour</span>
-            </div>
-          </div>
+        <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
+          <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
+          <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
+            <option value="all">All Destinations</option>
+            <option value="marrakech">Marrakech</option>
+            <option value="merzouga">Merzouga Sahara</option>
+            <option value="chefchaouen">Chefchaouen</option>
+            <option value="fes">Fes</option>
+            <option value="essaouira">Essaouira</option>
+            <option value="casablanca">Casablanca</option>
+            <option value="agadir">Agadir</option>
+            <option value="zagora">Zagora</option>
+            <option value="ouarzazate">Ouarzazate</option>
+          </select>
         </div>
       </div>
+
+      <!-- Dynamic Reviews Grid Container -->
+      <div class="reviews-grid" id="reviewsGridContainer">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+
+      <!-- Interactive Write a Review Form Section -->
+      <section class="write-review-section" id="addReviewForm" style="max-width: 800px; margin: 60px auto 20px; padding: 36px 32px; background: var(--hm-bg-card, #FFFFFF); border: 1px solid var(--hm-border, rgba(212,175,55,0.25)); border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.06);">
+        <div style="text-align: center; margin-bottom: 28px;">
+          <span class="badge badge-gold" style="margin-bottom: 12px; display: inline-block;">✍️ Share Your Experience</span>
+          <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.8rem; color: var(--hm-text-heading); margin-bottom: 8px;">Leave a Review & Comment</h3>
+          <p style="color: var(--hm-text-muted); font-size: 0.95rem;">Have you traveled with Discover Hidden Morocco? We'd love to hear your feedback!</p>
+        </div>
+
+        <form onsubmit="handleReviewSubmit(event)">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 18px;">
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Name *</label>
+              <input type="text" id="reviewAuthor" required placeholder="e.g. Sarah & Mark" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Country / City *</label>
+              <input type="text" id="reviewLocation" required placeholder="e.g. 🇬🇧 United Kingdom" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Destination / Experience</label>
+              <select id="reviewDestSelect" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+                <option value="general">General Tour Experience</option>
+                <option value="marrakech">Marrakech</option>
+                <option value="merzouga">Merzouga Sahara</option>
+                <option value="chefchaouen">Chefchaouen</option>
+                <option value="fes">Fes</option>
+                <option value="essaouira">Essaouira</option>
+                <option value="casablanca">Casablanca</option>
+                <option value="agadir">Agadir</option>
+                <option value="zagora">Zagora</option>
+                <option value="ouarzazate">Ouarzazate</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Rating *</label>
+            <div id="starRatingSelect" style="display: flex; gap: 8px; font-size: 1.6rem; color: #E7A93C; cursor: pointer;">
+              <i class="fa-solid fa-star star-btn" data-value="1" onclick="setReviewRating(1)"></i>
+              <i class="fa-solid fa-star star-btn" data-value="2" onclick="setReviewRating(2)"></i>
+              <i class="fa-solid fa-star star-btn" data-value="3" onclick="setReviewRating(3)"></i>
+              <i class="fa-solid fa-star star-btn" data-value="4" onclick="setReviewRating(4)"></i>
+              <i class="fa-solid fa-star star-btn" data-value="5" onclick="setReviewRating(5)"></i>
+            </div>
+            <input type="hidden" id="reviewRatingVal" value="5">
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Review / Comment *</label>
+            <textarea id="reviewText" required rows="4" placeholder="Tell us about your trip, guide, highlights, and overall experience..." style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none; resize: vertical; line-height: 1.6;"></textarea>
+          </div>
+
+          <div style="text-align: center;">
+            <button type="submit" class="btn-primary" style="padding: 14px 36px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 8px 25px rgba(200,90,50,0.3);">
+              <i class="fa-solid fa-paper-plane"></i> Submit My Review
+            </button>
+          </div>
+        </form>
+      </section>
     </div>
   </section>
 

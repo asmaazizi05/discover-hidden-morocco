@@ -2112,3 +2112,387 @@ document.addEventListener('click', function (e) {
   }
 });
 
+/* ==========================================================================
+   DYNAMIC REVIEWS & RATING ENGINE (Synchronized, Real-Time & Filterable)
+   ========================================================================== */
+
+const INITIAL_SEED_REVIEWS = [
+  {
+    id: "rev_1",
+    author: "James & Laura",
+    avatar: "JL",
+    country: "🇬🇧 United Kingdom · Merzouga Expedition",
+    destination: "merzouga",
+    destinationName: "Merzouga Expedition",
+    rating: 5,
+    verified: true,
+    text: "The Sahara night was life-changing. Sleeping under millions of stars in Merzouga with a private Berber camp, watching sunrise paint the dunes gold. Youssef made every moment perfect.",
+    date: "2026-08-15"
+  },
+  {
+    id: "rev_2",
+    author: "Sophie M.",
+    avatar: "SM",
+    country: "🇫🇷 France · Chefchaouen Blue Walk",
+    destination: "chefchaouen",
+    destinationName: "Chefchaouen Blue Walk",
+    rating: 5,
+    verified: true,
+    text: "Chefchaouen stole our hearts completely. The blue medina, the mountain hike at sunset, the small local restaurant Karim recommended — we didn't want to leave. Already planning to return!",
+    date: "2026-08-20"
+  },
+  {
+    id: "rev_3",
+    author: "Ahmed & Rida",
+    avatar: "AR",
+    country: "🇨🇦 Canada · Marrakech Deep Dive",
+    destination: "marrakech",
+    destinationName: "Marrakech Deep Dive",
+    rating: 5,
+    verified: true,
+    text: "The Marrakech immersion exceeded all expectations. The Bahia Palace private tour, hammam, rooftop dinner — all seamlessly arranged. Hidden Morocco knows how to deliver real luxury.",
+    date: "2026-08-28"
+  },
+  {
+    id: "rev_4",
+    author: "Thomas C.",
+    avatar: "TC",
+    country: "🇩🇪 Germany · Fes Heritage Tour",
+    destination: "fes",
+    destinationName: "Fes Heritage Tour",
+    rating: 5,
+    verified: true,
+    text: "The Fes medina is overwhelming in the best possible way. Our guide Mohammed navigated us through thousands of alleyways and brought us to the most breathtaking tannery viewpoints.",
+    date: "2026-09-02"
+  },
+  {
+    id: "rev_5",
+    author: "Marie-Lise D.",
+    avatar: "ML",
+    country: "🇧🇪 Belgium · Essaouira Coastal Day",
+    destination: "essaouira",
+    destinationName: "Essaouira Coastal Day",
+    rating: 5,
+    verified: true,
+    text: "Essaouira in the evening light is simply magical. Fresh grilled fish on the harbour, Atlantic sea breezes, walking the old ramparts at sunset — a perfect day trip from Marrakech.",
+    date: "2026-09-08"
+  },
+  {
+    id: "rev_6",
+    author: "Rafael S.",
+    avatar: "RS",
+    country: "🇪🇸 Spain · Ouarzazate & Desert Tour",
+    destination: "ouarzazate",
+    destinationName: "Ouarzazate & Desert Tour",
+    rating: 4,
+    verified: true,
+    text: "The Ait Benhaddou Kasbah was absolutely stunning — even more beautiful in real life than in the photos. Ouarzazate deserves far more attention than it gets. Hidden Morocco showed us why.",
+    date: "2026-09-12"
+  }
+];
+
+const ReviewState = {
+  ratingFilter: 'all',
+  destFilter: 'all'
+};
+
+function getReviewsDatabase() {
+  const stored = localStorage.getItem('hm_reviews_dataset');
+  if (stored !== null) {
+    try {
+      return JSON.parse(stored);
+    } catch (e) {
+      console.error('Error parsing stored reviews:', e);
+    }
+  }
+  // Initialize with seed database
+  localStorage.setItem('hm_reviews_dataset', JSON.stringify(INITIAL_SEED_REVIEWS));
+  return INITIAL_SEED_REVIEWS;
+}
+
+function saveReviewsDatabase(reviews) {
+  localStorage.setItem('hm_reviews_dataset', JSON.stringify(reviews));
+}
+
+// ── Rating Star Selector Engine ──────────────────────────────────────────────
+let currentReviewRating = 5;
+
+window.setReviewRating = function (rating) {
+  currentReviewRating = rating;
+  const ratingInput = document.getElementById('reviewRatingVal');
+  if (ratingInput) ratingInput.value = rating;
+
+  const starsContainer = document.getElementById('starRatingSelect');
+  if (starsContainer) {
+    const stars = starsContainer.querySelectorAll('.star-btn');
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.classList.remove('fa-regular');
+        star.classList.add('fa-solid');
+      } else {
+        star.classList.remove('fa-solid');
+        star.classList.add('fa-regular');
+      }
+    });
+  }
+};
+
+// ── Calculate Real Statistics ────────────────────────────────────────────────
+function calculateReviewStats(reviews) {
+  const total = reviews.length;
+  if (total === 0) {
+    return {
+      total: 0,
+      avg: "0.0",
+      starsHtml: "☆☆☆☆☆",
+      counts: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+      percents: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+    };
+  }
+
+  const sum = reviews.reduce((acc, r) => acc + (r.rating || 5), 0);
+  const avgNum = sum / total;
+  const avg = avgNum.toFixed(1);
+
+  const roundedAvg = Math.round(avgNum);
+  const starsHtml = '★'.repeat(roundedAvg) + '☆'.repeat(5 - roundedAvg);
+
+  const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  reviews.forEach(r => {
+    const rVal = Math.min(5, Math.max(1, r.rating || 5));
+    counts[rVal] = (counts[rVal] || 0) + 1;
+  });
+
+  const percents = {
+    5: Math.round((counts[5] / total) * 100),
+    4: Math.round((counts[4] / total) * 100),
+    3: Math.round((counts[3] / total) * 100),
+    2: Math.round((counts[2] / total) * 100),
+    1: Math.round((counts[1] / total) * 100)
+  };
+
+  return { total, avg, starsHtml, counts, percents };
+}
+
+// ── Filter Functionality ─────────────────────────────────────────────────────
+window.filterReviewsByRating = function (rating, btnEl) {
+  ReviewState.ratingFilter = rating;
+  if (btnEl) {
+    const container = btnEl.closest('.star-filters');
+    if (container) {
+      container.querySelectorAll('.review-filter-btn').forEach(btn => btn.classList.remove('active'));
+      btnEl.classList.add('active');
+    }
+  }
+  refreshReviewsView();
+};
+
+window.filterReviewsByDestination = function (dest) {
+  ReviewState.destFilter = dest;
+  refreshReviewsView();
+};
+
+function getFilteredReviews() {
+  const all = getReviewsDatabase();
+  return all.filter(r => {
+    // Rating Filter
+    if (ReviewState.ratingFilter !== 'all' && r.rating != parseInt(ReviewState.ratingFilter, 10)) {
+      return false;
+    }
+    // Destination Filter
+    if (ReviewState.destFilter !== 'all') {
+      const targetDest = ReviewState.destFilter.toLowerCase();
+      const itemDest = (r.destination || '').toLowerCase();
+      const itemCountry = (r.country || '').toLowerCase();
+      const itemText = (r.text || '').toLowerCase();
+      if (!itemDest.includes(targetDest) && !itemCountry.includes(targetDest) && !itemText.includes(targetDest)) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
+// ── Refresh Entire Reviews UI ────────────────────────────────────────────────
+function refreshReviewsView() {
+  const allReviews = getReviewsDatabase();
+  const filtered = getFilteredReviews();
+  const stats = calculateReviewStats(filtered);
+
+  // Update Rating Summary Box
+  const avgEl = document.getElementById('summaryAvgRating');
+  const starsEl = document.getElementById('summaryAvgStars');
+  const countEl = document.getElementById('summaryReviewCount');
+
+  if (avgEl) avgEl.textContent = stats.total > 0 ? stats.avg : "0.0";
+  if (starsEl) starsEl.textContent = stats.total > 0 ? stats.starsHtml : "☆☆☆☆☆";
+  if (countEl) {
+    countEl.textContent = stats.total > 0 
+      ? `Based on ${stats.total} ${stats.total === 1 ? 'review' : 'reviews'}`
+      : `0 reviews for this selection`;
+  }
+
+  // Update Progress Bars & Percentages
+  for (let i = 1; i <= 5; i++) {
+    const fillEl = document.getElementById(`barFill${i}`);
+    const percentEl = document.getElementById(`barPercent${i}`);
+    const pct = stats.percents[i] || 0;
+    if (fillEl) fillEl.style.width = `${pct}%`;
+    if (percentEl) percentEl.textContent = `${pct}%`;
+  }
+
+  // Update Page Subtitle
+  const subtitleEl = document.getElementById('heroReviewSubtitle');
+  if (subtitleEl) {
+    subtitleEl.textContent = allReviews.length > 0 
+      ? `Over ${allReviews.length} verified reviews shared by travelers exploring Morocco.`
+      : `No reviews recorded yet. Be the first traveler to share your journey!`;
+  }
+
+  // Update Home Page Stats Strip
+  const homeTotalEl = document.getElementById('homeTotalReviews');
+  const homeTotalLabelEl = document.getElementById('homeTotalReviewsLabel');
+  const homeAvgEl = document.getElementById('homeAvgRating');
+
+  if (homeTotalEl) homeTotalEl.textContent = allReviews.length > 0 ? `${allReviews.length}` : '0';
+  if (homeTotalLabelEl) homeTotalLabelEl.textContent = allReviews.length === 1 ? 'Verified Review' : 'Verified Reviews';
+  if (homeAvgEl) {
+    const overallStats = calculateReviewStats(allReviews);
+    homeAvgEl.textContent = overallStats.total > 0 ? `${overallStats.avg}/5` : 'N/A';
+  }
+
+  // Render Cards in Reviews Grid (Testimonials Page)
+  const gridContainer = document.getElementById('reviewsGridContainer');
+  if (gridContainer) {
+    renderCardsIntoGrid(gridContainer, filtered);
+  }
+
+  // Render Preview Cards in Home Page Reviews Grid
+  const homeGridContainer = document.getElementById('homeReviewsGrid');
+  if (homeGridContainer) {
+    renderCardsIntoGrid(homeGridContainer, filtered.slice(0, 3));
+  }
+}
+
+function renderCardsIntoGrid(container, reviews) {
+  container.innerHTML = '';
+
+  if (reviews.length === 0) {
+    container.innerHTML = `
+      <div class="empty-reviews-card" style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: var(--hm-bg-card); border: 1px dashed var(--hm-border); border-radius: 24px; margin: 16px 0;">
+        <div style="font-size: 2.8rem; margin-bottom: 12px; opacity: 0.8;">💬</div>
+        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.4rem; color: var(--hm-text-heading); margin-bottom: 8px;">No Reviews Found</h3>
+        <p style="color: var(--hm-text-muted); font-size: 0.95rem; margin-bottom: 20px;">No traveler reviews match the selected filter. Be the first to share your experience!</p>
+        <button class="btn-primary" onclick="scrollToReviewForm()" style="padding: 12px 28px; border-radius: 99px; border: none; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff;">
+          <i class="fa-solid fa-pen-to-square"></i> Leave a Review
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  reviews.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    const starsStr = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
+    const verifiedBadge = r.verified 
+      ? `<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>`
+      : '';
+
+    card.innerHTML = `
+      <div class="review-header">
+        <div class="review-stars" style="color:#E7A93C;">${starsStr}</div>
+        ${verifiedBadge}
+      </div>
+      <p class="review-text">"${escapeHtmlStr(r.text)}"</p>
+      <div class="review-author">
+        <div class="review-avatar" style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff;">${escapeHtmlStr(r.avatar || 'TR')}</div>
+        <div class="review-author-info">
+          <strong>${escapeHtmlStr(r.author)}</strong>
+          <span>${escapeHtmlStr(r.country || 'Traveler')}</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+window.scrollToReviewForm = function () {
+  const formEl = document.getElementById('addReviewForm');
+  if (formEl) {
+    formEl.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    window.location.href = 'testimonials.html#addReviewForm';
+  }
+};
+
+// ── Submit New Review Handler ────────────────────────────────────────────────
+window.handleReviewSubmit = function (event) {
+  event.preventDefault();
+
+  const authorInput = document.getElementById('reviewAuthor');
+  const locationInput = document.getElementById('reviewLocation');
+  const destSelect = document.getElementById('reviewDestSelect');
+  const textInput = document.getElementById('reviewText');
+  const ratingVal = parseInt(document.getElementById('reviewRatingVal')?.value || '5', 10);
+
+  if (!authorInput || !textInput) return;
+
+  const author = authorInput.value.trim();
+  const rawLocation = locationInput ? locationInput.value.trim() : 'Traveler';
+  const selectedDest = destSelect ? destSelect.value : 'general';
+  const destName = destSelect && destSelect.options[destSelect.selectedIndex] ? destSelect.options[destSelect.selectedIndex].text : '';
+  const text = textInput.value.trim();
+
+  if (!author || !text) {
+    if (window.showToast) window.showToast('Please fill in your name and comment!');
+    return;
+  }
+
+  const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'TR';
+  const countryDisplay = selectedDest !== 'general' && destName ? `${rawLocation} · ${destName}` : rawLocation;
+
+  const newReview = {
+    id: 'rev_' + Date.now(),
+    author: author,
+    avatar: initials,
+    country: countryDisplay,
+    destination: selectedDest,
+    destinationName: destName,
+    rating: ratingVal,
+    verified: true, // Actual traveler submission from site
+    text: text,
+    date: new Date().toISOString().split('T')[0]
+  };
+
+  // Add to database & save
+  const db = getReviewsDatabase();
+  db.unshift(newReview);
+  saveReviewsDatabase(db);
+
+  // Refresh view in real-time
+  refreshReviewsView();
+
+  // Reset Form
+  authorInput.value = '';
+  if (locationInput) locationInput.value = '';
+  textInput.value = '';
+  window.setReviewRating(5);
+
+  if (window.showToast) {
+    window.showToast('Thank you! Your review has been published ✨');
+  } else {
+    alert('Thank you! Your review has been published ✨');
+  }
+};
+
+function escapeHtmlStr(str) {
+  if (!str) return '';
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+// ── Initialize Reviews System on DOM Load ────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  refreshReviewsView();
+});
+

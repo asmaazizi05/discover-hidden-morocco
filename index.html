@@ -1824,14 +1824,14 @@
         <div class="hero-stat-item">
           <div class="hero-stat-icon"><i class="fa-solid fa-users"></i></div>
           <div>
-            <div class="hero-stat-val">2500+</div>
-            <small>Happy Travelers</small>
+            <div class="hero-stat-val" id="homeTotalReviews">--</div>
+            <small id="homeTotalReviewsLabel">Verified Reviews</small>
           </div>
         </div>
         <div class="hero-stat-item">
           <div class="hero-stat-icon"><i class="fa-regular fa-star"></i></div>
           <div>
-            <div class="hero-stat-val">4.9/5</div>
+            <div class="hero-stat-val" id="homeAvgRating">--</div>
             <small>Average Rating</small>
           </div>
         </div>
@@ -2124,45 +2124,8 @@
           <h2>What Our Travelers Say</h2>
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
-        <div class="reviews-grid">
-          <div class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">"The Sahara night under the stars was something out of a dream. No shared group,
-              perfect
-              service, and a guide who felt like a lifelong friend. Worth every penny."</p>
-            <div class="review-author">
-              <div class="review-avatar">JL</div>
-              <div>
-                <strong>James &amp; Laura</strong>
-                <span>United Kingdom 🇬🇧 &nbsp;·&nbsp; Merzouga Expedition</span>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">"Chefchaouen was magical. The blue alleyways, local food, and the mountain hike were
-              perfect. Our guide knew every secret viewpoint. We're already planning our return trip."</p>
-            <div class="review-author">
-              <div class="review-avatar">SM</div>
-              <div>
-                <strong>Sophie M.</strong>
-                <span>France 🇫🇷 &nbsp;·&nbsp; Chefchaouen Blue Walk</span>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-stars">★★★★★</div>
-            <p class="review-text">"The Marrakech experience was phenomenal — from the spice souks to the Bahia Palace
-              tour.
-              Everything was handled seamlessly. Hidden Morocco truly delivers luxury without pretension."</p>
-            <div class="review-author">
-              <div class="review-avatar">AR</div>
-              <div>
-                <strong>Ahmed &amp; Rida</strong>
-                <span>Canada 🇨🇦 &nbsp;·&nbsp; Marrakech Deep Dive</span>
-              </div>
-            </div>
-          </div>
+        <div class="reviews-grid" id="homeReviewsGrid">
+          <!-- Rendered dynamically via script.js -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
           <a href="testimonials.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
