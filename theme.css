@@ -4359,68 +4359,60 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
     pointer-events: none !important;
   }
 
-  .setting-icon-item .mobile-fav-badge {
-    position: absolute !important;
-    top: -2px !important;
-    right: -2px !important;
-    background: #C85A32 !important;
-    color: #FFFFFF !important;
-    font-size: 0.6rem !important;
-    font-weight: 800 !important;
-    width: 16px !important;
-    height: 16px !important;
-    min-width: 16px !important;
-    min-height: 16px !important;
-    max-width: 16px !important;
-    max-height: 16px !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border: 1.5px solid #0B101D !important;
-    z-index: 10 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    line-height: 1 !important;
+  .setting-icon-item .mobile-fav-badge,
+  .mobile-fav-badge {
+    display: none !important;
   }
 
-  /* Compact Book Expedition Button (MATCHES SCREENSHOT) */
+  /* Ultra-Luxe Customize My Tour CTA Button */
   .mobile-only-cta {
     display: block !important;
     width: 100% !important;
     margin-top: auto !important;
-    /* Pushes cleanly to bottom */
+    padding-top: 14px !important;
   }
 
-  .mobile-book-btn {
+  .mobile-book-btn,
+  .hn-links li.mobile-only-cta a {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 10px !important;
     width: 100% !important;
-    padding: 14px 20px !important;
-    border-radius: 14px !important;
-    background: #FFFFFF !important;
+    padding: 16px 24px !important;
+    border-radius: 99px !important;
+    background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #C5A028 100%) !important;
     color: #0F172A !important;
+    font-family: var(--hm-font-sans, "Inter", sans-serif) !important;
     font-weight: 700 !important;
-    font-size: 0.98rem !important;
+    font-size: 1.05rem !important;
+    letter-spacing: 0.02em !important;
     text-decoration: none !important;
-    border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
-    transition: all 0.25s ease !important;
+    border: none !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
     box-sizing: border-box !important;
+    cursor: pointer !important;
   }
 
-  [data-theme="dark"] .mobile-book-btn {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+  .mobile-book-btn i,
+  .hn-links li.mobile-only-cta a i {
+    font-size: 1rem !important;
+    transition: transform 0.25s ease !important;
+    color: #0F172A !important;
   }
 
-  .mobile-book-btn:hover {
-    box-shadow: 0 6px 24px rgba(200, 90, 50, 0.2) !important;
-    border-color: var(--hm-terracotta, #C85A32) !important;
-    color: var(--hm-terracotta, #C85A32) !important;
+  .mobile-book-btn:hover,
+  .hn-links li.mobile-only-cta a:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 32px rgba(212, 175, 55, 0.45) !important;
+    background: linear-gradient(135deg, #E2C044 0%, #FFF5CD 50%, #D4AF37 100%) !important;
+    color: #0F172A !important;
+  }
+
+  .mobile-book-btn:hover i,
+  .hn-links li.mobile-only-cta a:hover i {
+    transform: translateX(4px) !important;
   }
 
   /* Responsive Hero */
