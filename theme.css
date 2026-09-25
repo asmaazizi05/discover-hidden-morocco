@@ -5555,3 +5555,177 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
     gap: 12px;
   }
 }
+
+/* ── FULL-SCREEN ULTRA-LUXE MOBILE MENU OVERLAY (All Pages Override) ─────── */
+@media (max-width: 991px) {
+  .hn-links,
+  .nav-links,
+  #premNavLinks,
+  #navLinks {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background: rgba(15, 23, 42, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 32px 28px 40px !important;
+    box-sizing: border-box !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: scale(0.96) !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow-y: auto !important;
+    margin: 0 !important;
+  }
+
+  .hn-links.hn-links-open,
+  .hn-links.open,
+  .hn-links.active,
+  .nav-links.open,
+  .nav-links.active,
+  #premNavLinks.open,
+  #navLinks.open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: scale(1) !important;
+  }
+
+  .hn-links ul,
+  .nav-links ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .hn-links li,
+  .nav-links li {
+    width: 100% !important;
+    margin-bottom: 10px !important;
+    list-style: none !important;
+  }
+
+  .hn-links a,
+  .nav-links a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 16px 22px !important;
+    border-radius: 18px !important;
+    font-family: var(--hm-font-serif, serif) !important;
+    font-size: 1.35rem !important;
+    font-weight: 600 !important;
+    color: #F8FAFC !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.25s ease !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .hn-links a:hover,
+  .hn-links a.active,
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: linear-gradient(135deg, rgba(200, 90, 50, 0.3) 0%, rgba(231, 169, 60, 0.3) 100%) !important;
+    border-color: rgba(212, 175, 55, 0.5) !important;
+    color: #FFFFFF !important;
+    transform: translateX(6px) !important;
+    box-shadow: 0 8px 24px rgba(200, 90, 50, 0.2) !important;
+  }
+
+  .mobile-only-settings-row {
+    margin-top: auto !important;
+    padding-top: 24px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    width: 100% !important;
+  }
+
+  .mobile-settings-title {
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    color: #94A3B8 !important;
+    margin-bottom: 14px !important;
+    text-transform: uppercase !important;
+  }
+
+  .mobile-settings-icons {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .setting-icon-item {
+    flex: 1 !important;
+    height: 48px !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+  }
+
+  .setting-icon-item select {
+    background: transparent !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    outline: none !important;
+  }
+
+  .setting-icon-item select option {
+    background: #1E293B !important;
+    color: #FFFFFF !important;
+  }
+
+  .mobile-only-cta {
+    width: 100% !important;
+    margin-top: 8px !important;
+  }
+
+  .mobile-book-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 18px 24px !important;
+    border-radius: 99px !important;
+    background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
+    color: #FFFFFF !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 12px 35px rgba(200, 90, 50, 0.45) !important;
+    text-decoration: none !important;
+    border: none !important;
+  }
+
+  /* Hamburger Icon Positioning Fix */
+  .hamburger,
+  .hburg {
+    z-index: 1000000 !important;
+    position: relative !important;
+  }
+}
