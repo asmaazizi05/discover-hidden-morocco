@@ -2314,11 +2314,13 @@ function renderCardsIntoGrid(container, reviews) {
 
   if (reviews.length === 0) {
     container.innerHTML = `
-      <div class="empty-reviews-card" style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; background: var(--hm-bg-card); border: 1px dashed var(--hm-border); border-radius: 24px; margin: 16px 0;">
-        <div style="font-size: 2.8rem; margin-bottom: 12px; opacity: 0.8;">💬</div>
-        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.4rem; color: var(--hm-text-heading); margin-bottom: 8px;">No Reviews Found</h3>
-        <p style="color: var(--hm-text-muted); font-size: 0.95rem; margin-bottom: 20px;">No traveler reviews match the selected filter. Be the first to share your experience!</p>
-        <button class="btn-primary" onclick="scrollToReviewForm()" style="padding: 12px 28px; border-radius: 99px; border: none; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff;">
+      <div class="empty-reviews-card" style="grid-column: 1 / -1; text-align: center; padding: 60px 32px; background: var(--hm-bg-card, #FFFFFF); border: 1.5px dashed var(--hm-border, rgba(212,175,55,0.3)); border-radius: 28px; margin: 20px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.03);">
+        <div style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, rgba(200,90,50,0.1) 0%, rgba(231,169,60,0.15) 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #C85A32; border: 1px solid rgba(212,175,55,0.3);">
+          <i class="fa-regular fa-comments"></i>
+        </div>
+        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.6rem; color: var(--hm-text-heading); margin-bottom: 10px; letter-spacing: -0.01em;">No Reviews Recorded Yet</h3>
+        <p style="color: var(--hm-text-muted); font-size: 1rem; max-width: 480px; margin: 0 auto 24px; line-height: 1.6;">Be the first traveler to share your journey and leave feedback about your private tour with Discover Hidden Morocco.</p>
+        <button class="btn-primary" onclick="openReviewModal()" style="padding: 14px 34px; border-radius: 99px; border: none; font-weight: 600; font-size: 0.98rem; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; box-shadow: 0 10px 30px rgba(200,90,50,0.35); transition: all 0.3s ease;">
           <i class="fa-solid fa-pen-to-square"></i> Leave a Review
         </button>
       </div>
