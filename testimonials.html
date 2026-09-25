@@ -623,30 +623,33 @@
         </div>
       </div>
 
-      <!-- Interactive Filter Controls Bar -->
-      <div class="review-filters-bar" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 36px 0 24px; flex-wrap: wrap;">
-        <div class="star-filters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <!-- Interactive Filter Controls Bar (Luxury Design) -->
+      <div class="review-filters-bar">
+        <div class="star-filters">
           <button class="review-filter-btn active" data-rating="all" onclick="filterReviewsByRating('all', this)">All Reviews</button>
-          <button class="review-filter-btn" data-rating="5" onclick="filterReviewsByRating('5', this)">5 ★</button>
-          <button class="review-filter-btn" data-rating="4" onclick="filterReviewsByRating('4', this)">4 ★</button>
-          <button class="review-filter-btn" data-rating="3" onclick="filterReviewsByRating('3', this)">3 ★</button>
-          <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)">2 ★</button>
-          <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)">1 ★</button>
+          <button class="review-filter-btn" data-rating="5" onclick="filterReviewsByRating('5', this)"><span style="color:#E7A93C">★</span> 5</button>
+          <button class="review-filter-btn" data-rating="4" onclick="filterReviewsByRating('4', this)"><span style="color:#E7A93C">★</span> 4</button>
+          <button class="review-filter-btn" data-rating="3" onclick="filterReviewsByRating('3', this)"><span style="color:#E7A93C">★</span> 3</button>
+          <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)"><span style="color:#E7A93C">★</span> 2</button>
+          <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)"><span style="color:#E7A93C">★</span> 1</button>
         </div>
-        <div class="dest-filter-wrapper" style="display: flex; align-items: center; gap: 10px;">
-          <label for="reviewDestFilter" style="font-size: 0.88rem; font-weight: 600; color: var(--hm-text-heading); white-space: nowrap;"><i class="fa-solid fa-filter"></i> Destination:</label>
-          <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" style="padding: 8px 16px; border-radius: 99px; border: 1px solid var(--hm-border); background: var(--hm-bg-card); color: var(--hm-text-heading); font-size: 0.88rem; font-weight: 500; outline: none; cursor: pointer;">
-            <option value="all">All Destinations</option>
-            <option value="marrakech">Marrakech</option>
-            <option value="merzouga">Merzouga Sahara</option>
-            <option value="chefchaouen">Chefchaouen</option>
-            <option value="fes">Fes</option>
-            <option value="essaouira">Essaouira</option>
-            <option value="casablanca">Casablanca</option>
-            <option value="agadir">Agadir</option>
-            <option value="zagora">Zagora</option>
-            <option value="ouarzazate">Ouarzazate</option>
-          </select>
+        <div class="dest-filter-wrapper">
+          <span class="dest-filter-badge"><i class="fa-solid fa-sliders"></i> Destination</span>
+          <div class="dest-select-box">
+            <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" aria-label="Filter by destination">
+              <option value="all">📍 All Destinations</option>
+              <option value="marrakech">🎪 Marrakech</option>
+              <option value="merzouga">🏜️ Merzouga Sahara</option>
+              <option value="chefchaouen">🎨 Chefchaouen</option>
+              <option value="fes">🕌 Fes Medina</option>
+              <option value="essaouira">🌊 Essaouira Coast</option>
+              <option value="casablanca">🏛️ Casablanca</option>
+              <option value="agadir">🌴 Agadir</option>
+              <option value="zagora">⛺ Zagora</option>
+              <option value="ouarzazate">🎬 Ouarzazate</option>
+            </select>
+            <i class="fa-solid fa-chevron-down dest-select-arrow"></i>
+          </div>
         </div>
       </div>
 
