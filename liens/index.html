@@ -20,14 +20,14 @@
             padding: 40px 20px;
             text-align: center;
         }
+        /* تصميم الإطار ديال الشعار باش يبان نقي وواضح */
         .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #D4AF37;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 150px;
+            height: auto;
+            max-height: 150px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
         h1 {
             font-size: 24px;
@@ -39,7 +39,7 @@
             color: #666;
             margin-bottom: 30px;
         }
-        .link-btn {
+        .link-bin {
             display: block;
             width: 100%;
             padding: 16px;
@@ -55,13 +55,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .link-btn:hover {
+        .link-bin:hover {
             background-color: #D4AF37;
             color: #ffffff;
             border-color: #D4AF37;
             transform: translateY(-2px);
         }
-        .primary-btn {
+        .primary-bin {
             background-color: #2C3E50;
             color: #ffffff;
             border-color: #2C3E50;
@@ -71,20 +71,16 @@
 <body>
 
     <div class="container">
-        <!-- Remplace logo.png par le nom exact de ton fichier logo -->
-        <img src="https://discoverhiddenmorocco.com/images/logo.png" alt="Discover Hidden Morocco" class="profile-img">
+        <!-- رابط الصورة المباشر من نفس المجلد -->
+        <img src="logo.png" alt="Discover Hidden Morocco Logo" class="profile-img">
         
         <h1>Discover Hidden Morocco</h1>
-        <p>Explore the magic of Morocco, from golden dunes to ancient kasbahs. 🇲🇦</p>
+        <p>Explore the magic of Morocco, from golden dunes to ancient kasbahs.</p>
 
-        <!-- Liste des liens modifiée en anglais -->
-        <a href="https://discoverhiddenmorocco.com/tours" class="link-btn primary-btn">Book Your Desert Tour Now</a>
-        
-        <a href="https://youtube.com/channel/..." class="link-btn" target="_blank">Watch Our Latest YouTube Vlogs</a>
-        
-        <a href="https://www.tripadvisor.com/..." class="link-btn" target="_blank">Read Our TripAdvisor Reviews</a>
-        
-        <a href="mailto:contact@discoverhiddenmorocco.com" class="link-btn">Contact Us for Custom Itineraries</a>
+        <a href="https://discoverhiddenmorocco.com/tours" class="link-bin primary-bin">Book Your Desert Tour Now</a>
+        <a href="https://youtube.com/channel/..." class="link-bin" target="_blank">Watch Our Latest YouTube Vlogs</a>
+        <a href="https://www.tripadvisor.com/..." class="link-bin" target="_blank">Read Our TripAdvisor Reviews</a>
+        <a href="mailto:contact@discoverhiddenmorocco.com" class="link-bin">Contact Us for Custom Itineraries</a>
     </div>
 
 </body>
