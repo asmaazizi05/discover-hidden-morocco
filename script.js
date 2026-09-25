@@ -2293,8 +2293,26 @@ function refreshReviewsView() {
   if (homeTotalLabelEl) homeTotalLabelEl.textContent = allReviews.length === 1 ? 'Verified Review' : 'Verified Reviews';
   if (homeAvgEl) {
     const overallStats = calculateReviewStats(allReviews);
-    homeAvgEl.textContent = overallStats.total > 0 ? `${overallStats.avg}/5` : 'N/A';
+    homeAvgEl.textContent = overallStats.total > 0 ? `${overallStats.avg}/5` : '0.0/5';
   }
+
+  // Update About Us Page Dynamic Stats (Calculated 100% from real data)
+  const aboutTotalEl = document.getElementById('aboutTotalReviews');
+  const aboutTotalLabelEl = document.getElementById('aboutTotalReviewsLabel');
+  const aboutTotalInlineEl = document.getElementById('aboutTotalReviewsInline');
+  const aboutSatisfactionEl = document.getElementById('aboutSatisfaction');
+  const aboutSatisfactionInlineEl = document.getElementById('aboutSatisfactionInline');
+
+  const totalReviewsCount = allReviews.length;
+  const highRatingCount = allReviews.filter(r => (r.rating || 5) >= 4).length;
+  const satisfactionVal = totalReviewsCount > 0 ? Math.round((highRatingCount / totalReviewsCount) * 100) : 0;
+  const satisfactionStr = totalReviewsCount > 0 ? `${satisfactionVal}%` : '0%';
+
+  if (aboutTotalEl) aboutTotalEl.textContent = `${totalReviewsCount}`;
+  if (aboutTotalLabelEl) aboutTotalLabelEl.textContent = totalReviewsCount === 1 ? 'Happy Traveler' : 'Happy Travelers';
+  if (aboutTotalInlineEl) aboutTotalInlineEl.textContent = `${totalReviewsCount}`;
+  if (aboutSatisfactionEl) aboutSatisfactionEl.textContent = satisfactionStr;
+  if (aboutSatisfactionInlineEl) aboutSatisfactionInlineEl.textContent = satisfactionStr;
 
   // Render Cards in Reviews Grid (Testimonials Page)
   const gridContainer = document.getElementById('reviewsGridContainer');
