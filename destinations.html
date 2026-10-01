@@ -1069,6 +1069,7 @@
             <div class="swiper-button-prev"></div>
           </div>
           <style>
+/* Base Light Mode Styles */
 .destination-article {
   font-family: 'Open Sans', Arial, sans-serif;
   color: #333;
@@ -1078,7 +1079,7 @@
 }
 .destination-article .article-title {
   font-size: 1.8rem;
-  color: #d4a373; /* matching site theme */
+  color: #d4a373;
   margin-bottom: 20px;
   font-weight: 700;
   border-bottom: 2px solid #eee;
@@ -1107,8 +1108,9 @@
 .article-table-container {
   overflow-x: auto;
   margin: 25px 0;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(212, 163, 115, 0.25); /* Enhanced shadow */
   border-radius: 8px;
+  border: 1px solid rgba(212, 163, 115, 0.15);
 }
 .article-table {
   width: 100%;
@@ -1144,6 +1146,37 @@
 }
 .article-list li strong {
   color: #2c3e50;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .destination-article {
+  color: #e0e0e0;
+}
+[data-theme="dark"] .destination-article .article-title {
+  border-bottom: 2px solid #444;
+}
+[data-theme="dark"] .destination-article h4,
+[data-theme="dark"] .destination-article h5,
+[data-theme="dark"] .article-list li strong {
+  color: #f3f4f6; /* Lighter text for dark mode */
+}
+[data-theme="dark"] .destination-article p,
+[data-theme="dark"] .article-list li {
+  color: #ccc;
+}
+[data-theme="dark"] .article-table-container {
+  box-shadow: 0 10px 30px rgba(212, 163, 115, 0.4); /* Stronger, glowing shadow for dark mode */
+  border: 1px solid rgba(212, 163, 115, 0.2);
+}
+[data-theme="dark"] .article-table {
+  background-color: #1a1a1a;
+}
+[data-theme="dark"] .article-table td {
+  border-bottom: 1px solid #333;
+  color: #bbb;
+}
+[data-theme="dark"] .article-table tr:hover {
+  background-color: #2a2a2a;
 }
 </style>
 
@@ -3484,3 +3517,4 @@
 </body>
 
 </html>
+
