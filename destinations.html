@@ -1105,36 +1105,49 @@
   color: #555;
   text-align: justify;
 }
+
+/* Professional Table Design */
 .article-table-container {
   overflow-x: auto;
-  margin: 25px 0;
-  box-shadow: 0 10px 25px rgba(212, 163, 115, 0.25); /* Enhanced shadow */
-  border-radius: 8px;
-  border: 1px solid rgba(212, 163, 115, 0.15);
+  margin: 35px 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
 }
 .article-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
+  background-color: transparent;
 }
 .article-table th {
-  background-color: #d4a373;
-  color: #fff;
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
+  background-color: #fcf8f5; 
+  color: #2c3e50;
+  padding: 18px 15px;
+  text-align: center; /* CENTERED AS REQUESTED */
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #d4a373;
 }
 .article-table td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #eee;
+  padding: 16px 15px;
+  border-bottom: 1px solid #f0f0f0;
   color: #555;
+  font-size: 0.95rem;
+  vertical-align: middle;
 }
 .article-table tr:last-child td {
   border-bottom: none;
 }
-.article-table tr:hover {
-  background-color: #fcf8f5;
+.article-table tbody tr {
+  transition: background-color 0.3s ease;
 }
+.article-table tbody tr:hover {
+  background-color: #fdfaf8;
+}
+
+/* Lists */
 .article-list {
   list-style-type: disc;
   padding-left: 20px;
@@ -1158,25 +1171,30 @@
 [data-theme="dark"] .destination-article h4,
 [data-theme="dark"] .destination-article h5,
 [data-theme="dark"] .article-list li strong {
-  color: #f3f4f6; /* Lighter text for dark mode */
+  color: #f3f4f6; 
 }
 [data-theme="dark"] .destination-article p,
 [data-theme="dark"] .article-list li {
   color: #ccc;
 }
+
+/* Dark Mode Tables */
 [data-theme="dark"] .article-table-container {
-  box-shadow: 0 10px 30px rgba(212, 163, 115, 0.4); /* Stronger, glowing shadow for dark mode */
-  border: 1px solid rgba(212, 163, 115, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  background-color: #1e1e1e;
+  border: 1px solid #333;
 }
-[data-theme="dark"] .article-table {
-  background-color: #1a1a1a;
+[data-theme="dark"] .article-table th {
+  background-color: #252525;
+  color: #d4a373; /* Gold accent text for dark mode header */
+  border-bottom: 2px solid #d4a373;
 }
 [data-theme="dark"] .article-table td {
-  border-bottom: 1px solid #333;
-  color: #bbb;
+  border-bottom: 1px solid #2d2d2d;
+  color: #ccc;
 }
-[data-theme="dark"] .article-table tr:hover {
-  background-color: #2a2a2a;
+[data-theme="dark"] .article-table tbody tr:hover {
+  background-color: #252525;
 }
 </style>
 
@@ -3517,4 +3535,5 @@
 </body>
 
 </html>
+
 
