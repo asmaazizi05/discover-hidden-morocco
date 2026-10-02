@@ -995,6 +995,12 @@ function lockBodyScroll(lock) {
 }
 
 window.openModal = function (city, scrollToBooking = false) {
+  // Hide all other destination modals to prevent overlap/blocking
+  document.querySelectorAll('.modal').forEach(m => {
+    if (m.id && m.id.startsWith('modal-') && m.id !== 'modal-' + city) {
+      m.style.display = 'none';
+    }
+  });
   const modal = document.getElementById('modal-' + city);
   if (!modal) return;
   if (modal.parentElement !== document.body) {
