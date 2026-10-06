@@ -1910,11 +1910,23 @@ function renderCustomTourStep(step) {
   const navFooter = document.getElementById('ctNavFooter');
 
   if (step === 1) {
-    document.querySelectorAll('#ctStep1 .ct-dest-card').forEach(card => {
-      const cardId = card.getAttribute('data-id');
-      card.classList.toggle('is-selected', CustomTourState.destinations.includes(cardId));
-    });
-  } else if (step === 4) {
+      document.querySelectorAll('#ctStep1 .ct-dest-card').forEach(card => {
+        const cardId = card.getAttribute('data-id');
+        const isSelected = CustomTourState.destinations.includes(cardId);
+        card.classList.toggle('is-selected', isSelected);
+        if (isSelected) {
+            setTimeout(() => {
+                const modalContent = document.querySelector('.ct-modal-content');
+                if (modalContent) {
+                    modalContent.scrollTo({
+                        top: card.offsetTop - 150,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        }
+      });
+    } else if (step === 4) {
     renderCustomTourStep4();
   }
 
