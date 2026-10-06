@@ -4842,7 +4842,32 @@
   <script src="script.js"></script>
 
 
+  
   <!-- READ MORE SCRIPT FOR ARTICLES -->
+  <style>
+    .read-more-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      color: #FFFFFF !important;
+      padding: 11px 24px;
+      border-radius: 99px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+      margin: 20px auto 10px auto;
+    }
+    .read-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(192, 57, 43, 0.45);
+    }
+  </style>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const articles = document.querySelectorAll(".destination-article");
@@ -4884,20 +4909,7 @@
         article.appendChild(hiddenContent);
         
         const readMoreBtn = document.createElement("button");
-        readMoreBtn.className = "btn-secondary read-more-btn";
-        readMoreBtn.style.marginTop = "15px";
-        readMoreBtn.style.width = "100%";
-        readMoreBtn.style.display = "flex";
-        readMoreBtn.style.justifyContent = "center";
-        readMoreBtn.style.alignItems = "center";
-        readMoreBtn.style.gap = "8px";
-        readMoreBtn.style.padding = "10px 20px";
-        readMoreBtn.style.cursor = "pointer";
-        readMoreBtn.style.borderRadius = "8px";
-        readMoreBtn.style.fontFamily = "'Montserrat', sans-serif";
-        readMoreBtn.style.fontWeight = "600";
-        readMoreBtn.style.transition = "all 0.3s ease";
-        
+        readMoreBtn.className = "read-more-btn";
         readMoreBtn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down"></i>';
         
         article.appendChild(readMoreBtn);
