@@ -4841,6 +4841,108 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 
+
+  <!-- READ MORE SCRIPT FOR ARTICLES -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const articles = document.querySelectorAll(".destination-article");
+      
+      articles.forEach(article => {
+        const title = article.querySelector(".article-title");
+        if (!title) return;
+        
+        const firstParagraph = article.querySelector("p");
+        if (!firstParagraph) return;
+        
+        const hiddenContent = document.createElement("div");
+        hiddenContent.className = "read-more-content";
+        hiddenContent.style.display = "none";
+        
+        let nextElement = firstParagraph.nextElementSibling;
+        while (nextElement) {
+          let currentElement = nextElement;
+          nextElement = nextElement.nextElementSibling;
+          
+          if (!currentElement.classList.contains("read-more-btn")) {
+            hiddenContent.appendChild(currentElement);
+          }
+        }
+        
+        // Add ellipsis to the first paragraph
+        const originalText = firstParagraph.innerHTML;
+        const textNodes = Array.from(firstParagraph.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+        if (textNodes.length > 0) {
+            const lastTextNode = textNodes[textNodes.length - 1];
+            // Only add ellipsis if it doesn't already end with one
+            if (!lastTextNode.textContent.trim().endsWith('...')) {
+                lastTextNode.textContent = lastTextNode.textContent.replace(/\s+$/, '') + '...';
+            }
+        } else {
+            firstParagraph.innerHTML = firstParagraph.innerHTML.trim() + '...';
+        }
+        
+        article.appendChild(hiddenContent);
+        
+        const readMoreBtn = document.createElement("button");
+        readMoreBtn.className = "btn-secondary read-more-btn";
+        readMoreBtn.style.marginTop = "15px";
+        readMoreBtn.style.width = "100%";
+        readMoreBtn.style.display = "flex";
+        readMoreBtn.style.justifyContent = "center";
+        readMoreBtn.style.alignItems = "center";
+        readMoreBtn.style.gap = "8px";
+        readMoreBtn.style.padding = "10px 20px";
+        readMoreBtn.style.cursor = "pointer";
+        readMoreBtn.style.borderRadius = "8px";
+        readMoreBtn.style.fontFamily = "'Montserrat', sans-serif";
+        readMoreBtn.style.fontWeight = "600";
+        readMoreBtn.style.transition = "all 0.3s ease";
+        
+        readMoreBtn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down"></i>';
+        
+        article.appendChild(readMoreBtn);
+        
+        readMoreBtn.addEventListener("click", function() {
+          if (hiddenContent.style.display === "none") {
+            hiddenContent.style.display = "block";
+            readMoreBtn.innerHTML = 'Read Less <i class="fa-solid fa-chevron-up"></i>';
+            // Remove ellipsis when expanded
+            if (firstParagraph.innerHTML.endsWith('...')) {
+                firstParagraph.innerHTML = firstParagraph.innerHTML.slice(0, -3);
+            } else if (textNodes.length > 0) {
+                const lastTextNode = textNodes[textNodes.length - 1];
+                if (lastTextNode.textContent.endsWith('...')) {
+                    lastTextNode.textContent = lastTextNode.textContent.slice(0, -3);
+                }
+            }
+          } else {
+            hiddenContent.style.display = "none";
+            readMoreBtn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down"></i>';
+            // Add ellipsis back when collapsed
+            if (textNodes.length > 0) {
+                const lastTextNode = textNodes[textNodes.length - 1];
+                if (!lastTextNode.textContent.endsWith('...')) {
+                    lastTextNode.textContent = lastTextNode.textContent + '...';
+                }
+            } else {
+                firstParagraph.innerHTML = firstParagraph.innerHTML + '...';
+            }
+            // Scroll back to the title
+            setTimeout(() => {
+                const modalContent = article.closest('.modal-content');
+                if(modalContent) {
+                    modalContent.scrollTo({
+                        top: title.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 50);
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 
 </html>
