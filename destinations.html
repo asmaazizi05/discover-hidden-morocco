@@ -4961,6 +4961,27 @@
     });
   </script>
 
+
+  <!-- AUTOPLAY FALLBACK SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      setInterval(() => {
+        document.querySelectorAll('.modal').forEach(modal => {
+          if (window.getComputedStyle(modal).display === 'flex') {
+            const swiperEl = modal.querySelector('.swiper');
+            if (swiperEl && swiperEl.swiper) {
+              swiperEl.swiper.slideNext();
+            } else {
+              // If swiper API not accessible, just click the next button
+              const nextBtn = modal.querySelector('.swiper-button-next');
+              if (nextBtn) nextBtn.click();
+            }
+          }
+        });
+      }, 5000);
+    });
+  </script>
+
 </body>
 
 </html>
