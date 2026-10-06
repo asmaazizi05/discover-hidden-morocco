@@ -1032,6 +1032,14 @@ window.openModal = function (city, scrollToBooking = false) {
         loop: true,
         observer: true,
         observeParents: true,
+          autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          },
         navigation: {
           nextEl: '#modal-' + city + ' .swiper-button-next',
           prevEl: '#modal-' + city + ' .swiper-button-prev'
