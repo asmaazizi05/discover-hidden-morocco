@@ -1328,8 +1328,12 @@ const CUSTOM_TOUR_DESTINATIONS = [
   { id: 'casablanca', name: 'Casablanca', region: 'Casablanca-Settat', img: 'images/Casablanca/casablanca.png' },
   { id: 'rabat', name: 'Rabat', region: 'Rabat-Salé-Kénitra', img: 'images/rabat.jpg' },
   { id: 'tangier', name: 'Tangier', region: 'Tanger-Tetouan', img: 'images/tangier.jpg' },
-  { id: 'atlas', name: 'Atlas Mountains', region: 'High Atlas', img: 'images/Marrakech/imlil_1.jpg' },
-  { id: 'sahara', name: 'Sahara Desert', region: 'Erg Chebbi & Dunes', img: 'images/Zagora/zagora_hero.png' }
+  { id: 'sahara', name: 'Sahara Desert', region: 'Erg Chebbi & Dunes', img: 'images/Zagora/zagora_hero.png' },
+  { id: 'ourika', name: 'Ourika Valley', region: 'Marrakech Region', img: 'images/Marrakech/ourika.jpg' },
+  { id: 'ouzoud', name: 'Ouzoud Waterfalls', region: 'Marrakech Region', img: 'images/Ouzoud/ouzoud-falls.jpg' },
+  { id: 'agafay', name: 'Agafay Desert', region: 'Marrakech Region', img: 'images/Marrakech/agafay_pic2.jpg' },
+  { id: 'imlil', name: 'Imlil & High Atlas', region: 'High Atlas Mountains', img: 'images/Marrakech/imlil_1.jpg' },
+  { id: 'palmeraie_balloon', name: 'Palmeraie ( Sunrise Hot Air Balloon )', region: 'Marrakech Region', img: 'images/Marrakech/montgolfiere.webp' }
 ];
 
 const DESTINATION_CATEGORIES = {
@@ -1341,7 +1345,13 @@ const DESTINATION_CATEGORIES = {
   ouarzazate: ['desert', 'kasbah'],
   sahara: ['desert', 'dunes'],
   essaouira: ['coastal', 'ocean'],
-  agadir: ['coastal', 'ocean'],
+  
+    agadir: ['coastal', 'ocean'],
+    ourika: ['mountain', 'nature'],
+    ouzoud: ['nature'],
+    agafay: ['desert', 'nature'],
+    imlil: ['mountain', 'nature'],
+    palmeraie_balloon: ['adventure', 'nature'],
   casablanca: ['coastal', 'imperial'],
   rabat: ['coastal', 'imperial'],
   tangier: ['coastal'],
