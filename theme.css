@@ -874,14 +874,14 @@ body {
     border-top: 1px solid rgba(212, 175, 55, 0.12) !important;
   }
 
-  /* Floating Back-to-Top Button */
+  /* Floating Back-to-Top Button (Repositioned above Chatbot) */
   #backToTop {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 95px !important;
+    right: 28px !important;
     z-index: 9999;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
     color: #FFFFFF !important;
@@ -5060,26 +5060,30 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
    Chatbase AI Floating Widget Custom Styling
    Repositioned above Back-to-Top (#backToTop) + Light & Dark mode themes
    ========================================================================== */
+/* ==========================================================================
+   Chatbase AI Floating Widget Custom Styling
+   Background sombre #0F172A (pas noir) + Contour Orange + Shadow Orange 50%
+   ========================================================================== */
 #chatbase-bubble-button,
 button[id*="chatbase"] {
   position: fixed !important;
-  bottom: 92px !important;
-  right: 30px !important;
-  width: 50px !important;
-  height: 50px !important;
+  bottom: 25px !important;
+  right: 25px !important;
+  width: 52px !important;
+  height: 52px !important;
   border-radius: 50% !important;
   background: #FFFFFF !important;
   border: 2px solid #C85A32 !important;
-  box-shadow: 0 8px 25px rgba(200, 90, 50, 0.28) !important;
+  box-shadow: 0 4px 25px rgba(200, 90, 50, 0.5) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  z-index: 9999 !important;
+  z-index: 99999 !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
-/* Light mode icon color (Orange / Terracotta) */
+/* Orange message icon */
 #chatbase-bubble-button svg,
 #chatbase-bubble-button svg path,
 #chatbase-bubble-button svg g {
@@ -5089,25 +5093,16 @@ button[id*="chatbase"] {
 }
 
 #chatbase-bubble-button:hover {
-  transform: translateY(-4px) scale(1.08) !important;
-  background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
-  border-color: #E7A93C !important;
-  box-shadow: 0 12px 30px rgba(200, 90, 50, 0.5) !important;
+  transform: translateY(-3px) scale(1.06) !important;
+  box-shadow: 0 6px 30px rgba(200, 90, 50, 0.7) !important;
 }
 
-#chatbase-bubble-button:hover svg,
-#chatbase-bubble-button:hover svg path,
-#chatbase-bubble-button:hover svg g {
-  fill: #FFFFFF !important;
-  color: #FFFFFF !important;
-}
-
-/* ── Dark Mode Styling ─────────────────────────────────────────────────────── */
+/* ── Dark Mode Styling: Background #0F172A (couleur du site, pas noir !) ──── */
 [data-theme="dark"] #chatbase-bubble-button,
 body.dark #chatbase-bubble-button {
-  background: #1C2333 !important;
-  border: 2px solid #E7A93C !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(231, 169, 60, 0.25) !important;
+  background: #0F172A !important;
+  border: 2px solid #C85A32 !important;
+  box-shadow: 0 4px 25px rgba(200, 90, 50, 0.5) !important;
 }
 
 [data-theme="dark"] #chatbase-bubble-button svg,
@@ -5115,28 +5110,17 @@ body.dark #chatbase-bubble-button {
 [data-theme="dark"] #chatbase-bubble-button svg g,
 body.dark #chatbase-bubble-button svg,
 body.dark #chatbase-bubble-button svg path {
-  fill: #E7A93C !important;
-  color: #E7A93C !important;
+  fill: #C85A32 !important;
+  color: #C85A32 !important;
 }
 
-[data-theme="dark"] #chatbase-bubble-button:hover,
-body.dark #chatbase-bubble-button:hover {
-  background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%) !important;
-  border-color: #C85A32 !important;
-}
-
-[data-theme="dark"] #chatbase-bubble-button:hover svg,
-[data-theme="dark"] #chatbase-bubble-button:hover svg path,
-body.dark #chatbase-bubble-button:hover svg {
-  fill: #FFFFFF !important;
-}
-
-/* Reposition Chatbase iframe window so it clears the Back-to-Top button */
+/* Reposition Chatbase iframe window */
 #chatbase-bubble-window,
 iframe#chatbase-bubble-window {
-  bottom: 155px !important;
-  right: 30px !important;
+  bottom: 90px !important;
+  right: 25px !important;
   border-radius: 18px !important;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25) !important;
 }
+
 
