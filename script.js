@@ -2548,4 +2548,50 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener("load", onLoad);
   }
 })();
+// ── Force Chatbase Position Above #backToTop & Dynamic Theme Colors ─────────
+(function () {
+  function adjustChatbase() {
+    const btn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
+    if (btn) {
+      btn.style.setProperty('bottom', '95px', 'important');
+      btn.style.setProperty('right', '30px', 'important');
+      btn.style.setProperty('z-index', '99999', 'important');
+      btn.style.setProperty('width', '52px', 'important');
+      btn.style.setProperty('height', '52px', 'important');
+      btn.style.setProperty('border-radius', '50%', 'important');
+      btn.style.setProperty('display', 'flex', 'important');
+      btn.style.setProperty('align-items', 'center', 'important');
+      btn.style.setProperty('justify-content', 'center', 'important');
+      btn.style.setProperty('box-shadow', '0 8px 25px rgba(200, 90, 50, 0.35)', 'important');
+
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
+      if (isDark) {
+        btn.style.setProperty('background', '#1C2333', 'important');
+        btn.style.setProperty('border', '2px solid #E7A93C', 'important');
+      } else {
+        btn.style.setProperty('background', '#FFFFFF', 'important');
+        btn.style.setProperty('border', '2px solid #C85A32', 'important');
+      }
+
+      const svgs = btn.querySelectorAll('svg, svg path, svg g');
+      svgs.forEach(function (el) {
+        el.style.setProperty('fill', isDark ? '#E7A93C' : '#C85A32', 'important');
+        el.style.setProperty('color', isDark ? '#E7A93C' : '#C85A32', 'important');
+      });
+    }
+
+    const win = document.getElementById('chatbase-bubble-window');
+    if (win) {
+      win.style.setProperty('bottom', '165px', 'important');
+      win.style.setProperty('right', '30px', 'important');
+    }
+  }
+
+  if (window.MutationObserver) {
+    const observer = new MutationObserver(adjustChatbase);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+  setInterval(adjustChatbase, 350);
+})();
 
