@@ -5055,6 +5055,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 [data-theme="dark"] .travel-form-right .select-icon {
   color: #94A3B8 !important;
 }
+
 /* ==========================================================================
    Chatbase AI Floating Widget Custom Styling
    Repositioned above Back-to-Top (#backToTop) + Light & Dark mode themes
@@ -5138,3 +5139,4 @@ iframe#chatbase-bubble-window {
   border-radius: 18px !important;
   box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25) !important;
 }
+
