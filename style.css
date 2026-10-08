@@ -23,7 +23,7 @@ body {
   margin: 0 !important;
   padding: 0 !important;
   overflow-x: hidden !important;
-  font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  font-family: 'Open Sans', sans-serif ;
   background-color: var(--light);
   color: var(--text);
   line-height: 1.6;
@@ -46,7 +46,7 @@ body {
 }
 
 .hero-text h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   /* Police élégante */
   font-size: 5rem;
   font-weight: 700;
@@ -73,7 +73,7 @@ body {
 }
 
 .hero-text p {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Open Sans', sans-serif ;
   font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.9);
   max-width: 700px;
@@ -88,7 +88,7 @@ body {
   padding: 18px 48px;
   font-size: 1.1rem;
   font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Open Sans', sans-serif ;
   border: 2px solid rgba(255, 255, 255, 0.4);
   border-radius: 0;
   position: relative;
@@ -470,7 +470,7 @@ body {
 .travel-info h3 {
   text-align: center;
   font-size: 1.9rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   color: var(--dark);
   margin-bottom: 35px;
   position: relative;
@@ -540,7 +540,7 @@ body {
 
 .modal-content h2 {
   text-align: center;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   letter-spacing: 1px;
 }
 
@@ -584,7 +584,7 @@ body {
 .marr-exp-head .section-title {
   text-align: center;
   font-size: 2rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   color: var(--dark);
   margin-bottom: 40px;
   position: relative;
@@ -716,7 +716,7 @@ body {
 
 .footer-col h3 {
   font-size: 26px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   color: #fff;
   margin-bottom: 25px;
   position: relative;
@@ -1349,7 +1349,7 @@ body {
 
 .timeline-content h4 {
   margin: 0 0 16px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Open Sans', sans-serif ;
   font-size: 1.3rem;
   color: var(--dark);
 }
@@ -1524,5 +1524,42 @@ body {
 @media (max-width: 768px) {
   .tour-meta {
     grid-template-columns: 1fr;
+  }
+}
+/* ==========================================================================
+   GLOBAL CHATBASE AI ASSISTANT POSITIONING & STYLING
+   ========================================================================== */
+#chatbase-bubble-button,
+button[id*="chatbase"] {
+  bottom: 25px !important;
+  left: 25px !important;
+  right: auto !important;
+  z-index: 99999 !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 25px rgba(200, 90, 50, 0.5) !important;
+  border: 2px solid #C85A32 !important;
+}
+
+#chatbase-bubble-window {
+  bottom: 90px !important;
+  left: 25px !important;
+  right: auto !important;
+  z-index: 99999 !important;
+  box-shadow: 0 0 25px rgba(200, 90, 50, 0.4) !important;
+  border: 1px solid rgba(200, 90, 50, 0.4) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 640px) {
+  #chatbase-bubble-window {
+    left: 12px !important;
+    right: 12px !important;
+    max-width: calc(100vw - 24px) !important;
   }
 }
