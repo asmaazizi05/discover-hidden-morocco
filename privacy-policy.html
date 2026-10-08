@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy — Discover Hidden Morocco</title>
   <meta name="description"
-    content="Privacy Policy for Discover Hidden Morocco. Learn how we collect, use, and protect your personal information.">
-  
+    content="Privacy Policy for Discover Hidden Morocco. Learn how we collect, use, and protect your personal information in compliance with Moroccan Law & GDPR.">
+
   <!-- Open Graph / Social Media Preview Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://discoverhiddenmorocco.com/privacy-policy.html">
@@ -62,7 +62,7 @@
     }
 
     .hn-logo-text {
-      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-family: var(--hm-font-sans);
       font-size: 1.08rem;
       font-weight: 600;
       letter-spacing: 0.03em;
@@ -169,9 +169,7 @@
     }
 
     @media (max-width: 768px) {
-      .hn-nav {
-        padding: 12px 18px;
-      }
+      .hn-nav { padding: 12px 18px; }
 
       .hn-links {
         position: absolute;
@@ -202,15 +200,12 @@
         border-radius: 8px;
       }
 
-      .hamburger {
-        display: flex;
-      }
+      .hamburger { display: flex; }
     }
 
-    body {
-      background: var(--hm-bg-main);
-    }
+    body { background: var(--hm-bg-main); }
 
+    /* ── Page Hero ── */
     .legal-hero {
       padding: 160px 24px 60px;
       text-align: center;
@@ -218,7 +213,7 @@
     }
 
     .legal-hero h1 {
-      font-family: var(--hm-font-serif);
+      font-family: var(--hm-font-sans);
       font-size: clamp(2.4rem, 5vw, 3.4rem);
       color: var(--hm-text-heading);
       margin-bottom: 16px;
@@ -231,6 +226,36 @@
       margin: 0 auto;
     }
 
+    /* ── Table of Contents ── */
+    .toc-bar {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .toc-link {
+      padding: 7px 16px;
+      border-radius: 99px;
+      background: var(--hm-bg-card);
+      border: 1.5px solid var(--hm-border);
+      color: var(--hm-text-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .toc-link:hover {
+      background: linear-gradient(135deg, #C85A32, #E7A93C);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* ── Legal Card & Sections ── */
     .legal-content {
       max-width: 900px;
       margin: 0 auto 96px;
@@ -245,16 +270,36 @@
       box-shadow: var(--hm-shadow-md);
     }
 
-    .legal-card h2 {
-      font-family: var(--hm-font-serif);
-      font-size: 1.6rem;
-      color: var(--hm-text-heading);
-      margin-top: 36px;
-      margin-bottom: 16px;
+    .section-block {
+      border-left: 4px solid #C85A32;
+      padding-left: 24px;
+      margin-bottom: 44px;
     }
 
-    .legal-card h2:first-child {
+    .section-block:last-child { margin-bottom: 0; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
       margin-top: 0;
+      font-family: var(--hm-font-sans);
+      font-size: 1.35rem;
+      color: var(--hm-text-heading);
+    }
+
+    .section-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C85A32, #E7A93C);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     .legal-card p,
@@ -262,7 +307,7 @@
       font-size: 0.98rem;
       line-height: 1.8;
       color: var(--hm-text-body);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .legal-card ul {
@@ -270,6 +315,72 @@
       margin-bottom: 20px;
     }
 
+    .legal-card a {
+      color: var(--hm-terracotta);
+      text-decoration: underline;
+    }
+
+    /* ── CTA Strip ── */
+    .privacy-cta {
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .privacy-cta h2 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 14px;
+      font-family: var(--hm-font-sans);
+    }
+
+    .privacy-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+    }
+
+    .privacy-cta-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 30px;
+      border-radius: 99px;
+      background: #fff;
+      color: #C85A32 !important;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none !important;
+      transition: all 0.25s;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .btn-cta-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 30px;
+      border-radius: 99px;
+      background: transparent;
+      color: #fff !important;
+      border: 2px solid rgba(255,255,255,0.7);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none !important;
+      transition: all 0.25s;
+    }
+
+    .btn-cta-white:hover { transform: translateY(-2px); }
+    .btn-cta-outline:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Footer ── */
     .footer {
       background: var(--hm-bg-footer);
       color: #94A3B8;
@@ -285,76 +396,31 @@
       margin-bottom: 48px;
     }
 
-    .footer-brand p {
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
 
-    .footer-socials {
-      display: flex;
-      gap: 12px;
-    }
+    .footer-socials { display: flex; gap: 12px; }
 
     .footer-socials a {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       text-decoration: none;
       transition: all 0.25s;
     }
 
-    .footer-socials a:hover {
-      background: var(--hm-terracotta);
-      border-color: var(--hm-terracotta);
-      color: #fff;
-    }
+    .footer-socials a:hover { background: var(--hm-terracotta); border-color: var(--hm-terracotta); color: #fff; }
 
-    .footer-col h4 {
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
+    .footer-col h4 { color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 20px; }
+    .footer-col ul { list-style: none; padding: 0; }
+    .footer-col ul li { margin-bottom: 11px; }
+    .footer-col ul li a { color: #94A3B8; font-size: 0.88rem; text-decoration: none; transition: color 0.25s; }
+    .footer-col ul li a:hover { color: var(--hm-gold); }
 
-    .footer-col ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 11px;
-    }
-
-    .footer-col ul li a {
-      color: #94A3B8;
-      font-size: 0.88rem;
-      text-decoration: none;
-      transition: color 0.25s;
-    }
-
-    .footer-col ul li a:hover {
-      color: var(--hm-gold);
-    }
-
-    .footer-contact-item {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 12px;
-      font-size: 0.88rem;
-    }
-
-    .footer-contact-item i {
-      color: var(--hm-terracotta);
-      margin-top: 3px;
-    }
+    .footer-contact-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; font-size: 0.88rem; }
+    .footer-contact-item i { color: var(--hm-terracotta); margin-top: 3px; }
 
     .footer-bottom {
       border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -367,32 +433,17 @@
       margin: 0 auto;
     }
 
-    .footer-bottom-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-bottom-links a {
-      color: #94A3B8;
-      text-decoration: none;
-      transition: color 0.25s;
-    }
-
-    .footer-bottom-links a:hover {
-      color: var(--hm-gold);
-    }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { color: #94A3B8; text-decoration: none; transition: color 0.25s; }
+    .footer-bottom-links a:hover { color: var(--hm-gold); }
 
     @media (max-width: 900px) {
-      .footer-inner {
-        grid-template-columns: 1fr;
-        gap: 36px;
-      }
+      .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
 
-      .footer-bottom {
-        flex-direction: column;
-        gap: 16px;
-        text-align: center;
-      }
+    @media (max-width: 640px) {
+      .legal-card { padding: 28px 20px; }
     }
   </style>
 </head>
@@ -414,7 +465,6 @@
         <li><a href="testimonials.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
 
-        <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
           <div class="mobile-settings-title">MORE SETTINGS</div>
           <div class="mobile-settings-icons">
@@ -435,7 +485,6 @@
           </div>
         </li>
 
-        <!-- Customize My Tour Button -->
         <li class="mobile-only-cta">
           <a href="#" class="mobile-book-btn custom-tour-trigger">
             Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
@@ -472,44 +521,174 @@
   <header class="legal-hero">
     <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Legal Information</span>
     <h1>Privacy Policy</h1>
-    <p>Last updated: September 2026. How we respect and protect your data.</p>
+    <p>Last updated: September 2026 &middot; Version 2.1 &middot; How we respect, protect, and handle your data.</p>
   </header>
+
+  <!-- Table of Contents -->
+  <nav class="toc-bar" aria-label="Page sections">
+    <a href="#s1" class="toc-link">1. Introduction</a>
+    <a href="#s2" class="toc-link">2. Data We Collect</a>
+    <a href="#s3" class="toc-link">3. How We Use It</a>
+    <a href="#s4" class="toc-link">4. Legal Basis</a>
+    <a href="#s5" class="toc-link">5. Data Sharing</a>
+    <a href="#s6" class="toc-link">6. Transfers</a>
+    <a href="#s7" class="toc-link">7. Retention</a>
+    <a href="#s8" class="toc-link">8. Your Rights</a>
+    <a href="#s9" class="toc-link">9. Children's Privacy</a>
+    <a href="#s10" class="toc-link">10. Contact & Updates</a>
+  </nav>
 
   <main class="legal-content">
     <div class="legal-card">
-      <h2>1. Introduction</h2>
-      <p>Discover Hidden Morocco ("we", "our", or "us") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you visit our website or book tailor-made expeditions with us.</p>
 
-      <h2>2. Information We Collect</h2>
-      <p>We may collect personal information that you voluntarily provide to us when you make an inquiry, customize a tour, or book an expedition:</p>
-      <ul>
-        <li><strong>Personal Details:</strong> Full name, email address, phone/WhatsApp number, nationality, and preferred travel dates.</li>
-        <li><strong>Travel Preferences:</strong> Accommodation style, dietary requirements, activity preferences, and group composition.</li>
-        <li><strong>Technical Data:</strong> IP address, browser type, device information, and browsing patterns collected via cookies.</li>
-      </ul>
+      <div class="section-block">
+        <h2 class="section-title" id="s1">
+          <span class="section-icon"><i class="fa-solid fa-shield-halved"></i></span>
+          1. Introduction
+        </h2>
+        <p>Discover Hidden Morocco ("we", "our", or "us") is a Moroccan-licensed boutique travel agency (Licence n° CIMR-2024-MRK-002041) operating in Marrakech, Kingdom of Morocco. We are committed to protecting the privacy, confidentiality, and security of our guests' personal data.</p>
+        <p>We comply with Moroccan Law n° 09-08 relating to the protection of individuals with regard to the processing of personal data (CNDP), as well as the European General Data Protection Regulation (GDPR - Regulation EU 2016/679) for our European and international visitors. This policy explains what information we collect, why we collect it, and what your legal rights are.</p>
+      </div>
 
-      <h2>3. How We Use Your Information</h2>
-      <p>We process your personal information for specific, lawful purposes including:</p>
-      <ul>
-        <li>Organizing and fulfilling your custom private tours, riad bookings, and desert transport.</li>
-        <li>Communicating with you regarding itinerary details, WhatsApp updates, and customer support.</li>
-        <li>Improving our website performance, user experience, and service offerings.</li>
-        <li>Complying with local Moroccan tourism regulations and legal requirements.</li>
-      </ul>
+      <div class="section-block">
+        <h2 class="section-title" id="s2">
+          <span class="section-icon"><i class="fa-solid fa-database"></i></span>
+          2. Information We Collect
+        </h2>
+        <p>We collect personal information that you provide voluntarily when inquiring, customizing an itinerary, or booking an expedition:</p>
+        <ul>
+          <li><strong>Personal Details:</strong> Full name, nationality, email address, phone/WhatsApp number, and passport details (as required by Moroccan authorities for hotel and desert camp registrations).</li>
+          <li><strong>Travel Preferences & Needs:</strong> Accommodation style (Luxury Riad / Desert Glamping), dietary preferences, physical mobility requirements, and group composition.</li>
+          <li><strong>Payment Information:</strong> Transaction references, bank transfer receipts, or secure payment tokens. We do <em>not</em> store full credit card numbers on our servers.</li>
+          <li><strong>Communication Records:</strong> Email correspondence and WhatsApp messages exchanged with our concierge team to coordinate your itinerary.</li>
+          <li><strong>Technical Browsing Data:</strong> IP address, browser type, device details, and pages viewed, collected anonymously via standard cookies to improve website performance.</li>
+        </ul>
+      </div>
 
-      <h2>4. Data Sharing & Third Parties</h2>
-      <p>We strictly respect your privacy. We do NOT sell, rent, or trade your personal data. We share your information only with essential local partners required to execute your trip (e.g., licensed drivers, private guides, and boutique riad hosts).</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s3">
+          <span class="section-icon"><i class="fa-solid fa-gears"></i></span>
+          3. How We Use Your Information
+        </h2>
+        <p>We process your data strictly for legitimate business and travel-fulfillment purposes:</p>
+        <ul>
+          <li><strong>Fulfilling Your Journey:</strong> Booking hand-picked riads, private 4x4 drivers, desert camp accommodations, mountain guides, and hot air balloon flights.</li>
+          <li><strong>Trip Communications:</strong> Sending your digital dossier, itinerary updates, flight pick-up instructions, and direct WhatsApp concierge support while in Morocco.</li>
+          <li><strong>Emergency & Safety:</strong> Ensuring we can assist you promptly in the unlikely event of travel disruptions, medical needs, or emergencies during your trip.</li>
+          <li><strong>Legal & Tax Compliance:</strong> Issuing official travel invoices and maintaining records as required by Moroccan fiscal and tourism authorities.</li>
+          <li><strong>Optional Newsletters:</strong> With your explicit consent, sending you curated seasonal Morocco travel stories, new route announcements, and exclusive offers. You can unsubscribe at any time.</li>
+        </ul>
+      </div>
 
-      <h2>5. Data Security & Storage</h2>
-      <p>We implement robust technical and organizational security measures to protect your personal data against unauthorized access, loss, or misuse. Your information is retained only as long as necessary to fulfill your booking and legal obligations.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s4">
+          <span class="section-icon"><i class="fa-solid fa-scale-balanced"></i></span>
+          4. Legal Basis for Processing
+        </h2>
+        <p>Under GDPR and Moroccan law, we only process your personal data where we have a valid legal basis:</p>
+        <ul>
+          <li><strong>Contractual Performance:</strong> Processing is strictly necessary to prepare your quote, confirm your reservations, and execute your tour contract.</li>
+          <li><strong>Legal Obligation:</strong> To comply with mandatory Moroccan hotel check-in registration laws and corporate tax accounting requirements.</li>
+          <li><strong>Legitimate Interest:</strong> To maintain website security, prevent fraud, answer your inquiries, and improve our services.</li>
+          <li><strong>Consent:</strong> For sending optional promotional communications. You may withdraw your consent at any time without penalty.</li>
+        </ul>
+      </div>
 
-      <h2>6. Your Rights</h2>
-      <p>You have the right to access, rectify, or request the deletion of your personal data at any time. To exercise these rights, please contact us at <a href="mailto:contact@discoverhiddenmorocco.com" style="color: var(--hm-terracotta); text-decoration: underline;">contact@discoverhiddenmorocco.com</a>.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s5">
+          <span class="section-icon"><i class="fa-solid fa-handshake"></i></span>
+          5. Data Sharing & Third Parties
+        </h2>
+        <p>We believe in absolute privacy. We <strong>never sell, rent, trade, or monetize</strong> your personal data to advertisers, data brokers, or marketing networks. We share your information exclusively with essential partners involved in delivering your tour:</p>
+        <ul>
+          <li><strong>Local Licensed Partners:</strong> Our vetted Moroccan drivers, licensed city guides in Fes/Marrakech, and desert camp managers (only the details necessary to provide your service).</li>
+          <li><strong>Accommodation Partners:</strong> Riads and boutique hotels to secure your room reservations in compliance with local hospitality regulations.</li>
+          <li><strong>Secure Payment Gateways:</strong> Certified, PCI-DSS-compliant payment processors who handle financial transactions with bank-grade encryption.</li>
+          <li><strong>AI Assistant (Chatbase):</strong> Our website chat assistant to answer instant queries. Conversations are fully anonymized and never linked to your personal profile.</li>
+        </ul>
+      </div>
 
-      <h2>7. Contact Us</h2>
-      <p>If you have any questions or concerns regarding this Privacy Policy, please contact our Marrakech HQ team via email or WhatsApp (+212 660-082066).</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s6">
+          <span class="section-icon"><i class="fa-solid fa-globe"></i></span>
+          6. International Data Transfers
+        </h2>
+        <p>Because we serve travelers worldwide, some of our technology providers (such as cloud hosting and email delivery) operate servers within the European Union or the United States.</p>
+        <p>When transferring personal data across borders, we ensure strict data protection standards are maintained through <strong>Standard Contractual Clauses (SCCs)</strong> approved by the European Commission, ensuring your data enjoys the same level of legal protection as inside the EU.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s7">
+          <span class="section-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+          7. Data Retention & Security
+        </h2>
+        <p>We keep your personal information only for as long as strictly necessary to fulfill the purposes outlined in this policy:</p>
+        <ul>
+          <li><strong>Booking & Financial Records:</strong> Retained for 7 years to comply with statutory Moroccan tax and audit obligations.</li>
+          <li><strong>Trip Inquiries & Messages:</strong> Retained for 3 years to assist you with future trip requests, after which they are securely purged.</li>
+          <li><strong>Marketing Subscriptions:</strong> Retained until you click "Unsubscribe" or request removal.</li>
+          <li><strong>Analytics Data:</strong> Anonymized data is retained for 26 months, after which it is automatically deleted.</li>
+        </ul>
+        <p>We employ enterprise-grade technical safeguards — including SSL/TLS 256-bit encryption, strict access controls, and firewall defenses — to protect your data against unauthorized access, alteration, or disclosure.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s8">
+          <span class="section-icon"><i class="fa-solid fa-user-shield"></i></span>
+          8. Your Rights Under GDPR & Moroccan Law
+        </h2>
+        <p>Depending on your location, you have strong legal rights regarding your personal information:</p>
+        <ul>
+          <li><strong>Right of Access (Art. 15 GDPR):</strong> You can request a copy of all personal data we hold about you.</li>
+          <li><strong>Right to Rectification (Art. 16 GDPR):</strong> You can ask us to correct inaccurate or incomplete details.</li>
+          <li><strong>Right to Erasure / "Right to be Forgotten" (Art. 17 GDPR):</strong> You can request the permanent deletion of your data when it is no longer required for legal or booking fulfillment purposes.</li>
+          <li><strong>Right to Restrict Processing (Art. 18 GDPR):</strong> You can ask us to pause processing your data under certain circumstances.</li>
+          <li><strong>Right to Data Portability (Art. 20 GDPR):</strong> You can request your data in a structured, machine-readable format.</li>
+          <li><strong>Right to Object (Art. 21 GDPR):</strong> You can object at any time to direct marketing communications.</li>
+        </ul>
+        <p>To exercise any of these rights, simply email our Privacy Officer at <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a>. We respond to all verified requests within 30 days without any fee.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s9">
+          <span class="section-icon"><i class="fa-solid fa-child"></i></span>
+          9. Children's Privacy
+        </h2>
+        <p>Our website is not intended for or marketed to children under 16 years of age. We do not knowingly collect personal data directly from minors. When families travel with children, all personal details must be provided directly by the parent or legal guardian.</p>
+        <p>If you believe a minor has submitted personal information through our website without parental consent, please contact us immediately and we will delete the data without delay.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s10">
+          <span class="section-icon"><i class="fa-solid fa-envelope"></i></span>
+          10. Policy Updates & Contact Us
+        </h2>
+        <p>We review and update this Privacy Policy at least annually to reflect changes in tourism regulations, legal standards, and our services. If we make significant changes, we will notify you by email or via a prominent banner on our website homepage.</p>
+        <p>For any questions, requests, or concerns regarding your privacy, please contact our team:</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a></li>
+          <li><strong>WhatsApp Concierge:</strong> <a href="https://wa.me/212660082066" target="_blank" rel="noopener">+212 660-082066</a></li>
+          <li><strong>Headquarters:</strong> Avenue Ennakhil, Marrakech 40160, Kingdom of Morocco</li>
+          <li><strong>Official Tourism Licence:</strong> n° CIMR-2024-MRK-002041</li>
+        </ul>
+      </div>
+
     </div>
   </main>
+
+  <!-- CTA Strip -->
+  <section class="privacy-cta">
+    <h2>Questions About Your Privacy?</h2>
+    <p>Our Marrakech concierge team is always here to answer any questions about your data security.</p>
+    <div class="privacy-cta-btns">
+      <a href="mailto:contact@discoverhiddenmorocco.com" class="btn-cta-white">
+        <i class="fa-solid fa-envelope"></i> Email Privacy Team
+      </a>
+      <a href="https://wa.me/212660082066" target="_blank" rel="noopener" class="btn-cta-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp Concierge
+      </a>
+    </div>
+  </section>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -580,7 +759,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=5"></script>
 </body>
 
 </html>

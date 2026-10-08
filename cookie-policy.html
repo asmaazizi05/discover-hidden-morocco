@@ -7,7 +7,7 @@
   <title>Cookie Policy — Discover Hidden Morocco</title>
   <meta name="description"
     content="Cookie Policy for Discover Hidden Morocco. Understand how cookies and local storage enhance your website experience.">
-  
+
   <!-- Open Graph / Social Media Preview Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://discoverhiddenmorocco.com/cookie-policy.html">
@@ -62,7 +62,7 @@
     }
 
     .hn-logo-text {
-      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-family: var(--hm-font-sans);
       font-size: 1.08rem;
       font-weight: 600;
       letter-spacing: 0.03em;
@@ -169,9 +169,7 @@
     }
 
     @media (max-width: 768px) {
-      .hn-nav {
-        padding: 12px 18px;
-      }
+      .hn-nav { padding: 12px 18px; }
 
       .hn-links {
         position: absolute;
@@ -202,15 +200,12 @@
         border-radius: 8px;
       }
 
-      .hamburger {
-        display: flex;
-      }
+      .hamburger { display: flex; }
     }
 
-    body {
-      background: var(--hm-bg-main);
-    }
+    body { background: var(--hm-bg-main); }
 
+    /* ── Page Hero ── */
     .legal-hero {
       padding: 160px 24px 60px;
       text-align: center;
@@ -218,7 +213,7 @@
     }
 
     .legal-hero h1 {
-      font-family: var(--hm-font-serif);
+      font-family: var(--hm-font-sans);
       font-size: clamp(2.4rem, 5vw, 3.4rem);
       color: var(--hm-text-heading);
       margin-bottom: 16px;
@@ -231,6 +226,36 @@
       margin: 0 auto;
     }
 
+    /* ── Table of Contents ── */
+    .toc-bar {
+      max-width: 900px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .toc-link {
+      padding: 7px 16px;
+      border-radius: 99px;
+      background: var(--hm-bg-card);
+      border: 1.5px solid var(--hm-border);
+      color: var(--hm-text-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .toc-link:hover {
+      background: linear-gradient(135deg, #C85A32, #E7A93C);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* ── Legal Card & Sections ── */
     .legal-content {
       max-width: 900px;
       margin: 0 auto 96px;
@@ -245,16 +270,36 @@
       box-shadow: var(--hm-shadow-md);
     }
 
-    .legal-card h2 {
-      font-family: var(--hm-font-serif);
-      font-size: 1.6rem;
-      color: var(--hm-text-heading);
-      margin-top: 36px;
-      margin-bottom: 16px;
+    .section-block {
+      border-left: 4px solid #C85A32;
+      padding-left: 24px;
+      margin-bottom: 44px;
     }
 
-    .legal-card h2:first-child {
+    .section-block:last-child { margin-bottom: 0; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
       margin-top: 0;
+      font-family: var(--hm-font-sans);
+      font-size: 1.35rem;
+      color: var(--hm-text-heading);
+    }
+
+    .section-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C85A32, #E7A93C);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     .legal-card p,
@@ -262,7 +307,7 @@
       font-size: 0.98rem;
       line-height: 1.8;
       color: var(--hm-text-body);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .legal-card ul {
@@ -270,6 +315,117 @@
       margin-bottom: 20px;
     }
 
+    .legal-card a {
+      color: var(--hm-terracotta);
+      text-decoration: underline;
+    }
+
+    /* ── Cookie Table ── */
+    .cookie-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.88rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .cookie-table th {
+      background: linear-gradient(135deg, #C85A32, #E7A93C);
+      color: #fff;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      font-family: var(--hm-font-sans);
+    }
+
+    .cookie-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hm-border);
+      color: var(--hm-text-body);
+      vertical-align: top;
+      background: var(--hm-bg-card);
+    }
+
+    .cookie-table tr:last-child td { border-bottom: none; }
+    .cookie-table tr:hover td { background: var(--hm-bg-card-hover); }
+
+    .cookie-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-essential { background: rgba(5, 150, 105, 0.12); color: #059669; border: 1px solid rgba(5,150,105,0.2); }
+    .badge-functional { background: rgba(59, 130, 246, 0.12); color: #3B82F6; border: 1px solid rgba(59,130,246,0.2); }
+    .badge-analytics { background: rgba(245, 158, 11, 0.15); color: #D97706; border: 1px solid rgba(245,158,11,0.2); }
+    .badge-third { background: rgba(200, 90, 50, 0.1); color: #C85A32; border: 1px solid rgba(200,90,50,0.2); }
+
+    /* ── CTA Strip ── */
+    .privacy-cta {
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .privacy-cta h2 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 14px;
+      font-family: var(--hm-font-sans);
+    }
+
+    .privacy-cta p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+    }
+
+    .privacy-cta-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 30px;
+      border-radius: 99px;
+      background: #fff;
+      color: #C85A32 !important;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none !important;
+      transition: all 0.25s;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .btn-cta-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 30px;
+      border-radius: 99px;
+      background: transparent;
+      color: #fff !important;
+      border: 2px solid rgba(255,255,255,0.7);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none !important;
+      transition: all 0.25s;
+    }
+
+    .btn-cta-white:hover { transform: translateY(-2px); }
+    .btn-cta-outline:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Footer ── */
     .footer {
       background: var(--hm-bg-footer);
       color: #94A3B8;
@@ -285,76 +441,31 @@
       margin-bottom: 48px;
     }
 
-    .footer-brand p {
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
 
-    .footer-socials {
-      display: flex;
-      gap: 12px;
-    }
+    .footer-socials { display: flex; gap: 12px; }
 
     .footer-socials a {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94A3B8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       text-decoration: none;
       transition: all 0.25s;
     }
 
-    .footer-socials a:hover {
-      background: var(--hm-terracotta);
-      border-color: var(--hm-terracotta);
-      color: #fff;
-    }
+    .footer-socials a:hover { background: var(--hm-terracotta); border-color: var(--hm-terracotta); color: #fff; }
 
-    .footer-col h4 {
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
+    .footer-col h4 { color: #fff; font-size: 0.95rem; font-weight: 700; margin-bottom: 20px; }
+    .footer-col ul { list-style: none; padding: 0; }
+    .footer-col ul li { margin-bottom: 11px; }
+    .footer-col ul li a { color: #94A3B8; font-size: 0.88rem; text-decoration: none; transition: color 0.25s; }
+    .footer-col ul li a:hover { color: var(--hm-gold); }
 
-    .footer-col ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 11px;
-    }
-
-    .footer-col ul li a {
-      color: #94A3B8;
-      font-size: 0.88rem;
-      text-decoration: none;
-      transition: color 0.25s;
-    }
-
-    .footer-col ul li a:hover {
-      color: var(--hm-gold);
-    }
-
-    .footer-contact-item {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin-bottom: 12px;
-      font-size: 0.88rem;
-    }
-
-    .footer-contact-item i {
-      color: var(--hm-terracotta);
-      margin-top: 3px;
-    }
+    .footer-contact-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; font-size: 0.88rem; }
+    .footer-contact-item i { color: var(--hm-terracotta); margin-top: 3px; }
 
     .footer-bottom {
       border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -367,32 +478,19 @@
       margin: 0 auto;
     }
 
-    .footer-bottom-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-bottom-links a {
-      color: #94A3B8;
-      text-decoration: none;
-      transition: color 0.25s;
-    }
-
-    .footer-bottom-links a:hover {
-      color: var(--hm-gold);
-    }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { color: #94A3B8; text-decoration: none; transition: color 0.25s; }
+    .footer-bottom-links a:hover { color: var(--hm-gold); }
 
     @media (max-width: 900px) {
-      .footer-inner {
-        grid-template-columns: 1fr;
-        gap: 36px;
-      }
+      .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    }
 
-      .footer-bottom {
-        flex-direction: column;
-        gap: 16px;
-        text-align: center;
-      }
+    @media (max-width: 640px) {
+      .legal-card { padding: 28px 20px; }
+      .cookie-table { font-size: 0.8rem; }
+      .cookie-table th, .cookie-table td { padding: 10px 12px; }
     }
   </style>
 </head>
@@ -414,7 +512,6 @@
         <li><a href="testimonials.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
 
-        <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
           <div class="mobile-settings-title">MORE SETTINGS</div>
           <div class="mobile-settings-icons">
@@ -435,7 +532,6 @@
           </div>
         </li>
 
-        <!-- Customize My Tour Button -->
         <li class="mobile-only-cta">
           <a href="#" class="mobile-book-btn custom-tour-trigger">
             Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
@@ -470,35 +566,190 @@
   </nav>
 
   <header class="legal-hero">
-    <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Cookie Policy</span>
+    <span class="badge badge-terracotta" style="margin-bottom: 16px;">🍪 Cookie Policy</span>
     <h1>Cookie Policy</h1>
-    <p>Last updated: September 2026. How we use cookies and local storage technology.</p>
+    <p>Last updated: September 2026 &middot; Version 1.2 &middot; How we use cookies to enhance your journey.</p>
   </header>
+
+  <!-- Table of Contents -->
+  <nav class="toc-bar" aria-label="Page sections">
+    <a href="#s1" class="toc-link">1. What Are Cookies?</a>
+    <a href="#s2" class="toc-link">2. Types We Use</a>
+    <a href="#s3" class="toc-link">3. Cookie Details</a>
+    <a href="#s4" class="toc-link">4. Third-Party Services</a>
+    <a href="#s5" class="toc-link">5. Your Consent</a>
+    <a href="#s6" class="toc-link">6. Managing Cookies</a>
+    <a href="#s7" class="toc-link">7. Do Not Track</a>
+    <a href="#s8" class="toc-link">8. Contact Us</a>
+  </nav>
 
   <main class="legal-content">
     <div class="legal-card">
-      <h2>1. What Are Cookies?</h2>
-      <p>Cookies are small text files stored on your device when you browse websites. They help remember your preferences, enhance site navigation, and enable key interactive features.</p>
 
-      <h2>2. How We Use Cookies & Local Storage</h2>
-      <p>Discover Hidden Morocco uses cookies and browser local storage for the following essential purposes:</p>
-      <ul>
-        <li><strong>Theme Preferences:</strong> Saving your chosen Light Mode or Dark Mode theme settings across pages.</li>
-        <li><strong>Language Selection:</strong> Remembering your selected language preference (EN, FR, ES).</li>
-        <li><strong>Wishlist & Favorites:</strong> Storing saved destinations in your personal wishlist so you can revisit them anytime.</li>
-        <li><strong>Analytics & Performance:</strong> Understanding visitor interactions to continually optimize page loading times and spatial map features.</li>
-      </ul>
+      <div class="section-block">
+        <h2 class="section-title" id="s1">
+          <span class="section-icon"><i class="fa-solid fa-cookie-bite"></i></span>
+          1. What Are Cookies?
+        </h2>
+        <p>Cookies are small text files stored on your device (computer, tablet, or phone) when you visit a website. They allow the website to remember your actions and preferences over time, so you don't have to re-enter them each time you return or navigate between pages.</p>
+        <p>We also use <strong>browser Local Storage</strong> — a similar technology built into modern browsers that allows us to save lightweight preference data directly on your device without sending it to our servers on each page load.</p>
+      </div>
 
-      <h2>3. Third-Party Services</h2>
-      <p>Our website integrates trusted third-party resources such as Leaflet maps and FontAwesome icons. These providers may set technical cookies necessary for rendering spatial maps or font icons.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s2">
+          <span class="section-icon"><i class="fa-solid fa-layer-group"></i></span>
+          2. Types of Cookies We Use
+        </h2>
+        <p>We use four categories of cookies, following the standard industry classification recognized by GDPR and the ePrivacy Directive:</p>
+        <ul>
+          <li><strong>Strictly Necessary Cookies:</strong> Essential for the website to function correctly. These cannot be disabled. They ensure security, session management, and core interactive features.</li>
+          <li><strong>Functional / Preference Cookies:</strong> Remember your choices such as language, dark/light mode, and wishlist items to provide a personalized experience.</li>
+          <li><strong>Performance / Analytics Cookies:</strong> Anonymously measure how visitors use the site (which pages are most popular, how long people stay). This helps us improve our content and navigation.</li>
+          <li><strong>Third-Party Cookies:</strong> Set by trusted external services we embed (e.g., interactive maps, AI assistant). These have their own privacy policies.</li>
+        </ul>
+      </div>
 
-      <h2>4. Managing Your Cookie Preferences</h2>
-      <p>You can manage or disable cookies directly through your web browser settings. Please note that disabling cookies may affect your ability to save wishlist items or preserve theme preferences.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="s3">
+          <span class="section-icon"><i class="fa-solid fa-table-list"></i></span>
+          3. Cookie Details
+        </h2>
+        <p>Below is a detailed list of the cookies and local storage keys used on Discover Hidden Morocco:</p>
 
-      <h2>5. Contact Us</h2>
-      <p>If you have any questions about our Cookie Policy, please reach out via email to <a href="mailto:contact@discoverhiddenmorocco.com" style="color: var(--hm-terracotta); text-decoration: underline;">contact@discoverhiddenmorocco.com</a>.</p>
+        <table class="cookie-table">
+          <thead>
+            <tr>
+              <th>Name / Key</th>
+              <th>Type</th>
+              <th>Purpose</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>hm_theme</code></td>
+              <td><span class="cookie-badge badge-functional">Functional</span></td>
+              <td>Saves your Light or Dark mode preference across all pages.</td>
+              <td>Local Storage (persistent)</td>
+            </tr>
+            <tr>
+              <td><code>hm_lang</code></td>
+              <td><span class="cookie-badge badge-functional">Functional</span></td>
+              <td>Saves your selected language (EN, FR, ES) so you don't need to re-select on each visit.</td>
+              <td>Local Storage (persistent)</td>
+            </tr>
+            <tr>
+              <td><code>hm_favorites</code></td>
+              <td><span class="cookie-badge badge-functional">Functional</span></td>
+              <td>Stores the list of destinations you saved to your personal Wishlist.</td>
+              <td>Local Storage (persistent)</td>
+            </tr>
+            <tr>
+              <td><code>_ga</code>, <code>_gid</code></td>
+              <td><span class="cookie-badge badge-analytics">Analytics</span></td>
+              <td>Google Analytics cookies used to distinguish users and collect anonymized data about page visits and user behavior. No personal identifiers are shared.</td>
+              <td>2 years / 24 hours</td>
+            </tr>
+            <tr>
+              <td>Leaflet Maps</td>
+              <td><span class="cookie-badge badge-essential">Essential</span></td>
+              <td>Technical cookies set when you use the Interactive Map feature. Required for the map tiles and geolocation features to function.</td>
+              <td>Session</td>
+            </tr>
+            <tr>
+              <td>Chatbase AI</td>
+              <td><span class="cookie-badge badge-third">Third-Party</span></td>
+              <td>Our AI chat assistant (Chatbase) may set session identifiers to maintain conversation context. Conversation data is anonymized. See <a href="https://www.chatbase.co/privacy" target="_blank" rel="noopener">Chatbase Privacy Policy</a>.</td>
+              <td>Session / 30 days</td>
+            </tr>
+            <tr>
+              <td>Font Awesome CDN</td>
+              <td><span class="cookie-badge badge-essential">Essential</span></td>
+              <td>Technical cookies set by our icon library provider (Cloudflare CDN). Used for loading website icons efficiently.</td>
+              <td>Session</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s4">
+          <span class="section-icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+          4. Third-Party Services & Their Cookies
+        </h2>
+        <p>Our website integrates trusted third-party services that may place their own cookies. We do not control these cookies and recommend reviewing each provider's individual policy:</p>
+        <ul>
+          <li><strong>Google Analytics:</strong> For anonymized traffic analysis. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>. You can opt out via the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.</li>
+          <li><strong>Leaflet / OpenStreetMap:</strong> For the interactive destination map. <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OSM Privacy Policy</a>.</li>
+          <li><strong>Chatbase AI Assistant:</strong> For our AI chat widget. <a href="https://www.chatbase.co/privacy" target="_blank" rel="noopener">Chatbase Privacy Policy</a>.</li>
+          <li><strong>Font Awesome (Cloudflare CDN):</strong> For loading our icon library. <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare Privacy Policy</a>.</li>
+        </ul>
+        <p>We do <strong>not</strong> use advertising or marketing cookies, retargeting pixels, or social media tracking cookies.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s5">
+          <span class="section-icon"><i class="fa-solid fa-check-circle"></i></span>
+          5. Your Consent
+        </h2>
+        <p>By continuing to use the Discover Hidden Morocco website, you acknowledge our use of <strong>strictly necessary</strong> and <strong>functional</strong> cookies, which are required for the site to work correctly and personalize your experience.</p>
+        <p>For <strong>analytics cookies</strong>, we only use anonymized, aggregated data (no personal identifiers). If you wish to opt out of analytics tracking entirely, you can use the Google Analytics opt-out add-on or adjust your browser settings.</p>
+        <p>We do not use a cookie consent pop-up for mandatory/functional cookies as they are essential to the service. This is consistent with ePrivacy Directive guidance for cookies that are strictly necessary for the website's operation.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s6">
+          <span class="section-icon"><i class="fa-solid fa-sliders"></i></span>
+          6. Managing & Disabling Cookies
+        </h2>
+        <p>You can control and manage cookies in your web browser settings. Here is how to do it in the most popular browsers:</p>
+        <ul>
+          <li><strong>Google Chrome:</strong> Settings → Privacy and Security → Cookies and other site data</li>
+          <li><strong>Mozilla Firefox:</strong> Options → Privacy & Security → Cookies and Site Data</li>
+          <li><strong>Apple Safari:</strong> Preferences → Privacy → Manage Website Data</li>
+          <li><strong>Microsoft Edge:</strong> Settings → Privacy, search, and services → Cookies and site permissions</li>
+        </ul>
+        <p><strong>Please note:</strong> Disabling cookies or clearing your Local Storage will affect your experience. Specifically, your saved Wishlist destinations, Dark/Light mode preference, and language selection will be lost and reset to defaults on each visit.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s7">
+          <span class="section-icon"><i class="fa-solid fa-ban"></i></span>
+          7. Do Not Track (DNT) Signals
+        </h2>
+        <p>Some browsers include a "Do Not Track" (DNT) feature that sends a signal to websites requesting that your browsing not be tracked. Currently, there is no universal standard for how websites should respond to DNT signals. Our website does not alter its behavior in response to DNT signals, as we already limit our tracking to anonymized analytics data only.</p>
+      </div>
+
+      <div class="section-block">
+        <h2 class="section-title" id="s8">
+          <span class="section-icon"><i class="fa-solid fa-envelope"></i></span>
+          8. Contact Us & Policy Updates
+        </h2>
+        <p>If you have any questions about our Cookie Policy or how we use cookies on the Discover Hidden Morocco website, please contact us:</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a></li>
+          <li><strong>WhatsApp:</strong> <a href="https://wa.me/212660082066" target="_blank" rel="noopener">+212 660-082066</a></li>
+          <li><strong>Address:</strong> Avenue Ennakhil, Marrakech 40160, Morocco</li>
+        </ul>
+        <p>We review and update this Cookie Policy at least once a year, or sooner if required by changes in law or our technical setup. This policy was last updated: <strong>September 2026</strong>. Version: <strong>1.2</strong>.</p>
+      </div>
+
     </div>
   </main>
+
+  <!-- CTA Strip -->
+  <section class="privacy-cta">
+    <h2>Questions About Our Cookies?</h2>
+    <p>Our Marrakech team is happy to clarify anything about how we protect your privacy online.</p>
+    <div class="privacy-cta-btns">
+      <a href="mailto:contact@discoverhiddenmorocco.com" class="btn-cta-white">
+        <i class="fa-solid fa-envelope"></i> Email Us
+      </a>
+      <a href="https://wa.me/212660082066" target="_blank" rel="noopener" class="btn-cta-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+      </a>
+    </div>
+  </section>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -569,7 +820,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=5"></script>
 </body>
 
 </html>
