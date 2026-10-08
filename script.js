@@ -3,6 +3,130 @@
    Terracotta & Sahara Gold Theme, Wishlist, Language Switcher, Maps, Search
    ========================================================================== */
 
+/* ── Chatbase AI Assistant Widget & Global Initialization ────────────────── */
+(function () {
+  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+    window.chatbase = (...arguments) => {
+      if (!window.chatbase.q) {
+        window.chatbase.q = [];
+      }
+      window.chatbase.q.push(arguments);
+    };
+    window.chatbase = new Proxy(window.chatbase, {
+      get(target, prop) {
+        if (prop === "q") {
+          return target.q;
+        }
+        return (...args) => target(prop, ...args);
+      }
+    });
+  }
+  const onLoad = function () {
+    if (document.getElementById("aVrkUFtVzGoLUuzNCYVP0")) return;
+    const script = document.createElement("script");
+    script.src = "https://www.chatbase.co/embed.min.js";
+    script.id = "aVrkUFtVzGoLUuzNCYVP0";
+    script.domain = "www.chatbase.co";
+    script.defer = true;
+    document.body ? document.body.appendChild(script) : document.addEventListener("DOMContentLoaded", () => document.body.appendChild(script));
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onLoad);
+  } else {
+    onLoad();
+  }
+})();
+
+/* ── Force Chatbase Position to Bottom-LEFT & Sync Themes ────────────────── */
+(function () {
+  function adjustChatbase() {
+    const btn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
+    if (btn) {
+      btn.style.setProperty('bottom', '25px', 'important');
+      btn.style.setProperty('left', '25px', 'important');
+      btn.style.setProperty('right', 'auto', 'important');
+      btn.style.setProperty('z-index', '99999', 'important');
+      btn.style.setProperty('width', '52px', 'important');
+      btn.style.setProperty('height', '52px', 'important');
+      btn.style.setProperty('border-radius', '50%', 'important');
+      btn.style.setProperty('display', 'flex', 'important');
+      btn.style.setProperty('align-items', 'center', 'important');
+      btn.style.setProperty('justify-content', 'center', 'important');
+      btn.style.setProperty('box-shadow', '0 4px 25px rgba(200, 90, 50, 0.5)', 'important');
+      btn.style.setProperty('border', '2px solid #C85A32', 'important');
+
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
+      if (isDark) {
+        btn.style.setProperty('background', '#0F172A', 'important');
+      } else {
+        btn.style.setProperty('background', '#FFFFFF', 'important');
+      }
+
+      const svgs = btn.querySelectorAll('svg, svg path, svg g');
+      svgs.forEach(function (el) {
+        el.style.setProperty('fill', '#C85A32', 'important');
+        el.style.setProperty('color', '#C85A32', 'important');
+      });
+    }
+
+    const win = document.getElementById('chatbase-bubble-window');
+    if (win) {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
+      
+      win.style.setProperty('bottom', '90px', 'important');
+      win.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
+      win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
+      win.style.setProperty('border-radius', '12px', 'important');
+      win.style.setProperty('overflow', 'hidden', 'important');
+      win.style.setProperty('background-color', isDark ? '#0A0A14' : '#FAFAFA', 'important');
+
+      try {
+        if (window.chatbase && window.chatbase_current_theme !== isDark) {
+          window.chatbase("setOptions", { 
+            theme: isDark ? 'dark' : 'light',
+            styles: { 
+              theme: isDark ? 'dark' : 'light'
+            }
+          });
+          const iframe = win.querySelector('iframe');
+          if (iframe && iframe.contentWindow) {
+            try {
+              iframe.contentWindow.postMessage({
+                type: "chatbase_theme",
+                theme: isDark ? 'dark' : 'light'
+              }, "*");
+            } catch(err){}
+          }
+          window.chatbase_current_theme = isDark;
+        }
+      } catch (e) {}
+
+      if (window.innerWidth <= 640) {
+        win.style.setProperty('left', '12px', 'important');
+        win.style.setProperty('right', '12px', 'important');
+      } else {
+        win.style.setProperty('left', '25px', 'important');
+        win.style.setProperty('right', 'auto', 'important');
+      }
+    }
+  }
+
+  if (window.MutationObserver) {
+    const observer = new MutationObserver(adjustChatbase);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+  }
+  setInterval(adjustChatbase, 300);
+})();
+
+
+
 // ── Application State ──────────────────────────────────────────────────────
 const AppState = {
   theme: localStorage.getItem('hm_theme') || 'light',
@@ -2536,118 +2660,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 200);
   }
 });
-
-// ── Chatbase AI Assistant Widget ──────────────────────────────────────────────
-(function () {
-  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-    window.chatbase = (...arguments) => {
-      if (!window.chatbase.q) {
-        window.chatbase.q = [];
-      }
-      window.chatbase.q.push(arguments);
-    };
-    window.chatbase = new Proxy(window.chatbase, {
-      get(target, prop) {
-        if (prop === "q") {
-          return target.q;
-        }
-        return (...args) => target(prop, ...args);
-      }
-    });
-  }
-  const onLoad = function () {
-      const script = document.createElement("script");
-      script.src = "https://www.chatbase.co/embed.min.js";
-      script.id = "aVrkUFtVzGoLUuzNCYVP0";
-      script.domain = "www.chatbase.co";
-      script.defer = true;
-      document.body.appendChild(script);
-    };
-    onLoad();
-})();
-
-// ── Force Chatbase Position to Bottom-LEFT (avoid #backToTop on the right) & Dynamic Theme Colors ─────────
-(function () {
-  function adjustChatbase() {
-    const btn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
-    if (btn) {
-      btn.style.setProperty('bottom', '25px', 'important');
-      btn.style.setProperty('left', '25px', 'important');
-      btn.style.setProperty('right', 'auto', 'important');
-      btn.style.setProperty('z-index', '99999', 'important');
-      btn.style.setProperty('width', '52px', 'important');
-      btn.style.setProperty('height', '52px', 'important');
-      btn.style.setProperty('border-radius', '50%', 'important');
-      btn.style.setProperty('display', 'flex', 'important');
-      btn.style.setProperty('align-items', 'center', 'important');
-      btn.style.setProperty('justify-content', 'center', 'important');
-      btn.style.setProperty('box-shadow', '0 4px 25px rgba(200, 90, 50, 0.5)', 'important');
-      btn.style.setProperty('border', '2px solid #C85A32', 'important');
-
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      if (isDark) {
-        btn.style.setProperty('background', '#0F172A', 'important');
-      } else {
-        btn.style.setProperty('background', '#FFFFFF', 'important');
-      }
-
-      const svgs = btn.querySelectorAll('svg, svg path, svg g');
-      svgs.forEach(function (el) {
-        el.style.setProperty('fill', '#C85A32', 'important');
-        el.style.setProperty('color', '#C85A32', 'important');
-      });
-    }
-
-    const win = document.getElementById('chatbase-bubble-window');
-    if (win) {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      
-      win.style.setProperty('bottom', '90px', 'important');
-      
-      win.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
-      win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
-      win.style.setProperty('border-radius', '12px', 'important');
-      win.style.setProperty('overflow', 'hidden', 'important');
-      win.style.setProperty('background-color', isDark ? '#0A0A14' : '#FAFAFA', 'important');
-
-      try {
-          if (window.chatbase && window.chatbase_current_theme !== isDark) {
-              window.chatbase("setOptions", { 
-                  theme: isDark ? 'dark' : 'light',
-                  styles: { 
-                      theme: isDark ? 'dark' : 'light'
-                  }
-              });
-              // Force background for the iframe wrapper
-              const iframe = win.querySelector('iframe');
-              if (iframe && iframe.contentWindow) {
-                  try {
-                      iframe.contentWindow.postMessage({
-                          type: "chatbase_theme",
-                          theme: isDark ? 'dark' : 'light'
-                      }, "*");
-                  } catch(err){}
-              }
-              window.chatbase_current_theme = isDark;
-          }
-      } catch (e) {}
-
-      if (window.innerWidth <= 640) {
-        win.style.setProperty('left', '12px', 'important');
-        win.style.setProperty('right', '12px', 'important');
-      } else {
-        win.style.setProperty('left', '25px', 'important');
-        win.style.setProperty('right', 'auto', 'important');
-      }
-    }
-  }
-
-  if (window.MutationObserver) {
-    const observer = new MutationObserver(adjustChatbase);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-  setInterval(adjustChatbase, 350);
-})();
-
 
