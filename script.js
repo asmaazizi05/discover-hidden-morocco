@@ -2537,17 +2537,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   const onLoad = function () {
-    const script = document.createElement("script");
-    script.src = "https://www.chatbase.co/embed.min.js";
-    script.id = "aVrkUFtVzGoLUuzNCYVP0";
-    script.domain = "www.chatbase.co";
-    document.body.appendChild(script);
-  };
-  if (document.readyState === "complete") {
+      const script = document.createElement("script");
+      script.src = "https://www.chatbase.co/embed.min.js";
+      script.id = "aVrkUFtVzGoLUuzNCYVP0";
+      script.domain = "www.chatbase.co";
+      script.defer = true;
+      document.body.appendChild(script);
+    };
     onLoad();
-  } else {
-    window.addEventListener("load", onLoad);
-  }
 })();
 
 // ── Force Chatbase Position to Bottom-LEFT (avoid #backToTop on the right) & Dynamic Theme Colors ─────────
@@ -2584,7 +2581,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const win = document.getElementById('chatbase-bubble-window');
     if (win) {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
+      
       win.style.setProperty('bottom', '90px', 'important');
+      
+      win.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
+      win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
+      win.style.setProperty('border-radius', '12px', 'important');
+      win.style.setProperty('overflow', 'hidden', 'important');
+      win.style.setProperty('background-color', isDark ? '#0A0A14' : '#FAFAFA', 'important');
+
+      try {
+          if (window.chatbase) {
+              window.chatbase('update', { theme: isDark ? 'dark' : 'light' });
+          }
+      } catch (e) {}
+
       if (window.innerWidth <= 640) {
         win.style.setProperty('left', '12px', 'important');
         win.style.setProperty('right', '12px', 'important');
