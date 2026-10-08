@@ -300,6 +300,25 @@ function initTheme() {
       if (document.body) document.body.setAttribute('data-theme', AppState.theme);
       updateThemeIcon();
       showToast(`Switched to ${AppState.theme.toUpperCase()} mode ✨`);
+      // ── Sync Chatbase AI theme instantly when toggle is clicked ──────────
+      try {
+        const cbTheme = AppState.theme === 'dark' ? 'dark' : 'light';
+        if (window.chatbot && typeof window.chatbot.setTheme === 'function') {
+          window.chatbot.setTheme(cbTheme);
+        } else if (window.chatbase && typeof window.chatbase === 'function') {
+          window.chatbase('setOptions', { theme: cbTheme });
+        }
+        const cbWin = document.getElementById('chatbase-bubble-window');
+        if (cbWin) {
+          cbWin.style.setProperty('background-color', cbTheme === 'dark' ? '#0F172A' : '#FFFFFF', 'important');
+          cbWin.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
+          cbWin.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
+        }
+        const cbBtn = document.getElementById('chatbase-bubble-button');
+        if (cbBtn) {
+          cbBtn.style.setProperty('background', cbTheme === 'dark' ? '#0F172A' : '#FFFFFF', 'important');
+        }
+      } catch(e) {}
     });
   });
 }
