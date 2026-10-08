@@ -2661,3 +2661,33 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+
+
+// Scroll Reveal Animations
+document.addEventListener('DOMContentLoaded', () => {
+  // Dynamically add reveal classes to elements if they don't have them
+  document.querySelectorAll('section h2, .section-title').forEach(el => el.classList.add('reveal-up'));
+  document.querySelectorAll('section p').forEach(el => el.classList.add('reveal-up'));
+  document.querySelectorAll('.destination-card, .tour-card, .value-card, .team-card, .review-card').forEach((el, index) => {
+    el.classList.add('reveal-up');
+    el.style.transitionDelay = (index % 3) * 0.15 + 's';
+  });
+  document.querySelectorAll('.story-img-main').forEach(el => el.classList.add('reveal-left'));
+  document.querySelectorAll('.story-img-accent').forEach(el => el.classList.add('reveal-right'));
+
+  const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+});

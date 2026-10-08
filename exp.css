@@ -101,7 +101,7 @@
 }
 
 .exp-hero-title h2 {
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: 'Open Sans', sans-serif !important;
   font-size: clamp(2rem, 3.5vw, 2.6rem) !important;
   color: #FFFFFF !important;
   margin: 0 0 12px !important;

@@ -1565,3 +1565,10 @@ button[id*="chatbase"] {
     max-width: calc(100vw - 24px) !important;
   }
 }
+
+/* Scroll Reveal Animations */
+.reveal-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.reveal-active { opacity: 1; transform: translate(0, 0) scale(1); }
