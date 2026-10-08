@@ -64,7 +64,7 @@
     }
 
     .hn-logo-text {
-      font-family: var(--hm-font-serif, 'Playfair Display', Georgia, serif);
+      font-family: var(--hm-font-sans);
       font-size: 1.08rem;
       font-weight: 600;
       letter-spacing: 0.03em;
@@ -220,7 +220,7 @@
     }
 
     .page-hero h1 {
-      font-family: var(--hm-font-serif, serif);
+      font-family: var(--hm-font-sans);
       font-size: clamp(2.6rem, 5.5vw, 4rem);
       color: var(--hm-text-heading);
       letter-spacing: -0.02em;
@@ -268,7 +268,7 @@
     }
 
     .rating-big .big-num {
-      font-family: var(--hm-font-serif, serif);
+      font-family: var(--hm-font-sans);
       font-size: 5.5rem;
       font-weight: 800;
       line-height: 1;
@@ -447,7 +447,7 @@
     }
 
     .cta-strip h2 {
-      font-family: var(--hm-font-serif);
+      font-family: var(--hm-font-sans);
       font-size: 2.2rem;
       color: #fff;
       margin-bottom: 14px;
@@ -507,6 +507,158 @@
         grid-template-columns: 1fr;
         gap: 30px;
         text-align: center;
+      }
+    }
+
+    /* ── Review Filter Bar ── */
+    .review-filters-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+      padding: 18px 24px;
+      background: var(--hm-bg-card);
+      border: 1px solid var(--hm-border);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .star-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .review-filter-btn {
+      padding: 8px 18px;
+      border-radius: 99px;
+      border: 1.5px solid var(--hm-border);
+      background: transparent;
+      color: var(--hm-text-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: var(--hm-font-sans);
+    }
+
+    .review-filter-btn:hover,
+    .review-filter-btn.active {
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(200, 90, 50, 0.35);
+    }
+
+    .dest-filter-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dest-filter-badge {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--hm-text-muted);
+      white-space: nowrap;
+    }
+
+    .dest-select-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .dest-select-box select {
+      appearance: none;
+      background: var(--hm-bg-main);
+      border: 1.5px solid var(--hm-border);
+      color: var(--hm-text-heading);
+      padding: 9px 36px 9px 14px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.25s;
+      font-family: var(--hm-font-sans);
+    }
+
+    .dest-select-box select:focus {
+      border-color: #C85A32;
+    }
+
+    .dest-select-arrow {
+      position: absolute;
+      right: 12px;
+      color: var(--hm-text-muted);
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    /* ── Review Modal ── */
+    .review-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .review-modal-backdrop.open {
+      display: flex;
+    }
+
+    .review-modal-card {
+      background: var(--hm-bg-card);
+      border: 1px solid var(--hm-border);
+      border-radius: 28px;
+      padding: 48px 40px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--hm-border);
+      background: var(--hm-bg-main);
+      color: var(--hm-text-heading);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      border-color: #C85A32;
+      color: #C85A32;
+    }
+
+    @media (max-width: 640px) {
+      .review-filters-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .review-modal-card {
+        padding: 32px 20px;
       }
     }
   </style>
@@ -654,7 +806,7 @@
 
       <!-- Dynamic Reviews Grid Container -->
       <div class="reviews-grid" id="reviewsGridContainer">
-        <!-- Rendered dynamically via script.js -->
+        <!-- Rendered dynamically via script.js?v=5 -->
       </div>
     </div>
   </section>
@@ -665,7 +817,7 @@
       <button class="modal-close-btn" onclick="closeReviewModal()" aria-label="Close Modal">&times;</button>
       <div style="text-align: center; margin-bottom: 24px;">
         <span class="badge badge-gold" style="margin-bottom: 10px; display: inline-block;">✍️ Share Your Experience</span>
-        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.75rem; color: var(--hm-text-heading); margin-bottom: 6px;">Leave a Review & Comment</h3>
+        <h3 style="font-family: var(--hm-font-sans); font-size: 1.75rem; color: var(--hm-text-heading); margin-bottom: 6px;">Leave a Review & Comment</h3>
         <p style="color: var(--hm-text-muted); font-size: 0.9rem;">Have you traveled with Discover Hidden Morocco? We'd love to hear your feedback!</p>
       </div>
 
@@ -721,8 +873,6 @@
       </form>
     </div>
   </div>
-    </div>
-  </section>
 
   <section class="cta-strip">
     <h2>Ready to Write Your Story?</h2>
@@ -739,7 +889,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=5"></script>
 </body>
 
 </html>
