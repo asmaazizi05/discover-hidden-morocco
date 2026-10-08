@@ -2550,13 +2550,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })();
 
-// ── Force Chatbase Position Above #backToTop & Dynamic Theme Colors ─────────
+// ── Force Chatbase Position to Bottom-LEFT (avoid #backToTop on the right) & Dynamic Theme Colors ─────────
 (function () {
   function adjustChatbase() {
     const btn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
     if (btn) {
       btn.style.setProperty('bottom', '25px', 'important');
-      btn.style.setProperty('right', '25px', 'important');
+      btn.style.setProperty('left', '25px', 'important');
+      btn.style.setProperty('right', 'auto', 'important');
       btn.style.setProperty('z-index', '99999', 'important');
       btn.style.setProperty('width', '52px', 'important');
       btn.style.setProperty('height', '52px', 'important');
@@ -2584,7 +2585,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const win = document.getElementById('chatbase-bubble-window');
     if (win) {
       win.style.setProperty('bottom', '90px', 'important');
-      win.style.setProperty('right', '25px', 'important');
+      if (window.innerWidth <= 640) {
+        win.style.setProperty('left', '12px', 'important');
+        win.style.setProperty('right', '12px', 'important');
+      } else {
+        win.style.setProperty('left', '25px', 'important');
+        win.style.setProperty('right', 'auto', 'important');
+      }
     }
   }
 
