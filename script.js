@@ -1887,8 +1887,8 @@ function initCustomTourDOM() {
             <input type="text" id="ctNameInput" class="ct-input" placeholder="e.g. Sarah Jenkins" required>
           </div>
           <div class="ct-input-group">
-            <label class="ct-label">Email Address <span class="req">*</span></label>
-            <input type="email" id="ctEmailInput" class="ct-input" placeholder="e.g. sarah@example.com" required>
+            <label class="ct-label">Email Address <span style="font-size: 0.8rem; font-weight: 400; color: var(--hm-text-muted);">(Optional)</span></label>
+            <input type="email" id="ctEmailInput" class="ct-input" placeholder="e.g. sarah@example.com">
           </div>
           <div class="ct-input-group">
             <label class="ct-label">Phone / WhatsApp <span class="req">*</span></label>
@@ -2151,7 +2151,7 @@ window.nextCTStep = function () {
     const phone = document.getElementById('ctPhoneInput')?.value.trim();
     const dates = document.getElementById('ctDatesInput')?.value.trim();
 
-    if (!name || !email || !phone || !dates) {
+    if (!name || !phone || !dates) {
       showToast('Please complete all required contact fields');
       return;
     }
