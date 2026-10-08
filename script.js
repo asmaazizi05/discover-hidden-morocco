@@ -2592,8 +2592,24 @@ document.addEventListener('DOMContentLoaded', function () {
       win.style.setProperty('background-color', isDark ? '#0A0A14' : '#FAFAFA', 'important');
 
       try {
-          if (window.chatbase) {
-              window.chatbase('update', { theme: isDark ? 'dark' : 'light' });
+          if (window.chatbase && window.chatbase_current_theme !== isDark) {
+              window.chatbase("setOptions", { 
+                  theme: isDark ? 'dark' : 'light',
+                  styles: { 
+                      theme: isDark ? 'dark' : 'light'
+                  }
+              });
+              // Force background for the iframe wrapper
+              const iframe = win.querySelector('iframe');
+              if (iframe && iframe.contentWindow) {
+                  try {
+                      iframe.contentWindow.postMessage({
+                          type: "chatbase_theme",
+                          theme: isDark ? 'dark' : 'light'
+                      }, "*");
+                  } catch(err){}
+              }
+              window.chatbase_current_theme = isDark;
           }
       } catch (e) {}
 
