@@ -2533,16 +2533,14 @@ function renderCardsIntoGrid(container, reviews) {
     const card = document.createElement('div');
     card.className = 'review-card';
     const starsStr = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
-    const verifiedBadge = r.verified 
-      ? `<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>`
-      : '';
+    const verifiedBadge = r.verified ? '<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' : '';
 
-          const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-      const adminActions = isAdmin ? `<div style="position:absolute; top: 10px; right: 10px; display:flex; gap: 8px; z-index: 10;"><button onclick="editReview('')" title="Edit" style="background:#E7A93C; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-pen"></i></button><button onclick="deleteReview('')" title="Delete" style="background:#dc3545; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-trash"></i></button></div>` : '';
+    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+    const adminActions = isAdmin ? `<div style="position:absolute; top: 10px; right: 10px; display:flex; gap: 8px; z-index: 10;"><button onclick="editReview('')" title="Edit" style="background:#E7A93C; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-pen"></i></button><button onclick="deleteReview('')" title="Delete" style="background:#dc3545; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-trash"></i></button></div>` : '';
 
-      card.style.position = 'relative';
-      card.innerHTML = `
-        <div class="review-header">
+    card.style.position = 'relative';
+    card.innerHTML = adminActions + `
+      <div class="review-header">
         <div class="review-stars" style="color:#E7A93C;">${starsStr}</div>
         ${verifiedBadge}
       </div>
@@ -2701,3 +2699,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.deleteReview = function(id) { if(!confirm('Voulez-vous vraiment supprimer cet avis ?')) return; const db = getReviewsDatabase(); const filtered = db.filter(r => r.id !== id); saveReviewsDatabase(filtered); refreshReviewsView(); };
 window.editReview = function(id) { const db = getReviewsDatabase(); const review = db.find(r => r.id === id); if(!review) return; const newText = prompt('Modifier le texte de l\'avis :', review.text); if(newText !== null && newText.trim() !== '') { review.text = newText.trim(); saveReviewsDatabase(db); refreshReviewsView(); } };
+
+
+
