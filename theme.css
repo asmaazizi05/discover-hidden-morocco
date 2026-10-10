@@ -5076,6 +5076,8 @@ button[id*="chatbase"] {
   border: 2px solid #C85A32 !important;
 }
 
+#chatbase-message-bubbles, #chatbase-message-bubble, div[id*='chatbase-message'] { bottom: 35px !important; left: 85px !important; right: auto !important; z-index: 99998 !important; }
+
 #chatbase-bubble-window {
   bottom: 90px !important;
   left: 25px !important;
@@ -5088,7 +5090,9 @@ button[id*="chatbase"] {
 }
 
 @media (max-width: 640px) {
-  #chatbase-bubble-window {
+  #chatbase-message-bubbles, #chatbase-message-bubble, div[id*='chatbase-message'] { bottom: 35px !important; left: 85px !important; right: auto !important; z-index: 99998 !important; }
+
+#chatbase-bubble-window {
     left: 12px !important;
     right: 12px !important;
     max-width: calc(100vw - 24px) !important;
