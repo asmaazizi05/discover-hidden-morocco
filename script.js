@@ -2308,10 +2308,18 @@ function getReviewsDatabase() {
     try {
       let parsed = JSON.parse(stored);
       if (Array.isArray(parsed)) {
-        // Clean out legacy mock seed reviews (rev_1 through rev_6) if present from previous sessions
+        let changed = false;
         const seedIds = ['rev_1', 'rev_2', 'rev_3', 'rev_4', 'rev_5', 'rev_6'];
-        const cleaned = parsed.filter(r => !seedIds.includes(r.id));
-        if (cleaned.length !== parsed.length) {
+        let cleaned = parsed.filter(r => !seedIds.includes(r.id));
+        
+        cleaned.forEach((r, i) => {
+          if (!r.id) {
+            r.id = 'rev_' + Date.now() + '_' + i;
+            changed = true;
+          }
+        });
+        
+        if (cleaned.length !== parsed.length || changed) {
           localStorage.setItem('hm_reviews_dataset', JSON.stringify(cleaned));
         }
         return cleaned;
@@ -2536,7 +2544,8 @@ function renderCardsIntoGrid(container, reviews) {
     const verifiedBadge = r.verified ? '<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' : '';
 
     const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-    const adminActions = isAdmin ? `<div style="position:absolute; top: 10px; right: 10px; display:flex; gap: 8px; z-index: 10;"><button onclick="editReview('')" title="Edit" style="background:#E7A93C; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-pen"></i></button><button onclick="deleteReview('')" title="Delete" style="background:#dc3545; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-trash"></i></button></div>` : '';
+    const canEdit = isAdmin || r.isMine;
+    const adminActions = canEdit ? `<div style="position:absolute; top: -12px; right: -12px; display:flex; gap: 6px; z-index: 10;"><button onclick="editReview('${r.id}')" title="Modifier l'avis" style="background:var(--hm-bg-card); color:var(--hm-text-heading); border:1px solid var(--hm-border); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.color='#E7A93C';this.style.borderColor='#E7A93C'" onmouseout="this.style.color='var(--hm-text-heading)';this.style.borderColor='var(--hm-border)'"><i class="fa-solid fa-pen"></i></button><button onclick="deleteReview('${r.id}')" title="Supprimer l'avis" style="background:var(--hm-bg-card); color:var(--hm-text-heading); border:1px solid var(--hm-border); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.color='#dc3545';this.style.borderColor='#dc3545'" onmouseout="this.style.color='var(--hm-text-heading)';this.style.borderColor='var(--hm-border)'"><i class="fa-solid fa-trash"></i></button></div>` : '';
 
     card.style.position = 'relative';
     card.innerHTML = adminActions + `
@@ -2622,6 +2631,7 @@ window.handleReviewSubmit = function (event) {
     destinationName: destName,
     rating: ratingVal,
     verified: true, // Actual traveler submission from site
+      isMine: true,
     text: text,
     date: new Date().toISOString().split('T')[0]
   };
