@@ -3,6 +3,51 @@
    Terracotta & Sahara Gold Theme, Wishlist, Language Switcher, Maps, Search
    ========================================================================== */
 
+/* ── Clean Pretty URLs Engine (Removes .html from Address Bar & Navigation) ─ */
+(function () {
+  try {
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      // 1. Immediately normalize the address bar URL
+      const path = window.location.pathname;
+      if (path.endsWith('.html')) {
+        let cleanPath = path.replace(/\.html$/, '');
+        if (cleanPath.endsWith('/index')) {
+          cleanPath = cleanPath.replace(/\/index$/, '') || '/';
+        }
+        const newUrl = cleanPath + window.location.search + window.location.hash;
+        window.history.replaceState(null, '', newUrl);
+      }
+    }
+  } catch (e) {}
+
+  // 2. Normalize all internal links on page load so hover and clicks are clean
+  function cleanAllPageLinks() {
+    if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') return;
+    try {
+      document.querySelectorAll('a[href]').forEach(function (link) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//') || 
+            href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:') || 
+            href.startsWith('#')) return;
+
+        if (href === 'index.html' || href === './index.html' || href === '/index.html') {
+          link.setAttribute('href', href.startsWith('/') ? '/' : './');
+        } else if (href.includes('.html')) {
+          const cleanHref = href.replace(/\.html(?=($|[?#]))/, '');
+          link.setAttribute('href', cleanHref);
+        }
+      });
+    } catch (err) {}
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cleanAllPageLinks);
+  } else {
+    cleanAllPageLinks();
+  }
+})();
+
 /* ── Chatbase AI Assistant Widget & Global Initialization ────────────────── */
 (function () {
   if (!window.chatbase || window.chatbase("getState") !== "initialized") {
@@ -1807,8 +1852,9 @@ window.handleQuickBookSubmit = function (e) {
 
 // Wire up all Book Expedition buttons automatically across all pages
 document.addEventListener('click', function (e) {
-  const bookBtn = e.target.closest('.book-btn-nav, .hn-nav-book, [data-i18n="nav_book"], a[href="booking.html"]');
-  if (bookBtn && !window.location.pathname.endsWith('booking.html')) {
+  const bookBtn = e.target.closest('.book-btn-nav, .hn-nav-book, [data-i18n="nav_book"], a[href="booking.html"], a[href="booking"]');
+  const isBookingPage = window.location.pathname.endsWith('booking.html') || window.location.pathname.endsWith('/booking') || window.location.pathname.endsWith('booking');
+  if (bookBtn && !isBookingPage) {
     e.preventDefault();
     window.openQuickBooking('marrakech');
   }
@@ -1824,7 +1870,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const executeSearch = (e) => {
       e.preventDefault();
       const query = heroInput.value.trim();
-      window.location.href = query ? `destinations.html?search=${encodeURIComponent(query)}` : 'destinations.html';
+      const isLive = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+      const targetPage = isLive ? 'destinations' : 'destinations.html';
+      window.location.href = query ? `${targetPage}?search=${encodeURIComponent(query)}` : targetPage;
     };
 
     heroBtn.addEventListener('click', executeSearch);
@@ -3723,8 +3771,9 @@ function renderCardsIntoGrid(container, reviews) {
 window.openReviewModal = function () {
   let modal = document.getElementById('reviewModal');
   if (!modal) {
-    // If modal is not on this page, redirect to testimonials.html with query flag
-    window.location.href = 'testimonials.html?openReviewModal=true';
+    // If modal is not on this page, redirect to testimonials with query flag
+    const isLive = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+    window.location.href = isLive ? 'testimonials?openReviewModal=true' : 'testimonials.html?openReviewModal=true';
     return;
   }
   modal.style.display = 'flex';
