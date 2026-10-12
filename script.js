@@ -457,16 +457,16 @@ function updateThemeIcon() {
 
 // ── Complete 28-Language Supported Matrix ────────────────────────────────
 const SUPPORTED_LANGUAGES = [
-  { code: 'en', label: 'EN', dir: 'ltr' },
-  { code: 'fr', label: 'FR', dir: 'ltr' },
-  { code: 'es', label: 'ES', dir: 'ltr' },
-  { code: 'ar', label: 'AR', dir: 'rtl' },
-  { code: 'de', label: 'DE', dir: 'ltr' },
-  { code: 'it', label: 'IT', dir: 'ltr' },
-  { code: 'pt', label: 'PT', dir: 'ltr' },
-  { code: 'ru', label: 'RU', dir: 'ltr' },
-  { code: 'zh-CN', label: 'ZH', dir: 'ltr' },
-  { code: 'ja', label: 'JA', dir: 'ltr' }
+  { code: 'en', label: 'EN' },
+  { code: 'fr', label: 'FR' },
+  { code: 'es', label: 'ES' },
+  { code: 'ar', label: 'AR' },
+  { code: 'de', label: 'DE' },
+  { code: 'it', label: 'IT' },
+  { code: 'pt', label: 'PT' },
+  { code: 'ru', label: 'RU' },
+  { code: 'zh-CN', label: 'ZH' },
+  { code: 'ja', label: 'JA' }
 ];
 
 // Helper to set / clear googtrans cookie across all domain scopes
@@ -502,8 +502,7 @@ function setGoogleTransCookie(targetLang) {
   }
 }
 
-// Inject required CSS rules to hide Google Translate top banner, tooltips and style compact dropdowns
-// Inject required CSS rules to completely eradicate Google Translate top banner, tooltips and style dropdowns
+// Inject required CSS rules to completely eradicate Google Translate top banner, tooltips and lock layout
 function injectTranslationStyles() {
   if (document.getElementById('hm-translation-styles')) return;
   const style = document.createElement('style');
@@ -536,10 +535,11 @@ function injectTranslationStyles() {
       pointer-events: none !important;
     }
 
-    /* 2. Lock body and html to 0px top */
+    /* 2. Lock body and html to 0px top and strict LTR layout so nothing moves */
     html, body {
       top: 0px !important;
       position: static !important;
+      direction: ltr !important;
     }
 
     .goog-text-highlight {
@@ -558,17 +558,19 @@ function injectTranslationStyles() {
       pointer-events: none !important;
     }
 
-    /* 3. Compact 2-Letter Language Switcher Pill */
+    /* 3. Compact 2-Letter Language Switcher Pill (Fixed in LTR always) */
     .lang-wrapper {
       position: relative !important;
       display: inline-flex !important;
       align-items: center !important;
       flex-shrink: 0 !important;
+      direction: ltr !important;
     }
 
     .lang-wrapper i.lang-icon {
       position: absolute !important;
       left: 10px !important;
+      right: auto !important;
       pointer-events: none !important;
       font-size: 0.8rem !important;
       color: var(--hm-text-heading, #0F172A) !important;
@@ -596,6 +598,7 @@ function injectTranslationStyles() {
       outline: none !important;
       text-align: center !important;
       letter-spacing: 0.5px !important;
+      direction: ltr !important;
       transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
       -webkit-appearance: none !important;
       -moz-appearance: none !important;
@@ -621,6 +624,7 @@ function injectTranslationStyles() {
       font-size: 0.9rem !important;
       font-weight: 700 !important;
       text-align: center !important;
+      direction: ltr !important;
     }
 
     [data-theme="dark"] .lang-wrapper i.lang-icon {
@@ -644,34 +648,14 @@ function injectTranslationStyles() {
       background: #1C2333 !important;
       color: #F8FAFC !important;
     }
-
-    /* 4. Right-To-Left (RTL) Support for Arabic */
-    [dir="rtl"] {
-      text-align: right;
-    }
-    [dir="rtl"] .hn-nav-links {
-      direction: rtl;
-    }
-    [dir="rtl"] .hero-content,
-    [dir="rtl"] .why-inner,
-    [dir="rtl"] .footer-col {
-      text-align: right;
-    }
-    [dir="rtl"] .lang-wrapper i.lang-icon {
-      left: auto !important;
-      right: 10px !important;
-    }
-    [dir="rtl"] .lang-switcher,
-    [dir="rtl"] .lang-sw {
-      padding: 0 26px 0 8px !important;
-    }
   `;
   document.head.prepend(style);
 }
 
-// Active DOM killer that continuously destroys the Google banner iframe and cancels body shift
+// Active DOM killer that continuously destroys the Google banner iframe, cancels body shift, and keeps LTR layout
 function startGoogleBannerKiller() {
   const kill = () => {
+    // 1. Remove or hide any iframe banner
     const badElements = document.querySelectorAll(
       'iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[class*="VIpgJd"], ' +
       '.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9I-ORHb-OEVmcd, ' +
@@ -687,6 +671,7 @@ function startGoogleBannerKiller() {
       el.style.setProperty('pointer-events', 'none', 'important');
     });
 
+    // 2. Force body and html to top: 0px and prevent RTL layout scrambling
     if (document.body) {
       if (document.body.style.top && document.body.style.top !== '0px') {
         document.body.style.setProperty('top', '0px', 'important');
@@ -694,10 +679,16 @@ function startGoogleBannerKiller() {
       if (document.body.style.position === 'relative') {
         document.body.style.setProperty('position', 'static', 'important');
       }
+      if (document.body.getAttribute('dir') === 'rtl') {
+        document.body.setAttribute('dir', 'ltr');
+      }
     }
     if (document.documentElement) {
       if (document.documentElement.style.top && document.documentElement.style.top !== '0px') {
         document.documentElement.style.setProperty('top', '0px', 'important');
+      }
+      if (document.documentElement.getAttribute('dir') === 'rtl') {
+        document.documentElement.setAttribute('dir', 'ltr');
       }
     }
   };
@@ -712,7 +703,7 @@ function startGoogleBannerKiller() {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['style', 'class']
+      attributeFilter: ['style', 'class', 'dir']
     });
   }
 }
@@ -762,14 +753,20 @@ function ensureGoogleTranslateLoaded() {
   }
 }
 
-// Populate all selects and sync with active language
+// Populate all selects with permanent Latin abbreviations that Google Translate cannot alter
 function populateLanguageSelects() {
   const optionsHtml = SUPPORTED_LANGUAGES.map(lang => 
-    '<option value="' + lang.code + '">' + lang.label + '</option>'
+    '<option value="' + lang.code + '" class="notranslate" translate="no">' + lang.label + '</option>'
   ).join('');
 
   const allSelects = document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select');
   allSelects.forEach(select => {
+    select.classList.add('notranslate');
+    select.setAttribute('translate', 'no');
+    if (select.parentElement) {
+      select.parentElement.classList.add('notranslate');
+      select.parentElement.setAttribute('translate', 'no');
+    }
     select.innerHTML = optionsHtml;
     select.value = AppState.lang;
   });
@@ -792,12 +789,11 @@ function initLanguage() {
 
   AppState.lang = savedLang;
 
-  // 2. Set direction (RTL / LTR)
-  const langObj = SUPPORTED_LANGUAGES.find(l => l.code === savedLang);
-  document.documentElement.setAttribute('dir', langObj ? langObj.dir : 'ltr');
+  // 2. Strict LTR direction - do NOT flip layout
+  document.documentElement.setAttribute('dir', 'ltr');
   document.documentElement.setAttribute('lang', savedLang);
 
-  // 3. Populate dropdowns with abbreviations
+  // 3. Populate dropdowns with permanent abbreviations
   populateLanguageSelects();
 
   // 4. Attach change listeners
@@ -835,10 +831,8 @@ function setLanguage(langKey) {
   // Set the cookie across all domain scopes
   setGoogleTransCookie(langKey);
 
-  // Apply RTL/LTR
-  const langObj = SUPPORTED_LANGUAGES.find(l => l.code === langKey);
-  const dir = langObj ? langObj.dir : 'ltr';
-  document.documentElement.setAttribute('dir', dir);
+  // Always keep LTR layout
+  document.documentElement.setAttribute('dir', 'ltr');
   document.documentElement.setAttribute('lang', langKey);
 
   // Apply local dictionary
