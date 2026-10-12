@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    HIDDEN MOROCCO � BOUTIQUE MOROCCAN DESIGN SYSTEM (theme.css)
    Warm Terracotta, Sahara Gold, Linen Light & Deep Charcoal Palette
    ========================================================================== */
@@ -5708,15 +5708,22 @@ textarea {
    ULTRA-SPECIFIC SINGLE-FILE ENFORCEMENT (#151515 & #1E1E1E)
    Guaranteed to override any inline or internal subpage styles across the whole site
    ============================================================================== */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: #151515 !important;
+}
+
 html[data-theme="dark"],
 html[data-theme="dark"] body,
 html[data-theme="dark"] body main,
 html[data-theme="dark"] body section,
 html[data-theme="dark"] body .section,
 html[data-theme="dark"] body .section-alt,
+html[data-theme="dark"] body .page-hero,
 html[data-theme="dark"] body .dest-clean-header,
 html[data-theme="dark"] body .travel-form-section,
 html[data-theme="dark"] body .contact-section,
+html[data-theme="dark"] body .faq-section,
 html[data-theme="dark"] body .about-section,
 html[data-theme="dark"] body .legal-hero,
 html[data-theme="dark"] body .legal-content,
@@ -5740,6 +5747,8 @@ html[data-theme="dark"] body .travel-form-right,
 html[data-theme="dark"] body .legal-card,
 html[data-theme="dark"] body .contact-info-card,
 html[data-theme="dark"] body .faq-item,
+html[data-theme="dark"] body .faq-q,
+html[data-theme="dark"] body .faq-a,
 html[data-theme="dark"] body .team-card,
 html[data-theme="dark"] body .value-card,
 html[data-theme="dark"] body .dest-booking-sheet,
@@ -5758,14 +5767,27 @@ html[data-theme="dark"] body .hero-stats-inner {
   color: #CBD5E1 !important;
 }
 
+html[data-theme="dark"] body .faq-q:hover {
+  background: #262626 !important;
+  background-color: #262626 !important;
+}
+
 html[data-theme="dark"] body .contact-form-card h2,
 html[data-theme="dark"] body .contact-form-card label,
 html[data-theme="dark"] body .travel-form-right label,
+html[data-theme="dark"] body .contact-info-card h4,
+html[data-theme="dark"] body .faq-header h2,
+html[data-theme="dark"] body .faq-q,
 html[data-theme="dark"] body .map-side-content h3 {
   color: #F8FAFC !important;
 }
 
-html[data-theme="dark"] body input,
+html[data-theme="dark"] body .hamburger span,
+html[data-theme="dark"] body .hburg span {
+  background-color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] body input:not(#heroSearchInput),
 html[data-theme="dark"] body select,
 html[data-theme="dark"] body textarea,
 html[data-theme="dark"] body .form-group input,
@@ -5780,7 +5802,28 @@ html[data-theme="dark"] body .travel-form-right textarea {
   color: #F8FAFC !important;
 }
 
-html[data-theme="dark"] body input:focus,
+/* Hero Search Bar Input Exception (Zero black box, always transparent inside white pill) */
+.hero-search input,
+#heroSearchInput,
+html[data-theme="dark"] body .hero-search input,
+html[data-theme="dark"] body #heroSearchInput {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #0F172A !important;
+}
+
+.hero-search input::placeholder,
+#heroSearchInput::placeholder,
+html[data-theme="dark"] body .hero-search input::placeholder,
+html[data-theme="dark"] body #heroSearchInput::placeholder {
+  color: #64748B !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="dark"] body input:not(#heroSearchInput):focus,
 html[data-theme="dark"] body select:focus,
 html[data-theme="dark"] body textarea:focus,
 html[data-theme="dark"] body .form-group input:focus,
