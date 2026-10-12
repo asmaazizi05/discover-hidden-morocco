@@ -503,50 +503,218 @@ function setGoogleTransCookie(targetLang) {
 }
 
 // Inject required CSS rules to hide Google Translate top banner, tooltips and style compact dropdowns
+// Inject required CSS rules to completely eradicate Google Translate top banner, tooltips and style dropdowns
 function injectTranslationStyles() {
   if (document.getElementById('hm-translation-styles')) return;
   const style = document.createElement('style');
   style.id = 'hm-translation-styles';
   style.textContent = `
-    body { top: 0px !important; position: static !important; }
-    .goog-te-banner-frame, .goog-te-banner-frame.skiptranslate, iframe.goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame {
-      display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; width: 0 !important; border: none !important; pointer-events: none !important;
+    /* 1. Completely Eradicate Google Translate Top Banner / Frame */
+    .VIpgJd-ZVi9od-ORHb-OEVmcd,
+    .VIpgJd-ZVi9I-ORHb-OEVmcd,
+    .VIpgJd-ZVi9od-ORHb-OEVmcd.skiptranslate,
+    .VIpgJd-ZVi9I-ORHb-OEVmcd.skiptranslate,
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    iframe.goog-te-banner-frame,
+    iframe.skiptranslate,
+    iframe[class*="VIpgJd"],
+    iframe[id*=":1.container"],
+    iframe[id*=":2.container"],
+    iframe[src*="translate.google"],
+    #goog-gt-tt,
+    .goog-tooltip,
+    .goog-tooltip:hover,
+    .goog-te-balloon-frame {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      height: 0px !important;
+      width: 0px !important;
+      max-height: 0px !important;
+      border: none !important;
+      pointer-events: none !important;
     }
-    .goog-text-highlight { background: none !important; box-shadow: none !important; }
+
+    /* 2. Lock body and html to 0px top */
+    html, body {
+      top: 0px !important;
+      position: static !important;
+    }
+
+    .goog-text-highlight {
+      background: none !important;
+      box-shadow: none !important;
+    }
+
     #google_translate_element {
-      position: absolute !important; top: -9999px !important; left: -9999px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; overflow: hidden !important; pointer-events: none !important;
+      position: absolute !important;
+      top: -9999px !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
     }
-    .lang-wrapper { position: relative !important; display: inline-flex !important; align-items: center !important; flex-shrink: 0 !important; }
-    .lang-wrapper i.lang-icon { position: absolute !important; left: 10px !important; pointer-events: none !important; font-size: 0.8rem !important; color: var(--hm-text-heading, #0F172A) !important; z-index: 2 !important; transition: color 0.25s ease !important; }
-    .lang-wrapper:hover i.lang-icon { color: #C85A32 !important; }
-    .lang-switcher, .lang-sw {
-      height: 38px !important; min-width: 76px !important; max-width: 86px !important; padding: 0 8px 0 26px !important;
-      background: var(--hm-bg-card-hover, rgba(15, 23, 42, 0.04)) !important; border: 1.5px solid var(--hm-border, rgba(15, 23, 42, 0.12)) !important;
-      color: var(--hm-text-heading, #0F172A) !important; border-radius: 99px !important; font-size: 0.85rem !important; font-weight: 700 !important;
-      cursor: pointer !important; outline: none !important; text-align: center !important; letter-spacing: 0.5px !important;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important;
+
+    /* 3. Compact 2-Letter Language Switcher Pill */
+    .lang-wrapper {
+      position: relative !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
     }
-    .lang-switcher:hover, .lang-sw:hover, .lang-switcher:focus, .lang-sw:focus {
-      border-color: rgba(200, 90, 50, 0.5) !important; color: #C85A32 !important; box-shadow: 0 4px 14px rgba(200, 90, 50, 0.15) !important; transform: translateY(-1px) !important;
+
+    .lang-wrapper i.lang-icon {
+      position: absolute !important;
+      left: 10px !important;
+      pointer-events: none !important;
+      font-size: 0.8rem !important;
+      color: var(--hm-text-heading, #0F172A) !important;
+      z-index: 2 !important;
+      transition: color 0.25s ease !important;
     }
-    .lang-switcher option, .lang-sw option, .mobile-lang-select option {
-      background: #ffffff !important; color: #0F172A !important; padding: 8px 12px !important; font-size: 0.9rem !important; font-weight: 700 !important; text-align: center !important;
+
+    .lang-wrapper:hover i.lang-icon {
+      color: #C85A32 !important;
     }
-    [data-theme="dark"] .lang-wrapper i.lang-icon { color: #F8FAFC !important; }
-    [data-theme="dark"] .lang-wrapper:hover i.lang-icon { color: #E7A93C !important; }
-    [data-theme="dark"] .lang-switcher, [data-theme="dark"] .lang-sw {
-      background: #1C2333 !important; border-color: rgba(255, 255, 255, 0.15) !important; color: #F8FAFC !important;
+
+    .lang-switcher,
+    .lang-sw {
+      height: 38px !important;
+      min-width: 76px !important;
+      max-width: 86px !important;
+      padding: 0 8px 0 26px !important;
+      background: var(--hm-bg-card-hover, rgba(15, 23, 42, 0.04)) !important;
+      border: 1.5px solid var(--hm-border, rgba(15, 23, 42, 0.12)) !important;
+      color: var(--hm-text-heading, #0F172A) !important;
+      border-radius: 99px !important;
+      font-size: 0.85rem !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      outline: none !important;
+      text-align: center !important;
+      letter-spacing: 0.5px !important;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
     }
-    [data-theme="dark"] .lang-switcher option, [data-theme="dark"] .lang-sw option, [data-theme="dark"] .mobile-lang-select option {
-      background: #1C2333 !important; color: #F8FAFC !important;
+
+    .lang-switcher:hover,
+    .lang-sw:hover,
+    .lang-switcher:focus,
+    .lang-sw:focus {
+      border-color: rgba(200, 90, 50, 0.5) !important;
+      color: #C85A32 !important;
+      box-shadow: 0 4px 14px rgba(200, 90, 50, 0.15) !important;
+      transform: translateY(-1px) !important;
     }
-    [dir="rtl"] { text-align: right; }
-    [dir="rtl"] .hn-nav-links { direction: rtl; }
-    [dir="rtl"] .hero-content, [dir="rtl"] .why-inner, [dir="rtl"] .footer-col { text-align: right; }
-    [dir="rtl"] .lang-wrapper i.lang-icon { left: auto !important; right: 10px !important; }
-    [dir="rtl"] .lang-switcher, [dir="rtl"] .lang-sw { padding: 0 26px 0 8px !important; }
+
+    .lang-switcher option,
+    .lang-sw option,
+    .mobile-lang-select option {
+      background: #ffffff !important;
+      color: #0F172A !important;
+      padding: 8px 12px !important;
+      font-size: 0.9rem !important;
+      font-weight: 700 !important;
+      text-align: center !important;
+    }
+
+    [data-theme="dark"] .lang-wrapper i.lang-icon {
+      color: #F8FAFC !important;
+    }
+
+    [data-theme="dark"] .lang-wrapper:hover i.lang-icon {
+      color: #E7A93C !important;
+    }
+
+    [data-theme="dark"] .lang-switcher,
+    [data-theme="dark"] .lang-sw {
+      background: #1C2333 !important;
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      color: #F8FAFC !important;
+    }
+
+    [data-theme="dark"] .lang-switcher option,
+    [data-theme="dark"] .lang-sw option,
+    [data-theme="dark"] .mobile-lang-select option {
+      background: #1C2333 !important;
+      color: #F8FAFC !important;
+    }
+
+    /* 4. Right-To-Left (RTL) Support for Arabic */
+    [dir="rtl"] {
+      text-align: right;
+    }
+    [dir="rtl"] .hn-nav-links {
+      direction: rtl;
+    }
+    [dir="rtl"] .hero-content,
+    [dir="rtl"] .why-inner,
+    [dir="rtl"] .footer-col {
+      text-align: right;
+    }
+    [dir="rtl"] .lang-wrapper i.lang-icon {
+      left: auto !important;
+      right: 10px !important;
+    }
+    [dir="rtl"] .lang-switcher,
+    [dir="rtl"] .lang-sw {
+      padding: 0 26px 0 8px !important;
+    }
   `;
-  document.head.appendChild(style);
+  document.head.prepend(style);
+}
+
+// Active DOM killer that continuously destroys the Google banner iframe and cancels body shift
+function startGoogleBannerKiller() {
+  const kill = () => {
+    const badElements = document.querySelectorAll(
+      'iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[class*="VIpgJd"], ' +
+      '.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9I-ORHb-OEVmcd, ' +
+      'iframe[id*=":1.container"], iframe[id*=":2.container"], ' +
+      'iframe[src*="translate.google"], .goog-te-banner-frame'
+    );
+    badElements.forEach(el => {
+      el.style.setProperty('display', 'none', 'important');
+      el.style.setProperty('visibility', 'hidden', 'important');
+      el.style.setProperty('height', '0px', 'important');
+      el.style.setProperty('width', '0px', 'important');
+      el.style.setProperty('opacity', '0', 'important');
+      el.style.setProperty('pointer-events', 'none', 'important');
+    });
+
+    if (document.body) {
+      if (document.body.style.top && document.body.style.top !== '0px') {
+        document.body.style.setProperty('top', '0px', 'important');
+      }
+      if (document.body.style.position === 'relative') {
+        document.body.style.setProperty('position', 'static', 'important');
+      }
+    }
+    if (document.documentElement) {
+      if (document.documentElement.style.top && document.documentElement.style.top !== '0px') {
+        document.documentElement.style.setProperty('top', '0px', 'important');
+      }
+    }
+  };
+
+  kill();
+  const timer = setInterval(kill, 40);
+  setTimeout(() => clearInterval(timer), 5000);
+
+  if (window.MutationObserver) {
+    const observer = new MutationObserver(() => kill());
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+  }
 }
 
 // Inject preconnect links for instant network resolution
@@ -578,6 +746,7 @@ window.googleTranslateElementInit = function() {
 function ensureGoogleTranslateLoaded() {
   injectPreconnect();
   injectTranslationStyles();
+  startGoogleBannerKiller();
   
   if (!document.getElementById('google_translate_element')) {
     const div = document.createElement('div');
