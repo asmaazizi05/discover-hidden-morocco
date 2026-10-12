@@ -11,42 +11,62 @@
       const path = window.location.pathname || '';
       const search = window.location.search || '';
       const hash = window.location.hash || '';
+      const lowerPath = path.toLowerCase();
 
-      // 1. If on index.html (home page), immediately redirect to clean root '/'
-      if (path.toLowerCase().endsWith('/index.html') || path.toLowerCase() === '/index.html' || path.toLowerCase() === 'index.html') {
-        if (window.location.replace) {
-          window.location.replace(origin + '/' + search + hash);
-          return;
-        } else {
-          window.history.replaceState(null, document.title, origin + '/' + search + hash);
-        }
-      } else if (path.toLowerCase().endsWith('.html')) {
-        // 2. For subpages (e.g. /destinations.html -> /destinations), clean the address bar seamlessly
+      // 1. If on index.html (home page), clean the address bar to root '/'
+      if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
+        window.history.replaceState(null, document.title, origin + '/' + search + hash);
+        return;
+      }
+
+      // 2. If on testimonials or reviews (/testimonials.html, /testimonials, /reviews.html) -> clean to '/reviews'
+      if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
+        window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+        return;
+      }
+
+      // 3. For any other subpage (e.g. /destinations.html -> /destinations), clean the address bar
+      if (lowerPath.endsWith('.html')) {
         const cleanPath = path.replace(/\.html$/i, '');
-        const cleanUrl = origin + cleanPath + search + hash;
-        window.history.replaceState(null, document.title, cleanUrl);
+        window.history.replaceState(null, document.title, origin + cleanPath + search + hash);
+        return;
       }
     } catch (e) {}
   }
 
-  // Execute immediately before rendering completes
+  // Execute immediately
   sanitizeCurrentUrl();
 
-  // Run on DOM ready and pageshow/history navigation
+  // Run on DOM ready, pageshow and popstate navigation
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', sanitizeCurrentUrl);
   }
   window.addEventListener('pageshow', sanitizeCurrentUrl);
   window.addEventListener('popstate', sanitizeCurrentUrl);
 
-  // Normalize all navigation links to index.html -> '/'
+  // Normalize all navigation links across the document
   function cleanNavigationLinks() {
     try {
       document.querySelectorAll('a[href]').forEach(function (link) {
         const href = link.getAttribute('href');
         if (!href) return;
+
+        // Replace index.html with '/'
         if (href === 'index.html' || href === './index.html' || href === '/index.html') {
           link.setAttribute('href', '/');
+          return;
+        }
+
+        // Replace testimonials.html or testimonials with reviews.html
+        if (href === 'testimonials.html' || href === './testimonials.html' || href === '/testimonials.html' || href === 'testimonials' || href === '/testimonials') {
+          link.setAttribute('href', 'reviews.html');
+          return;
+        }
+
+        // Keep reviews.html clean
+        if (href === './reviews.html' || href === '/reviews.html') {
+          link.setAttribute('href', 'reviews.html');
+          return;
         }
       });
     } catch (err) {}
@@ -3782,9 +3802,9 @@ function renderCardsIntoGrid(container, reviews) {
 window.openReviewModal = function () {
   let modal = document.getElementById('reviewModal');
   if (!modal) {
-    // If modal is not on this page, redirect to testimonials with query flag
+    // If modal is not on this page, redirect to reviews with query flag
     const isLive = window.location.protocol === 'http:' || window.location.protocol === 'https:';
-    window.location.href = isLive ? 'testimonials?openReviewModal=true' : 'testimonials.html?openReviewModal=true';
+    window.location.href = isLive ? 'reviews.html?openReviewModal=true' : 'reviews.html?openReviewModal=true';
     return;
   }
   modal.style.display = 'flex';

@@ -1,0 +1,972 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <script>
+    (function () {
+      try {
+        var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+        var path = window.location.pathname || '';
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var lowerPath = path.toLowerCase();
+        if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
+          window.history.replaceState(null, document.title, origin + '/' + search + hash);
+        } else if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
+          window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+        } else if (lowerPath.endsWith('.html')) {
+          window.history.replaceState(null, document.title, origin + path.replace(/\.html$/i, '') + search + hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <link rel="preconnect" href="https://translate.google.com">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Traveler Reviews — Discover Hidden Morocco</title>
+  <meta name="description"
+    content="Read real reviews from travelers who explored Morocco with Discover Hidden Morocco boutique travel agency.">
+
+  <!-- Open Graph / Social Media Preview Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discoverhiddenmorocco.com/reviews">
+  <meta property="og:title" content="Traveler Reviews — Discover Hidden Morocco">
+  <meta property="og:description"
+    content="Read authentic reviews from travelers who explored Morocco with Discover Hidden Morocco boutique agency.">
+  <meta property="og:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+  <meta property="og:site_name" content="Discover Hidden Morocco">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Traveler Reviews — Discover Hidden Morocco">
+  <meta name="twitter:description"
+    content="Read authentic reviews from travelers who explored Morocco with Discover Hidden Morocco boutique agency.">
+  <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .hn-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 36px;
+      background: var(--hm-bg-nav);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--hm-border);
+    }
+
+    .hn-nav-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hn-logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+    }
+
+    .hn-logo img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .hn-logo-text {
+      font-family: var(--hm-font-sans);
+      font-size: 1.08rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--hm-text-heading);
+    }
+
+    .hn-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .hn-links a {
+      padding: 7px 12px;
+      border-radius: 99px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--hm-text-body);
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .hn-links a:hover,
+    .hn-links a.active {
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-terracotta);
+    }
+
+    .hn-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-switcher {
+      background: var(--hm-bg-card-hover);
+      border: 1px solid var(--hm-border);
+      color: var(--hm-text-body);
+      padding: 7px 10px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--hm-border);
+      background: var(--hm-bg-card-hover);
+      color: var(--hm-text-heading);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      border-color: var(--hm-terracotta);
+      color: var(--hm-terracotta);
+    }
+
+    .fav-count-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--hm-terracotta);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--hm-text-heading);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .hn-nav {
+        padding: 12px 18px;
+      }
+
+      .hn-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--hm-bg-nav);
+        flex-direction: column;
+        padding: 16px;
+        gap: 4px;
+        border-bottom: 1px solid var(--hm-border);
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+      }
+
+      .hn-links.hn-links-open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .hn-links a {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    body {
+      background: var(--hm-bg-main);
+    }
+
+    /* Ultra-Luxe Page Hero */
+    .page-hero {
+      padding: 160px 24px 70px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 30%, rgba(200, 90, 50, 0.06) 0%, transparent 70%);
+    }
+
+    .page-hero h1 {
+      font-family: var(--hm-font-sans);
+      font-size: clamp(2.6rem, 5.5vw, 4rem);
+      color: var(--hm-text-heading);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .page-hero p {
+      font-size: 1.12rem;
+      color: var(--hm-text-muted);
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* Rating Summary Box - Glassmorphic Luxury Card */
+    .rating-summary {
+      background: var(--hm-bg-card, #FFFFFF);
+      border: 1px solid var(--hm-border, rgba(212, 175, 55, 0.3));
+      border-radius: 28px;
+      padding: 44px 48px;
+      max-width: 920px;
+      margin: 0 auto 56px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 60px;
+      align-items: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rating-summary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #C85A32 0%, #E7A93C 50%, #C85A32 100%);
+    }
+
+    .rating-big {
+      text-align: center;
+      padding-right: 20px;
+    }
+
+    .rating-big .big-num {
+      font-family: var(--hm-font-sans);
+      font-size: 5.5rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #0F172A 0%, #C85A32 70%, #E7A93C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .rating-big .big-stars {
+      color: #E7A93C;
+      font-size: 1.75rem;
+      margin: 10px 0 6px;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 10px rgba(231, 169, 60, 0.25);
+    }
+
+    .rating-big p {
+      font-size: 0.88rem;
+      color: var(--hm-text-muted);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .rating-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rating-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+
+    .rating-bar-row span:first-child {
+      width: 36px;
+      text-align: right;
+      font-weight: 700;
+      color: var(--hm-text-heading);
+      flex-shrink: 0;
+    }
+
+    .rating-bar-track {
+      flex: 1;
+      height: 10px;
+      background: var(--hm-bg-main, #F1F5F9);
+      border-radius: 99px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .rating-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #C85A32 0%, #E7A93C 100%);
+      border-radius: 99px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .rating-bar-row span:last-child {
+      width: 42px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--hm-text-muted);
+    }
+
+    /* Reviews Section Grid & Cards */
+    .reviews-section {
+      padding: 0 24px 96px;
+    }
+
+    .reviews-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 30px;
+    }
+
+    .review-card {
+      background: var(--hm-bg-card, #FFFFFF);
+      border: 1px solid var(--hm-border, rgba(212, 175, 55, 0.2));
+      border-radius: 24px;
+      padding: 36px 30px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .review-card:hover {
+      box-shadow: 0 22px 50px rgba(200, 90, 50, 0.15);
+      transform: translateY(-6px);
+      border-color: rgba(200, 90, 50, 0.35);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .review-stars {
+      color: #E7A93C;
+      font-size: 1rem;
+      letter-spacing: 3px;
+    }
+
+    .review-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #059669;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .review-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--hm-text-body, #334155);
+      font-style: italic;
+      margin-bottom: 26px;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-top: 1px dashed var(--hm-border, rgba(0,0,0,0.1));
+      padding-top: 20px;
+    }
+
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(200,90,50,0.25);
+    }
+
+    .review-author-info strong {
+      display: block;
+      font-size: 0.98rem;
+      color: var(--hm-text-heading);
+      margin-bottom: 2px;
+    }
+
+    .review-author-info span {
+      font-size: 0.82rem;
+      color: var(--hm-text-muted);
+      font-weight: 500;
+    }
+
+    .cta-strip {
+      background: linear-gradient(135deg, var(--hm-terracotta), #A0261A);
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .cta-strip h2 {
+      font-family: var(--hm-font-sans);
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .cta-strip p {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      color: var(--hm-terracotta) !important;
+      padding: 14px 36px;
+      border-radius: 99px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-3px);
+    }
+
+    .footer {
+      background: var(--hm-bg-footer);
+      color: #94A3B8;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 12px;
+    }
+
+    .footer-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.25s;
+    }
+
+    .footer-links a:hover {
+      color: var(--hm-gold);
+    }
+
+    @media (max-width: 768px) {
+      .rating-summary {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+      }
+    }
+
+    /* ── Review Filter Bar ── */
+    .review-filters-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+      padding: 18px 24px;
+      background: var(--hm-bg-card);
+      border: 1px solid var(--hm-border);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .star-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .review-filter-btn {
+      padding: 8px 18px;
+      border-radius: 99px;
+      border: 1.5px solid var(--hm-border);
+      background: transparent;
+      color: var(--hm-text-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: var(--hm-font-sans);
+    }
+
+    .review-filter-btn:hover,
+    .review-filter-btn.active {
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(200, 90, 50, 0.35);
+    }
+
+    .dest-filter-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dest-filter-badge {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--hm-text-muted);
+      white-space: nowrap;
+    }
+
+    .dest-select-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .dest-select-box select {
+      appearance: none;
+      background: var(--hm-bg-main);
+      border: 1.5px solid var(--hm-border);
+      color: var(--hm-text-heading);
+      padding: 9px 36px 9px 14px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.25s;
+      font-family: var(--hm-font-sans);
+    }
+
+    .dest-select-box select:focus {
+      border-color: #C85A32;
+    }
+
+    .dest-select-arrow {
+      position: absolute;
+      right: 12px;
+      color: var(--hm-text-muted);
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    /* ── Review Modal ── */
+    .review-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .review-modal-backdrop.open {
+      display: flex;
+    }
+
+    .review-modal-card {
+      background: var(--hm-bg-card);
+      border: 1px solid var(--hm-border);
+      border-radius: 28px;
+      padding: 48px 40px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--hm-border);
+      background: var(--hm-bg-main);
+      color: var(--hm-text-heading);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      border-color: #C85A32;
+      color: #C85A32;
+    }
+
+    @media (max-width: 640px) {
+      .review-filters-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .review-modal-card {
+        padding: 32px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
+
+  <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
+  <nav class="hn-nav" id="siteNav">
+    <div class="hn-nav-inner">
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+          class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <ul class="hn-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="destinations.html">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
+        <li><a href="map.html">Interactive Map</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="reviews.html" class="active">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+        <!-- MORE SETTINGS Section -->
+        <li class="mobile-only-settings-row">
+          <div class="mobile-settings-title">MORE SETTINGS</div>
+          <div class="mobile-settings-icons">
+            <div class="setting-icon-item lang-item">
+              <i class="fa-solid fa-globe"></i>
+              <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
+              </select>
+            </div>
+            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+            </button>
+            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+            </a>
+          </div>
+        </li>
+
+        <!-- Customize My Tour Button -->
+        <li class="mobile-only-cta">
+          <a href="#" class="mobile-book-btn custom-tour-trigger">
+            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="hn-nav-actions">
+        <div class="lang-wrapper">
+          <i class="fa-solid fa-globe lang-icon"></i>
+          <select class="lang-switcher" id="langSwitcher" aria-label="Language">
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
+          </select>
+        </div>
+        <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+        <a href="favorites.html" class="nav-icon-btn"><i class="fa-regular fa-heart"></i><span
+            class="fav-count-badge">0</span></a>
+        <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <span class="badge badge-gold" style="margin-bottom: 20px;">★ Verified Reviews</span>
+    <h1>Traveler Reviews</h1>
+    <p id="heroReviewSubtitle">Authentic reviews shared by travelers exploring Morocco with us.</p>
+    <div style="margin-top: 24px;">
+      <button onclick="openReviewModal()" class="btn-primary" style="padding: 14px 34px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 10px 30px rgba(200,90,50,0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-pen-to-square"></i> Leave a Review
+      </button>
+    </div>
+  </header>
+
+  <section class="reviews-section">
+    <div class="reviews-container">
+      <!-- Dynamic Rating Summary Box -->
+      <div class="rating-summary" id="ratingSummaryBox">
+        <div class="rating-big">
+          <div class="big-num" id="summaryAvgRating">0.0</div>
+          <div class="big-stars" id="summaryAvgStars">☆☆☆☆☆</div>
+          <p id="summaryReviewCount">Loading reviews...</p>
+        </div>
+        <div class="rating-bars">
+          <div class="rating-bar-row"><span>5★</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" id="barFill5" style="width:0%"></div>
+            </div><span id="barPercent5">0%</span>
+          </div>
+          <div class="rating-bar-row"><span>4★</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" id="barFill4" style="width:0%"></div>
+            </div><span id="barPercent4">0%</span>
+          </div>
+          <div class="rating-bar-row"><span>3★</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" id="barFill3" style="width:0%"></div>
+            </div><span id="barPercent3">0%</span>
+          </div>
+          <div class="rating-bar-row"><span>2★</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" id="barFill2" style="width:0%"></div>
+            </div><span id="barPercent2">0%</span>
+          </div>
+          <div class="rating-bar-row"><span>1★</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" id="barFill1" style="width:0%"></div>
+            </div><span id="barPercent1">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Filter Controls Bar (Luxury Design) -->
+      <div class="review-filters-bar">
+        <div class="star-filters">
+          <button class="review-filter-btn active" data-rating="all" onclick="filterReviewsByRating('all', this)">All Reviews</button>
+          <button class="review-filter-btn" data-rating="5" onclick="filterReviewsByRating('5', this)"><span style="color:#E7A93C">★</span> 5</button>
+          <button class="review-filter-btn" data-rating="4" onclick="filterReviewsByRating('4', this)"><span style="color:#E7A93C">★</span> 4</button>
+          <button class="review-filter-btn" data-rating="3" onclick="filterReviewsByRating('3', this)"><span style="color:#E7A93C">★</span> 3</button>
+          <button class="review-filter-btn" data-rating="2" onclick="filterReviewsByRating('2', this)"><span style="color:#E7A93C">★</span> 2</button>
+          <button class="review-filter-btn" data-rating="1" onclick="filterReviewsByRating('1', this)"><span style="color:#E7A93C">★</span> 1</button>
+        </div>
+        <div class="dest-filter-wrapper">
+          <span class="dest-filter-badge"><i class="fa-solid fa-sliders"></i> Destination</span>
+          <div class="dest-select-box">
+            <select id="reviewDestFilter" onchange="filterReviewsByDestination(this.value)" aria-label="Filter by destination">
+              <option value="all">All Destinations</option>
+              <option value="marrakech">Marrakech</option>
+              <option value="merzouga">Merzouga Sahara</option>
+              <option value="chefchaouen">Chefchaouen</option>
+              <option value="fes">Fes Medina</option>
+              <option value="essaouira">Essaouira Coast</option>
+              <option value="casablanca">Casablanca</option>
+              <option value="agadir">Agadir</option>
+              <option value="zagora">Zagora</option>
+              <option value="ouarzazate">Ouarzazate</option>
+            </select>
+            <i class="fa-solid fa-chevron-down dest-select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Reviews Grid Container -->
+      <div class="reviews-grid" id="reviewsGridContainer">
+        <!-- Rendered dynamically via script.js?v=7 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Write a Review Modal Window -->
+  <div id="reviewModal" class="review-modal-backdrop" onclick="if(event.target===this) closeReviewModal()">
+    <div class="review-modal-card">
+      <button class="modal-close-btn" onclick="closeReviewModal()" aria-label="Close Modal">&times;</button>
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span class="badge badge-gold" style="margin-bottom: 10px; display: inline-block;">✍️ Share Your Experience</span>
+        <h3 style="font-family: var(--hm-font-sans); font-size: 1.75rem; color: var(--hm-text-heading); margin-bottom: 6px;">Leave a Review & Comment</h3>
+        <p style="color: var(--hm-text-muted); font-size: 0.9rem;">Have you traveled with Discover Hidden Morocco? We'd love to hear your feedback!</p>
+      </div>
+
+      <form onsubmit="handleReviewSubmit(event)" id="addReviewForm">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Name *</label>
+            <input type="text" id="reviewAuthor" required placeholder="e.g. Sarah & Mark" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Email Address *</label>
+              <input type="email" id="reviewEmail" required placeholder="your@email.com" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Country / City *</label>
+            <input type="text" id="reviewLocation" required placeholder="e.g. 🇬🇧 United Kingdom" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Destination / Experience</label>
+            <select id="reviewDestSelect" style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none;">
+              <option value="general">General Tour Experience</option>
+              <option value="marrakech">Marrakech</option>
+              <option value="merzouga">Merzouga Sahara</option>
+              <option value="chefchaouen">Chefchaouen</option>
+              <option value="fes">Fes</option>
+              <option value="essaouira">Essaouira</option>
+              <option value="casablanca">Casablanca</option>
+              <option value="agadir">Agadir</option>
+              <option value="zagora">Zagora</option>
+              <option value="ouarzazate">Ouarzazate</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Rating *</label>
+          <div id="starRatingSelect" style="display: flex; gap: 8px; font-size: 1.6rem; color: #E7A93C; cursor: pointer;">
+            <i class="fa-solid fa-star star-btn" data-value="1" onclick="setReviewRating(1)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="2" onclick="setReviewRating(2)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="3" onclick="setReviewRating(3)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="4" onclick="setReviewRating(4)"></i>
+            <i class="fa-solid fa-star star-btn" data-value="5" onclick="setReviewRating(5)"></i>
+          </div>
+          <input type="hidden" id="reviewRatingVal" value="5">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--hm-text-heading); margin-bottom: 6px;">Your Review / Comment *</label>
+          <textarea id="reviewText" required rows="4" placeholder="Tell us about your trip, guide, highlights, and overall experience..." style="width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hm-border); background: var(--hm-bg-main); color: var(--hm-text-heading); font-size: 0.95rem; outline: none; resize: vertical; line-height: 1.6;"></textarea>
+        </div>
+
+        <div style="text-align: center;">
+          <button type="submit" class="btn-primary" style="padding: 14px 36px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 8px 25px rgba(200,90,50,0.3);">
+            <i class="fa-solid fa-paper-plane"></i> Submit My Review
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="cta-strip">
+    <h2>Ready to Write Your Story?</h2>
+    <p>Join 2,500+ travelers who discovered the real Morocco with us.</p>
+    <a href="booking.html" class="btn-white"><i class="fa-solid fa-compass"></i> Plan My Journey</a>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </div>
+  </footer>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+<script src="script.js?v=7"></script>
+</body>
+
+</html>

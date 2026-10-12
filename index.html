@@ -1,7 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="light">
 
 <head>
+  <script>
+    (function () {
+      try {
+        var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+        var path = window.location.pathname || '';
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var lowerPath = path.toLowerCase();
+        if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
+          window.history.replaceState(null, document.title, origin + '/' + search + hash);
+        } else if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
+          window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+        } else if (lowerPath.endsWith('.html')) {
+          window.history.replaceState(null, document.title, origin + path.replace(/\.html$/i, '') + search + hash);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <link rel="preconnect" href="https://translate.google.com">
   <meta name="google-adsense-account" content="ca-pub-3909226124363434">
   <meta name="p:domain_verify" content="1b437fcad847c5499e896ed22f8f59a7" />
   <meta name="facebook-domain-verification" content="1o6nicbyef1q3ukhzrju1uhfwc0pro" />
@@ -1673,6 +1693,8 @@
 </head>
 
 <body class="page-home">
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
 
   <!-- Navigation -->
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
@@ -1687,7 +1709,7 @@
         <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
         <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
         <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="testimonials.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
@@ -1697,9 +1719,34 @@
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-                <option value="en">EN</option>
-                <option value="fr">FR</option>
-                <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
               </select>
             </div>
             <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
@@ -1723,9 +1770,34 @@
         <div class="lang-wrapper">
           <i class="fa-solid fa-globe lang-icon"></i>
           <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-            <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
           </select>
         </div>
 
@@ -2105,14 +2177,14 @@
       <section class="section section-alt">
         <div class="section-header">
           <span class="badge badge-gold" style="margin-bottom: 14px;">★ Real Stories</span>
-          <h2>What Our Travelers Say</h2>
+          <h2>Traveler Reviews</h2>
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
         <div class="reviews-grid" id="homeReviewsGrid">
-          <!-- Rendered dynamically via script.js?v=6 -->
+          <!-- Rendered dynamically via script.js?v=7 -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
-          <a href="testimonials.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="reviews.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
         </div>
       </section>
 
@@ -2171,7 +2243,7 @@
         <ul>
           <li><a href="about.html">About Us</a></li>
           <li><a href="map.html">Interactive Map</a></li>
-          <li><a href="testimonials.html">Reviews</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
           <li><a href="booking.html">Book Expedition</a></li>
           <li><a href="contact.html">Contact Us</a></li>
           <li><a href="favorites.html">My Wishlist</a></li>
@@ -2208,7 +2280,8 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="script.js?v=6"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+<script src="script.js?v=7"></script>
 </body>
 
 </html>
