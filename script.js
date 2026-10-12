@@ -125,6 +125,266 @@
   setInterval(adjustChatbase, 300);
 })();
 
+/* ── DHM Automated AI Visitor Intelligence & Email Dispatcher ─────────────── */
+(function () {
+  const OWNER_EMAIL = "contact@discoverhiddenmorocco.com";
+  const STORAGE_KEY = "dhm_ai_visitor_queries";
+  
+  // Session tracking to batch rapid messages into one cohesive report
+  let currentSession = {
+    id: "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
+    startTime: new Date().toISOString(),
+    page: window.location.href,
+    pageTitle: document.title,
+    userLanguage: localStorage.getItem('hm_lang') || navigator.language || 'en',
+    userQuestions: [],
+    botResponses: [],
+    timer: null,
+    sent: false
+  };
+
+  // Helper to load and save local query history
+  function getQueryHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveQueryHistory(history) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-100))); // keep last 100 queries
+    } catch (e) {}
+  }
+
+  // Smart Heuristic Demand & Intent Analysis
+  function analyzeInquiry(textList) {
+    const combined = textList.join(" ").toLowerCase();
+
+    // Destinations
+    const destinations = [];
+    const destMap = [
+      { name: "Sahara / Merzouga / Erg Chebbi", match: /merzouga|sahara|desert|erg chebbi|dune|bivouac|zagora/i },
+      { name: "Marrakech & Medina", match: /marrakech|marrakesh|jamaa|jemaa|medina|majorelle/i },
+      { name: "Fes (Imperial City)", match: /fes|fez|tanner|chouara/i },
+      { name: "Chefchaouen (Blue Pearl)", match: /chefchaouen|chaouen|blue city/i },
+      { name: "Atlas Mountains & Imlil", match: /atlas|imlil|toubkal|ourika/i },
+      { name: "Essaouira & Coast", match: /essaouira|mogador|beach|coast|ocean|taghazout/i },
+      { name: "Agafay Desert", match: /agafay|stone desert/i },
+      { name: "Ouarzazate & Ait Ben Haddou", match: /ouarzazate|ait ben haddou|kasbah|cinema/i },
+      { name: "Dades & Todra Gorges", match: /dades|todra|gorges|tinghir/i },
+      { name: "Tangier / Casablanca / Rabat", match: /tanger|tangier|casablanca|rabat/i }
+    ];
+    destMap.forEach(d => {
+      if (d.match.test(combined)) destinations.push(d.name);
+    });
+
+    // Customer Interests & Desires
+    const interests = [];
+    const interestMap = [
+      { name: "💰 Price & Budget Quote", match: /price|cost|how much|budget|rate|expensive|cheap|quote|prix|combien|tarif/i },
+      { name: "🚐 Private Driver & Transport", match: /driver|transport|4x4|car|van|chauffeur|voiture|transfer|airport|pickup/i },
+      { name: "⛺ Luxury Camp & Riad", match: /camp|tent|riad|luxury|glamping|hotel|suite|pool|chambre/i },
+      { name: "🍽️ Food & Special Diets (Halal/Vegan)", match: /food|dinner|lunch|breakfast|halal|vegetarian|vegan|gluten|repas|diner/i },
+      { name: "👨‍👩‍👧 Family & Children Friendly", match: /family|child|children|kid|baby|toddler|famille|enfant/i },
+      { name: "🐫 Activities & Excursions", match: /camel|quad|buggy|trek|hike|balloon|sunset|sunrise|dromadaire/i },
+      { name: "📅 Custom Dates & Itinerary", match: /day|days|night|nights|itinerary|schedule|custom|private|circuit|programme/i }
+    ];
+    interestMap.forEach(i => {
+      if (i.match.test(combined)) interests.push(i.name);
+    });
+
+    // Actionable Gaps / Suggestions for the owner
+    const suggestions = [];
+    if (/price|cost|prix|combien/i.test(combined)) {
+      suggestions.push("Visitor is asking about prices — make sure clear starting prices or instant quote CTA is visible on this page.");
+    }
+    if (/vegetarian|vegan|halal|diet|baby|child/i.test(combined)) {
+      suggestions.push("Special request detected (dietary / family) — highlight our customized amenities on the website.");
+    }
+    if (destinations.length === 0) {
+      destinations.push("Custom / General Morocco Inquiry");
+    }
+    if (interests.length === 0) {
+      interests.push("General Tour Inquiry");
+    }
+
+    return {
+      destinations: destinations.join(", "),
+      interests: interests.join(", "),
+      suggestions: suggestions.join(" | ") || "Ensure personalized itinerary options are emphasized."
+    };
+  }
+
+  // Dispatch the email report to contact@discoverhiddenmorocco.com
+  function dispatchSessionReport() {
+    if (currentSession.sent || currentSession.userQuestions.length === 0) return;
+    currentSession.sent = true;
+
+    const questions = currentSession.userQuestions;
+    const answers = currentSession.botResponses;
+    const analysis = analyzeInquiry(questions);
+    const dateFormatted = new Date().toLocaleString("en-US", { timeZone: "Africa/Casablanca" });
+
+    // Store in query history
+    const history = getQueryHistory();
+    history.push({
+      date: dateFormatted,
+      page: currentSession.page,
+      questions: questions,
+      answers: answers,
+      analysis: analysis
+    });
+    saveQueryHistory(history);
+
+    // Prepare clear structured report for the owner
+    const formattedQuestions = questions.map((q, idx) => `[Q${idx + 1}] "${q}"`).join("\n");
+    const formattedAnswers = answers.length > 0 
+      ? answers.map((a, idx) => `[A${idx + 1}] "${a.substring(0, 200)}${a.length > 200 ? '...' : ''}"`).join("\n") 
+      : "(Visitor asked, response completed)";
+
+    const payload = {
+      _subject: `🤖 [DHM AI Visitor Demand] ${analysis.destinations} (${questions[0].substring(0, 40)}...)`,
+      _template: "table",
+      "Executive Summary": "A website visitor just asked your AI assistant on Discover Hidden Morocco. Here is the full breakdown of their inquiry and demand:",
+      "Visitor Questions": formattedQuestions,
+      "Identified Destinations": analysis.destinations,
+      "Visitor Desires & Category": analysis.interests,
+      "What You Should Check/Add on Site": analysis.suggestions,
+      "AI Assistant Response Preview": formattedAnswers,
+      "Page Visited": currentSession.page,
+      "Visitor Language": currentSession.userLanguage,
+      "Morocco Time": dateFormatted,
+      "_replyto": OWNER_EMAIL
+    };
+
+    // Send via FormSubmit AJAX endpoint (Free, automatic, reliable)
+    try {
+      fetch("https://formsubmit.co/ajax/" + OWNER_EMAIL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ [DHM AI Intelligence] Visitor inquiry report dispatched to", OWNER_EMAIL);
+      })
+      .catch(err => {
+        console.warn("⚠️ [DHM AI Intelligence] Dispatch attempt noted:", err);
+      });
+    } catch (e) {
+      console.warn("⚠️ [DHM AI Intelligence] Dispatch error:", e);
+    }
+  }
+
+  // Schedule dispatch after a reasonable pause in conversation (30 seconds)
+  function scheduleDispatch() {
+    if (currentSession.timer) clearTimeout(currentSession.timer);
+    currentSession.timer = setTimeout(dispatchSessionReport, 30000); // 30 sec debounce
+  }
+
+  // Receive a user question
+  function onUserMessage(content) {
+    if (!content || typeof content !== 'string') return;
+    const cleaned = content.trim();
+    if (!cleaned || currentSession.userQuestions.includes(cleaned)) return;
+
+    currentSession.userQuestions.push(cleaned);
+    scheduleDispatch();
+  }
+
+  // Receive an assistant response
+  function onAssistantMessage(content) {
+    if (!content || typeof content !== 'string') return;
+    const cleaned = content.trim();
+    if (!cleaned) return;
+
+    currentSession.botResponses.push(cleaned);
+  }
+
+  // 1. Hook onto Chatbase Event Listener API
+  function attachChatbaseListeners() {
+    if (window.chatbase && typeof window.chatbase.addEventListener === 'function') {
+      try {
+        window.chatbase.addEventListener('user-message', function (e) {
+          const text = e && (e.content || e.message || e.text || (e.data && e.data.content));
+          if (text) onUserMessage(text);
+        });
+        window.chatbase.addEventListener('assistant-message', function (e) {
+          const text = e && (e.content || e.message || e.text || (e.data && e.data.content));
+          if (text) onAssistantMessage(text);
+        });
+        return true;
+      } catch (err) {}
+    }
+    return false;
+  }
+
+  // 2. Hook onto native postMessage from Chatbase iframe
+  window.addEventListener('message', function (event) {
+    if (!event.origin || !event.origin.includes('chatbase.co')) return;
+    try {
+      let data = event.data;
+      if (typeof data === 'string' && (data.startsWith('{') || data.startsWith('['))) {
+        data = JSON.parse(data);
+      }
+      if (!data) return;
+
+      // Extract user message
+      if (data.type === 'user-message' || data.event === 'user-message' || data.action === 'user-message') {
+        const text = data.content || data.message || data.text || (data.data && data.data.content);
+        if (text) onUserMessage(text);
+      }
+      // Extract assistant message
+      if (data.type === 'assistant-message' || data.event === 'assistant-message') {
+        const text = data.content || data.message || data.text || (data.data && data.data.content);
+        if (text) onAssistantMessage(text);
+      }
+    } catch (e) {}
+  });
+
+  // Try hooking immediately and also when Chatbase initializes
+  if (!attachChatbaseListeners()) {
+    const checkInterval = setInterval(function () {
+      if (attachChatbaseListeners()) {
+        clearInterval(checkInterval);
+      }
+    }, 1500);
+    setTimeout(function () { clearInterval(checkInterval); }, 30000);
+  }
+
+  // Dispatch on page exit if user asked a question and closed the tab
+  window.addEventListener('beforeunload', function () {
+    if (currentSession.userQuestions.length > 0 && !currentSession.sent) {
+      dispatchSessionReport();
+    }
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && currentSession.userQuestions.length > 0 && !currentSession.sent) {
+      dispatchSessionReport();
+    }
+  });
+
+  // Admin Shortcut for Site Owner: type dhmAIReport() in console or open URL with ?admin_ai=1
+  window.dhmAIReport = function () {
+    const history = getQueryHistory();
+    console.table(history);
+    alert(`📊 DHM AI Queries Log:\nTotal Inquiries Logged: ${history.length}\nCheck console for full details.`);
+    return history;
+  };
+
+  if (window.location.search.includes('admin_ai=1')) {
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(window.dhmAIReport, 1000);
+    });
+  }
+})();
+
 
 
 // ── Application State ──────────────────────────────────────────────────────
