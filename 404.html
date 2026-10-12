@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Discover Hidden Morocco</title>
+  <script>
+    (function () {
+      try {
+        var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+        var path = window.location.pathname || '';
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var clean = path.replace(/\/+$/, '');
+        if (clean && !clean.endsWith('.html')) {
+          window.location.replace(origin + clean + '.html' + search + hash);
+          return;
+        }
+      } catch (e) {}
+      window.location.replace(origin + '/');
+    })();
+  </script>
+</head>
+<body style="background: #0B1120; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+  <p style="color: #E7A93C; font-size: 1.1rem; letter-spacing: 1px;">Loading Discover Hidden Morocco...</p>
+</body>
+</html>

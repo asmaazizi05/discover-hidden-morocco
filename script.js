@@ -5,46 +5,57 @@
 
 /* ── Clean Pretty URLs Engine (Removes .html from Address Bar & Navigation) ─ */
 (function () {
-  try {
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      // 1. Immediately normalize the address bar URL
-      const path = window.location.pathname;
-      if (path.endsWith('.html')) {
-        let cleanPath = path.replace(/\.html$/, '');
-        if (cleanPath.endsWith('/index')) {
-          cleanPath = cleanPath.replace(/\/index$/, '') || '/';
-        }
-        const newUrl = cleanPath + window.location.search + window.location.hash;
-        window.history.replaceState(null, '', newUrl);
-      }
-    }
-  } catch (e) {}
+  function sanitizeCurrentUrl() {
+    try {
+      const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+      const path = window.location.pathname || '';
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
 
-  // 2. Normalize all internal links on page load so hover and clicks are clean
-  function cleanAllPageLinks() {
-    if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') return;
+      // 1. If on index.html (home page), immediately redirect to clean root '/'
+      if (path.toLowerCase().endsWith('/index.html') || path.toLowerCase() === '/index.html' || path.toLowerCase() === 'index.html') {
+        if (window.location.replace) {
+          window.location.replace(origin + '/' + search + hash);
+          return;
+        } else {
+          window.history.replaceState(null, document.title, origin + '/' + search + hash);
+        }
+      } else if (path.toLowerCase().endsWith('.html')) {
+        // 2. For subpages (e.g. /destinations.html -> /destinations), clean the address bar seamlessly
+        const cleanPath = path.replace(/\.html$/i, '');
+        const cleanUrl = origin + cleanPath + search + hash;
+        window.history.replaceState(null, document.title, cleanUrl);
+      }
+    } catch (e) {}
+  }
+
+  // Execute immediately before rendering completes
+  sanitizeCurrentUrl();
+
+  // Run on DOM ready and pageshow/history navigation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sanitizeCurrentUrl);
+  }
+  window.addEventListener('pageshow', sanitizeCurrentUrl);
+  window.addEventListener('popstate', sanitizeCurrentUrl);
+
+  // Normalize all navigation links to index.html -> '/'
+  function cleanNavigationLinks() {
     try {
       document.querySelectorAll('a[href]').forEach(function (link) {
         const href = link.getAttribute('href');
         if (!href) return;
-        if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//') || 
-            href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:') || 
-            href.startsWith('#')) return;
-
         if (href === 'index.html' || href === './index.html' || href === '/index.html') {
-          link.setAttribute('href', href.startsWith('/') ? '/' : './');
-        } else if (href.includes('.html')) {
-          const cleanHref = href.replace(/\.html(?=($|[?#]))/, '');
-          link.setAttribute('href', cleanHref);
+          link.setAttribute('href', '/');
         }
       });
     } catch (err) {}
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cleanAllPageLinks);
+    document.addEventListener('DOMContentLoaded', cleanNavigationLinks);
   } else {
-    cleanAllPageLinks();
+    cleanNavigationLinks();
   }
 })();
 
