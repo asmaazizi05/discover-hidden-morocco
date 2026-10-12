@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    HIDDEN MOROCCO � BOUTIQUE MOROCCAN DESIGN SYSTEM (theme.css)
    Warm Terracotta, Sahara Gold, Linen Light & Deep Charcoal Palette
    ========================================================================== */
@@ -34,7 +34,7 @@
   --hm-bg-card-hover: #FFFFFF;
   --hm-bg-nav: rgba(250, 247, 242, 0.96);
   /* Warm Pearl Glass Nav */
-  --hm-bg-hero-overlay: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.85) 100%);
+  --hm-bg-hero-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(21, 21, 21, 0.88) 100%);
   --hm-bg-footer: #0F172A;
   /* Deep Midnight Footer */
 
@@ -773,7 +773,7 @@ body {
   .about-cta,
   .cta-strip {
     position: relative !important;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%), url('images/hero.jpg') center/cover no-repeat !important;
+    background: linear-gradient(180deg, rgba(21, 21, 21, 0.72) 0%, rgba(21, 21, 21, 0.92) 100%), url('images/hero.jpg') center/cover no-repeat !important;
     padding: 96px 24px !important;
     text-align: center !important;
     overflow: hidden !important;
@@ -1497,7 +1497,7 @@ body {
     width: 100vw !important;
     height: 100vh !important;
     z-index: 9999999 !important;
-    background: rgba(15, 23, 42, 0.85) !important;
+    background: rgba(0, 0, 0, 0.85) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
     align-items: center !important;
@@ -2668,14 +2668,14 @@ a.btn-primary:hover,
 
 /* -- Map Page Dark Mode & WhatsApp Accent Standardization -- */
 [data-theme="dark"] .map-side-card {
-  background: rgba(10, 14, 26, 0.94) !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(231, 169, 60, 0.25) !important;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6) !important;
   color: #F8FAFC !important;
 }
 
 [data-theme="dark"] .map-side-img::after {
-  background: linear-gradient(to top, rgba(10, 14, 26, 0.95) 0%, transparent 100%) !important;
+  background: linear-gradient(to top, #1E1E1E 0%, transparent 100%) !important;
 }
 
 [data-theme="dark"] .map-side-content h3 {
@@ -3386,7 +3386,7 @@ a[href*="whatsapp"]:hover,
 /* -- Minimalist Hero Eyebrow with Fine Gold Border -- */
 .hero-eyebrow,
 .hn-hero-eyebrow {
-  background: rgba(15, 23, 42, 0.45) !important;
+  background: rgba(21, 21, 21, 0.65) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
   border: 1px solid rgba(231, 169, 60, 0.45) !important;
@@ -3405,7 +3405,7 @@ a[href*="whatsapp"]:hover,
 }
 
 .hero-eyebrow:hover {
-  background: rgba(15, 23, 42, 0.7) !important;
+  background: rgba(21, 21, 21, 0.85) !important;
   border-color: rgba(231, 169, 60, 0.75) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35) !important;
@@ -3420,7 +3420,7 @@ a[href*="whatsapp"]:hover,
 .card-badge.badge-gold,
 .card-badge.badge-terracotta,
 .card-badge.badge-primary {
-  background: rgba(15, 23, 42, 0.55) !important;
+  background: rgba(21, 21, 21, 0.7) !important;
   backdrop-filter: blur(14px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
@@ -3443,7 +3443,7 @@ a[href*="whatsapp"]:hover,
 .card-badge:hover,
 .exp-cat-badge:hover,
 .acc-tag:hover {
-  background: rgba(15, 23, 42, 0.78) !important;
+  background: rgba(21, 21, 21, 0.88) !important;
   border-color: rgba(231, 169, 60, 0.6) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4) !important;
@@ -3598,7 +3598,7 @@ a[href*="whatsapp"]:hover,
 
 .acc-content .acc-tag,
 .acc-item .acc-content .acc-tag {
-  background: rgba(15, 23, 42, 0.55) !important;
+  background: rgba(21, 21, 21, 0.7) !important;
   backdrop-filter: blur(14px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
   border: 1px solid rgba(255, 255, 255, 0.35) !important;
@@ -3614,7 +3614,7 @@ a[href*="whatsapp"]:hover,
 
 .acc-overlay,
 .acc-item .acc-overlay {
-  background: linear-gradient(0deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.45) 45%, rgba(0, 0, 0, 0) 100%) !important;
+  background: linear-gradient(0deg, rgba(21, 21, 21, 0.95) 0%, rgba(21, 21, 21, 0.45) 45%, rgba(0, 0, 0, 0) 100%) !important;
 }
 
 /* ==========================================================================
@@ -4351,7 +4351,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
   position: fixed !important;
   inset: 0 !important;
   z-index: 10000020 !important;
-  background: rgba(15, 23, 42, 0.86) !important;
+  background: rgba(0, 0, 0, 0.86) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   align-items: center !important;
@@ -4544,7 +4544,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 .ct-dest-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.7) 100%);
+  background: linear-gradient(180deg, transparent 40%, rgba(21, 21, 21, 0.8) 100%);
 }
 
 .ct-dest-check {
@@ -5105,9 +5105,9 @@ button[id*="chatbase"] {
 .card-img-wrapper { position: relative; width: 100%; height: 240px; overflow: hidden; }
 .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .card:hover .card-img-wrapper img { transform: scale(1.05); }
-.card-badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; background: rgba(15,23,42,0.6); color: #fff; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); }
-.card-fav-btn { position: absolute; top: 16px; right: 16px; z-index: 2; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(8px); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
-.card-fav-btn:hover { background: rgba(15, 23, 42, 0.8); transform: scale(1.1); }
+.card-badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; background: rgba(21,21,21,0.7); color: #fff; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); }
+.card-fav-btn { position: absolute; top: 16px; right: 16px; z-index: 2; background: rgba(21, 21, 21, 0.65); border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(8px); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; }
+.card-fav-btn:hover { background: rgba(21, 21, 21, 0.9); transform: scale(1.1); }
 .card-fav-btn.is-active { background: rgba(255,255,255,0.9); }
 .card-fav-btn.is-active i { color: var(--hm-terracotta); }
 .card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
@@ -5565,7 +5565,9 @@ textarea {
   background-color: #151515 !important;
 }
 
-[data-theme="dark"] .cta-banner {
+[data-theme="dark"] .cta-banner,
+[data-theme="dark"] .about-cta,
+[data-theme="dark"] .cta-strip {
   background: linear-gradient(135deg, #151515 0%, #202020 50%, #C85A32 100%) !important;
 }
 
@@ -5585,3 +5587,255 @@ textarea {
   background-color: #1E1E1E !important;
   background-image: radial-gradient(circle at 50% 50%, rgba(200, 90, 50, 0.15) 0%, transparent 70%) !important;
 }
+
+/* ==============================================================================
+   ALL SUBPAGES PURE #151515 & #1E1E1E PALETTE (Zero Navy Blue Anywhere)
+   ============================================================================== */
+[data-theme="dark"] .travel-form-section,
+[data-theme="dark"] .contact-section,
+[data-theme="dark"] .about-section,
+[data-theme="dark"] .dest-clean-header,
+[data-theme="dark"] .legal-hero,
+[data-theme="dark"] .legal-content,
+[data-theme="dark"] .privacy-policy-section,
+[data-theme="dark"] .terms-section,
+[data-theme="dark"] .cookie-section,
+[data-theme="dark"] .favorites-section,
+[data-theme="dark"] .map-dashboard-container {
+  background: #151515 !important;
+  background-color: #151515 !important;
+}
+
+[data-theme="dark"] .travel-form-container,
+[data-theme="dark"] .contact-form-card,
+[data-theme="dark"] .travel-form-right,
+[data-theme="dark"] .legal-card,
+[data-theme="dark"] .contact-info-card,
+[data-theme="dark"] .faq-item,
+[data-theme="dark"] .team-card,
+[data-theme="dark"] .value-card,
+[data-theme="dark"] .dest-booking-sheet,
+[data-theme="dark"] .modal-content,
+[data-theme="dark"] .exp-sheet,
+[data-theme="dark"] .map-toolbar {
+  background: #1E1E1E !important;
+  background-color: #1E1E1E !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .travel-form-right input[type="text"],
+[data-theme="dark"] .travel-form-right input[type="email"],
+[data-theme="dark"] .travel-form-right input[type="tel"],
+[data-theme="dark"] .travel-form-right input[type="date"],
+[data-theme="dark"] .travel-form-right select,
+[data-theme="dark"] .travel-form-right textarea,
+[data-theme="dark"] .contact-form-card input,
+[data-theme="dark"] .contact-form-card select,
+[data-theme="dark"] .contact-form-card textarea {
+  background: #151515 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .travel-form-right input:focus,
+[data-theme="dark"] .travel-form-right select:focus,
+[data-theme="dark"] .travel-form-right textarea:focus,
+[data-theme="dark"] .contact-form-card input:focus,
+[data-theme="dark"] .contact-form-card select:focus,
+[data-theme="dark"] .contact-form-card textarea:focus {
+  background: #1E1E1E !important;
+  border-color: #E7A93C !important;
+  box-shadow: 0 0 0 4px rgba(231, 169, 60, 0.2) !important;
+}
+
+[data-theme="dark"] .destination-select {
+  background: #151515 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .dest-title {
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .dest-card {
+  background: #1E1E1E !important;
+  border: 2px solid rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .dest-card span {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .dest-card:hover {
+  background: #262626 !important;
+  border-color: #C85A32 !important;
+}
+
+[data-theme="dark"] .dest-card:has(input:checked) {
+  border-color: transparent !important;
+}
+
+[data-theme="dark"] .dest-card:has(input:checked) span {
+  color: #FFFFFF !important;
+}
+
+/* Universal Tailor-Made Booking Section Layout (Shared by booking.html & destinations.html) */
+.travel-form-section {
+  padding: 40px 24px 90px;
+  background: var(--hm-bg-main);
+}
+
+.travel-form-container {
+  display: flex;
+  max-width: 1080px;
+  margin: 0 auto;
+  background: var(--hm-bg-card, #FFFFFF);
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--hm-border);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 900px) {
+  .travel-form-container {
+    flex-direction: column;
+  }
+}
+
+/* ==============================================================================
+   ULTRA-SPECIFIC SINGLE-FILE ENFORCEMENT (#151515 & #1E1E1E)
+   Guaranteed to override any inline or internal subpage styles across the whole site
+   ============================================================================== */
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] body main,
+html[data-theme="dark"] body section,
+html[data-theme="dark"] body .section,
+html[data-theme="dark"] body .section-alt,
+html[data-theme="dark"] body .dest-clean-header,
+html[data-theme="dark"] body .travel-form-section,
+html[data-theme="dark"] body .contact-section,
+html[data-theme="dark"] body .about-section,
+html[data-theme="dark"] body .legal-hero,
+html[data-theme="dark"] body .legal-content,
+html[data-theme="dark"] body .testimonials-section-wrap,
+html[data-theme="dark"] body .testimonials-section,
+html[data-theme="dark"] body #testimonials,
+html[data-theme="dark"] body .map-hero,
+html[data-theme="dark"] body #interactiveMap,
+html[data-theme="dark"] body #homeMapPreview,
+html[data-theme="dark"] body .story-welcome-section,
+html[data-theme="dark"] body .map-dashboard-container,
+html[data-theme="dark"] body div[style*="background"] {
+  background-color: #151515 !important;
+}
+
+html[data-theme="dark"] body .card,
+html[data-theme="dark"] body .destination-card,
+html[data-theme="dark"] body .contact-form-card,
+html[data-theme="dark"] body .travel-form-container,
+html[data-theme="dark"] body .travel-form-right,
+html[data-theme="dark"] body .legal-card,
+html[data-theme="dark"] body .contact-info-card,
+html[data-theme="dark"] body .faq-item,
+html[data-theme="dark"] body .team-card,
+html[data-theme="dark"] body .value-card,
+html[data-theme="dark"] body .dest-booking-sheet,
+html[data-theme="dark"] body .modal-content,
+html[data-theme="dark"] body .exp-sheet,
+html[data-theme="dark"] body .map-side-card,
+html[data-theme="dark"] body .map-toolbar,
+html[data-theme="dark"] body .review-card,
+html[data-theme="dark"] body .exp-cat-card,
+html[data-theme="dark"] body .why-card,
+html[data-theme="dark"] body .feature-item,
+html[data-theme="dark"] body .hero-stats-inner {
+  background: #1E1E1E !important;
+  background-color: #1E1E1E !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #CBD5E1 !important;
+}
+
+html[data-theme="dark"] body .contact-form-card h2,
+html[data-theme="dark"] body .contact-form-card label,
+html[data-theme="dark"] body .travel-form-right label,
+html[data-theme="dark"] body .map-side-content h3 {
+  color: #F8FAFC !important;
+}
+
+html[data-theme="dark"] body input,
+html[data-theme="dark"] body select,
+html[data-theme="dark"] body textarea,
+html[data-theme="dark"] body .form-group input,
+html[data-theme="dark"] body .form-group select,
+html[data-theme="dark"] body .form-group textarea,
+html[data-theme="dark"] body .travel-form-right input,
+html[data-theme="dark"] body .travel-form-right select,
+html[data-theme="dark"] body .travel-form-right textarea {
+  background: #151515 !important;
+  background-color: #151515 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+html[data-theme="dark"] body input:focus,
+html[data-theme="dark"] body select:focus,
+html[data-theme="dark"] body textarea:focus,
+html[data-theme="dark"] body .form-group input:focus,
+html[data-theme="dark"] body .form-group select:focus,
+html[data-theme="dark"] body .form-group textarea:focus,
+html[data-theme="dark"] body .travel-form-right input:focus,
+html[data-theme="dark"] body .travel-form-right select:focus,
+html[data-theme="dark"] body .travel-form-right textarea:focus {
+  background: #1E1E1E !important;
+  background-color: #1E1E1E !important;
+  border-color: #E7A93C !important;
+  box-shadow: 0 0 0 4px rgba(231, 169, 60, 0.2) !important;
+}
+
+html[data-theme="dark"] body .modal,
+html[data-theme="dark"] body #destModal,
+html[data-theme="dark"] body #globalQuickBookModal,
+html[data-theme="dark"] body #destBookingModal,
+html[data-theme="dark"] body #customTourModal,
+html[data-theme="dark"] body .dest-booking-modal-overlay,
+html[data-theme="dark"] body .exp-modal {
+  background: rgba(0, 0, 0, 0.88) !important;
+  background-color: rgba(0, 0, 0, 0.88) !important;
+}
+
+/* Standalone Pure-CSS Animation Suite (Runs autonomously on every page) */
+@keyframes luxuryEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dest-clean-header h1,
+.legal-hero h1,
+.section-header h2,
+.card,
+.destination-card,
+.why-card,
+.feature-item,
+.review-card,
+.team-card,
+.value-card,
+.contact-form-card,
+.travel-form-container {
+  animation: luxuryEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card:nth-child(1), .destination-card:nth-child(1), .why-card:nth-child(1), .feature-item:nth-child(1), .team-card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2), .destination-card:nth-child(2), .why-card:nth-child(2), .feature-item:nth-child(2), .team-card:nth-child(2) { animation-delay: 0.12s; }
+.card:nth-child(3), .destination-card:nth-child(3), .why-card:nth-child(3), .feature-item:nth-child(3), .team-card:nth-child(3) { animation-delay: 0.18s; }
+.card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4) { animation-delay: 0.24s; }
+.card:nth-child(5), .destination-card:nth-child(5) { animation-delay: 0.30s; }
+.card:nth-child(6), .destination-card:nth-child(6) { animation-delay: 0.36s; }
