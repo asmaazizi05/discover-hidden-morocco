@@ -79,6 +79,20 @@
   }
 })();
 
+/* ── Leaflet Map Attribution Bar Cleaner ─────────────────────────────────── */
+(function () {
+  try {
+    const css = '.leaflet-control-attribution, .leaflet-control-attribution * { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; height: 0 !important; width: 0 !important; font-size: 0 !important; line-height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; }';
+    const head = document.head || document.getElementsByTagName('head')[0];
+    if (head) {
+      const style = document.createElement('style');
+      style.id = 'dhm-hide-leaflet-attribution';
+      style.appendChild(document.createTextNode(css));
+      head.appendChild(style);
+    }
+  } catch (e) {}
+})();
+
 /* ── Chatbase AI Assistant Widget & Global Initialization ────────────────── */
 (function () {
   if (!window.chatbase || window.chatbase("getState") !== "initialized") {
@@ -1949,12 +1963,17 @@ function initMapPage() {
     AppState.mapInstance = null;
   }
 
-  // Create Map centered on Morocco
+  // Create Map centered on Morocco (attribution bar removed)
   AppState.mapInstance = L.map('interactiveMap', {
+    attributionControl: false,
     zoomControl: false,
     maxZoom: 9,
     minZoom: 5
   }).setView([31.7917, -7.0926], 6);
+
+  if (AppState.mapInstance.attributionControl) {
+    AppState.mapInstance.attributionControl.remove();
+  }
 
   // Force Leaflet to recalculate map dimensions (critical for mobile)
   setTimeout(() => {
@@ -1971,9 +1990,9 @@ function initMapPage() {
   // Add zoom control at top-left
   L.control.zoom({ position: 'topleft' }).addTo(AppState.mapInstance);
 
-  // ESRI World Imagery satellite tiles (matches reference design)
+  // ESRI World Imagery satellite tiles (clean satellite tiles without bottom bar)
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP',
+    attribution: '',
     maxZoom: 9,
     minZoom: 5
   }).addTo(AppState.mapInstance);
@@ -2157,11 +2176,15 @@ function initHomeMapPreview() {
   const mapElement = document.getElementById('homeMapPreview');
   if (!mapElement || typeof L === 'undefined') return;
 
-  const miniMap = L.map('homeMapPreview', { zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
+  const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
+
+  if (miniMap.attributionControl) {
+    miniMap.attributionControl.remove();
+  }
 
   // ESRI satellite tiles for home map preview
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri'
+    attribution: ''
   }).addTo(miniMap);
 
   DESTINATIONS_DB.forEach(dest => {
