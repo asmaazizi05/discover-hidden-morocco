@@ -125,12 +125,16 @@
   setInterval(adjustChatbase, 300);
 })();
 
-/* ── DHM Automated AI Visitor Intelligence & Email Dispatcher ─────────────── */
+/* ── DHM Executive Visitor Intelligence & Monthly Analytics Engine ─────────── */
 (function () {
   const OWNER_EMAIL = "contact@discoverhiddenmorocco.com";
-  const STORAGE_KEY = "dhm_ai_visitor_queries";
+  const STORAGE_KEY_SESSION = "dhm_ai_visitor_queries";
+  const STORAGE_KEY_MONTHLY = "dhm_ai_monthly_analytics";
   
-  // Session tracking to batch rapid messages into one cohesive report
+  // Trivial greetings that shouldn't trigger an inquiry brief
+  const TRIVIAL_GREETINGS = ["hi", "hello", "hey", "salam", "bonjour", "salut", "hola", "ciao", "test", "ok", "yo"];
+
+  // Active session tracking
   let currentSession = {
     id: "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
     startTime: new Date().toISOString(),
@@ -139,6 +143,7 @@
     userLanguage: localStorage.getItem('hm_lang') || navigator.language || 'en',
     userQuestions: [],
     botResponses: [],
+    chatWindowWasOpened: false,
     timer: null,
     sent: false
   };
@@ -146,7 +151,7 @@
   // Helper to load and save local query history
   function getQueryHistory() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      return JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '[]');
     } catch (e) {
       return [];
     }
@@ -154,57 +159,92 @@
 
   function saveQueryHistory(history) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(-100))); // keep last 100 queries
+      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(history.slice(-100)));
     } catch (e) {}
   }
 
-  // Smart Heuristic Demand & Intent Analysis
+  // Monthly Analytics Data Store
+  function getMonthlyAnalytics() {
+    try {
+      const now = new Date();
+      const currentMonthKey = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
+      let data = JSON.parse(localStorage.getItem(STORAGE_KEY_MONTHLY) || "{}");
+      if (!data.months) data.months = {};
+      if (!data.months[currentMonthKey]) {
+        data.months[currentMonthKey] = {
+          monthKey: currentMonthKey,
+          totalConversations: 0,
+          totalQuestions: 0,
+          destinations: {},
+          interests: {},
+          gaps: [],
+          recentInquiries: [],
+          summaryDispatched: false
+        };
+      }
+      data.currentMonth = currentMonthKey;
+      return data;
+    } catch (e) {
+      return { currentMonth: "2026-10", months: {} };
+    }
+  }
+
+  function saveMonthlyAnalytics(data) {
+    try {
+      localStorage.setItem(STORAGE_KEY_MONTHLY, JSON.stringify(data));
+    } catch (e) {}
+  }
+
+  // Professional Demand & Intent Analysis (Zero Emojis, 100% Executive English)
   function analyzeInquiry(textList) {
     const combined = textList.join(" ").toLowerCase();
 
     // Destinations
     const destinations = [];
     const destMap = [
-      { name: "Sahara / Merzouga / Erg Chebbi", match: /merzouga|sahara|desert|erg chebbi|dune|bivouac|zagora/i },
-      { name: "Marrakech & Medina", match: /marrakech|marrakesh|jamaa|jemaa|medina|majorelle/i },
-      { name: "Fes (Imperial City)", match: /fes|fez|tanner|chouara/i },
-      { name: "Chefchaouen (Blue Pearl)", match: /chefchaouen|chaouen|blue city/i },
-      { name: "Atlas Mountains & Imlil", match: /atlas|imlil|toubkal|ourika/i },
-      { name: "Essaouira & Coast", match: /essaouira|mogador|beach|coast|ocean|taghazout/i },
-      { name: "Agafay Desert", match: /agafay|stone desert/i },
-      { name: "Ouarzazate & Ait Ben Haddou", match: /ouarzazate|ait ben haddou|kasbah|cinema/i },
+      { name: "Sahara (Merzouga & Erg Chebbi)", match: /merzouga|sahara|desert|erg chebbi|dune|bivouac|zagora/i },
+      { name: "Marrakech & Surrounding Region", match: /marrakech|marrakesh|jamaa|jemaa|medina|majorelle/i },
+      { name: "Fes & Imperial Heritage", match: /fes|fez|tanner|chouara/i },
+      { name: "Chefchaouen & Northern Rif", match: /chefchaouen|chaouen|blue city/i },
+      { name: "High Atlas Mountains & Imlil", match: /atlas|imlil|toubkal|ourika/i },
+      { name: "Essaouira & Atlantic Coast", match: /essaouira|mogador|beach|coast|ocean|taghazout/i },
+      { name: "Agafay Stone Desert", match: /agafay|stone desert/i },
+      { name: "Ouarzazate & Kasbah Trail", match: /ouarzazate|ait ben haddou|kasbah|cinema/i },
       { name: "Dades & Todra Gorges", match: /dades|todra|gorges|tinghir/i },
-      { name: "Tangier / Casablanca / Rabat", match: /tanger|tangier|casablanca|rabat/i }
+      { name: "Tangier, Casablanca & Coastal Hubs", match: /tanger|tangier|casablanca|rabat/i }
     ];
     destMap.forEach(d => {
       if (d.match.test(combined)) destinations.push(d.name);
     });
 
-    // Customer Interests & Desires
+    // Customer Interests & Desires (Clean Corporate Labels)
     const interests = [];
     const interestMap = [
-      { name: "💰 Price & Budget Quote", match: /price|cost|how much|budget|rate|expensive|cheap|quote|prix|combien|tarif/i },
-      { name: "🚐 Private Driver & Transport", match: /driver|transport|4x4|car|van|chauffeur|voiture|transfer|airport|pickup/i },
-      { name: "⛺ Luxury Camp & Riad", match: /camp|tent|riad|luxury|glamping|hotel|suite|pool|chambre/i },
-      { name: "🍽️ Food & Special Diets (Halal/Vegan)", match: /food|dinner|lunch|breakfast|halal|vegetarian|vegan|gluten|repas|diner/i },
-      { name: "👨‍👩‍👧 Family & Children Friendly", match: /family|child|children|kid|baby|toddler|famille|enfant/i },
-      { name: "🐫 Activities & Excursions", match: /camel|quad|buggy|trek|hike|balloon|sunset|sunrise|dromadaire/i },
-      { name: "📅 Custom Dates & Itinerary", match: /day|days|night|nights|itinerary|schedule|custom|private|circuit|programme/i }
+      { name: "Pricing & Itemized Quotation", match: /price|cost|how much|budget|rate|expensive|cheap|quote|prix|combien|tarif/i },
+      { name: "Private Transportation & Chauffeur", match: /driver|transport|4x4|car|van|chauffeur|voiture|transfer|airport|pickup/i },
+      { name: "Luxury Bivouac & Boutique Lodging", match: /camp|tent|riad|luxury|glamping|hotel|suite|pool|chambre/i },
+      { name: "Dietary Preferences & Culinary Needs", match: /food|dinner|lunch|breakfast|halal|vegetarian|vegan|gluten|repas|diner/i },
+      { name: "Family & Child Accommodations", match: /family|child|children|kid|baby|toddler|famille|enfant/i },
+      { name: "Excursions & Desert Activities", match: /camel|quad|buggy|trek|hike|balloon|sunset|sunrise|dromadaire/i },
+      { name: "Custom Dates & Tailored Itinerary", match: /day|days|night|nights|itinerary|schedule|custom|private|circuit|programme/i }
     ];
     interestMap.forEach(i => {
       if (i.match.test(combined)) interests.push(i.name);
     });
 
-    // Actionable Gaps / Suggestions for the owner
+    // Actionable Content Opportunities for the Site Owner
     const suggestions = [];
     if (/price|cost|prix|combien/i.test(combined)) {
-      suggestions.push("Visitor is asking about prices — make sure clear starting prices or instant quote CTA is visible on this page.");
+      suggestions.push("Client requested itemized pricing. Ensure transparent starting rates and instant quote buttons are visible on this itinerary.");
     }
-    if (/vegetarian|vegan|halal|diet|baby|child/i.test(combined)) {
-      suggestions.push("Special request detected (dietary / family) — highlight our customized amenities on the website.");
+    if (/vegetarian|vegan|halal|diet/i.test(combined)) {
+      suggestions.push("Special culinary requirement identified. Clarify that private meals and desert camps accommodate vegetarian, vegan, and halal dining.");
+    }
+    if (/baby|child|kid|famille|enfant/i.test(combined)) {
+      suggestions.push("Family travel inquiry identified. Prominently highlight family safety provisions and private child car seats.");
     }
     if (destinations.length === 0) {
-      destinations.push("Custom / General Morocco Inquiry");
+      destinations.push("Custom / Bespoke Morocco Itinerary");
     }
     if (interests.length === 0) {
       interests.push("General Tour Inquiry");
@@ -213,24 +253,81 @@
     return {
       destinations: destinations.join(", "),
       interests: interests.join(", "),
-      suggestions: suggestions.join(" | ") || "Ensure personalized itinerary options are emphasized."
+      destinationsList: destinations,
+      interestsList: interests,
+      suggestions: suggestions.join(" | ") || "Ensure personalized itinerary highlights and direct WhatsApp consultation are clear."
     };
   }
 
-  // Dispatch the email report to contact@discoverhiddenmorocco.com
-  function dispatchSessionReport() {
-    if (currentSession.sent || currentSession.userQuestions.length === 0) return;
+  // Record completed session in monthly aggregate store
+  function recordMonthlyData(questions, analysis) {
+    try {
+      const store = getMonthlyAnalytics();
+      const monthData = store.months[store.currentMonth];
+      if (!monthData) return;
+
+      monthData.totalConversations += 1;
+      monthData.totalQuestions += questions.length;
+
+      // Tally destinations
+      analysis.destinationsList.forEach(d => {
+        monthData.destinations[d] = (monthData.destinations[d] || 0) + 1;
+      });
+
+      // Tally interests
+      analysis.interestsList.forEach(i => {
+        monthData.interests[i] = (monthData.interests[i] || 0) + 1;
+      });
+
+      // Add actionable gap
+      if (analysis.suggestions && !monthData.gaps.includes(analysis.suggestions)) {
+        monthData.gaps.push(analysis.suggestions);
+        if (monthData.gaps.length > 20) monthData.gaps.shift();
+      }
+
+      // Add inquiry sample
+      monthData.recentInquiries.push({
+        time: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        question: questions[0].substring(0, 80),
+        dest: analysis.destinations
+      });
+      if (monthData.recentInquiries.length > 50) monthData.recentInquiries.shift();
+
+      saveMonthlyAnalytics(store);
+    } catch (e) {}
+  }
+
+  // Validate meaningful inquiries (filters out trivial single-word greetings)
+  function hasMeaningfulQuestions(questions) {
+    if (!questions || questions.length === 0) return false;
+    return questions.some(q => {
+      const cleaned = q.trim().toLowerCase();
+      return cleaned.length >= 4 && !TRIVIAL_GREETINGS.includes(cleaned);
+    });
+  }
+
+  // Dispatch the executive email brief once the conversation has fully concluded
+  function onConversationEnded(reason) {
+    if (currentSession.sent) return;
+    if (!hasMeaningfulQuestions(currentSession.userQuestions)) return;
+
     currentSession.sent = true;
+    if (currentSession.timer) clearTimeout(currentSession.timer);
 
     const questions = currentSession.userQuestions;
     const answers = currentSession.botResponses;
     const analysis = analyzeInquiry(questions);
-    const dateFormatted = new Date().toLocaleString("en-US", { timeZone: "Africa/Casablanca" });
+    const dateFormatted = new Date().toLocaleString("en-US", { 
+      timeZone: "Africa/Casablanca",
+      dateStyle: "medium",
+      timeStyle: "short"
+    });
 
-    // Store in query history
+    // Store locally in session log
     const history = getQueryHistory();
     history.push({
       date: dateFormatted,
+      reason: reason,
       page: currentSession.page,
       questions: questions,
       answers: answers,
@@ -238,28 +335,34 @@
     });
     saveQueryHistory(history);
 
-    // Prepare clear structured report for the owner
-    const formattedQuestions = questions.map((q, idx) => `[Q${idx + 1}] "${q}"`).join("\n");
+    // Record in monthly accumulator
+    recordMonthlyData(questions, analysis);
+
+    // Prepare executive corporate report (English only, zero emojis/icons)
+    const formattedQuestions = questions.map((q, idx) => `${idx + 1}. "${q}"`).join("\n");
     const formattedAnswers = answers.length > 0 
-      ? answers.map((a, idx) => `[A${idx + 1}] "${a.substring(0, 200)}${a.length > 200 ? '...' : ''}"`).join("\n") 
-      : "(Visitor asked, response completed)";
+      ? answers.map((a, idx) => `Response ${idx + 1}: ${a.substring(0, 240)}${a.length > 240 ? '...' : ''}`).join("\n\n") 
+      : "The client concluded their interactive inquiry session.";
+
+    const referenceId = "DHM-" + Date.now().toString(36).toUpperCase();
 
     const payload = {
-      _subject: `🤖 [DHM AI Visitor Demand] ${analysis.destinations} (${questions[0].substring(0, 40)}...)`,
+      _subject: `Discover Hidden Morocco - Visitor Inquiry Intelligence: ${analysis.destinations}`,
       _template: "table",
-      "Executive Summary": "A website visitor just asked your AI assistant on Discover Hidden Morocco. Here is the full breakdown of their inquiry and demand:",
-      "Visitor Questions": formattedQuestions,
-      "Identified Destinations": analysis.destinations,
-      "Visitor Desires & Category": analysis.interests,
-      "What You Should Check/Add on Site": analysis.suggestions,
-      "AI Assistant Response Preview": formattedAnswers,
-      "Page Visited": currentSession.page,
-      "Visitor Language": currentSession.userLanguage,
-      "Morocco Time": dateFormatted,
+      "Report Reference": referenceId,
+      "Session Status": `Concluded (${reason})`,
+      "Recorded Date and Time": `${dateFormatted} (Casablanca Time)`,
+      "Target Destination": analysis.destinations,
+      "Client Requirements and Intent": analysis.interests,
+      "Visitor Inquiries": formattedQuestions,
+      "AI Assistant Response Summary": formattedAnswers,
+      "Website Optimization Recommendations": analysis.suggestions,
+      "Referral Page URL": currentSession.page,
+      "Browser Language": currentSession.userLanguage,
       "_replyto": OWNER_EMAIL
     };
 
-    // Send via FormSubmit AJAX endpoint (Free, automatic, reliable)
+    // Send via FormSubmit AJAX endpoint
     try {
       fetch("https://formsubmit.co/ajax/" + OWNER_EMAIL, {
         method: "POST",
@@ -270,21 +373,23 @@
         body: JSON.stringify(payload)
       })
       .then(res => res.json())
-      .then(data => {
-        console.log("✅ [DHM AI Intelligence] Visitor inquiry report dispatched to", OWNER_EMAIL);
+      .then(() => {
+        console.log("[DHM Executive Intelligence] Visitor brief successfully dispatched to", OWNER_EMAIL);
       })
       .catch(err => {
-        console.warn("⚠️ [DHM AI Intelligence] Dispatch attempt noted:", err);
+        console.warn("[DHM Executive Intelligence] Dispatch log:", err);
       });
     } catch (e) {
-      console.warn("⚠️ [DHM AI Intelligence] Dispatch error:", e);
+      console.warn("[DHM Executive Intelligence] Dispatch error:", e);
     }
   }
 
-  // Schedule dispatch after a reasonable pause in conversation (30 seconds)
-  function scheduleDispatch() {
+  // Idle timeout: 3 minutes of silence after answer
+  function refreshIdleTimeout() {
     if (currentSession.timer) clearTimeout(currentSession.timer);
-    currentSession.timer = setTimeout(dispatchSessionReport, 30000); // 30 sec debounce
+    currentSession.timer = setTimeout(function () {
+      onConversationEnded("Inactivity timeout (3 minutes idle)");
+    }, 180000);
   }
 
   // Receive a user question
@@ -294,7 +399,8 @@
     if (!cleaned || currentSession.userQuestions.includes(cleaned)) return;
 
     currentSession.userQuestions.push(cleaned);
-    scheduleDispatch();
+    currentSession.chatWindowWasOpened = true;
+    refreshIdleTimeout();
   }
 
   // Receive an assistant response
@@ -304,6 +410,7 @@
     if (!cleaned) return;
 
     currentSession.botResponses.push(cleaned);
+    refreshIdleTimeout();
   }
 
   // 1. Hook onto Chatbase Event Listener API
@@ -334,20 +441,39 @@
       }
       if (!data) return;
 
-      // Extract user message
       if (data.type === 'user-message' || data.event === 'user-message' || data.action === 'user-message') {
         const text = data.content || data.message || data.text || (data.data && data.data.content);
         if (text) onUserMessage(text);
       }
-      // Extract assistant message
       if (data.type === 'assistant-message' || data.event === 'assistant-message') {
         const text = data.content || data.message || data.text || (data.data && data.data.content);
         if (text) onAssistantMessage(text);
       }
+      if (data.type === 'close' || data.action === 'close' || data.event === 'close' || data.type === 'chatbase:closed') {
+        onConversationEnded("Chat window closed");
+      }
     } catch (e) {}
   });
 
-  // Try hooking immediately and also when Chatbase initializes
+  // 3. Detect when visitor closes the chat widget manually
+  function setupWidgetCloseDetection() {
+    const bubbleBtn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
+    if (bubbleBtn && !bubbleBtn._dhm_hooked) {
+      bubbleBtn._dhm_hooked = true;
+      bubbleBtn.addEventListener('click', function () {
+        const win = document.getElementById('chatbase-bubble-window');
+        const wasOpen = win && win.style.display !== 'none' && win.getAttribute('aria-hidden') !== 'true';
+        if (wasOpen && currentSession.userQuestions.length > 0) {
+          setTimeout(function () {
+            onConversationEnded("Chat window closed by client");
+          }, 600);
+        }
+      });
+    }
+  }
+  setInterval(setupWidgetCloseDetection, 1000);
+
+  // Hook listeners
   if (!attachChatbaseListeners()) {
     const checkInterval = setInterval(function () {
       if (attachChatbaseListeners()) {
@@ -357,30 +483,214 @@
     setTimeout(function () { clearInterval(checkInterval); }, 30000);
   }
 
-  // Dispatch on page exit if user asked a question and closed the tab
+  // End conversation when visitor leaves page / closes tab
   window.addEventListener('beforeunload', function () {
     if (currentSession.userQuestions.length > 0 && !currentSession.sent) {
-      dispatchSessionReport();
+      onConversationEnded("Client left page / closed browser tab");
     }
   });
 
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden' && currentSession.userQuestions.length > 0 && !currentSession.sent) {
-      dispatchSessionReport();
+      onConversationEnded("Client minimized browser / changed tab");
     }
   });
 
-  // Admin Shortcut for Site Owner: type dhmAIReport() in console or open URL with ?admin_ai=1
-  window.dhmAIReport = function () {
-    const history = getQueryHistory();
-    console.table(history);
-    alert(`📊 DHM AI Queries Log:\nTotal Inquiries Logged: ${history.length}\nCheck console for full details.`);
-    return history;
+  /* ── Monthly Executive Analytics Brief Dispatcher ────────────────────────── */
+  window.sendMonthlyExecutiveDashboard = function (monthKey, isManual) {
+    const store = getMonthlyAnalytics();
+    const targetKey = monthKey || store.currentMonth;
+    const mData = store.months[targetKey];
+
+    if (!mData || mData.totalConversations === 0) {
+      const msg = `No inquiries recorded for ${targetKey}.`;
+      if (isManual) alert(msg);
+      return false;
+    }
+
+    // Format destination demand ranking
+    const sortedDest = Object.entries(mData.destinations || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([dest, count], idx) => `${idx + 1}. ${dest}: ${count} inquiries (${Math.round((count / mData.totalConversations) * 100)}% of demand)`)
+      .join("\n");
+
+    // Format client requirements
+    const sortedInterests = Object.entries(mData.interests || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([cat, count], idx) => `${idx + 1}. ${cat}: ${count} requests`)
+      .join("\n");
+
+    // Format actionable website recommendations
+    const gapsList = (mData.gaps && mData.gaps.length > 0)
+      ? mData.gaps.map((g, i) => `${i + 1}. ${g}`).join("\n")
+      : "No critical content gaps identified during this period.";
+
+    // Sample queries
+    const sampleQueries = (mData.recentInquiries && mData.recentInquiries.length > 0)
+      ? mData.recentInquiries.slice(-8).map(q => `• [${q.time}] Destination: ${q.dest} - Query: "${q.question}"`).join("\n")
+      : "No sample records available.";
+
+    const payload = {
+      _subject: `Discover Hidden Morocco - Monthly Intelligence Brief: ${targetKey}`,
+      _template: "table",
+      "Executive Overview": `Monthly prospective client demand and inquiry analysis for Discover Hidden Morocco during ${targetKey}.`,
+      "Reporting Period": targetKey,
+      "Total Inquiries Processed": `${mData.totalConversations} completed client sessions (${mData.totalQuestions} questions)`,
+      "Destination Demand Ranking": sortedDest || "General Morocco Exploration",
+      "Primary Client Requirements": sortedInterests || "Tailored Private Tours",
+      "Identified Website Optimization Opportunities": gapsList,
+      "Representative Client Inquiries": sampleQueries,
+      "Strategic Action Plan": "Publish dedicated transparent starting prices and highlight customized dietary accommodations to maximize direct reservation conversions.",
+      "Dispatch Timestamp": new Date().toLocaleString("en-US", { timeZone: "Africa/Casablanca", dateStyle: "long", timeStyle: "short" }),
+      "_replyto": OWNER_EMAIL
+    };
+
+    try {
+      fetch("https://formsubmit.co/ajax/" + OWNER_EMAIL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(() => {
+        mData.summaryDispatched = true;
+        saveMonthlyAnalytics(store);
+        if (isManual) alert(`Monthly Executive Brief for ${targetKey} has been successfully dispatched to ${OWNER_EMAIL}.`);
+        console.log(`[DHM Monthly Brief] Dispatched for ${targetKey} to`, OWNER_EMAIL);
+      })
+      .catch(err => {
+        if (isManual) alert(`Unable to dispatch brief: ${err.message}`);
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
   };
 
-  if (window.location.search.includes('admin_ai=1')) {
+  // Check on load if previous month finished and needs its automated summary sent
+  function checkMonthlyRollover() {
+    try {
+      const store = getMonthlyAnalytics();
+      const current = store.currentMonth;
+      Object.keys(store.months).forEach(k => {
+        if (k !== current && store.months[k] && !store.months[k].summaryDispatched && store.months[k].totalConversations > 0) {
+          console.log("[DHM Monthly Rollover] Dispatching completed month brief for", k);
+          window.sendMonthlyExecutiveDashboard(k, false);
+        }
+      });
+    } catch (e) {}
+  }
+  setTimeout(checkMonthlyRollover, 4000);
+
+  /* ── Visual Executive Analytics Dashboard (Accessed via ?admin=dashboard) ─ */
+  window.dhmMonthlyDashboard = function () {
+    const store = getMonthlyAnalytics();
+    const currentKey = store.currentMonth;
+    const mData = store.months[currentKey] || { totalConversations: 0, totalQuestions: 0, destinations: {}, interests: {}, gaps: [] };
+
+    const existing = document.getElementById('dhm-admin-dashboard-modal');
+    if (existing) existing.remove();
+
+    const destRows = Object.entries(mData.destinations || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([d, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${d}</span><strong style="color:#E7A93C;">${c} (${Math.round((c / (mData.totalConversations || 1)) * 100)}%)</strong></div>`)
+      .join("") || "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>";
+
+    const interestRows = Object.entries(mData.interests || {})
+      .sort((a, b) => b[1] - a[1])
+      .map(([i, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,260,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${i}</span><strong style="color:#C85A32;">${c}</strong></div>`)
+      .join("") || "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>";
+
+    const gapsHtml = (mData.gaps && mData.gaps.length > 0)
+      ? mData.gaps.map(g => `<li style="margin-bottom:8px;font-size:0.85rem;color:#FBD38D;line-height:1.5;">${g}</li>`).join("")
+      : "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No content gaps identified yet.</p>";
+
+    const modal = document.createElement('div');
+    modal.id = 'dhm-admin-dashboard-modal';
+    modal.style.cssText = `
+      position: fixed; inset: 0; z-index: 999999;
+      background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    `;
+
+    modal.innerHTML = `
+      <div style="background: #0B1120; border: 1.5px solid rgba(200,90,50,0.4); border-radius: 16px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; color: #F8FAFC; box-shadow: 0 25px 65px rgba(0,0,0,0.7); padding: 32px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <div>
+            <div style="font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:#E7A93C; font-weight:700;">Discover Hidden Morocco | Executive Analytics</div>
+            <h2 style="margin:6px 0 0; font-size:1.45rem; font-weight:700; color:#FFFFFF;">Monthly Client Demand Intelligence (${currentKey})</h2>
+          </div>
+          <button id="dhm-close-dash" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-size:1.1rem; cursor:pointer; padding:6px 14px; transition:all 0.2s;">Close</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
+            <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Total Client Sessions</div>
+            <div style="font-size:1.9rem; font-weight:800; color:#E7A93C; margin-top:6px;">${mData.totalConversations}</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
+            <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Questions Processed</div>
+            <div style="font-size:1.9rem; font-weight:800; color:#38BDF8; margin-top:6px;">${mData.totalQuestions}</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
+            <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Monthly Dispatch Status</div>
+            <div style="font-size:1.1rem; font-weight:700; color:${mData.summaryDispatched ? '#4ADE80' : '#FBBF24'}; margin-top:12px;">${mData.summaryDispatched ? 'Dispatched' : 'Active / Scheduled'}</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
+            <h4 style="margin:0 0 14px; color:#E7A93C; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Destination Demand Breakdown</h4>
+            ${destRows}
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
+            <h4 style="margin:0 0 14px; color:#C85A32; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Primary Client Requirements</h4>
+            ${interestRows}
+          </div>
+        </div>
+
+        <div style="background: rgba(200,90,50,0.08); border: 1px solid rgba(200,90,50,0.25); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+          <h4 style="margin:0 0 12px; color:#FF8A65; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Identified Website Content Opportunities</h4>
+          <ul style="margin:0; padding-left:20px;">${gapsHtml}</ul>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
+          <button id="dhm-send-dash-now" style="background: linear-gradient(135deg, #C85A32, #E7A93C); border:none; color:#fff; font-weight:700; padding:13px 28px; border-radius:8px; cursor:pointer; font-size:0.92rem; box-shadow:0 4px 18px rgba(200,90,50,0.3); transition:transform 0.2s;">
+            Send Executive Brief to Email Now
+          </button>
+          <button id="dhm-export-dash-json" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#E2E8F0; padding:13px 22px; border-radius:8px; cursor:pointer; font-size:0.88rem; transition:background 0.2s;">
+            Export Data (JSON)
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById('dhm-close-dash').addEventListener('click', () => modal.remove());
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+
+    document.getElementById('dhm-send-dash-now').addEventListener('click', function () {
+      this.textContent = "Dispatching...";
+      this.disabled = true;
+      window.sendMonthlyExecutiveDashboard(currentKey, true);
+      setTimeout(() => { modal.remove(); }, 1500);
+    });
+
+    document.getElementById('dhm-export-dash-json').addEventListener('click', function () {
+      const blob = new Blob([JSON.stringify(mData, null, 2)], { type: "application/json" });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `dhm-executive-analytics-${currentKey}.json`;
+      a.click();
+    });
+  };
+
+  // Trigger dashboard via query param ?admin=dashboard
+  if (window.location.search.includes('admin=dashboard') || window.location.search.includes('admin_ai=1')) {
     window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(window.dhmAIReport, 1000);
+      setTimeout(window.dhmMonthlyDashboard, 800);
     });
   }
 })();
