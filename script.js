@@ -342,7 +342,9 @@ const TRANSLATIONS = {
     stats_destinations: "Iconic Destinations",
     stats_satisfaction: "Satisfaction Rate",
     why_title: "Why Hidden Morocco?",
-    why_sub: "Handcrafted boutique private journeys tailored to your rhythm."
+    why_sub: "Handcrafted boutique private journeys tailored to your rhythm.",
+    reviews_hero_title: "Traveler Reviews",
+    reviews_hero_sub: "Authentic reviews shared by travelers exploring Morocco with us."
   },
   fr: {
     nav_home: "Accueil",
@@ -354,15 +356,17 @@ const TRANSLATIONS = {
     nav_favorites: "Favoris",
     nav_book: "Réserver",
     hero_title: "Le Maroc N'est Pas Une Destination. C'est Une Émotion.",
-    hero_sub: "Découvrez des kasbahs secrètes, des matins du désert étoilés et des médinas séculaires guidés par nos passionnés.",
+    hero_sub: "Circuits privés d'exception : kasbahs secrètes, nuits étoilées dans le désert du Sahara et médinas impériales avec nos guides locaux passionnés.",
     search_placeholder: "Où souhaitez-vous aller ? ex: Sahara, Chefchaouen",
     search_btn: "Rechercher",
     stats_routes: "Itinéraires Sur-Mesure",
     stats_travelers: "Voyageurs Comblés",
     stats_destinations: "Destinations Emblématiques",
     stats_satisfaction: "Taux de Satisfaction",
-    why_title: "Pourquoi Hidden Morocco ?",
-    why_sub: "Voyages privés d'exception conçus sur-mesure selon vos envies."
+    why_title: "Pourquoi Voyager Avec Nous ?",
+    why_sub: "Des voyages privés sur-mesure d'exception, conçus selon votre propre rythme.",
+    reviews_hero_title: "Avis de nos Voyageurs",
+    reviews_hero_sub: "Témoignages authentiques de voyageurs ayant exploré le Maroc avec nous."
   },
   es: {
     nav_home: "Inicio",
@@ -374,17 +378,42 @@ const TRANSLATIONS = {
     nav_favorites: "Deseos",
     nav_book: "Reservar Ahora",
     hero_title: "Marruecos No Es Solo Un Destino. Es Una Emoción.",
-    hero_sub: "Descubre alcazabas ocultas, mañanas desérticas bajo las estrellas y medinas históricas de la mano de guías locales.",
+    hero_sub: "Rutas privadas exclusivas por alcazabas ocultas, mañanas desérticas bajo las estrellas y medinas históricas de la mano de guías locales.",
     search_placeholder: "¿A dónde quieres ir? ej: Sahara, Chefchaouen",
     search_btn: "Buscar Destinos",
     stats_routes: "Rutas Personalizadas",
     stats_travelers: "Viajeros Felices",
     stats_destinations: "Destinos Icónicos",
     stats_satisfaction: "Tasa de Satisfacción",
-    why_title: "¿Por Qué Hidden Morocco?",
-    why_sub: "Viajes privados exclusivos diseñados a la medida de tus sueños."
+    why_title: "¿Por Qué Elegirnos?",
+    why_sub: "Viajes privados exclusivos diseñados a la medida de tus sueños y de tu ritmo.",
+    reviews_hero_title: "Opiniones de Viajeros",
+    reviews_hero_sub: "Reseñas auténticas de viajeros que exploraron Marruecos con nosotros."
+  },
+  ar: {
+    nav_home: "الرئيسية",
+    nav_destinations: "الوجهات",
+    nav_map: "الخريطة التفاعلية",
+    nav_about: "من نحن",
+    nav_reviews: "آراء العملاء",
+    nav_contact: "اتصل بنا",
+    nav_favorites: "المفضلة",
+    nav_book: "احجز الآن",
+    hero_title: "المغرب ليس مجرد وجهة.. بل تجربة تعاش",
+    hero_sub: "رحلات خاصة راقية عبر القصبات التاريخية، رمال الصحراء الكبرى، والمدن العتيقة بصحبة أفضل المرشدين المحليين.",
+    search_placeholder: "إلى أين تريد الذهاب؟ مثلاً: الصحراء، شفشاون",
+    search_btn: "استكشف الوجهات",
+    stats_routes: "مسارات مخصصة",
+    stats_travelers: "مسافرون سعداء",
+    stats_destinations: "وجهات مميزة",
+    stats_satisfaction: "نسبة الرضا",
+    why_title: "لماذا تختارنا؟",
+    why_sub: "رحلات خاصة راقية مصممة خصيصاً على مقاسك وبأدق التفاصيل لتلائم رغباتك.",
+    reviews_hero_title: "آراء وتقييمات المسافرين",
+    reviews_hero_sub: "تجارب وتوصيات حقيقية من مسافرين عاشوا سحر المغرب معنا."
   }
 };
+
 
 // ── DOM Content Loaded Initialization ─────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -522,9 +551,16 @@ function injectTranslationStyles() {
     iframe[id*=":2.container"],
     iframe[src*="translate.google"],
     #goog-gt-tt,
+    #goog-gt-tt *,
+    .goog-te-balloon-frame,
+    .goog-te-balloon-frame *,
     .goog-tooltip,
+    .goog-tooltip *,
     .goog-tooltip:hover,
-    .goog-te-balloon-frame {
+    .goog-text-highlight,
+    .goog-te-gadget-icon,
+    .VIpgJd-yAWNEb-hvhGLb-Snmizc,
+    .VIpgJd-yAWNEb-r4nke {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
@@ -694,7 +730,15 @@ function startGoogleBannerKiller() {
   };
 
   kill();
-  const timer = setInterval(kill, 40);
+  const killTooltips = () => {
+    const tt = document.getElementById('goog-gt-tt');
+    if (tt) tt.remove();
+    document.querySelectorAll('.goog-te-balloon-frame, .goog-tooltip').forEach(el => el.remove());
+  };
+  killTooltips();
+  document.addEventListener('mouseover', killTooltips, { passive: true });
+  document.addEventListener('mouseenter', killTooltips, { passive: true });
+  const timer = setInterval(() => { kill(); killTooltips(); }, 40);
   setTimeout(() => clearInterval(timer), 5000);
 
   if (window.MutationObserver) {
@@ -852,6 +896,11 @@ function setLanguage(langKey) {
 function applyTranslations() {
   const dict = TRANSLATIONS[AppState.lang] || TRANSLATIONS.en;
   if (!dict) return;
+  document.querySelectorAll('h1, h2, .page-hero h1').forEach(el => {
+    if (el.textContent.includes('Voices of Our Travelers') || el.textContent.includes('Voix de nos') || el.textContent.includes('أصوات مسافرينا')) {
+      el.textContent = dict.reviews_hero_title || 'Traveler Reviews';
+    }
+  });
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (dict[key]) {
@@ -2677,6 +2726,50 @@ const ReviewState = {
   ratingFilter: 'all',
   destFilter: 'all'
 };
+
+// ── Real Cloud Database Synchronization for Global Reviews ───────────────
+const CLOUD_REVIEWS_URL = 'https://api.restful-api.dev/objects/ff808181a09d98f701a12fe784df48c2';
+
+function syncReviewsToCloud(reviews) {
+  fetch(CLOUD_REVIEWS_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: 'DHM_Reviews_Database',
+      data: { reviews: reviews }
+    })
+  }).catch(e => console.warn('Cloud reviews sync error:', e));
+}
+
+function fetchCloudReviews() {
+  fetch(CLOUD_REVIEWS_URL)
+    .then(r => r.json())
+    .then(res => {
+      if (res && res.data && Array.isArray(res.data.reviews) && res.data.reviews.length > 0) {
+        const cloudReviews = res.data.reviews;
+        const local = getReviewsDatabase();
+        const myIds = new Set(local.filter(r => r.isMine).map(r => r.id));
+
+        cloudReviews.forEach(cr => {
+          if (myIds.has(cr.id)) {
+            cr.isMine = true;
+          }
+        });
+
+        local.forEach(lr => {
+          if (!cloudReviews.some(cr => cr.id === lr.id)) {
+            cloudReviews.unshift(lr);
+          }
+        });
+
+        localStorage.setItem('hm_reviews_dataset', JSON.stringify(cloudReviews));
+        if (document.getElementById('reviewsGrid') || document.getElementById('homeReviewsGrid')) {
+          refreshReviewsView();
+        }
+      }
+    })
+    .catch(e => console.warn('Cloud reviews fetch error:', e));
+}
 
 function getReviewsDatabase() {
   const stored = localStorage.getItem('hm_reviews_dataset');
