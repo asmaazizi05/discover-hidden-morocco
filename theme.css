@@ -869,7 +869,7 @@ body {
   /* -- 6. Footer ------------------------------------------------------ */
   [data-theme="dark"] .footer,
   [data-theme="dark"] footer {
-    background: #05080F !important;
+    background: #0E0E0E !important;
     color: #94A3B8 !important;
     border-top: 1px solid rgba(212, 175, 55, 0.12) !important;
   }
@@ -919,7 +919,7 @@ body {
     margin-right: 0 !important;
     margin-bottom: 0 !important;
     padding: 80px 40px 36px !important;
-    background: #090E17 !important;
+    background: #0E0E0E !important;
     color: #94A3B8;
     box-sizing: border-box !important;
     position: relative;
@@ -3354,7 +3354,7 @@ a[href*="whatsapp"]:hover,
 
 /* Dark Mode Adaptation */
 [data-theme="dark"] .story-welcome-section {
-  background: var(--hm-bg-main, #0F172A) !important;
+  background: var(--hm-bg-main, #151515) !important;
 }
 
 [data-theme="dark"] .story-main-title {
@@ -5546,4 +5546,42 @@ textarea {
 #reviewModal.active .modal-content,
 #customTourModal.active .ct-modal-content {
   animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==============================================================================
+   100% PURE #151515 DARK MODE ENFORCEMENT (Zero Navy Blue Anywhere)
+   ============================================================================== */
+[data-theme="dark"] .testimonials-section-wrap,
+[data-theme="dark"] .testimonials-section,
+[data-theme="dark"] #testimonials,
+[data-theme="dark"] .map-hero,
+[data-theme="dark"] #interactiveMap,
+[data-theme="dark"] #homeMapPreview,
+[data-theme="dark"] .story-welcome-section,
+[data-theme="dark"] .dest-clean-header,
+[data-theme="dark"] div[style*="background: #FAF7F2"],
+[data-theme="dark"] div[style*="background:#FAF7F2"],
+[data-theme="dark"] .booking-hero-header {
+  background-color: #151515 !important;
+}
+
+[data-theme="dark"] .cta-banner {
+  background: linear-gradient(135deg, #151515 0%, #202020 50%, #C85A32 100%) !important;
+}
+
+[data-theme="dark"] footer,
+[data-theme="dark"] .footer,
+[data-theme="dark"] .footer-bottom {
+  background: #0E0E0E !important;
+  background-color: #0E0E0E !important;
+}
+
+[data-theme="dark"] .tour-route {
+  background: linear-gradient(135deg, #151515 0%, #222222 100%) !important;
+}
+
+[data-theme="dark"] .hero-stats-inner {
+  background: #1E1E1E !important;
+  background-color: #1E1E1E !important;
+  background-image: radial-gradient(circle at 50% 50%, rgba(200, 90, 50, 0.15) 0%, transparent 70%) !important;
 }

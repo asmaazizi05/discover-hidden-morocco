@@ -49,10 +49,22 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme.css?v=3">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <style>
+    <style>
+    .leaflet-control-attribution,
+    .leaflet-control-attribution * {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+    }
     /* ── Navigation ─────────────────────────────────────────── */
     .hn-nav {
       position: fixed;
@@ -589,7 +601,7 @@
     }
 
     [data-theme="dark"] .hero-stats-inner {
-      background: #0F172A !important;
+      background: #1E1E1E !important;
       border-color: rgba(255, 255, 255, 0.1) !important;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
     }
@@ -1271,7 +1283,7 @@
 
     /* ── Testimonials ───────────────────────────────────────────── */
     .testimonials-section-wrap {
-      background: #0F172A;
+      background: #151515;
       background-image: radial-gradient(circle at 50% 50%, rgba(200, 90, 50, 0.12) 0%, transparent 70%);
       padding: 96px 24px;
     }
@@ -1360,7 +1372,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, #0F172A 0%, #1A2638 50%, #C85A32 100%);
+      background: linear-gradient(135deg, #151515 0%, #202020 50%, #C85A32 100%);
       box-sizing: border-box !important;
     }
 
@@ -1428,7 +1440,7 @@
       margin: 0 !important;
       margin-bottom: 0 !important;
       padding: 80px 40px 36px !important;
-      background: #090E17 !important;
+      background: #0E0E0E !important;
       color: #94A3B8;
       box-sizing: border-box !important;
       position: relative;
@@ -2181,7 +2193,7 @@
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
         <div class="reviews-grid" id="homeReviewsGrid">
-          <!-- Rendered dynamically via script.js?v=7 -->
+          <!-- Rendered dynamically via script.js?v=10 -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
           <a href="reviews.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
@@ -2281,7 +2293,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=7"></script>
+<script src="script.js?v=10"></script>
 </body>
 
 </html>
