@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    HIDDEN MOROCCO � BOUTIQUE MOROCCAN DESIGN SYSTEM (theme.css)
    Warm Terracotta, Sahara Gold, Linen Light & Deep Charcoal Palette
    ========================================================================== */
@@ -376,22 +376,22 @@ body {
      Preserves Original Light Theme Beauty & Adds Soft Organic Dark Mode Accent
      ========================================================================== */
   [data-theme="dark"] {
-    --hm-bg-main: #141824;
-    --hm-bg-card: #1C2333;
-    --hm-bg-card-hover: #252E42;
-    --hm-bg-nav: rgba(20, 24, 36, 0.95);
-    --hm-bg-footer: #0D1018;
+    --hm-bg-main: #151515;
+    --hm-bg-card: #1E1E1E;
+    --hm-bg-card-hover: #262626;
+    --hm-bg-nav: rgba(21, 21, 21, 0.96);
+    --hm-bg-footer: #0E0E0E;
     --hm-text-heading: #F8FAFC;
     --hm-text-body: #CBD5E1;
     --hm-text-muted: #94A3B8;
     --hm-border: rgba(212, 175, 55, 0.2);
-    --hm-glass-bg: rgba(28, 35, 51, 0.85);
+    --hm-glass-bg: rgba(30, 30, 30, 0.85);
     --hm-glass-border: rgba(212, 175, 55, 0.25);
     --hm-glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   }
 
   [data-theme="dark"] body {
-    background-color: #141824 !important;
+    background-color: #151515 !important;
     color: #CBD5E1 !important;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
@@ -402,7 +402,7 @@ body {
   html[data-theme="dark"] body:not(.page-home) .site-nav,
   html[data-theme="dark"] body.page-home .hn-nav.glass-nav,
   html[data-theme="dark"] body.page-home #siteNav.glass-nav {
-    background: rgba(18, 23, 36, 0.96) !important;
+    background: rgba(21, 21, 21, 0.96) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
   }
@@ -435,7 +435,7 @@ body {
   [data-theme="dark"] .nav-icon-btn2,
   [data-theme="dark"] .lang-sw,
   [data-theme="dark"] .lang-switcher {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
     color: #F8FAFC !important;
   }
@@ -459,7 +459,7 @@ body {
   [data-theme="dark"] .dest-clean-header,
   [data-theme="dark"] div[style*="background: #FAF7F2"],
   [data-theme="dark"] div[style*="background:#FAF7F2"] {
-    background: #141824 !important;
+    background: #151515 !important;
     color: #CBD5E1 !important;
   }
 
@@ -509,7 +509,7 @@ body {
 
   [data-theme="dark"] .feature-item,
   [data-theme="dark"] .why-card {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     border: 1px solid rgba(212, 175, 55, 0.18) !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
   }
@@ -532,7 +532,7 @@ body {
 
   /* -- Hero Stats Showcase in Dark Mode -- */
   [data-theme="dark"] .hero-stats-inner {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     background-image: radial-gradient(circle at 50% 50%, rgba(200, 90, 50, 0.18) 0%, transparent 70%) !important;
     border: 1px solid rgba(212, 175, 55, 0.2) !important;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
@@ -566,7 +566,7 @@ body {
   [data-theme="dark"] .contact-info-card,
   [data-theme="dark"] .faq-item,
   [data-theme="dark"] .story-pillar-item {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     border: 1px solid rgba(212, 175, 55, 0.15) !important;
     color: #F8FAFC !important;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important;
@@ -614,7 +614,7 @@ body {
   [data-theme="dark"] .exp-cat-card:hover,
   [data-theme="dark"] .review-card:hover,
   [data-theme="dark"] .faq-item:hover {
-    background: #252E42 !important;
+    background: #262626 !important;
     border-color: rgba(200, 90, 50, 0.4) !important;
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5) !important;
     transform: translateY(-4px) !important;
@@ -652,7 +652,7 @@ body {
   }
 
   [data-theme="dark"] .qb-modal-content {
-    background: #141B28 !important;
+    background: #151515 !important;
     border: 1px solid rgba(212, 175, 55, 0.25) !important;
     color: #F8FAFC !important;
   }
@@ -668,7 +668,7 @@ body {
 
   [data-theme="dark"] .qb-modal-content select,
   [data-theme="dark"] .qb-modal-content input {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     color: #F8FAFC !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
@@ -679,7 +679,7 @@ body {
   [data-theme="dark"] .exp-sheet,
   [data-theme="dark"] .travel-form-right,
   [data-theme="dark"] .glass-panel {
-    background: #141B28 !important;
+    background: #151515 !important;
     border: 1px solid rgba(212, 175, 55, 0.25) !important;
     color: #F8FAFC !important;
     box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7) !important;
@@ -691,18 +691,18 @@ body {
   }
 
   [data-theme="dark"] .modal-content>p {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     color: #CBD5E1 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
   [data-theme="dark"] .travel-info {
-    background: linear-gradient(135deg, #0F131F 0%, #1C2333 100%) !important;
+    background: linear-gradient(135deg, #121212 0%, #1E1E1E 100%) !important;
     border: 1px solid rgba(212, 175, 55, 0.2) !important;
   }
 
   [data-theme="dark"] .travel-item {
-    background: #252E42 !important;
+    background: #262626 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
@@ -713,12 +713,12 @@ body {
   [data-theme="dark"] .tour-details,
   [data-theme="dark"] .activities-luxury,
   [data-theme="dark"] .marr-exp {
-    background: #1C2333 !important;
+    background: #1E1E1E !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
   [data-theme="dark"] .timeline-content {
-    background: #252E42 !important;
+    background: #262626 !important;
     border: 1px solid rgba(212, 175, 55, 0.2) !important;
   }
 
@@ -1326,7 +1326,7 @@ body {
     [data-theme="dark"] #premNavLinks.open,
     [data-theme="dark"] #navLinks.open,
     [data-theme="dark"] #navLinks.hn-links-open {
-      background: rgba(18, 23, 36, 0.98) !important;
+      background: rgba(21, 21, 21, 0.98) !important;
       border-color: rgba(255, 255, 255, 0.18) !important;
       box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6) !important;
     }
@@ -2143,7 +2143,7 @@ body {
 
   /* -- Tour Route Banner ---------------------------------------------- */
   .tour-route {
-    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+    background: linear-gradient(135deg, #151515 0%, #242424 100%) !important;
     border: 1px solid rgba(212, 175, 55, 0.3) !important;
     color: #FFFFFF !important;
     border-radius: 24px !important;
@@ -2401,7 +2401,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .modal-content {
-  background: #121724 !important;
+  background: #151515 !important;
   color: #CBD5E1 !important;
   border: 1px solid rgba(212, 175, 55, 0.25) !important;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75) !important;
@@ -2435,7 +2435,7 @@ a.btn-primary:hover,
 
 /* How to Travel Section in Modals */
 [data-theme="dark"] .travel-info {
-  background: #121724 !important;
+  background: #151515 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
 }
@@ -2446,7 +2446,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .travel-item {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #CBD5E1 !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
@@ -2465,7 +2465,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .review-card {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #F8FAFC !important;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important;
@@ -2511,7 +2511,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .activities-list li {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
 }
@@ -2534,7 +2534,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .timeline-content {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #CBD5E1 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
@@ -2556,7 +2556,7 @@ a.btn-primary:hover,
 
 /* Tour Route & Tour Meta */
 [data-theme="dark"] .tour-route {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -2573,7 +2573,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .meta-item {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #CBD5E1 !important;
 }
@@ -2629,7 +2629,7 @@ a.btn-primary:hover,
 }
 
 [data-theme="dark"] .faq-item {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
 }
@@ -2818,7 +2818,7 @@ a[href*="whatsapp"]:hover,
 }
 
 [data-theme="dark"] .tour-meta .meta-item {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   color: #F8FAFC !important;
 }
@@ -2907,7 +2907,7 @@ a[href*="whatsapp"]:hover,
 }
 
 [data-theme="dark"] .activities-list li {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
 }
@@ -3080,14 +3080,14 @@ a[href*="whatsapp"]:hover,
 
 [data-theme="dark"] .lang-switcher,
 [data-theme="dark"] .lang-sw {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   color: #F8FAFC !important;
 }
 
 [data-theme="dark"] .lang-switcher option,
 [data-theme="dark"] .lang-sw option {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   color: #F8FAFC !important;
 }
 
@@ -3122,7 +3122,7 @@ a[href*="whatsapp"]:hover,
 
 [data-theme="dark"] .nav-icon-btn,
 [data-theme="dark"] .nav-icon-btn2 {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   color: #F8FAFC !important;
 }
@@ -3366,7 +3366,7 @@ a[href*="whatsapp"]:hover,
 }
 
 [data-theme="dark"] .story-pillar-item {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
 }
@@ -3650,7 +3650,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) {
 
 [data-theme="dark"] .hn-nav,
 [data-theme="dark"] .site-nav {
-  background: rgba(18, 23, 36, 0.96) !important;
+  background: rgba(21, 21, 21, 0.96) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
 }
@@ -4068,7 +4068,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 
   [data-theme="dark"] .hn-links,
   [data-theme="dark"] .nav-links {
-    background: #121724 !important; /* Solid dark background */
+    background: #151515 !important; /* Solid dark background */
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6) !important;
   }
 
@@ -4909,7 +4909,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 
 /* Dark Mode Adjustments */
 [data-theme="dark"] #customTourModal .ct-modal-content {
-  background: #121724 !important;
+  background: #151515 !important;
   border-color: rgba(212, 175, 55, 0.25) !important;
   color: #F8FAFC !important;
 }
@@ -4918,13 +4918,13 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 [data-theme="dark"] .ct-option-card,
 [data-theme="dark"] .ct-textarea,
 [data-theme="dark"] .ct-input {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   color: #F8FAFC !important;
 }
 
 [data-theme="dark"] .ct-summary-box {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(212, 175, 55, 0.25) !important;
 }
 
@@ -4949,7 +4949,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 }
 
 [data-theme="dark"] .ct-btn-back:hover {
-  background: #252E42 !important;
+  background: #262626 !important;
   color: #F08A5D !important;
 }
 
@@ -5011,7 +5011,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 }
 
 [data-theme="dark"] .custom-tour-callout-banner {
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+  background: linear-gradient(135deg, #151515 0%, #242424 100%) !important;
   border-top-color: rgba(212, 175, 55, 0.3) !important;
   border-bottom-color: rgba(212, 175, 55, 0.3) !important;
 }
@@ -5027,7 +5027,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 /* Destination Booking Modal Dark Mode Enhancements */
 [data-theme="dark"] .dest-booking-sheet,
 [data-theme="dark"] .travel-form-right {
-  background: #121724 !important;
+  background: #151515 !important;
   color: #F8FAFC !important;
 }
 
@@ -5043,7 +5043,7 @@ body.page-home .site-nav:not(.glass-nav):not(.hn-nav-scrolled) .hn-links a:hover
 [data-theme="dark"] .travel-form-right input[type="date"],
 [data-theme="dark"] .travel-form-right select,
 [data-theme="dark"] .travel-form-right textarea {
-  background: #1C2333 !important;
+  background: #1E1E1E !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
   color: #F8FAFC !important;
 }
@@ -5121,3 +5121,429 @@ button[id*="chatbase"] {
 .card-price-label { display: block; font-size: 0.8rem; color: var(--hm-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
 .card-price-val { font-size: 1.1rem; font-weight: 700; color: var(--hm-text-heading); }
 .card-btns .btn-primary { padding: 10px 20px; font-size: 0.9rem; }
+
+/* ==========================================================================
+   GLOBAL MULTILINGUAL & SEAMLESS TRANSLATION ENGINE
+   ========================================================================== */
+/* 1. Prevent Google Translate top frame from displacing body or header */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* 2. Completely hide all Google Translate frames, banners, tooltips, and popups */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  border: none !important;
+  pointer-events: none !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#google_translate_element {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 3. Refined Desktop Language Selector Pill */
+.lang-wrapper {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.lang-wrapper i.lang-icon {
+  position: absolute !important;
+  left: 12px !important;
+  pointer-events: none !important;
+  font-size: 0.85rem !important;
+  color: var(--hm-text-heading, #0F172A) !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease !important;
+}
+
+.lang-wrapper:hover i.lang-icon {
+  color: #C85A32 !important;
+}
+
+.lang-switcher,
+.lang-sw {
+  height: 40px !important;
+  min-width: 140px !important;
+  max-width: 165px !important;
+  padding: 0 14px 0 32px !important;
+  background: var(--hm-bg-card-hover, rgba(15, 23, 42, 0.04)) !important;
+  border: 1.5px solid var(--hm-border, rgba(15, 23, 42, 0.12)) !important;
+  color: var(--hm-text-heading, #0F172A) !important;
+  border-radius: 99px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  outline: none !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.lang-switcher:hover,
+.lang-sw:hover,
+.lang-switcher:focus,
+.lang-sw:focus {
+  border-color: rgba(200, 90, 50, 0.5) !important;
+  color: #C85A32 !important;
+  box-shadow: 0 4px 14px rgba(200, 90, 50, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 4. Select Dropdown Menu Options Styling */
+.lang-switcher option,
+.lang-sw option,
+.mobile-lang-select option {
+  background: #ffffff !important;
+  color: #0F172A !important;
+  padding: 10px 14px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="dark"] .lang-wrapper i.lang-icon {
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .lang-wrapper:hover i.lang-icon {
+  color: #E7A93C !important;
+}
+
+[data-theme="dark"] .lang-switcher,
+[data-theme="dark"] .lang-sw {
+  background: #1E1E1E !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .lang-switcher option,
+[data-theme="dark"] .lang-sw option,
+[data-theme="dark"] .mobile-lang-select option {
+  background: #1E1E1E !important;
+  color: #F8FAFC !important;
+}
+
+/* 5. Right-To-Left (RTL) Support for Arabic & Hebrew */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .hn-nav-links {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero-content,
+[dir="rtl"] .why-inner,
+[dir="rtl"] .footer-col {
+  text-align: right;
+}
+
+[dir="rtl"] .lang-wrapper i.lang-icon {
+  left: auto !important;
+  right: 12px !important;
+}
+
+[dir="rtl"] .lang-switcher,
+[dir="rtl"] .lang-sw {
+  padding: 0 32px 0 14px !important;
+}
+
+/* ==========================================================================
+   Hide Leaflet Attribution Bar Globally
+   ========================================================================== */
+.leaflet-control-attribution,
+.leaflet-control-attribution * {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+/* ==============================================================================
+   DISCOVER HIDDEN MOROCCO — LUXURY GLOBAL ANIMATION SUITE
+   Ultra-Smooth Scroll Reveals, Micro-Interactions, Hover Lifts, Shimmers & Easing
+   ============================================================================== */
+
+/* 1. Global Smooth Motion & Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 2. Global Theme Toggle Smooth Transitions */
+body,
+.hn-nav,
+.section,
+.section-alt,
+.why-card,
+.feature-item,
+.destination-card,
+.card,
+.review-card,
+.exp-card,
+.story-card,
+.team-card,
+.value-card,
+.modal-content,
+.footer,
+input,
+select,
+textarea {
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3. Scroll Reveal Engine (AOS-Grade Easing & Hardware Acceleration) */
+.reveal-up,
+.reveal-down,
+.reveal-left,
+.reveal-right,
+.reveal-scale,
+.reveal-fade {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition-property: opacity, transform;
+  transition-duration: 0.85s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up {
+  transform: translateY(36px);
+}
+
+.reveal-down {
+  transform: translateY(-36px);
+}
+
+.reveal-left {
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  transform: translateX(40px);
+}
+
+.reveal-scale {
+  transform: scale(0.92);
+}
+
+.reveal-fade {
+  transform: none;
+}
+
+/* Active Visible State */
+.reveal-active {
+  opacity: 1 !important;
+  transform: translate(0, 0) scale(1) !important;
+}
+
+/* 4. Cascade Stagger Delays for Grid Elements */
+.delay-1 { transition-delay: 0.08s !important; }
+.delay-2 { transition-delay: 0.16s !important; }
+.delay-3 { transition-delay: 0.24s !important; }
+.delay-4 { transition-delay: 0.32s !important; }
+.delay-5 { transition-delay: 0.40s !important; }
+.delay-6 { transition-delay: 0.48s !important; }
+
+/* 5. Luxury Card Hover & Elevation Micro-Interactions */
+.card,
+.destination-card,
+.why-card,
+.feature-item,
+.review-card,
+.exp-cat-card,
+.team-card,
+.value-card,
+.story-pillar-item {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.4s ease !important;
+}
+
+.card:hover,
+.destination-card:hover,
+.why-card:hover,
+.feature-item:hover,
+.review-card:hover,
+.exp-cat-card:hover,
+.team-card:hover,
+.value-card:hover {
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 45px rgba(200, 90, 50, 0.18), 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .destination-card:hover,
+[data-theme="dark"] .why-card:hover,
+[data-theme="dark"] .feature-item:hover,
+[data-theme="dark"] .review-card:hover,
+[data-theme="dark"] .exp-cat-card:hover,
+[data-theme="dark"] .team-card:hover,
+[data-theme="dark"] .value-card:hover {
+  transform: translateY(-7px) !important;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.7), 0 0 25px rgba(231, 169, 60, 0.15) !important;
+  border-color: rgba(231, 169, 60, 0.35) !important;
+}
+
+/* 6. Card Image Cinematic Zoom */
+.card .card-img,
+.card-img-wrap,
+.destination-card .card-img-wrap,
+.exp-cat-card .exp-cat-img {
+  overflow: hidden !important;
+}
+
+.card img,
+.card-img img,
+.destination-card img,
+.exp-cat-img img,
+.story-img-main,
+.story-img-accent {
+  transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.card:hover img,
+.destination-card:hover img,
+.exp-cat-card:hover img {
+  transform: scale(1.06) !important;
+}
+
+/* 7. Button Micro-Interactions & Shimmer Effect */
+.btn-primary,
+.btn-white,
+.btn-ghost,
+.btn-cta-white,
+.btn-cta-outline,
+.custom-tour-trigger,
+.nav-cta {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              background 0.25s ease,
+              color 0.25s ease !important;
+}
+
+.btn-primary:hover,
+.btn-white:hover,
+.btn-cta-white:hover,
+.custom-tour-trigger:hover,
+.nav-cta:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 28px rgba(200, 90, 50, 0.4) !important;
+}
+
+.btn-primary:active,
+.btn-white:active,
+.btn-cta-white:active,
+.custom-tour-trigger:active,
+.nav-cta:active {
+  transform: translateY(0) scale(0.97) !important;
+}
+
+/* Shimmer Sweep Animation on Primary CTA */
+.btn-primary::after,
+.btn-cta-white::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-22deg);
+  transition: none;
+}
+
+.btn-primary:hover::after,
+.btn-cta-white:hover::after {
+  left: 160%;
+  transition: left 0.85s ease-in-out;
+}
+
+/* 8. Badge & Icon Floating Animation */
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.badge,
+.hero-badge,
+.badge-gold {
+  display: inline-flex;
+  animation: floatSubtle 4s ease-in-out infinite;
+}
+
+/* 9. Warm Pulse Animation for Live Indicators & Stars */
+@keyframes warmGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(200, 90, 50, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(200, 90, 50, 0);
+  }
+}
+
+.chatbase-bubble,
+#chatbase-message-bubble {
+  animation: warmGlowPulse 3.5s infinite ease-in-out;
+}
+
+/* 10. Navigation Links Hover Underline Glide */
+.hn-links a {
+  position: relative;
+  transition: color 0.25s ease, background 0.25s ease !important;
+}
+
+/* 11. Modal Entrance Animation */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal.active .modal-content,
+.modal.open .modal-content,
+#reviewModal.active .modal-content,
+#customTourModal.active .ct-modal-content {
+  animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

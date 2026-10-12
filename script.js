@@ -3820,6 +3820,9 @@ function renderCardsIntoGrid(container, reviews) {
     `;
     container.appendChild(card);
   });
+  if (typeof initScrollRevealEngine === 'function') {
+    setTimeout(initScrollRevealEngine, 60);
+  }
 }
 
 window.openReviewModal = function () {
@@ -3938,19 +3941,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Scroll Reveal Animations
-document.addEventListener('DOMContentLoaded', () => {
-  // Dynamically add reveal classes to elements if they don't have them
-  document.querySelectorAll('section h2, .section-title').forEach(el => el.classList.add('reveal-up'));
-  document.querySelectorAll('section p').forEach(el => el.classList.add('reveal-up'));
-  document.querySelectorAll('.destination-card, .tour-card, .value-card, .team-card, .review-card').forEach((el, index) => {
-    el.classList.add('reveal-up');
-    el.style.transitionDelay = (index % 3) * 0.15 + 's';
-  });
-  document.querySelectorAll('.story-img-main').forEach(el => el.classList.add('reveal-left'));
-  document.querySelectorAll('.story-img-accent').forEach(el => el.classList.add('reveal-right'));
+// ── Universal Luxury Scroll Reveal & Micro-Animation Engine ──────────────────
+function initScrollRevealEngine() {
+  if (typeof IntersectionObserver === 'undefined') return;
 
-  const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -3960,12 +3954,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, {
     root: null,
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
   });
 
-  revealElements.forEach(el => revealObserver.observe(el));
-});
+  // 1. Headers & Section Titles
+  document.querySelectorAll('section h2, .section-header h2, .section-title, .story-main-title').forEach(el => {
+    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
+      el.classList.add('reveal-up');
+    }
+  });
+
+  // 2. Section Subtitles & Intro Paragraphs
+  document.querySelectorAll('.section-header p, .section-subtitle, .story-paragraph').forEach(el => {
+    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
+      el.classList.add('reveal-up');
+    }
+  });
+
+  // 3. Grid & Cards with Dynamic Cascade Delays
+  const cardSelectors = '.destination-card, .tour-card, .why-card, .feature-item, .exp-cat-card, .exp-card, .review-card, .value-card, .team-card, .story-pillar-item, .faq-item, .contact-info-card, .travel-item, .hero-stat-item';
+  document.querySelectorAll(cardSelectors).forEach((el, index) => {
+    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
+      el.classList.add('reveal-up');
+      el.style.transitionDelay = ((index % 4) * 0.1) + 's';
+    }
+  });
+
+  // 4. Story & Visual Media
+  document.querySelectorAll('.story-img-main, .about-img-main').forEach(el => el.classList.add('reveal-left'));
+  document.querySelectorAll('.story-img-accent, .about-img-accent').forEach(el => el.classList.add('reveal-right'));
+  document.querySelectorAll('.cta-banner-inner, .cta-strip, .privacy-cta').forEach(el => el.classList.add('reveal-scale'));
+
+  // 5. Observe all unrevealed elements
+  document.querySelectorAll('.reveal-up:not(.reveal-active), .reveal-left:not(.reveal-active), .reveal-right:not(.reveal-active), .reveal-scale:not(.reveal-active), .reveal-fade:not(.reveal-active)').forEach(el => {
+    revealObserver.observe(el);
+  });
+}
+
+window.initScrollRevealEngine = initScrollRevealEngine;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initScrollRevealEngine();
+    setTimeout(initScrollRevealEngine, 350);
+  });
+} else {
+  initScrollRevealEngine();
+  setTimeout(initScrollRevealEngine, 350);
+}
 
 
 window.deleteReview = function(id) {
