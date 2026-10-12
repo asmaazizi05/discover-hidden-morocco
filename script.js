@@ -2720,8 +2720,6 @@ document.addEventListener('click', function (e) {
    DYNAMIC REVIEWS & RATING ENGINE (Synchronized, Real-Time & Filterable)
    ========================================================================== */
 
-const INITIAL_SEED_REVIEWS = [];
-
 const ReviewState = {
   ratingFilter: 'all',
   destFilter: 'all'
@@ -2729,80 +2727,135 @@ const ReviewState = {
 
 // ── Real Cloud Database Synchronization for Global Reviews ───────────────
 const CLOUD_REVIEWS_URL = 'https://api.restful-api.dev/objects/ff808181a09d98f701a12fe784df48c2';
+const STORAGE_KEY_REVIEWS = 'hm_reviews_dataset';
+const STORAGE_KEY_MY_IDS = 'hm_my_authored_review_ids';
+
+function getMyAuthoredReviewIds() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_MY_IDS);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {}
+  return [];
+}
+
+function addMyAuthoredReviewId(id) {
+  if (!id) return;
+  try {
+    const list = getMyAuthoredReviewIds();
+    if (!list.includes(id)) {
+      list.push(id);
+      localStorage.setItem(STORAGE_KEY_MY_IDS, JSON.stringify(list));
+    }
+  } catch (e) {}
+}
+
+function removeMyAuthoredReviewId(id) {
+  if (!id) return;
+  try {
+    const list = getMyAuthoredReviewIds().filter(x => x !== id);
+    localStorage.setItem(STORAGE_KEY_MY_IDS, JSON.stringify(list));
+  } catch (e) {}
+}
 
 function syncReviewsToCloud(reviews) {
+  if (!Array.isArray(reviews)) return;
+  // Strip 'isMine' flag so other users across the internet do not inherit owner privileges
+  const cloudPayload = reviews.map(r => {
+    const copy = { ...r };
+    delete copy.isMine;
+    return copy;
+  });
+
   fetch(CLOUD_REVIEWS_URL, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: 'DHM_Reviews_Database',
-      data: { reviews: reviews }
+      data: { reviews: cloudPayload }
     })
-  }).catch(e => console.warn('Cloud reviews sync error:', e));
+  })
+  .then(r => r.json())
+  .catch(e => console.warn('Cloud reviews sync error:', e));
 }
 
+let isFetchingCloudReviews = false;
 function fetchCloudReviews() {
-  fetch(CLOUD_REVIEWS_URL)
+  if (isFetchingCloudReviews) return;
+  isFetchingCloudReviews = true;
+
+  fetch(CLOUD_REVIEWS_URL + '?t=' + Date.now())
     .then(r => r.json())
     .then(res => {
-      if (res && res.data && Array.isArray(res.data.reviews) && res.data.reviews.length > 0) {
+      if (res && res.data && Array.isArray(res.data.reviews)) {
         const cloudReviews = res.data.reviews;
         const local = getReviewsDatabase();
-        const myIds = new Set(local.filter(r => r.isMine).map(r => r.id));
+        const myIds = new Set(getMyAuthoredReviewIds());
+        let needsCloudUpload = false;
 
-        cloudReviews.forEach(cr => {
-          if (myIds.has(cr.id)) {
-            cr.isMine = true;
-          }
-        });
-
+        // If this machine has local reviews that are missing from cloud, merge and push up
         local.forEach(lr => {
           if (!cloudReviews.some(cr => cr.id === lr.id)) {
             cloudReviews.unshift(lr);
+            needsCloudUpload = true;
           }
         });
 
-        localStorage.setItem('hm_reviews_dataset', JSON.stringify(cloudReviews));
-        if (document.getElementById('reviewsGrid') || document.getElementById('homeReviewsGrid')) {
-          refreshReviewsView();
+        // Mark author permissions for reviews created on this device
+        cloudReviews.forEach(cr => {
+          cr.isMine = myIds.has(cr.id);
+        });
+
+        localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(cloudReviews));
+
+        if (needsCloudUpload) {
+          syncReviewsToCloud(cloudReviews);
         }
+
+        refreshReviewsView();
       }
     })
-    .catch(e => console.warn('Cloud reviews fetch error:', e));
+    .catch(e => console.warn('Cloud reviews fetch error:', e))
+    .finally(() => {
+      isFetchingCloudReviews = false;
+    });
 }
 
 function getReviewsDatabase() {
-  const stored = localStorage.getItem('hm_reviews_dataset');
+  const stored = localStorage.getItem(STORAGE_KEY_REVIEWS);
+  const myIds = new Set(getMyAuthoredReviewIds());
   if (stored !== null) {
     try {
       let parsed = JSON.parse(stored);
       if (Array.isArray(parsed)) {
-        let changed = false;
-        const seedIds = ['rev_1', 'rev_2', 'rev_3', 'rev_4', 'rev_5', 'rev_6'];
-        let cleaned = parsed.filter(r => !seedIds.includes(r.id));
-        
-        cleaned.forEach((r, i) => {
+        parsed.forEach(r => {
+          if (r.isMine && r.id) {
+            addMyAuthoredReviewId(r.id);
+            myIds.add(r.id);
+          }
           if (!r.id) {
-            r.id = 'rev_' + Date.now() + '_' + i;
-            changed = true;
+            r.id = 'rev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
           }
         });
-        
-        if (cleaned.length !== parsed.length || changed) {
-          localStorage.setItem('hm_reviews_dataset', JSON.stringify(cleaned));
-        }
-        return cleaned;
+
+        parsed.forEach(r => {
+          r.isMine = myIds.has(r.id);
+        });
+
+        return parsed;
       }
     } catch (e) {
       console.error('Error parsing stored reviews:', e);
     }
   }
-  localStorage.setItem('hm_reviews_dataset', JSON.stringify([]));
   return [];
 }
 
 function saveReviewsDatabase(reviews) {
-  localStorage.setItem('hm_reviews_dataset', JSON.stringify(reviews));
+  localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviews));
+  syncReviewsToCloud(reviews);
 }
 
 // ── Rating Star Selector Engine ──────────────────────────────────────────────
@@ -3013,14 +3066,29 @@ function renderCardsIntoGrid(container, reviews) {
     const verifiedBadge = r.verified ? '<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' : '';
 
     const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-    const canEdit = isAdmin || r.isMine;
-    const adminActions = canEdit ? `<div style="position:absolute; top: -12px; right: -12px; display:flex; gap: 6px; z-index: 10;"><button onclick="editReview('${r.id}')" title="Modifier l'avis" style="background:var(--hm-bg-card); color:var(--hm-text-heading); border:1px solid var(--hm-border); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.color='#E7A93C';this.style.borderColor='#E7A93C'" onmouseout="this.style.color='var(--hm-text-heading)';this.style.borderColor='var(--hm-border)'"><i class="fa-solid fa-pen"></i></button><button onclick="deleteReview('${r.id}')" title="Supprimer l'avis" style="background:var(--hm-bg-card); color:var(--hm-text-heading); border:1px solid var(--hm-border); width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:0.85rem; box-shadow:0 4px 10px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; transition:all 0.2s;" onmouseover="this.style.color='#dc3545';this.style.borderColor='#dc3545'" onmouseout="this.style.color='var(--hm-text-heading)';this.style.borderColor='var(--hm-border)'"><i class="fa-solid fa-trash"></i></button></div>` : '';
+    const myIds = new Set(getMyAuthoredReviewIds());
+    const isOwner = Boolean(r.isMine || (r.id && myIds.has(r.id)));
+    const canManage = isAdmin || isOwner;
 
-    card.style.position = 'relative';
-    card.innerHTML = adminActions + `
+    const myBadge = isOwner && !isAdmin
+      ? `<span style="background: rgba(200,90,50,0.1); color: #C85A32; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1px solid rgba(200,90,50,0.25); display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-user-check"></i> Mon avis</span>`
+      : '';
+
+    const actionButtons = canManage
+      ? `<div class="review-actions-bar" style="display:inline-flex; align-items:center; gap: 6px;">
+          <button onclick="editReview('${r.id}')" title="Modifier l'avis" style="background: rgba(231,169,60,0.12); color: #C85A32; border: 1px solid rgba(231,169,60,0.4); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#C85A32';this.style.color='#fff'" onmouseout="this.style.background='rgba(231,169,60,0.12)';this.style.color='#C85A32'"><i class="fa-solid fa-pen"></i></button>
+          <button onclick="deleteReview('${r.id}')" title="Supprimer l'avis" style="background: rgba(220,53,69,0.1); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#dc3545';this.style.color='#fff'" onmouseout="this.style.background='rgba(220,53,69,0.1)';this.style.color='#dc3545'"><i class="fa-solid fa-trash"></i></button>
+        </div>`
+      : '';
+
+    card.innerHTML = `
       <div class="review-header">
         <div class="review-stars" style="color:#E7A93C;">${starsStr}</div>
-        ${verifiedBadge}
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
+          ${myBadge}
+          ${verifiedBadge}
+          ${actionButtons}
+        </div>
       </div>
       <p class="review-text">"${escapeHtmlStr(r.text)}"</p>
       <div class="review-author">
@@ -3091,8 +3159,10 @@ window.handleReviewSubmit = function (event) {
   const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'TR';
   const countryDisplay = selectedDest !== 'general' && destName ? `${rawLocation} · ${destName}` : rawLocation;
 
+  const newId = 'rev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
   const newReview = {
-    id: 'rev_' + Date.now(),
+    id: newId,
     author: author,
     avatar: initials,
     country: countryDisplay,
@@ -3100,12 +3170,14 @@ window.handleReviewSubmit = function (event) {
     destinationName: destName,
     rating: ratingVal,
     verified: true, // Actual traveler submission from site
-      isMine: true,
+    isMine: true,
     text: text,
     date: new Date().toISOString().split('T')[0]
   };
 
-  // Add to database & save
+  addMyAuthoredReviewId(newId);
+
+  // Add to database & save (automatically syncs to cloud)
   const db = getReviewsDatabase();
   db.unshift(newReview);
   saveReviewsDatabase(db);
@@ -3137,12 +3209,20 @@ function escapeHtmlStr(str) {
 // ── Initialize Reviews System on DOM Load ────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
   refreshReviewsView();
+  fetchCloudReviews();
   if (window.location.search.includes('openReviewModal=true') || window.location.hash === '#addReviewForm') {
     setTimeout(function () {
       openReviewModal();
     }, 200);
   }
 });
+
+// Run cloud reviews fetch immediately upon script execution
+fetchCloudReviews();
+
+// Periodic background sync & on window focus to keep all devices updated in real-time
+window.addEventListener('focus', fetchCloudReviews);
+setInterval(fetchCloudReviews, 20000);
 
 
 
@@ -3176,8 +3256,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-window.deleteReview = function(id) { if(!confirm('Voulez-vous vraiment supprimer cet avis ?')) return; const db = getReviewsDatabase(); const filtered = db.filter(r => r.id !== id); saveReviewsDatabase(filtered); refreshReviewsView(); };
-window.editReview = function(id) { const db = getReviewsDatabase(); const review = db.find(r => r.id === id); if(!review) return; const newText = prompt('Modifier le texte de l\'avis :', review.text); if(newText !== null && newText.trim() !== '') { review.text = newText.trim(); saveReviewsDatabase(db); refreshReviewsView(); } };
+window.deleteReview = function(id) {
+  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+  const myIds = new Set(getMyAuthoredReviewIds());
+  const canDelete = isAdmin || myIds.has(id);
+  if (!canDelete) {
+    alert("Action non autorisée. Vous pouvez uniquement supprimer vos propres avis.");
+    return;
+  }
+  if (!confirm('Voulez-vous vraiment supprimer cet avis ?')) return;
+
+  removeMyAuthoredReviewId(id);
+  const db = getReviewsDatabase().filter(r => r.id !== id);
+  saveReviewsDatabase(db);
+  refreshReviewsView();
+  if (window.showToast) window.showToast('Avis supprimé avec succès.');
+};
+
+window.editReview = function(id) {
+  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+  const myIds = new Set(getMyAuthoredReviewIds());
+  const canEdit = isAdmin || myIds.has(id);
+  if (!canEdit) {
+    alert("Action non autorisée. Vous pouvez uniquement modifier vos propres avis.");
+    return;
+  }
+  const db = getReviewsDatabase();
+  const review = db.find(r => r.id === id);
+  if (!review) return;
+
+  const newText = prompt("Modifier le texte de votre avis :", review.text);
+  if (newText !== null && newText.trim() !== '') {
+    review.text = newText.trim();
+    saveReviewsDatabase(db);
+    refreshReviewsView();
+    if (window.showToast) window.showToast('Avis mis à jour avec succès.');
+  }
+};
 
 
 
