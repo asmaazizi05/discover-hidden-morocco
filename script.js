@@ -1512,10 +1512,14 @@ function initLanguage() {
   // 6. Apply instant local dictionary if present
   applyTranslations();
 
-  // 7. If non-English was selected in storage but cookie is missing, set cookie and reload
+  // 7. If non-English was selected in storage but cookie is missing, set cookie and reload safely
   if (savedLang !== 'en' && !document.cookie.includes('/en/' + savedLang)) {
     setGoogleTransCookie(savedLang);
-    window.location.reload();
+    let targetPath = window.location.pathname;
+    if (!targetPath.endsWith('.html') && targetPath !== '/' && !targetPath.endsWith('/')) {
+      targetPath = targetPath + '.html';
+    }
+    window.location.href = window.location.origin + targetPath + window.location.search + window.location.hash;
   }
 }
 
@@ -1545,10 +1549,23 @@ function setLanguage(langKey) {
   // Show feedback
   showToast('Language set to ' + langKey.toUpperCase());
 
-  // Reload to execute TOTAL translation of all page contents
-  if (langKey !== prevLang) {
+  // 1. First try live instant translation via Google Translate internal combo (ZERO page reload)
+  let liveTranslated = false;
+  const gtCombo = document.querySelector('.goog-te-combo');
+  if (gtCombo) {
+    gtCombo.value = langKey;
+    gtCombo.dispatchEvent(new Event('change'));
+    liveTranslated = true;
+  }
+
+  // 2. Fallback: if Google combo not yet rendered and language changed, reload safely targeting the real .html file
+  if (!liveTranslated && langKey !== prevLang) {
     setTimeout(() => {
-      window.location.reload();
+      let targetPath = window.location.pathname;
+      if (!targetPath.endsWith('.html') && targetPath !== '/' && !targetPath.endsWith('/')) {
+        targetPath = targetPath + '.html';
+      }
+      window.location.href = window.location.origin + targetPath + window.location.search + window.location.hash;
     }, 150);
   }
 }

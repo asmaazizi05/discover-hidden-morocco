@@ -5917,3 +5917,148 @@ select::placeholder {
 .leaflet-tile-container {
   will-change: transform;
 }
+
+/* ==============================================================================
+   MOBILE ULTRA-POLISH & RESPONSIVE SUITE (LUXURY TOUCH & LAYOUT PERFECTION)
+   ============================================================================== */
+
+/* 1. Staggered Menu Entrance Cascade for Mobile Drawer */
+@keyframes drawerItemFade {
+  0% {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hn-links.hn-links-open li:nth-child(1), .hn-links.open li:nth-child(1) { animation: drawerItemFade 0.35s 0.04s both ease; }
+.hn-links.hn-links-open li:nth-child(2), .hn-links.open li:nth-child(2) { animation: drawerItemFade 0.35s 0.08s both ease; }
+.hn-links.hn-links-open li:nth-child(3), .hn-links.open li:nth-child(3) { animation: drawerItemFade 0.35s 0.12s both ease; }
+.hn-links.hn-links-open li:nth-child(4), .hn-links.open li:nth-child(4) { animation: drawerItemFade 0.35s 0.16s both ease; }
+.hn-links.hn-links-open li:nth-child(5), .hn-links.open li:nth-child(5) { animation: drawerItemFade 0.35s 0.20s both ease; }
+.hn-links.hn-links-open li:nth-child(6), .hn-links.open li:nth-child(6) { animation: drawerItemFade 0.35s 0.24s both ease; }
+.hn-links.hn-links-open li:nth-child(7), .hn-links.open li:nth-child(7) { animation: drawerItemFade 0.35s 0.28s both ease; }
+.hn-links.hn-links-open li:nth-child(8), .hn-links.open li:nth-child(8) { animation: drawerItemFade 0.35s 0.32s both ease; }
+
+/* 2. Tactile Touch Feedback on Mobile */
+@media (hover: none) and (pointer: coarse) {
+  .btn:active,
+  .btn-primary:active,
+  .book-btn-nav:active,
+  .card:active,
+  .destination-card:active,
+  .review-card:active,
+  .map-filter-btn:active,
+  .map-card-action-btn:active,
+  .hamburger:active,
+  .setting-icon-item:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.12s ease !important;
+  }
+}
+
+/* 3. Mobile Layout Corrections (Eliminate Horizontal Scroll & Overflow) */
+@media (max-width: 640px) {
+  /* Zero horizontal scroll */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Destinations & Reviews Single-Column Grid */
+  .destinations .grid,
+  .reviews-grid {
+    grid-template-columns: 1fr !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    gap: 20px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Hero Heading Mobile Scaling */
+  .hero h1,
+  .page-hero h1,
+  .dest-clean-header h1 {
+    font-size: clamp(2rem, 7.5vw, 2.9rem) !important;
+    line-height: 1.18 !important;
+  }
+
+  /* Booking & Travel Form Mobile Perfection */
+  .travel-form-container {
+    flex-direction: column !important;
+    border-radius: 20px !important;
+    margin: 0 12px 60px !important;
+  }
+
+  .travel-form-left {
+    min-height: 180px !important;
+    padding: 24px 20px !important;
+  }
+
+  .travel-form-right {
+    padding: 28px 18px !important;
+  }
+
+  .travel-form-right .form-row {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .travel-form-right .dest-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .travel-form-right .dest-card span {
+    font-size: 0.85rem !important;
+    padding: 10px 8px !important;
+    text-align: center !important;
+  }
+
+  /* Parallax Mobile Lag Eliminator */
+  .desert-quote-banner {
+    background-attachment: scroll !important;
+    padding: 90px 20px !important;
+  }
+
+  /* Touch-Friendly Filter Buttons (Min 42px touch target) */
+  .map-filter-btn,
+  .review-filter-btn {
+    min-height: 42px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 9px 16px !important;
+    font-size: 0.84rem !important;
+  }
+
+  /* Toast Notification Top-Center on Mobile */
+  #toastContainer {
+    top: 20px !important;
+    bottom: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 380px !important;
+    align-items: center !important;
+  }
+
+  /* Map Bottom Sheet Open: Suppress floating buttons so they never cover card */
+  body.has-open-map-sheet #chatbase-bubble-button,
+  body.has-open-map-sheet #backToTop,
+  body:has(.map-detail-panel.is-open) #chatbase-bubble-button,
+  body:has(.map-detail-panel.is-open) #backToTop {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: scale(0.8) !important;
+    transition: opacity 0.25s, transform 0.25s !important;
+  }
+}
