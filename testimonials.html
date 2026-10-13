@@ -1,7 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+﻿<!DOCTYPE html>
+<html lang="en">
 
 <head>
+  <script>
+    (function(){
+      var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+      window.location.replace(origin + '/reviews.html' + window.location.search + window.location.hash);
+    })();
+  </script>
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <link rel="preconnect" href="https://translate.google.com">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Traveler Reviews — Discover Hidden Morocco</title>
@@ -26,7 +34,7 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme.css?v=20261013">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .hn-nav {
@@ -272,7 +280,7 @@
       font-size: 5.5rem;
       font-weight: 800;
       line-height: 1;
-      background: linear-gradient(135deg, #0F172A 0%, #C85A32 70%, #E7A93C 100%);
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -665,6 +673,8 @@
 </head>
 
 <body>
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
@@ -687,9 +697,34 @@
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-                <option value="en">EN</option>
-                <option value="fr">FR</option>
-                <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
               </select>
             </div>
             <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
@@ -712,9 +747,34 @@
         <div class="lang-wrapper">
           <i class="fa-solid fa-globe lang-icon"></i>
           <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-            <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
           </select>
         </div>
         <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
@@ -727,7 +787,7 @@
 
   <header class="page-hero">
     <span class="badge badge-gold" style="margin-bottom: 20px;">★ Verified Reviews</span>
-    <h1>Voices of Our Travelers</h1>
+    <h1>Traveler Reviews</h1>
     <p id="heroReviewSubtitle">Authentic reviews shared by travelers exploring Morocco with us.</p>
     <div style="margin-top: 24px;">
       <button onclick="openReviewModal()" class="btn-primary" style="padding: 14px 34px; border-radius: 99px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #FFF; box-shadow: 0 10px 30px rgba(200,90,50,0.35); transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px;">
@@ -806,7 +866,7 @@
 
       <!-- Dynamic Reviews Grid Container -->
       <div class="reviews-grid" id="reviewsGridContainer">
-        <!-- Rendered dynamically via script.js?v=6 -->
+        <!-- Rendered dynamically via script.js?v=20261013 -->
       </div>
     </div>
   </section>
@@ -893,7 +953,8 @@
     </div>
   </footer>
 
-  <script src="script.js?v=6"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+<script src="script.js?v=20261013"></script>
 </body>
 
 </html>

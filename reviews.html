@@ -1,21 +1,37 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 
 <head>
   <script>
     (function () {
       try {
-        var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-        var path = window.location.pathname || '';
-        var search = window.location.search || '';
-        var hash = window.location.hash || '';
-        var lowerPath = path.toLowerCase();
-        if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
-          window.history.replaceState(null, document.title, origin + '/' + search + hash);
-        } else if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
-          window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
-        } else if (lowerPath.endsWith('.html')) {
-          window.history.replaceState(null, document.title, origin + path.replace(/\.html$/i, '') + search + hash);
+        var savedTheme = localStorage.getItem('hm_theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.classList.add('dark');
+          document.documentElement.style.backgroundColor = '#151515';
+          document.documentElement.style.colorScheme = 'dark';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.classList.remove('dark');
+          document.documentElement.style.backgroundColor = '#FAF7F2';
+          document.documentElement.style.colorScheme = 'light';
+        }
+
+        var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        if (!isLocal && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+          var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+          var path = window.location.pathname || '';
+          var search = window.location.search || '';
+          var hash = window.location.hash || '';
+          var lowerPath = path.toLowerCase();
+          if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
+            window.history.replaceState(null, document.title, origin + '/' + search + hash);
+          } else if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
+            window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+          } else if (lowerPath.endsWith('.html')) {
+            window.history.replaceState(null, document.title, origin + path.replace(/\.html$/i, '') + search + hash);
+          }
         }
       } catch (e) {}
     })();
@@ -46,7 +62,7 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme.css?v=20261013">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .hn-nav {
@@ -292,7 +308,7 @@
       font-size: 5.5rem;
       font-weight: 800;
       line-height: 1;
-      background: linear-gradient(135deg, #0F172A 0%, #C85A32 70%, #E7A93C 100%);
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -878,7 +894,7 @@
 
       <!-- Dynamic Reviews Grid Container -->
       <div class="reviews-grid" id="reviewsGridContainer">
-        <!-- Rendered dynamically via script.js?v=7 -->
+        <!-- Rendered dynamically via script.js?v=20261013 -->
       </div>
     </div>
   </section>
@@ -966,7 +982,7 @@
   </footer>
 
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=7"></script>
+<script src="script.js?v=20261013"></script>
 </body>
 
 </html>

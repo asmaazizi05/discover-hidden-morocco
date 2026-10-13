@@ -1,7 +1,43 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+﻿<!DOCTYPE html>
+<html lang="en">
 
 <head>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('hm_theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.classList.add('dark');
+          document.documentElement.style.backgroundColor = '#151515';
+          document.documentElement.style.colorScheme = 'dark';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          document.documentElement.classList.remove('dark');
+          document.documentElement.style.backgroundColor = '#FAF7F2';
+          document.documentElement.style.colorScheme = 'light';
+        }
+
+        var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        if (!isLocal && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+          var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+          var path = window.location.pathname || '';
+          var search = window.location.search || '';
+          var hash = window.location.hash || '';
+          var lowerPath = path.toLowerCase();
+          if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
+            window.history.replaceState(null, document.title, origin + '/' + search + hash);
+          } else if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
+            window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+          } else if (lowerPath.endsWith('.html')) {
+            window.history.replaceState(null, document.title, origin + path.replace(/\.html$/i, '') + search + hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://translate.googleapis.com">
+  <link rel="preconnect" href="https://translate.google.com">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Terms of Use — Discover Hidden Morocco</title>
@@ -24,7 +60,7 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="theme.css?v=20261013">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .hn-nav {
@@ -398,6 +434,8 @@
 </head>
 
 <body>
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
@@ -411,7 +449,7 @@
         <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
         <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
         <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="testimonials.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
@@ -421,9 +459,34 @@
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-                <option value="en">EN</option>
-                <option value="fr">FR</option>
-                <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
               </select>
             </div>
             <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
@@ -447,9 +510,34 @@
         <div class="lang-wrapper">
           <i class="fa-solid fa-globe lang-icon"></i>
           <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-            <option value="es">ES</option>
+            <option value="en">EN — English</option>
+            <option value="fr">FR — Français</option>
+            <option value="es">ES — Español</option>
+            <option value="ar">AR — العربية</option>
+            <option value="de">DE — Deutsch</option>
+            <option value="it">IT — Italiano</option>
+            <option value="pt">PT — Português</option>
+            <option value="nl">NL — Nederlands</option>
+            <option value="ru">RU — Русский</option>
+            <option value="zh-CN">ZH — 中文 (简体)</option>
+            <option value="ja">JA — 日本語</option>
+            <option value="ko">KO — 한국어</option>
+            <option value="tr">TR — Türkçe</option>
+            <option value="pl">PL — Polski</option>
+            <option value="sv">SV — Svenska</option>
+            <option value="da">DA — Dansk</option>
+            <option value="no">NO — Norsk</option>
+            <option value="fi">FI — Suomi</option>
+            <option value="cs">CS — Čeština</option>
+            <option value="el">EL — Ελληνικά</option>
+            <option value="he">HE — עברית</option>
+            <option value="hi">HI — हिन्दी</option>
+            <option value="id">ID — Bahasa Indonesia</option>
+            <option value="ro">RO — Română</option>
+            <option value="hu">HU — Magyar</option>
+            <option value="uk">UK — Українська</option>
+            <option value="vi">VI — Tiếng Việt</option>
+            <option value="th">TH — ไทย</option>
           </select>
         </div>
 
@@ -540,7 +628,7 @@
         <ul>
           <li><a href="about.html">About Us</a></li>
           <li><a href="map.html">Interactive Map</a></li>
-          <li><a href="testimonials.html">Reviews</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
           <li><a href="booking.html">Book Expedition</a></li>
           <li><a href="contact.html">Contact Us</a></li>
           <li><a href="favorites.html">My Wishlist</a></li>
@@ -574,7 +662,8 @@
     </div>
   </footer>
 
-  <script src="script.js?v=6"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+<script src="script.js?v=20261013"></script>
 </body>
 
 </html>

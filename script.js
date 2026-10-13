@@ -147,7 +147,7 @@
 
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
       if (isDark) {
-        btn.style.setProperty('background', '#0F172A', 'important');
+        btn.style.setProperty('background', '#1E1E1E', 'important');
       } else {
         btn.style.setProperty('background', '#FFFFFF', 'important');
       }
@@ -168,7 +168,7 @@
       win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
       win.style.setProperty('border-radius', '12px', 'important');
       win.style.setProperty('overflow', 'hidden', 'important');
-      win.style.setProperty('background-color', isDark ? '#0A0A14' : '#FAFAFA', 'important');
+      win.style.setProperty('background-color', isDark ? '#151515' : '#FAFAFA', 'important');
 
       try {
         if (window.chatbase && window.chatbase_current_theme !== isDark) {
@@ -1123,13 +1123,13 @@ function initTheme() {
         }
         const cbWin = document.getElementById('chatbase-bubble-window');
         if (cbWin) {
-          cbWin.style.setProperty('background-color', cbTheme === 'dark' ? '#0F172A' : '#FFFFFF', 'important');
+          cbWin.style.setProperty('background-color', cbTheme === 'dark' ? '#151515' : '#FFFFFF', 'important');
           cbWin.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
           cbWin.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
         }
         const cbBtn = document.getElementById('chatbase-bubble-button');
         if (cbBtn) {
-          cbBtn.style.setProperty('background', cbTheme === 'dark' ? '#0F172A' : '#FFFFFF', 'important');
+          cbBtn.style.setProperty('background', cbTheme === 'dark' ? '#1E1E1E' : '#FFFFFF', 'important');
         }
       } catch(e) {}
     });
@@ -1333,7 +1333,7 @@ function injectTranslationStyles() {
 
     [data-theme="dark"] .lang-switcher,
     [data-theme="dark"] .lang-sw {
-      background: #1C2333 !important;
+      background: #1E1E1E !important;
       border-color: rgba(255, 255, 255, 0.15) !important;
       color: #F8FAFC !important;
     }
@@ -1341,7 +1341,7 @@ function injectTranslationStyles() {
     [data-theme="dark"] .lang-switcher option,
     [data-theme="dark"] .lang-sw option,
     [data-theme="dark"] .mobile-lang-select option {
-      background: #1C2333 !important;
+      background: #1E1E1E !important;
       color: #F8FAFC !important;
     }
   `;
@@ -3959,21 +3959,21 @@ function initScrollRevealEngine() {
   });
 
   // 1. Headers & Section Titles
-  document.querySelectorAll('section h2, .section-header h2, .section-title, .story-main-title').forEach(el => {
+  document.querySelectorAll('section h2, .section-header h2, .section-title, .story-main-title, .dest-clean-header h1, .legal-hero h1, .faq-header h2').forEach(el => {
     if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
       el.classList.add('reveal-up');
     }
   });
 
   // 2. Section Subtitles & Intro Paragraphs
-  document.querySelectorAll('.section-header p, .section-subtitle, .story-paragraph').forEach(el => {
+  document.querySelectorAll('.section-header p, .section-subtitle, .story-paragraph, .dest-clean-header p, .legal-hero p, .faq-header p').forEach(el => {
     if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
       el.classList.add('reveal-up');
     }
   });
 
-  // 3. Grid & Cards with Dynamic Cascade Delays
-  const cardSelectors = '.destination-card, .tour-card, .why-card, .feature-item, .exp-cat-card, .exp-card, .review-card, .value-card, .team-card, .story-pillar-item, .faq-item, .contact-info-card, .travel-item, .hero-stat-item';
+  // 3. Grid & Cards with Dynamic Cascade Delays across ALL Subpages
+  const cardSelectors = '.destination-card, .destinations .card, .tour-card, .why-card, .feature-item, .exp-cat-card, .exp-card, .review-card, .value-card, .team-card, .story-pillar-item, .faq-item, .contact-info-card, .contact-form-card, .travel-item, .travel-form-container, .hero-stat-item, .legal-card, .section-block, .dest-card';
   document.querySelectorAll(cardSelectors).forEach((el, index) => {
     if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
       el.classList.add('reveal-up');
@@ -3982,8 +3982,8 @@ function initScrollRevealEngine() {
   });
 
   // 4. Story & Visual Media
-  document.querySelectorAll('.story-img-main, .about-img-main').forEach(el => el.classList.add('reveal-left'));
-  document.querySelectorAll('.story-img-accent, .about-img-accent').forEach(el => el.classList.add('reveal-right'));
+  document.querySelectorAll('.story-img-main, .about-img-main, .travel-form-left').forEach(el => el.classList.add('reveal-left'));
+  document.querySelectorAll('.story-img-accent, .about-img-accent, .travel-form-right').forEach(el => el.classList.add('reveal-right'));
   document.querySelectorAll('.cta-banner-inner, .cta-strip, .privacy-cta').forEach(el => el.classList.add('reveal-scale'));
 
   // 5. Observe all unrevealed elements
