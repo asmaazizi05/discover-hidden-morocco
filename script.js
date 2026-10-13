@@ -1963,40 +1963,7 @@ function initMapPage() {
     AppState.mapInstance = null;
   }
 
-  // Patch Leaflet GridLayer pruning to NEVER delete parent/child tiles while new tiles are loading
-  if (typeof L.GridLayer !== 'undefined' && !L.GridLayer.prototype._origPruneTilesPatched) {
-    L.GridLayer.prototype._origPruneTilesPatched = true;
-    L.GridLayer.prototype._pruneTiles = function () {
-      if (!this._map) return;
-      var zoom = this._map.getZoom();
-      if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
-        this._removeAllTiles();
-        return;
-      }
 
-      for (var key in this._tiles) {
-        this._tiles[key].retain = this._tiles[key].current;
-      }
-
-      for (var key in this._tiles) {
-        var tile = this._tiles[key];
-        if (tile.current && !tile.active) {
-          var coords = tile.coords;
-          // Retain parents all the way to minZoom (never drops overview tiles on deep zoom)
-          // Retain children all the way to maxZoom (never drops detail tiles on rapid dezoom)
-          if (!this._retainParent(coords.x, coords.y, coords.z, this.options.minZoom)) {
-            this._retainChildren(coords.x, coords.y, coords.z, this.options.maxZoom);
-          }
-        }
-      }
-
-      for (var key in this._tiles) {
-        if (!this._tiles[key].retain) {
-          this._removeTile(key);
-        }
-      }
-    };
-  }
 
   // Create Map centered on Morocco (Click-to-zoom enabled, full zoom range)
   AppState.mapInstance = L.map('interactiveMap', {
