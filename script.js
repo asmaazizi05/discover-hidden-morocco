@@ -1967,11 +1967,14 @@ function initMapPage() {
   AppState.mapInstance = L.map('interactiveMap', {
     attributionControl: false,
     zoomControl: false,
-    scrollWheelZoom: false, // Prevents scroll hijacking when scrolling down the page
-    minZoom: 2,             // Full dezoom capability without artificial limits
-    maxZoom: 18,            // Full deep zoom capability into riads, cities & dunes
+    scrollWheelZoom: false,     // Prevents scroll hijacking when scrolling down the page
+    minZoom: 2,                 // Full dezoom capability without artificial limits
+    maxZoom: 18,                // Full deep zoom capability into riads, cities & dunes
     fadeAnimation: true,
     zoomAnimation: true,
+    zoomAnimationThreshold: 12, // Keeps silky smooth zoom animation across deep zoom changes
+    wheelPxPerZoomLevel: 120,   // Calibrated wheel sensitivity: prevents spamming 5+ zoom levels per notch
+    wheelDebounceTime: 40,      // Smooth debouncing so fast scrolling doesn't choke the network
     worldCopyJump: false
   }).setView([31.7917, -7.0926], 6);
 
@@ -1994,15 +1997,46 @@ function initMapPage() {
   // Add zoom control at top-left
   L.control.zoom({ position: 'topleft' }).addTo(AppState.mapInstance);
 
-  // ESRI World Imagery satellite tiles (ultra-smooth loading, buffered, zero missing rectangles)
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  // Pre-load essential low-zoom Morocco overview tiles so dezooming NEVER waits on network
+  [
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/12/15',
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/13/15',
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/30',
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/30',
+    'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/31',
+    'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/31'
+  ].forEach(url => {
+    const preImg = new Image();
+    preImg.src = url;
+  });
+
+  // Base overview satellite layer (Zoom 2 to 7) - permanently loaded underneath
+  // When dezooming from high zoom, this layer is ALREADY rendered in place, eliminating blank squares ("morba3at")
+  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    subdomains: ['server', 'services'],
+    attribution: '',
+    minZoom: 2,
+    maxZoom: 7,
+    maxNativeZoom: 6,
+    zIndex: 1,
+    keepBuffer: 3,
+    updateWhenZooming: true,
+    updateWhenIdle: false,
+    crossOrigin: true
+  }).addTo(AppState.mapInstance);
+
+  // High-resolution satellite layer (Zoom 2 to 18) - smooth, parallelized loading
+  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    subdomains: ['server', 'services'],
     attribution: '',
     minZoom: 2,
     maxZoom: 18,
     maxNativeZoom: 18,
-    keepBuffer: 12,           // Keeps surrounding tiles cached in memory for instant pan/zoom
-    updateWhenZooming: false, // Keeps existing tiles scaled smoothly while new zoom loads (zero grey rectangles)
-    updateWhenIdle: false,    // Loads tiles continuously without stutter
+    zIndex: 2,
+    keepBuffer: 3,            // Keeps optimal buffer (zero memory/DOM lag, high FPS)
+    updateWhenZooming: true,  // Fetches new tiles DURING zoom transition for zero delay
+    updateWhenIdle: false,    // Loads continuously without stutter
+    updateInterval: 80,       // Fast responsive 80ms check
     crossOrigin: true
   }).addTo(AppState.mapInstance);
 
@@ -2204,13 +2238,14 @@ function initHomeMapPreview() {
   }
 
   // ESRI satellite tiles for home map preview (ultra-smooth, buffered)
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    subdomains: ['server', 'services'],
     attribution: '',
     minZoom: 2,
     maxZoom: 18,
     maxNativeZoom: 18,
-    keepBuffer: 8,
-    updateWhenZooming: false,
+    keepBuffer: 3,
+    updateWhenZooming: true,
     updateWhenIdle: false,
     crossOrigin: true
   }).addTo(miniMap);

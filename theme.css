@@ -5901,17 +5901,19 @@ select::placeholder {
 /* ==============================================================================
    HIGH-PERFORMANCE INTERACTIVE MAP (GPU SMOOTH ZOOM & TILE ANTI-FLICKER)
    ============================================================================== */
+.leaflet-container {
+  background: #111417 !important;
+}
+
 .leaflet-tile {
   background-color: transparent !important;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: none !important;
+  outline: none !important;
 }
 
 .leaflet-tile-container {
-  will-change: transform;
-}
-
-.leaflet-zoom-anim .leaflet-zoom-animated {
-  transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
   will-change: transform;
 }
