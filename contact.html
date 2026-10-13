@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -63,6 +63,9 @@
   <link rel="stylesheet" href="theme.css?v=20261013">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* ==============================================================================
+       BOUTIQUE CONTACT ARCHITECTURE — DISCOVER HIDDEN MOROCCO
+       ============================================================================== */
     .hn-nav {
       position: fixed;
       top: 0;
@@ -242,107 +245,118 @@
       }
     }
 
-    body {
-      background: var(--hm-bg-main);
-    }
-
-    .page-hero {
-      padding: 160px 24px 80px;
+    /* -- Contact Hero Section (Luxury Atmospheric Banner) -- */
+    .contact-hero {
+      position: relative;
+      padding: 150px 24px 60px;
       text-align: center;
+      background: var(--hm-bg-main);
+      overflow: hidden;
     }
 
-    .page-hero h1 {
-      font-family: var(--hm-font-sans);
-      font-size: clamp(2.4rem, 5vw, 3.6rem);
+    .contact-hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: var(--hm-terracotta-light);
+      border: 1px solid rgba(200, 90, 50, 0.3);
+      color: var(--hm-terracotta);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
       margin-bottom: 18px;
     }
 
-    .page-hero p {
-      font-size: 1.1rem;
+    [data-theme="dark"] .contact-hero-badge {
+      background: rgba(231, 169, 60, 0.12);
+      border-color: rgba(231, 169, 60, 0.28);
+      color: #E7A93C;
+    }
+
+    .contact-hero h1 {
+      font-family: var(--hm-font-sans);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 800;
+      color: var(--hm-text-heading);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .contact-hero p {
+      font-size: 1.12rem;
       color: var(--hm-text-muted);
-      max-width: 540px;
+      max-width: 640px;
       margin: 0 auto;
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
+    /* -- Main Contact Section & Unified Grid -- */
     .contact-section {
-      padding: 0 24px 96px;
+      padding: 10px 24px 90px;
+      background: var(--hm-bg-main);
     }
 
-    .contact-inner {
-      max-width: 1100px;
+    .contact-main-grid {
+      max-width: 1220px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 60px;
-      align-items: start;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 36px;
+      align-items: stretch;
     }
 
-    /* Luxury Contact Form */
+    /* 1. Left Card: Inquiry Form */
     .contact-form-card {
       background: var(--hm-bg-card, #FFFFFF);
-      border: 1px solid var(--hm-border, rgba(15, 23, 42, 0.12));
+      border: 1px solid var(--hm-border);
       border-radius: 28px;
       padding: 44px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.06);
-      transition: all 0.3s ease;
-      height: fit-content;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-        /* Contact Page Explicit Dark Theme Overrides (#151515 & #1E1E1E) */
-    [data-theme="dark"] body,
-    [data-theme="dark"] .page-hero,
-    [data-theme="dark"] .contact-section,
-    [data-theme="dark"] .faq-section {
-      background-color: #151515 !important;
+    .card-header-block {
+      margin-bottom: 30px;
     }
 
-    [data-theme="dark"] .contact-form-card,
-    [data-theme="dark"] .contact-info-card,
-    [data-theme="dark"] .faq-item,
-    [data-theme="dark"] .faq-q,
-    [data-theme="dark"] .faq-a {
-      background-color: #1E1E1E !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: #CBD5E1 !important;
-    }
-
-    [data-theme="dark"] .faq-q:hover {
-      background-color: #262626 !important;
-    }
-
-    [data-theme="dark"] .contact-form-card h2,
-    [data-theme="dark"] .contact-info-card h4,
-    [data-theme="dark"] .faq-header h2,
-    [data-theme="dark"] .faq-q {
-      color: #F8FAFC !important;
-    }
-
-    [data-theme="dark"] .footer {
-      background-color: #0E0E0E !important;
-    }
-
-    [data-theme="dark"] .contact-form-card {
-      background: #1E1E1E !important;
-      border-color: rgba(255, 255, 255, 0.16) !important;
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5) !important;
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-    }
-
-    .contact-form-card h2 {
-      font-family: var(--hm-font-sans);
-      font-size: 2rem;
+    .card-header-block .card-tag {
+      font-size: 0.78rem;
       font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--hm-terracotta);
       margin-bottom: 8px;
-      color: var(--hm-text-heading);
+      display: block;
     }
 
-    .contact-form-card p {
-      color: var(--hm-text-muted, #64748B);
-      margin-bottom: 32px;
+    [data-theme="dark"] .card-header-block .card-tag {
+      color: #E7A93C;
+    }
+
+    .card-header-block h2 {
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--hm-text-heading);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .card-header-block p {
+      color: var(--hm-text-muted);
       font-size: 0.96rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .form-row {
@@ -362,13 +376,29 @@
     }
 
     .form-group label {
-      display: block;
-      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       color: var(--hm-text-heading);
+    }
+
+    .req-star {
+      color: #C85A32;
+      font-weight: 900;
+      margin-left: 4px;
+    }
+
+    .opt-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--hm-text-muted);
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .input-field-wrap {
@@ -398,36 +428,26 @@
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 14px 18px 14px 48px;
-      border: 1.5px solid var(--hm-border, rgba(15, 23, 42, 0.14));
+      padding: 15px 18px 15px 48px;
+      border: 1.5px solid var(--hm-border);
       border-radius: 16px;
       background: var(--hm-bg-main, #FAF7F2);
       color: var(--hm-text-heading, #0F172A);
-      font-family: var(--hm-font-sans, 'Plus Jakarta Sans', sans-serif);
-      font-size: 0.96rem;
+      font-family: var(--hm-font-sans);
+      font-size: 0.98rem;
       font-weight: 600;
       transition: all 0.25s ease;
       outline: none;
       box-sizing: border-box;
     }
 
-    [data-theme="dark"] .form-group input,
-    [data-theme="dark"] .form-group select,
-    [data-theme="dark"] .form-group textarea {
-      background: #151515 !important;
-      border-color: rgba(255, 255, 255, 0.16) !important;
-      color: #F8FAFC !important;
-    }
-
+    /* Universal Guarantee: Zero placeholder text */
     .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #94A3B8;
-      font-weight: 500;
-    }
-
-    [data-theme="dark"] .form-group input::placeholder,
-    [data-theme="dark"] .form-group textarea::placeholder {
-      color: rgba(248, 250, 252, 0.45) !important;
+    .form-group textarea::placeholder,
+    ::placeholder {
+      color: transparent !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
     }
 
     .form-group input:focus,
@@ -435,26 +455,27 @@
     .form-group textarea:focus {
       border-color: #C85A32 !important;
       background: #FFFFFF !important;
-      box-shadow: 0 0 0 4px rgba(200, 90, 50, 0.18) !important;
+      box-shadow: 0 0 0 4px rgba(200, 90, 50, 0.16) !important;
     }
 
     [data-theme="dark"] .form-group input:focus,
     [data-theme="dark"] .form-group select:focus,
     [data-theme="dark"] .form-group textarea:focus {
-      background: #1E1E1E !important;
       border-color: #E7A93C !important;
-      box-shadow: 0 0 0 4px rgba(231, 169, 60, 0.2) !important;
+      background: #1E1E1E !important;
+      box-shadow: 0 0 0 4px rgba(231, 169, 60, 0.22) !important;
     }
 
     .form-group textarea {
       resize: vertical;
-      min-height: 140px;
+      min-height: 135px;
+      line-height: 1.6;
     }
 
     .form-submit {
       width: 100%;
-      padding: 16px;
-      font-size: 1.02rem;
+      padding: 17px;
+      font-size: 1.04rem;
       font-weight: 800;
       border-radius: 99px;
       border: none;
@@ -466,131 +487,305 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 10px;
     }
 
     .form-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 35px rgba(200, 90, 50, 0.5);
+      box-shadow: 0 14px 38px rgba(200, 90, 50, 0.5);
       background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%);
     }
 
-    /* Info Column */
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-    }
-
-    .contact-info-card {
-      background: var(--hm-bg-card);
-      border: 1px solid var(--hm-border);
-      border-radius: var(--hm-radius-lg);
-      padding: 28px 24px;
-    }
-
-    .contact-info-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
-      color: #FFFFFF !important;
+    .form-notice {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--hm-text-muted);
+      margin-top: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 20px rgba(200, 90, 50, 0.35);
-      transition: all 0.3s ease;
+      gap: 6px;
     }
 
-    .contact-info-icon i {
-      color: #FFFFFF !important;
+    /* 2. Right Card: Unified VIP Concierge Card */
+    .contact-concierge-card {
+      background: var(--hm-bg-card, #FFFFFF);
+      border: 1px solid var(--hm-border);
+      border-radius: 28px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
     }
 
-    [data-theme="dark"] .contact-info-icon {
-      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%) !important;
-      color: #FFFFFF !important;
-      box-shadow: 0 8px 24px rgba(200, 90, 50, 0.45) !important;
+    .concierge-header {
+      border-bottom: 1px solid var(--hm-border);
+      padding-bottom: 22px;
     }
 
-    .contact-info-card h4 {
-      font-size: 1rem;
+    .concierge-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--hm-terracotta);
       margin-bottom: 8px;
     }
 
-    .contact-info-card p,
-    .contact-info-card a {
-      color: var(--hm-text-muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-      text-decoration: none;
-      transition: color 0.25s;
+    [data-theme="dark"] .concierge-header-badge {
+      color: #E7A93C;
     }
 
-    .contact-info-card a:hover {
+    .concierge-header h3 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--hm-text-heading);
+      margin-bottom: 6px;
+    }
+
+    .concierge-header p {
+      font-size: 0.92rem;
+      color: var(--hm-text-muted);
+      line-height: 1.5;
+    }
+
+    .concierge-channels {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .channel-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--hm-bg-main);
+      border: 1px solid var(--hm-border);
+      border-radius: 18px;
+      transition: all 0.25s ease;
+    }
+
+    .channel-box:hover {
+      border-color: var(--hm-terracotta);
+      transform: translateY(-2px);
+    }
+
+    .channel-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(200, 90, 50, 0.3);
+    }
+
+    .channel-content {
+      flex: 1;
+    }
+
+    .channel-content h4 {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--hm-text-heading);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .channel-content p,
+    .channel-content a {
+      font-size: 0.94rem;
+      color: var(--hm-text-muted);
+      text-decoration: none;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .channel-content a:hover {
       color: var(--hm-terracotta);
     }
 
-    .wa-btn {
+    .channel-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #10B981;
+      margin-top: 4px;
+    }
+
+    .channel-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    .wa-chat-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 16px;
+      background: #25D366;
+      color: #FFFFFF !important;
+      border-radius: 99px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+      transition: all 0.25s;
+    }
+
+    .wa-chat-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+    }
+
+    /* Social Expeditions Strip */
+    .concierge-socials {
+      border-top: 1px solid var(--hm-border);
+      padding-top: 22px;
+    }
+
+    .concierge-socials-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--hm-text-heading);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .social-pills-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social-pill {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--hm-bg-main);
+      border: 1px solid var(--hm-border);
+      color: var(--hm-text-heading);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .social-pill:hover {
+      background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+      color: #FFFFFF;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(200, 90, 50, 0.35);
+    }
+
+    /* Trust Seals */
+    .concierge-trust-badges {
+      border-top: 1px solid var(--hm-border);
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .trust-badge-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #25D366;
-      color: #fff !important;
-      padding: 12px 20px;
-      border-radius: 99px;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--hm-text-body);
+    }
+
+    .trust-badge-item i {
+      color: #E7A93C;
       font-size: 0.9rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      margin-top: 10px;
-      justify-content: center;
     }
 
-    .wa-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
-    }
-
-    /* FAQ */
+    /* FAQ Section */
     .faq-section {
-      padding: 0 24px 96px;
+      padding: 60px 24px 96px;
+      background: var(--hm-bg-main);
     }
 
     .faq-inner {
-      max-width: 840px;
+      max-width: 860px;
       margin: 0 auto;
     }
 
     .faq-header {
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: 44px;
+    }
+
+    .faq-header .faq-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #C85A32;
+      margin-bottom: 12px;
+    }
+
+    [data-theme="dark"] .faq-header .faq-badge {
+      color: #E7A93C;
     }
 
     .faq-header h2 {
       font-family: var(--hm-font-sans);
       font-size: 2.2rem;
-      margin-bottom: 12px;
+      font-weight: 800;
+      color: var(--hm-text-heading);
+      margin-bottom: 10px;
+    }
+
+    .faq-header p {
+      color: var(--hm-text-muted);
+      font-size: 1rem;
     }
 
     .faq-item {
       border: 1px solid var(--hm-border);
-      border-radius: var(--hm-radius-md);
-      margin-bottom: 12px;
+      border-radius: 18px;
+      margin-bottom: 14px;
       overflow: hidden;
+      background: var(--hm-bg-card);
+      transition: all 0.25s;
     }
 
     .faq-q {
       width: 100%;
-      background: var(--hm-bg-card);
+      background: transparent;
       border: none;
-      padding: 20px 24px;
+      padding: 22px 26px;
       text-align: left;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1rem;
+      font-size: 1.02rem;
       font-weight: 700;
       color: var(--hm-text-heading);
       cursor: pointer;
@@ -603,8 +798,8 @@
     }
 
     .faq-q i {
-      transition: transform 0.3s;
-      font-size: 0.9rem;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 0.95rem;
       color: var(--hm-terracotta);
     }
 
@@ -616,13 +811,13 @@
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s ease;
-      background: var(--hm-bg-card);
+      background: transparent;
     }
 
     .faq-a-inner {
-      padding: 0 24px 20px;
+      padding: 0 26px 22px;
       color: var(--hm-text-muted);
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       line-height: 1.75;
     }
 
@@ -630,10 +825,11 @@
       max-height: 300px;
     }
 
+    /* Footer */
     .footer {
-      background: var(--hm-bg-footer);
+      background: var(--hm-bg-footer, #0F172A);
       color: #94A3B8;
-      padding: 40px 24px;
+      padding: 44px 24px;
       text-align: center;
     }
 
@@ -641,30 +837,29 @@
       display: flex;
       justify-content: center;
       gap: 24px;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
     .footer-links a {
       color: #94A3B8;
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
     }
 
     .footer-links a:hover {
       color: var(--hm-gold);
     }
 
-    @media (max-width: 768px) {
-      .contact-inner {
+    /* Responsive Queries */
+    @media (max-width: 960px) {
+      .contact-main-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
       }
 
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-form-card {
-        padding: 28px 22px;
+      .contact-form-card,
+      .contact-concierge-card {
+        padding: 32px 24px;
       }
     }
   </style>
@@ -695,34 +890,34 @@
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
+                <option value="en">EN — English</option>
+                <option value="fr">FR — Français</option>
+                <option value="es">ES — Español</option>
+                <option value="ar">AR — العربية</option>
+                <option value="de">DE — Deutsch</option>
+                <option value="it">IT — Italiano</option>
+                <option value="pt">PT — Português</option>
+                <option value="nl">NL — Nederlands</option>
+                <option value="ru">RU — Русский</option>
+                <option value="zh-CN">ZH — 中文 (简体)</option>
+                <option value="ja">JA — 日本語</option>
+                <option value="ko">KO — 한국어</option>
+                <option value="tr">TR — Türkçe</option>
+                <option value="pl">PL — Polski</option>
+                <option value="sv">SV — Svenska</option>
+                <option value="da">DA — Dansk</option>
+                <option value="no">NO — Norsk</option>
+                <option value="fi">FI — Suomi</option>
+                <option value="cs">CS — Čeština</option>
+                <option value="el">EL — Ελληνικά</option>
+                <option value="he">HE — עברית</option>
+                <option value="hi">HI — हिन्दी</option>
+                <option value="id">ID — Bahasa Indonesia</option>
+                <option value="ro">RO — Română</option>
+                <option value="hu">HU — Magyar</option>
+                <option value="uk">UK — Українська</option>
+                <option value="vi">VI — Tiếng Việt</option>
+                <option value="th">TH — ไทย</option>
               </select>
             </div>
             <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
@@ -783,112 +978,167 @@
     </div>
   </nav>
 
-  <header class="page-hero">
-    <span class="badge badge-terracotta" style="margin-bottom: 20px;">Get in Touch</span>
-    <h1>We'd Love to Hear From You</h1>
-    <p>Have a question or ready to plan your dream Moroccan adventure? Our team responds within 24 hours.</p>
+  <!-- Luxury Page Hero Header -->
+  <header class="contact-hero">
+    <div class="contact-hero-inner">
+      <div class="contact-hero-badge">✦ PRIVATE CONCIERGE & INQUIRIES ✦</div>
+      <h1>Let's Craft Your Moroccan Expedition</h1>
+      <p>From private Sahara luxury desert camps to secret imperial riads, our Marrakech travel designers craft journeys tailored exclusively for you.</p>
+    </div>
   </header>
 
+  <!-- Main Unified Contact Section -->
   <section class="contact-section">
-    <div class="contact-inner">
+    <div class="contact-main-grid">
+
+      <!-- Left Column: High-End Inquiry Form -->
       <div class="contact-form-card">
-        <h2>Send Us a Message</h2>
-        <p>Tell us about your dream trip and we'll craft a personalized proposal for you.</p>
+        <div class="card-header-block">
+          <span class="card-tag">TAILOR-MADE JOURNEY</span>
+          <h2>Send Us an Inquiry</h2>
+          <p>Share your travel plans below. Our destination specialists will reply with a handcrafted itinerary and proposal.</p>
+        </div>
+
         <form onsubmit="handleContactForm(event)">
           <div class="form-row">
             <div class="form-group">
-              <label for="c-name">Full Name <span style="color: #C85A32;">*</span></label>
+              <label for="c-name">Full Name <span class="req-star">*</span></label>
               <div class="input-field-wrap">
                 <i class="fa-solid fa-user"></i>
-                <input type="text" id="c-name" placeholder="Your name" required>
+                <input type="text" id="c-name" required autocomplete="name">
               </div>
             </div>
             <div class="form-group">
-              <label for="c-email">Email Address <span style="font-size: 0.8rem; font-weight: 400; color: var(--hm-text-muted);">(Optional)</span></label>
+              <label for="c-email">Email Address <span class="opt-tag">(Optional)</span></label>
               <div class="input-field-wrap">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="c-email" placeholder="your@email.com">
+                <input type="email" id="c-email" autocomplete="email">
               </div>
             </div>
           </div>
+
           <div class="form-row">
             <div class="form-group">
-              <label for="c-phone">WhatsApp / Phone</label>
+              <label for="c-phone">WhatsApp / Phone <span class="req-star">*</span></label>
               <div class="input-field-wrap">
                 <i class="fa-solid fa-phone"></i>
-                <input type="tel" id="c-phone" placeholder="+1 234 567 890">
+                <input type="tel" id="c-phone" required autocomplete="tel">
               </div>
             </div>
             <div class="form-group">
-              <label for="c-trip">Trip Type</label>
+              <label for="c-trip">Trip Category</label>
               <div class="input-field-wrap">
                 <i class="fa-solid fa-compass"></i>
                 <select id="c-trip">
-                  <option value="">Select a category</option>
-                  <option>Sahara Desert Expedition</option>
-                  <option>Imperial Cities Tour</option>
-                  <option>Mountain & Atlas Trek</option>
-                  <option>Coastal Escape</option>
-                  <option>Honeymoon & Romance</option>
-                  <option>Family Adventure</option>
-                  <option>Custom Itinerary</option>
+                  <option value="">Select an Expedition</option>
+                  <option value="Sahara Desert Expedition">Sahara Desert Expedition</option>
+                  <option value="Imperial Cities Tour">Imperial Cities Tour</option>
+                  <option value="Mountain & Atlas Trek">Mountain & Atlas Trek</option>
+                  <option value="Coastal Escape">Coastal Escape</option>
+                  <option value="Honeymoon & Romance">Honeymoon & Romance</option>
+                  <option value="Family Adventure">Family Adventure</option>
+                  <option value="Custom Itinerary">Custom Tailor-Made Itinerary</option>
                 </select>
               </div>
             </div>
           </div>
+
           <div class="form-group">
-            <label for="c-message">Your Message <span style="color: #C85A32;">*</span></label>
+            <label for="c-message">Your Vision & Travel Wishes <span class="req-star">*</span></label>
             <div class="input-field-wrap textarea-wrap">
               <i class="fa-solid fa-pen-nib"></i>
-              <textarea id="c-message"
-                placeholder="Tell us about your dream journey — dates, group size, special requests..."
-                required></textarea>
+              <textarea id="c-message" required></textarea>
             </div>
           </div>
-          <button type="submit" class="btn-primary form-submit">
-            Send Message &nbsp;<i class="fa-solid fa-paper-plane"></i>
+
+          <button type="submit" class="form-submit">
+            <span>Send Message via WhatsApp</span>
+            <i class="fa-solid fa-paper-plane"></i>
           </button>
+
+          <div class="form-notice">
+            <i class="fa-solid fa-shield-halved" style="color: #10B981;"></i>
+            <span>No payment required to inquire · 100% Private tailor-made proposal</span>
+          </div>
         </form>
       </div>
 
-      <div class="contact-info">
-        <div class="contact-info-card">
-          <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
-          <h4>Marrakech HQ</h4>
-          <p>Avenue Ennakhil<br>Marrakech 40160<br>Morocco</p>
+      <!-- Right Column: Single Unified Luxury Concierge Card -->
+      <div class="contact-concierge-card">
+        <div class="concierge-header">
+          <span class="concierge-header-badge"><i class="fa-solid fa-award"></i> MARRAKECH ATELIER</span>
+          <h3>Private Travel Concierge</h3>
+          <p>Connect directly with our dedicated travel planners in Morocco.</p>
         </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon"><i class="fab fa-whatsapp"></i></div>
-          <h4>WhatsApp Direct</h4>
-          <p>Available 7 days a week<br>08:00 – 21:00 (GMT+1)</p>
-          <a href="https://wa.me/212660082066" target="_blank" class="wa-btn">
-            <i class="fab fa-whatsapp"></i> Chat (+212 660-082066)
-          </a>
-        </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
-          <h4>Email Us</h4>
-          <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a>
-        </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon"><i class="fa-solid fa-share-nodes"></i></div>
-          <h4>Follow Us</h4>
-          <div class="footer-socials" style="margin-top: 10px;">
-            <a href="https://www.instagram.com/discover_hidden_morocco/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.facebook.com/discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://www.tiktok.com/@discover_hidden_morocco" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.youtube.com/@discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://fr.pinterest.com/DiscoverHiddenMorocco/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+
+        <div class="concierge-channels">
+          <!-- WhatsApp Channel -->
+          <div class="channel-box">
+            <div class="channel-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="channel-content">
+              <h4>WhatsApp VIP Direct</h4>
+              <p>+212 660-082066</p>
+              <div class="channel-status">
+                <span class="channel-status-dot"></span>
+                <span>Online 7 Days (08:00 – 21:00 GMT+1)</span>
+              </div>
+              <br>
+              <a href="https://wa.me/212660082066" target="_blank" class="wa-chat-action">
+                <i class="fab fa-whatsapp"></i> Chat Now
+              </a>
+            </div>
+          </div>
+
+          <!-- Email Channel -->
+          <div class="channel-box">
+            <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="channel-content">
+              <h4>Direct Email</h4>
+              <a href="mailto:contact@discoverhiddenmorocco.com">contact@discoverhiddenmorocco.com</a>
+              <p style="font-size: 0.8rem; margin-top: 4px; font-weight: 500;">Guaranteed reply within 6–12 hours</p>
+            </div>
+          </div>
+
+          <!-- Headquarters Location -->
+          <div class="channel-box">
+            <div class="channel-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="channel-content">
+              <h4>Headquarters</h4>
+              <p>Avenue Ennakhil<br>Marrakech 40160, Morocco</p>
+            </div>
           </div>
         </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon"><i class="fa-solid fa-clock"></i></div>
-          <h4>Response Time</h4>
-          <p>We typically reply within <strong style="color: var(--hm-terracotta);">6–12 hours</strong>. For urgent
-            enquiries, WhatsApp is fastest.</p>
+
+        <!-- Social Channels Row -->
+        <div class="concierge-socials">
+          <span class="concierge-socials-title">Follow Our Expeditions</span>
+          <div class="social-pills-row">
+            <a href="https://www.instagram.com/discover_hidden_morocco/" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://wa.me/212660082066" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.tiktok.com/@discover_hidden_morocco" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.youtube.com/@discoverhiddenmorocco" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://fr.pinterest.com/DiscoverHiddenMorocco/" target="_blank" rel="noopener noreferrer" class="social-pill" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="concierge-trust-badges">
+          <div class="trust-badge-item">
+            <i class="fa-solid fa-certificate"></i>
+            <span>Licensed Moroccan Agency (Licence n° CIMR-2024)</span>
+          </div>
+          <div class="trust-badge-item">
+            <i class="fa-solid fa-users"></i>
+            <span>100% Exclusively Private Journeys — No Crowds</span>
+          </div>
+          <div class="trust-badge-item">
+            <i class="fa-solid fa-headset"></i>
+            <span>24/7 Dedicated On-Ground Concierge Support</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -896,56 +1146,64 @@
   <section class="faq-section">
     <div class="faq-inner">
       <div class="faq-header">
-        <span class="badge badge-gold" style="margin-bottom: 14px;">FAQ</span>
-        <h2>Frequently Asked Questions</h2>
-        <p>Quick answers to common questions about booking with Hidden Morocco.</p>
+        <span class="faq-badge">FREQUENTLY ASKED QUESTIONS</span>
+        <h2>Planning Your Private Tour</h2>
+        <p>Quick answers to common questions about our tailor-made journeys.</p>
       </div>
 
       <div class="faq-item" id="faq1">
-        <button class="faq-q" onclick="toggleFaq('faq1')">How do I book a tour? <i
-            class="fa-solid fa-chevron-down"></i></button>
+        <button class="faq-q" onclick="toggleFaq('faq1')">
+          <span>How do I book a tour with Hidden Morocco?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
         <div class="faq-a">
-          <div class="faq-a-inner">Simply fill out the contact form above or message us on WhatsApp. We'll reply within
-            6–12 hours with a personalized proposal and itinerary tailored to your preferences and budget.</div>
+          <div class="faq-a-inner">Simply send your travel preferences via the inquiry form above or message our Marrakech atelier on WhatsApp. We will reply within 6–12 hours with a bespoke proposal and route crafted exclusively for you.</div>
         </div>
       </div>
+
       <div class="faq-item" id="faq2">
-        <button class="faq-q" onclick="toggleFaq('faq2')">Are all tours private? <i
-            class="fa-solid fa-chevron-down"></i></button>
+        <button class="faq-q" onclick="toggleFaq('faq2')">
+          <span>Are all expeditions completely private?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
         <div class="faq-a">
-          <div class="faq-a-inner">Yes, 100%. All Hidden Morocco experiences are exclusively private. Your vehicle,
-            guide, and itinerary are reserved only for your group — no strangers, no shared buses.</div>
+          <div class="faq-a-inner">Yes, 100%. All Discover Hidden Morocco experiences are exclusively private. Your premium vehicle, private certified guide, and daily pacing belong solely to your party — no strangers and no rigid tour buses.</div>
         </div>
       </div>
+
       <div class="faq-item" id="faq3">
-        <button class="faq-q" onclick="toggleFaq('faq3')">What is the cancellation policy? <i
-            class="fa-solid fa-chevron-down"></i></button>
+        <button class="faq-q" onclick="toggleFaq('faq3')">
+          <span>What is your cancellation and booking policy?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
         <div class="faq-a">
-          <div class="faq-a-inner">Cancellations made 7+ days before departure receive a full refund. Cancellations
-            within 48 hours of departure are non-refundable. We strongly recommend travel insurance for peace of mind.
-          </div>
+          <div class="faq-a-inner">Cancellations made 7+ days before your scheduled expedition receive a full refund. We ensure clear, transparent contracts and recommend travel insurance for complete peace of mind.</div>
         </div>
       </div>
+
       <div class="faq-item" id="faq4">
-        <button class="faq-q" onclick="toggleFaq('faq4')">Can I customize the itinerary? <i
-            class="fa-solid fa-chevron-down"></i></button>
+        <button class="faq-q" onclick="toggleFaq('faq4')">
+          <span>Can we customize activities, luxury riads, and pacing?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
         <div class="faq-a">
-          <div class="faq-a-inner">Absolutely. Every single detail — from daily routes, to restaurant choices,
-            accommodation styles, and activity pacing — can be adjusted to your wishes. We create journeys, not
-            packages.</div>
+          <div class="faq-a-inner">Every single element — from private Sahara luxury tents to dining reservations, heritage artisans, and rest pacing — is customized to your wishes. We design personalized memories, not generic packages.</div>
         </div>
       </div>
+
       <div class="faq-item" id="faq5">
-        <button class="faq-q" onclick="toggleFaq('faq5')">Do you offer airport transfers? <i
-            class="fa-solid fa-chevron-down"></i></button>
+        <button class="faq-q" onclick="toggleFaq('faq5')">
+          <span>Are airport and riad transfers included?</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
         <div class="faq-a">
-          <div class="faq-a-inner">Yes, airport transfers are included in all our multi-day expedition packages. We
-            track your flight and our driver will be ready at arrivals with a name sign.</div>
+          <div class="faq-a-inner">Yes, private VIP airport transfers are seamlessly included in all our multi-day journeys. Our driver tracks your flight and awaits you at arrivals with personalized concierge hospitality.</div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Luxury Footer -->
   <footer class="footer">
     <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
     <div class="footer-links">
@@ -960,22 +1218,30 @@
       const item = document.getElementById(id);
       const btn = item.querySelector('.faq-q');
       const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(f => { f.classList.remove('open'); f.querySelector('.faq-q').classList.remove('open'); });
-      if (!isOpen) { item.classList.add('open'); btn.classList.add('open'); }
+      document.querySelectorAll('.faq-item').forEach(f => {
+        f.classList.remove('open');
+        const b = f.querySelector('.faq-q');
+        if (b) b.classList.remove('open');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.classList.add('open');
+      }
     }
 
     function handleContactForm(e) {
       e.preventDefault();
       const name = document.getElementById('c-name').value;
       const email = document.getElementById('c-email').value;
+      const phone = document.getElementById('c-phone').value;
       const trip = document.getElementById('c-trip').value;
       const message = document.getElementById('c-message').value;
-      const text = `Hello Hidden Morocco 👋\n\n👤 Name: ${name}\n📧 Email: ${email}\n🧳 Trip Type: ${trip || 'N/A'}\n📝 Message: ${message}\n\nThank you!`;
+      const text = `Hello Hidden Morocco 👋\n\n👤 Name: ${name}\n📱 Phone/WhatsApp: ${phone}\n📧 Email: ${email || 'N/A'}\n🧳 Trip Style: ${trip || 'Custom Expedition'}\n📝 Message: ${message}\n\nThank you!`;
       window.open(`https://wa.me/212660082066?text=${encodeURIComponent(text)}`, '_blank');
     }
   </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261013"></script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+  <script src="script.js?v=20261013"></script>
 </body>
 
 </html>

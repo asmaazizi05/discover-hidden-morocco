@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    HIDDEN MOROCCO � BOUTIQUE MOROCCAN DESIGN SYSTEM (theme.css)
    Warm Terracotta, Sahara Gold, Linen Light & Deep Charcoal Palette
    ========================================================================== */
@@ -5742,6 +5742,8 @@ html[data-theme="dark"] body div[style*="background"] {
 html[data-theme="dark"] body .card,
 html[data-theme="dark"] body .destination-card,
 html[data-theme="dark"] body .contact-form-card,
+html[data-theme="dark"] body .contact-concierge-card,
+html[data-theme="dark"] body .channel-box,
 html[data-theme="dark"] body .travel-form-container,
 html[data-theme="dark"] body .travel-form-right,
 html[data-theme="dark"] body .legal-card,
@@ -5882,3 +5884,16 @@ html[data-theme="dark"] body .exp-modal {
 .card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4) { animation-delay: 0.24s; }
 .card:nth-child(5), .destination-card:nth-child(5) { animation-delay: 0.30s; }
 .card:nth-child(6), .destination-card:nth-child(6) { animation-delay: 0.36s; }
+
+/* ==============================================================================
+   UNIVERSAL CLEAN EMPTY FIELDS (ZERO PLACEHOLDER TEXT IN ANY BLANK/INPUT)
+   ============================================================================== */
+::placeholder,
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
+  -webkit-text-fill-color: transparent !important;
+  visibility: hidden !important;
+}
