@@ -1963,6 +1963,41 @@ function initMapPage() {
     AppState.mapInstance = null;
   }
 
+  // Patch Leaflet GridLayer pruning to NEVER delete parent/child tiles while new tiles are loading
+  if (typeof L.GridLayer !== 'undefined' && !L.GridLayer.prototype._origPruneTilesPatched) {
+    L.GridLayer.prototype._origPruneTilesPatched = true;
+    L.GridLayer.prototype._pruneTiles = function () {
+      if (!this._map) return;
+      var zoom = this._map.getZoom();
+      if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
+        this._removeAllTiles();
+        return;
+      }
+
+      for (var key in this._tiles) {
+        this._tiles[key].retain = this._tiles[key].current;
+      }
+
+      for (var key in this._tiles) {
+        var tile = this._tiles[key];
+        if (tile.current && !tile.active) {
+          var coords = tile.coords;
+          // Retain parents all the way to minZoom (never drops overview tiles on deep zoom)
+          // Retain children all the way to maxZoom (never drops detail tiles on rapid dezoom)
+          if (!this._retainParent(coords.x, coords.y, coords.z, this.options.minZoom)) {
+            this._retainChildren(coords.x, coords.y, coords.z, this.options.maxZoom);
+          }
+        }
+      }
+
+      for (var key in this._tiles) {
+        if (!this._tiles[key].retain) {
+          this._removeTile(key);
+        }
+      }
+    };
+  }
+
   // Create Map centered on Morocco (Click-to-zoom enabled, full zoom range)
   AppState.mapInstance = L.map('interactiveMap', {
     attributionControl: false,
@@ -1972,9 +2007,9 @@ function initMapPage() {
     maxZoom: 18,                // Full deep zoom capability into riads, cities & dunes
     fadeAnimation: true,
     zoomAnimation: true,
-    zoomAnimationThreshold: 12, // Keeps silky smooth zoom animation across deep zoom changes
-    wheelPxPerZoomLevel: 120,   // Calibrated wheel sensitivity: prevents spamming 5+ zoom levels per notch
-    wheelDebounceTime: 40,      // Smooth debouncing so fast scrolling doesn't choke the network
+    zoomAnimationThreshold: 18, // Keeps silky smooth zoom animation across deep zoom changes
+    wheelPxPerZoomLevel: 140,   // Calibrated wheel sensitivity: prevents spamming 5+ zoom levels per notch
+    wheelDebounceTime: 50,      // Smooth debouncing so fast scrolling doesn't choke the network
     worldCopyJump: false
   }).setView([31.7917, -7.0926], 6);
 
@@ -2010,14 +2045,15 @@ function initMapPage() {
     preImg.src = url;
   });
 
-  // Base overview satellite layer (Zoom 2 to 7) - permanently loaded underneath
-  // When dezooming from high zoom, this layer is ALREADY rendered in place, eliminating blank squares ("morba3at")
+  // Base overview satellite layer (Permanently active at ALL zoom levels 2 to 18)
+  // Loads zoom 6 tiles and smoothly stretches them for all higher zooms underneath.
+  // This guarantees 100% continuous coverage with ZERO black squares even during lightning-fast zooming/dezooming!
   L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     subdomains: ['server', 'services'],
     attribution: '',
     minZoom: 2,
-    maxZoom: 7,
-    maxNativeZoom: 6,
+    maxZoom: 18,        // Stays permanently active at all zooms
+    maxNativeZoom: 6,   // Loads zoom 6 and stretches seamlessly for all higher zoom levels
     zIndex: 1,
     keepBuffer: 3,
     updateWhenZooming: true,
@@ -2033,10 +2069,10 @@ function initMapPage() {
     maxZoom: 18,
     maxNativeZoom: 18,
     zIndex: 2,
-    keepBuffer: 3,            // Keeps optimal buffer (zero memory/DOM lag, high FPS)
+    keepBuffer: 4,            // Optimal buffer for fast responsive panning
     updateWhenZooming: true,  // Fetches new tiles DURING zoom transition for zero delay
     updateWhenIdle: false,    // Loads continuously without stutter
-    updateInterval: 80,       // Fast responsive 80ms check
+    updateInterval: 60,       // Fast responsive 60ms check
     crossOrigin: true
   }).addTo(AppState.mapInstance);
 
