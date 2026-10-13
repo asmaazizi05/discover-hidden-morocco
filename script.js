@@ -1963,12 +1963,16 @@ function initMapPage() {
     AppState.mapInstance = null;
   }
 
-  // Create Map centered on Morocco (attribution bar removed)
+  // Create Map centered on Morocco (Click-to-zoom enabled, full zoom range)
   AppState.mapInstance = L.map('interactiveMap', {
     attributionControl: false,
     zoomControl: false,
-    maxZoom: 9,
-    minZoom: 5
+    scrollWheelZoom: false, // Prevents scroll hijacking when scrolling down the page
+    minZoom: 2,             // Full dezoom capability without artificial limits
+    maxZoom: 18,            // Full deep zoom capability into riads, cities & dunes
+    fadeAnimation: true,
+    zoomAnimation: true,
+    worldCopyJump: false
   }).setView([31.7917, -7.0926], 6);
 
   if (AppState.mapInstance.attributionControl) {
@@ -1990,12 +1994,28 @@ function initMapPage() {
   // Add zoom control at top-left
   L.control.zoom({ position: 'topleft' }).addTo(AppState.mapInstance);
 
-  // ESRI World Imagery satellite tiles (clean satellite tiles without bottom bar)
+  // ESRI World Imagery satellite tiles (ultra-smooth loading, buffered, zero missing rectangles)
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: '',
-    maxZoom: 9,
-    minZoom: 5
+    minZoom: 2,
+    maxZoom: 18,
+    maxNativeZoom: 18,
+    keepBuffer: 12,           // Keeps surrounding tiles cached in memory for instant pan/zoom
+    updateWhenZooming: false, // Keeps existing tiles scaled smoothly while new zoom loads (zero grey rectangles)
+    updateWhenIdle: false,    // Loads tiles continuously without stutter
+    crossOrigin: true
   }).addTo(AppState.mapInstance);
+
+  // Enable scroll-wheel zoom ONLY after user clicks or interacts with the map
+  const interactiveMapEl = document.getElementById('interactiveMap');
+  if (interactiveMapEl) {
+    interactiveMapEl.addEventListener('mousedown', () => {
+      AppState.mapInstance.scrollWheelZoom.enable();
+    });
+    interactiveMapEl.addEventListener('mouseleave', () => {
+      AppState.mapInstance.scrollWheelZoom.disable();
+    });
+  }
 
   // Teardrop-style orange pin icon matching reference design
   const createPinIcon = (isActive = false) => L.divIcon({
@@ -2044,9 +2064,10 @@ function initMapPage() {
     lineJoin: 'round'
   }).addTo(AppState.mapInstance);
 
-  // Click on empty map area → close the side panel
+  // Click on empty map area → close the side panel & activate scroll zoom
   AppState.mapInstance.on('click', () => {
     window.closeMapDestCard();
+    AppState.mapInstance.scrollWheelZoom.enable();
   });
 }
 
@@ -2182,9 +2203,16 @@ function initHomeMapPreview() {
     miniMap.attributionControl.remove();
   }
 
-  // ESRI satellite tiles for home map preview
+  // ESRI satellite tiles for home map preview (ultra-smooth, buffered)
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: ''
+    attribution: '',
+    minZoom: 2,
+    maxZoom: 18,
+    maxNativeZoom: 18,
+    keepBuffer: 8,
+    updateWhenZooming: false,
+    updateWhenIdle: false,
+    crossOrigin: true
   }).addTo(miniMap);
 
   DESTINATIONS_DB.forEach(dest => {

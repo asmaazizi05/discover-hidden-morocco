@@ -5897,3 +5897,21 @@ select::placeholder {
   -webkit-text-fill-color: transparent !important;
   visibility: hidden !important;
 }
+
+/* ==============================================================================
+   HIGH-PERFORMANCE INTERACTIVE MAP (GPU SMOOTH ZOOM & TILE ANTI-FLICKER)
+   ============================================================================== */
+.leaflet-tile {
+  background-color: transparent !important;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.leaflet-tile-container {
+  will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
