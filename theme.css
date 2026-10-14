@@ -6334,3 +6334,13 @@ iframe[src*="translate.google"],
 html, body {
   top: 0px !important;
 }
+
+/* Force Font Awesome font-display: swap to prevent invisible icon delay */
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Font Awesome 6 Brands';
+  font-display: swap;
+}
