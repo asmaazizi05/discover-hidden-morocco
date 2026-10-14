@@ -5867,11 +5867,11 @@ html[data-theme="dark"] body .exp-modal {
   background-color: rgba(0, 0, 0, 0.88) !important;
 }
 
-/* Standalone Pure-CSS Animation Suite (Runs autonomously on every page) */
+/* Standalone Pure-CSS Luxury Animation Suite (Apple-grade Silky Pacing — PC & Mobile) */
 @keyframes luxuryEntrance {
   0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(28px);
   }
   100% {
     opacity: 1;
@@ -5882,6 +5882,10 @@ html[data-theme="dark"] body .exp-modal {
 .dest-clean-header h1,
 .legal-hero h1,
 .section-header h2,
+.hero-content,
+.hero-eyebrow,
+.hero-title,
+.hero-search,
 .card,
 .destination-card,
 .why-card,
@@ -5891,16 +5895,38 @@ html[data-theme="dark"] body .exp-modal {
 .value-card,
 .contact-form-card,
 .travel-form-container {
-  animation: luxuryEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: luxuryEntrance 0.95s cubic-bezier(0.22, 1, 0.36, 1) both !important;
 }
 
-.card:nth-child(1), .destination-card:nth-child(1), .why-card:nth-child(1), .feature-item:nth-child(1), .team-card:nth-child(1) { animation-delay: 0.05s; }
-.card:nth-child(2), .destination-card:nth-child(2), .why-card:nth-child(2), .feature-item:nth-child(2), .team-card:nth-child(2) { animation-delay: 0.12s; }
-.card:nth-child(3), .destination-card:nth-child(3), .why-card:nth-child(3), .feature-item:nth-child(3), .team-card:nth-child(3) { animation-delay: 0.18s; }
-.card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4) { animation-delay: 0.24s; }
-.card:nth-child(5), .destination-card:nth-child(5) { animation-delay: 0.30s; }
-.card:nth-child(6), .destination-card:nth-child(6) { animation-delay: 0.36s; }
+.card:nth-child(1), .destination-card:nth-child(1), .why-card:nth-child(1), .feature-item:nth-child(1), .team-card:nth-child(1), .review-card:nth-child(1) { animation-delay: 0.08s !important; }
+.card:nth-child(2), .destination-card:nth-child(2), .why-card:nth-child(2), .feature-item:nth-child(2), .team-card:nth-child(2), .review-card:nth-child(2) { animation-delay: 0.18s !important; }
+.card:nth-child(3), .destination-card:nth-child(3), .why-card:nth-child(3), .feature-item:nth-child(3), .team-card:nth-child(3), .review-card:nth-child(3) { animation-delay: 0.28s !important; }
+.card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4), .review-card:nth-child(4) { animation-delay: 0.38s !important; }
+.card:nth-child(5), .destination-card:nth-child(5), .review-card:nth-child(5) { animation-delay: 0.48s !important; }
+.card:nth-child(6), .destination-card:nth-child(6), .review-card:nth-child(6) { animation-delay: 0.58s !important; }
 
+/* PC & Desktop Luxury Hover Pacing */
+.card,
+.destination-card,
+.review-card {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.card:hover,
+.destination-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16) !important;
+}
+
+.card-img-wrapper img,
+.destination-card img {
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.card:hover .card-img-wrapper img,
+.destination-card:hover img {
+  transform: scale(1.06) !important;
+}
 /* ==============================================================================
    UNIVERSAL CLEAN EMPTY FIELDS (ZERO PLACEHOLDER TEXT IN ANY BLANK/INPUT)
    ============================================================================== */
@@ -5938,11 +5964,11 @@ select::placeholder {
    MOBILE ULTRA-POLISH & RESPONSIVE SUITE (LUXURY TOUCH & LAYOUT PERFECTION)
    ============================================================================== */
 
-/* 1. Staggered Menu Entrance Cascade for Mobile Drawer */
+/* 1. Staggered Menu Entrance Cascade for Mobile Drawer (Silky Premium Timing) */
 @keyframes drawerItemFade {
   0% {
     opacity: 0;
-    transform: translateX(18px);
+    transform: translateX(20px);
   }
   100% {
     opacity: 1;
@@ -5950,14 +5976,14 @@ select::placeholder {
   }
 }
 
-.hn-links.hn-links-open li:nth-child(1), .hn-links.open li:nth-child(1) { animation: drawerItemFade 0.35s 0.04s both ease; }
-.hn-links.hn-links-open li:nth-child(2), .hn-links.open li:nth-child(2) { animation: drawerItemFade 0.35s 0.08s both ease; }
-.hn-links.hn-links-open li:nth-child(3), .hn-links.open li:nth-child(3) { animation: drawerItemFade 0.35s 0.12s both ease; }
-.hn-links.hn-links-open li:nth-child(4), .hn-links.open li:nth-child(4) { animation: drawerItemFade 0.35s 0.16s both ease; }
-.hn-links.hn-links-open li:nth-child(5), .hn-links.open li:nth-child(5) { animation: drawerItemFade 0.35s 0.20s both ease; }
-.hn-links.hn-links-open li:nth-child(6), .hn-links.open li:nth-child(6) { animation: drawerItemFade 0.35s 0.24s both ease; }
-.hn-links.hn-links-open li:nth-child(7), .hn-links.open li:nth-child(7) { animation: drawerItemFade 0.35s 0.28s both ease; }
-.hn-links.hn-links-open li:nth-child(8), .hn-links.open li:nth-child(8) { animation: drawerItemFade 0.35s 0.32s both ease; }
+.hn-links.hn-links-open li:nth-child(1), .hn-links.open li:nth-child(1) { animation: drawerItemFade 0.65s 0.08s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(2), .hn-links.open li:nth-child(2) { animation: drawerItemFade 0.65s 0.16s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(3), .hn-links.open li:nth-child(3) { animation: drawerItemFade 0.65s 0.24s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(4), .hn-links.open li:nth-child(4) { animation: drawerItemFade 0.65s 0.32s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(5), .hn-links.open li:nth-child(5) { animation: drawerItemFade 0.65s 0.40s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(6), .hn-links.open li:nth-child(6) { animation: drawerItemFade 0.65s 0.48s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(7), .hn-links.open li:nth-child(7) { animation: drawerItemFade 0.65s 0.56s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
+.hn-links.hn-links-open li:nth-child(8), .hn-links.open li:nth-child(8) { animation: drawerItemFade 0.65s 0.64s both cubic-bezier(0.22, 1, 0.36, 1) !important; }
 
 /* 2. Tactile Touch Feedback on Mobile */
 @media (hover: none) and (pointer: coarse) {

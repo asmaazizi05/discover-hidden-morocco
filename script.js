@@ -5,7 +5,7 @@
 
 /* ── DHM Client-Side Auto-Update & Cache Purge Sentinel ──────────────────── */
 (function () {
-  const CURRENT_BUILD = '20261014_v8';
+  const CURRENT_BUILD = '20261014_v9';
   try {
     const savedBuild = localStorage.getItem('dhm_build_ver');
     if (savedBuild !== CURRENT_BUILD) {
