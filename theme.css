@@ -5871,7 +5871,7 @@ html[data-theme="dark"] body .exp-modal {
 @keyframes luxuryEntrance {
   0% {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(32px);
   }
   100% {
     opacity: 1;
@@ -5880,13 +5880,24 @@ html[data-theme="dark"] body .exp-modal {
 }
 
 .dest-clean-header h1,
+.dest-clean-header p,
+.dest-clean-header span,
+.dest-clean-header .btn-primary,
+.dest-clean-eyebrow,
+.dest-clean-title,
+.dest-clean-subtitle,
+.dest-clean-cta,
 .legal-hero h1,
+.legal-hero p,
 .section-header h2,
+.section-header p,
 .hero-content,
 .hero-eyebrow,
 .hero-title,
+.hero-subtitle,
 .hero-search,
 .card,
+.destinations .card,
 .destination-card,
 .why-card,
 .feature-item,
@@ -5894,28 +5905,115 @@ html[data-theme="dark"] body .exp-modal {
 .team-card,
 .value-card,
 .contact-form-card,
-.travel-form-container {
-  animation: luxuryEntrance 0.95s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+.travel-form-container,
+.dest-card,
+.ct-dest-card,
+.ct-option-card,
+.ct-step-title,
+.ct-step-subtitle {
+  animation: luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) both !important;
 }
 
-.card:nth-child(1), .destination-card:nth-child(1), .why-card:nth-child(1), .feature-item:nth-child(1), .team-card:nth-child(1), .review-card:nth-child(1) { animation-delay: 0.08s !important; }
-.card:nth-child(2), .destination-card:nth-child(2), .why-card:nth-child(2), .feature-item:nth-child(2), .team-card:nth-child(2), .review-card:nth-child(2) { animation-delay: 0.18s !important; }
-.card:nth-child(3), .destination-card:nth-child(3), .why-card:nth-child(3), .feature-item:nth-child(3), .team-card:nth-child(3), .review-card:nth-child(3) { animation-delay: 0.28s !important; }
-.card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4), .review-card:nth-child(4) { animation-delay: 0.38s !important; }
-.card:nth-child(5), .destination-card:nth-child(5), .review-card:nth-child(5) { animation-delay: 0.48s !important; }
-.card:nth-child(6), .destination-card:nth-child(6), .review-card:nth-child(6) { animation-delay: 0.58s !important; }
+/* Header Elements Stagger */
+.hero-eyebrow, .dest-clean-eyebrow   { animation-delay: 0.08s !important; }
+.hero-title, .dest-clean-title       { animation-delay: 0.20s !important; }
+.hero-subtitle, .dest-clean-subtitle { animation-delay: 0.32s !important; }
+.hero-search, .dest-clean-cta        { animation-delay: 0.44s !important; }
+
+/* Home / Generic Cards Stagger (1 through 6) */
+.card:nth-child(1), .destination-card:nth-child(1), .why-card:nth-child(1), .feature-item:nth-child(1), .team-card:nth-child(1), .review-card:nth-child(1) { animation-delay: 0.12s !important; }
+.card:nth-child(2), .destination-card:nth-child(2), .why-card:nth-child(2), .feature-item:nth-child(2), .team-card:nth-child(2), .review-card:nth-child(2) { animation-delay: 0.30s !important; }
+.card:nth-child(3), .destination-card:nth-child(3), .why-card:nth-child(3), .feature-item:nth-child(3), .team-card:nth-child(3), .review-card:nth-child(3) { animation-delay: 0.48s !important; }
+.card:nth-child(4), .destination-card:nth-child(4), .why-card:nth-child(4), .feature-item:nth-child(4), .team-card:nth-child(4), .review-card:nth-child(4) { animation-delay: 0.66s !important; }
+.card:nth-child(5), .destination-card:nth-child(5), .review-card:nth-child(5) { animation-delay: 0.84s !important; }
+.card:nth-child(6), .destination-card:nth-child(6), .review-card:nth-child(6) { animation-delay: 1.02s !important; }
+
+/* Destinations Page Grid Cards Cascade (Odd Child Indices)
+   First 3 cards appear first in sequence (Marrakech, Fès, Chefchaouen), then subsequent cards cascade slowly! */
+.destinations .grid > .card:nth-child(1)  { animation-delay: 0.54s !important; } /* Marrakech */
+.destinations .grid > .card:nth-child(3)  { animation-delay: 0.74s !important; } /* Fès */
+.destinations .grid > .card:nth-child(5)  { animation-delay: 0.94s !important; } /* Chefchaouen */
+.destinations .grid > .card:nth-child(7)  { animation-delay: 1.14s !important; } /* Merzouga */
+.destinations .grid > .card:nth-child(9)  { animation-delay: 1.34s !important; } /* Zagora */
+.destinations .grid > .card:nth-child(11) { animation-delay: 1.54s !important; } /* Ouarzazate */
+.destinations .grid > .card:nth-child(13) { animation-delay: 1.74s !important; } /* Essaouira */
+.destinations .grid > .card:nth-child(15) { animation-delay: 1.94s !important; } /* Agadir */
+.destinations .grid > .card:nth-child(17) { animation-delay: 2.14s !important; } /* Casablanca */
+.destinations .grid > .card:nth-child(19) { animation-delay: 2.34s !important; } /* Rabat */
+.destinations .grid > .card:nth-child(21) { animation-delay: 2.54s !important; } /* Tangier */
+.destinations .grid > .card:nth-child(23) { animation-delay: 2.74s !important; } /* Sahara Desert */
+.destinations .grid > .card:nth-child(25) { animation-delay: 2.94s !important; } /* Ourika Valley */
+.destinations .grid > .card:nth-child(27) { animation-delay: 3.14s !important; } /* Ouzoud Falls */
+.destinations .grid > .card:nth-child(29) { animation-delay: 3.34s !important; } /* Agafay Desert */
+.destinations .grid > .card:nth-child(31) { animation-delay: 3.54s !important; } /* Imlil */
+.destinations .grid > .card:nth-child(33) { animation-delay: 3.74s !important; } /* Palmeraie Balloon */
+
+/* Customize Tour Modal - Destination Cards Cascade (Direct Child Indices)
+   First 3 cards appear first in sequence, then subsequent cards cascade slowly! */
+.ct-dest-grid > .ct-dest-card:nth-child(1)  { animation-delay: 0.15s !important; } /* Marrakech */
+.ct-dest-grid > .ct-dest-card:nth-child(2)  { animation-delay: 0.32s !important; } /* Fès */
+.ct-dest-grid > .ct-dest-card:nth-child(3)  { animation-delay: 0.49s !important; } /* Chefchaouen */
+.ct-dest-grid > .ct-dest-card:nth-child(4)  { animation-delay: 0.66s !important; } /* Merzouga */
+.ct-dest-grid > .ct-dest-card:nth-child(5)  { animation-delay: 0.83s !important; } /* Zagora */
+.ct-dest-grid > .ct-dest-card:nth-child(6)  { animation-delay: 1.00s !important; } /* Ouarzazate */
+.ct-dest-grid > .ct-dest-card:nth-child(7)  { animation-delay: 1.17s !important; } /* Essaouira */
+.ct-dest-grid > .ct-dest-card:nth-child(8)  { animation-delay: 1.34s !important; } /* Agadir */
+.ct-dest-grid > .ct-dest-card:nth-child(9)  { animation-delay: 1.51s !important; } /* Casablanca */
+.ct-dest-grid > .ct-dest-card:nth-child(10) { animation-delay: 1.68s !important; } /* Rabat */
+.ct-dest-grid > .ct-dest-card:nth-child(11) { animation-delay: 1.85s !important; } /* Tangier */
+.ct-dest-grid > .ct-dest-card:nth-child(12) { animation-delay: 2.02s !important; } /* Sahara Desert */
+.ct-dest-grid > .ct-dest-card:nth-child(13) { animation-delay: 2.19s !important; } /* Ourika */
+.ct-dest-grid > .ct-dest-card:nth-child(14) { animation-delay: 2.36s !important; } /* Ouzoud */
+.ct-dest-grid > .ct-dest-card:nth-child(15) { animation-delay: 2.53s !important; } /* Agafay */
+.ct-dest-grid > .ct-dest-card:nth-child(16) { animation-delay: 2.70s !important; } /* Imlil */
+.ct-dest-grid > .ct-dest-card:nth-child(17) { animation-delay: 2.87s !important; } /* Palmeraie */
+
+/* Customize Tour Option Cards (Steps 2 through 7) */
+.ct-option-grid > .ct-option-card:nth-child(1) { animation-delay: 0.12s !important; }
+.ct-option-grid > .ct-option-card:nth-child(2) { animation-delay: 0.25s !important; }
+.ct-option-grid > .ct-option-card:nth-child(3) { animation-delay: 0.38s !important; }
+.ct-option-grid > .ct-option-card:nth-child(4) { animation-delay: 0.51s !important; }
+.ct-option-grid > .ct-option-card:nth-child(5) { animation-delay: 0.64s !important; }
+.ct-option-grid > .ct-option-card:nth-child(6) { animation-delay: 0.77s !important; }
+.ct-option-grid > .ct-option-card:nth-child(7) { animation-delay: 0.90s !important; }
+.ct-option-grid > .ct-option-card:nth-child(8) { animation-delay: 1.03s !important; }
+
+/* Booking Page - Must-See Destinations Checkbox Cards */
+.dest-grid > .dest-card:nth-child(1)  { animation-delay: 0.15s !important; }
+.dest-grid > .dest-card:nth-child(2)  { animation-delay: 0.30s !important; }
+.dest-grid > .dest-card:nth-child(3)  { animation-delay: 0.45s !important; }
+.dest-grid > .dest-card:nth-child(4)  { animation-delay: 0.60s !important; }
+.dest-grid > .dest-card:nth-child(5)  { animation-delay: 0.75s !important; }
+.dest-grid > .dest-card:nth-child(6)  { animation-delay: 0.90s !important; }
+.dest-grid > .dest-card:nth-child(7)  { animation-delay: 1.05s !important; }
+.dest-grid > .dest-card:nth-child(8)  { animation-delay: 1.20s !important; }
+.dest-grid > .dest-card:nth-child(9)  { animation-delay: 1.35s !important; }
+.dest-grid > .dest-card:nth-child(10) { animation-delay: 1.50s !important; }
+.dest-grid > .dest-card:nth-child(11) { animation-delay: 1.65s !important; }
 
 /* PC & Desktop Luxury Hover Pacing */
 .card,
 .destination-card,
-.review-card {
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1) !important;
+.review-card,
+.ct-dest-card {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease !important;
 }
 
 .card:hover,
 .destination-card:hover {
   transform: translateY(-8px) !important;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16) !important;
+}
+
+.ct-dest-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 28px rgba(200, 90, 50, 0.22) !important;
+}
+
+.ct-dest-card.is-selected {
+  border-color: #C85A32 !important;
+  box-shadow: 0 8px 25px rgba(200, 90, 50, 0.35) !important;
+  transform: translateY(-4px) !important;
 }
 
 .card-img-wrapper img,
@@ -6155,68 +6253,6 @@ select::placeholder {
     max-width: 310px !important;
     border-radius: 24px !important;
     box-shadow: -10px 24px 60px rgba(0, 0, 0, 0.5) !important;
-  }
-}
-
-/* ==============================================================================
-   8. LUXURY DESTINATIONS & CUSTOMIZE TOUR STAGGERED & SCROLL REVEAL (v10)
-   - Initial entrance: First 3 cards appear first in sequence (smooth & luxury).
-   - Immediately after: Subsequent visible cards cascade in gently.
-   - On scroll down: Remaining cards reveal smoothly as they enter viewport.
-   ============================================================================== */
-.card.luxury-card-reveal,
-.destination-card.luxury-card-reveal,
-.ct-dest-card.luxury-card-reveal,
-.dest-card.luxury-card-reveal,
-.luxury-card-reveal {
-  opacity: 0 !important;
-  transform: translateY(32px) !important;
-  will-change: opacity, transform;
-  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1), 
-              transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-.card.luxury-card-reveal.is-revealed,
-.destination-card.luxury-card-reveal.is-revealed,
-.ct-dest-card.luxury-card-reveal.is-revealed,
-.dest-card.luxury-card-reveal.is-revealed,
-.luxury-card-reveal.is-revealed {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* Ensure hover lift remains silky and responsive after being revealed */
-.card.luxury-card-reveal.is-revealed:hover,
-.destination-card.luxury-card-reveal.is-revealed:hover {
-  transform: translateY(-7px) !important;
-  box-shadow: 0 20px 45px rgba(200, 90, 50, 0.18), 0 4px 15px rgba(0, 0, 0, 0.06) !important;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-              border-color 0.4s ease !important;
-}
-
-.ct-dest-card.luxury-card-reveal.is-revealed:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 10px 24px rgba(200, 90, 50, 0.18) !important;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              border-color 0.3s ease !important;
-}
-
-.ct-dest-card.luxury-card-reveal.is-revealed.is-selected {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 25px rgba(200, 90, 50, 0.35) !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card.luxury-card-reveal,
-  .destination-card.luxury-card-reveal,
-  .ct-dest-card.luxury-card-reveal,
-  .dest-card.luxury-card-reveal,
-  .luxury-card-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
   }
 }
 

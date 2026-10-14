@@ -3312,8 +3312,18 @@ function renderCustomTourStep(step) {
         window.animateCustomTourCards(false);
       }
     } else if (step === 4) {
-    renderCustomTourStep4();
-  }
+      renderCustomTourStep4();
+    }
+
+    if (step >= 2 && step <= 8) {
+      const optCards = document.querySelectorAll('#ctStep' + step + ' .ct-option-card');
+      optCards.forEach((card, index) => {
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        const delay = (0.08 + (index * 0.12)).toFixed(2);
+        card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
+      });
+    }
 
   if (step <= 9) {
     if (navFooter) navFooter.style.display = 'flex';
@@ -4139,174 +4149,57 @@ function initScrollRevealEngine() {
 
 window.initScrollRevealEngine = initScrollRevealEngine;
 
-// ── Bespoke Staggered & Scroll Reveal for Destinations & Customize Tour ──────
-function initStaggeredDestinationsReveal() {
-  const destCards = Array.from(document.querySelectorAll('.destinations .grid > .card, #destinations .grid > .card, .destination-card, .dest-grid .dest-card'));
-  if (destCards.length === 0) return;
-
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-  const scrollCards = [];
-
-  destCards.forEach((card, index) => {
-    if (card.dataset.revealInit === 'true') return;
-    card.dataset.revealInit = 'true';
-
-    card.classList.add('luxury-card-reveal');
-
-    // First 3 cards (3 lwlin) - appear smoothly with luxury staggered delays
-    if (index === 0) {
-      card.style.transitionDelay = '0.12s';
-      requestAnimationFrame(() => card.classList.add('is-revealed'));
-    } else if (index === 1) {
-      card.style.transitionDelay = '0.30s';
-      requestAnimationFrame(() => card.classList.add('is-revealed'));
-    } else if (index === 2) {
-      card.style.transitionDelay = '0.48s';
-      requestAnimationFrame(() => card.classList.add('is-revealed'));
-    } else {
-      // Check if this card is in the initial fold (e.g. desktop row 2 on high res screens)
-      const rect = card.getBoundingClientRect();
-      const isInTopFold = rect.top < (windowHeight - 40);
-
-      if (isInTopFold && index < 6) {
-        // Appears smoothly right after the first 3
-        card.style.transitionDelay = (0.50 + ((index - 2) * 0.18)).toFixed(2) + 's';
-        requestAnimationFrame(() => card.classList.add('is-revealed'));
-      } else {
-        // Below fold: will reveal smoothly when user scrolls down
-        const colStagger = (index % 3) * 0.12;
-        card.style.transitionDelay = (0.08 + colStagger).toFixed(2) + 's';
-        scrollCards.push(card);
-      }
-    }
-  });
-
-  // Observe remaining cards on scroll
-  if (scrollCards.length > 0) {
-    if (typeof IntersectionObserver !== 'undefined') {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const card = entry.target;
-            card.classList.add('is-revealed');
-            obs.unobserve(card);
-          }
-        });
-      }, {
-        root: null,
-        threshold: 0.10,
-        rootMargin: '0px 0px -40px 0px'
-      });
-
-      scrollCards.forEach(c => observer.observe(c));
-    } else {
-      const handleScroll = () => {
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        scrollCards.forEach(card => {
-          if (!card.classList.contains('is-revealed')) {
-            const r = card.getBoundingClientRect();
-            if (r.top <= vh - 30) {
-              card.classList.add('is-revealed');
-            }
-          }
-        });
-      };
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-    }
+// ── Pure-CSS LuxuryEntrance Orchestration for Destinations & Customize Tour ──
+function initDestinationsEntrance() {
+  const destCards = document.querySelectorAll('.destinations .grid > .card');
+  if (destCards.length > 0) {
+    destCards.forEach((card, index) => {
+      const delay = (0.54 + (index * 0.18)).toFixed(2);
+      card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
+    });
   }
 
-  // Safety fallback: ensure no card stays hidden
-  setTimeout(() => {
-    destCards.forEach(c => {
-      const r = c.getBoundingClientRect();
-      if (r.top < (window.innerHeight || 800)) {
-        c.classList.add('is-revealed');
-      }
+  const bookingCards = document.querySelectorAll('.dest-grid > .dest-card');
+  if (bookingCards.length > 0) {
+    bookingCards.forEach((card, index) => {
+      const delay = (0.15 + (index * 0.15)).toFixed(2);
+      card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
     });
-  }, 2500);
+  }
 }
 
-window.initStaggeredDestinationsReveal = initStaggeredDestinationsReveal;
+window.initDestinationsEntrance = initDestinationsEntrance;
 
-// ── Customize Tour Modal Luxury Stagger & Scroll Reveal Engine ──────────────
-window.animateCustomTourCards = function (forceReplay = false) {
+window.replayCustomTourAnimations = function () {
   const modal = document.getElementById('customTourModal');
   if (!modal) return;
-  const modalContent = modal.querySelector('.ct-modal-content');
-  const ctCards = Array.from(modal.querySelectorAll('#ctStep1 .ct-dest-card'));
-  if (ctCards.length === 0) return;
-
-  const scrollCtCards = [];
-
-  ctCards.forEach((card, index) => {
-    if (forceReplay) {
-      card.classList.remove('is-revealed');
-    } else if (card.classList.contains('is-revealed')) {
-      return;
-    }
-    card.classList.add('luxury-card-reveal');
-
-    if (index === 0) {
-      card.style.transitionDelay = '0.12s';
-      setTimeout(() => card.classList.add('is-revealed'), 40);
-    } else if (index === 1) {
-      card.style.transitionDelay = '0.28s';
-      setTimeout(() => card.classList.add('is-revealed'), 40);
-    } else if (index === 2) {
-      card.style.transitionDelay = '0.44s';
-      setTimeout(() => card.classList.add('is-revealed'), 40);
-    } else if (index < 6) {
-      // Next visible cards in top modal view appear right after the first 3
-      card.style.transitionDelay = (0.46 + ((index - 2) * 0.16)).toFixed(2) + 's';
-      setTimeout(() => card.classList.add('is-revealed'), 40);
-    } else {
-      // Remaining cards below the initial view - reveal when user scrolls the modal
-      const colStagger = (index % 2) * 0.10;
-      card.style.transitionDelay = (0.06 + colStagger).toFixed(2) + 's';
-      scrollCtCards.push(card);
-    }
+  const cards = modal.querySelectorAll('.ct-dest-card');
+  cards.forEach((card, index) => {
+    card.style.animation = 'none';
+    void card.offsetWidth;
+    const delay = (0.15 + (index * 0.16)).toFixed(2);
+    card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
   });
-
-  if (modalContent && scrollCtCards.length > 0) {
-    const checkModalScroll = () => {
-      const containerRect = modalContent.getBoundingClientRect();
-      scrollCtCards.forEach(card => {
-        if (!card.classList.contains('is-revealed')) {
-          const cardRect = card.getBoundingClientRect();
-          if (cardRect.top <= containerRect.bottom - 20) {
-            card.classList.add('is-revealed');
-          }
-        }
-      });
-    };
-
-    if (modalContent._ctScrollHandler) {
-      modalContent.removeEventListener('scroll', modalContent._ctScrollHandler);
-    }
-    modalContent._ctScrollHandler = checkModalScroll;
-    modalContent.addEventListener('scroll', checkModalScroll, { passive: true });
-
-    setTimeout(checkModalScroll, 600);
-  }
 };
+
+window.animateCustomTourCards = window.replayCustomTourAnimations;
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initScrollRevealEngine();
-    initStaggeredDestinationsReveal();
+    initDestinationsEntrance();
     setTimeout(() => {
       initScrollRevealEngine();
-      initStaggeredDestinationsReveal();
-    }, 350);
+      initDestinationsEntrance();
+    }, 250);
   });
 } else {
   initScrollRevealEngine();
-  initStaggeredDestinationsReveal();
+  initDestinationsEntrance();
   setTimeout(() => {
     initScrollRevealEngine();
-    initStaggeredDestinationsReveal();
-  }, 350);
+    initDestinationsEntrance();
+  }, 250);
 }
 
 
