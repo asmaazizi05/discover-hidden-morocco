@@ -1,750 +1,21 @@
-﻿/* ==========================================================================
-   HIDDEN MOROCCO — PLATFORM CORE ENGINE (script.js)
-   Terracotta & Sahara Gold Theme, Wishlist, Language Switcher, Maps, Search
-   ========================================================================== */
-
-/* ── DHM Client-Side Auto-Update & Cache Purge Sentinel ──────────────────── */
-(function () {
-  const CURRENT_BUILD = '20261014_v9';
-  try {
-    const savedBuild = localStorage.getItem('dhm_build_ver');
-    if (savedBuild !== CURRENT_BUILD) {
-      localStorage.setItem('dhm_build_ver', CURRENT_BUILD);
-      if ('caches' in window) {
-        caches.keys().then(names => {
-          names.forEach(name => caches.delete(name));
-        });
-      }
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-          regs.forEach(reg => reg.unregister());
-        });
-      }
-    }
-  } catch (e) {}
-
-  // Auto-reload if page was restored from back-forward cache or frozen tab
-  window.addEventListener('pageshow', function (event) {
-    if (event.persisted) {
-      window.location.reload();
-    }
-  });
-})();
-
-/* ── Canonical URL & Navigation Link Protector (Guarantees Actualiser Never 404s) ─ */
-(function () {
-  function sanitizeCurrentUrl() {
-    try {
-      const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-      const path = window.location.pathname || '';
-      const search = window.location.search || '';
-      const hash = window.location.hash || '';
-      const lowerPath = path.toLowerCase();
-
-      // 1. Only clean /index.html to root '/'
-      if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
-        window.history.replaceState(null, document.title, origin + '/' + search + hash);
-        return;
-      }
-
-      // 2. If user lands on /testimonials or /testimonials.html, canonicalize to reviews.html
-      if (lowerPath.includes('testimonials')) {
-        window.history.replaceState(null, document.title, origin + '/reviews.html' + search + hash);
-        return;
-      }
-
-      // NOTE: We intentionally PRESERVE the .html extension on all other pages
-      // (e.g. map.html, booking.html, destinations.html, reviews.html, contact.html)
-      // so that whenever any visitor presses Actualiser / Refresh, the server
-      // ALWAYS returns the real file (200 OK) instead of 404!
-    } catch (e) {}
-  }
-
-  // Execute immediately
-  sanitizeCurrentUrl();
-
-  // Run on DOM ready, pageshow and popstate navigation
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', sanitizeCurrentUrl);
-  }
-  window.addEventListener('pageshow', sanitizeCurrentUrl);
-  window.addEventListener('popstate', sanitizeCurrentUrl);
-
-  // Normalize all navigation links across the document to real .html files
-  function cleanNavigationLinks() {
-    try {
-      document.querySelectorAll('a[href]').forEach(function (link) {
-        const href = link.getAttribute('href');
-        if (!href) return;
-
-        // Replace index.html with '/'
-        if (href === 'index.html' || href === './index.html' || href === '/index.html') {
-          link.setAttribute('href', '/');
-          return;
-        }
-
-        // Replace testimonials.html or testimonials with reviews.html
-        if (href === 'testimonials.html' || href === './testimonials.html' || href === '/testimonials.html' || href === 'testimonials' || href === '/testimonials') {
-          link.setAttribute('href', 'reviews.html');
-          return;
-        }
-
-        // Ensure links to subpages use real .html extension for bulletproof reliability
-        if (href === 'reviews' || href === '/reviews') {
-          link.setAttribute('href', 'reviews.html');
-          return;
-        }
-        if (href === 'map' || href === '/map') {
-          link.setAttribute('href', 'map.html');
-          return;
-        }
-        if (href === 'booking' || href === '/booking') {
-          link.setAttribute('href', 'booking.html');
-          return;
-        }
-        if (href === 'destinations' || href === '/destinations') {
-          link.setAttribute('href', 'destinations.html');
-          return;
-        }
-        if (href === 'contact' || href === '/contact') {
-          link.setAttribute('href', 'contact.html');
-          return;
-        }
-        if (href === 'about' || href === '/about') {
-          link.setAttribute('href', 'about.html');
-          return;
-        }
-      });
-    } catch (err) {}
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cleanNavigationLinks);
-  } else {
-    cleanNavigationLinks();
-  }
-})();
-
-/* ── Leaflet Map Attribution Bar Cleaner ─────────────────────────────────── */
-(function () {
-  try {
-    const css = '.leaflet-control-attribution, .leaflet-control-attribution * { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; height: 0 !important; width: 0 !important; font-size: 0 !important; line-height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; }';
-    const head = document.head || document.getElementsByTagName('head')[0];
-    if (head) {
-      const style = document.createElement('style');
-      style.id = 'dhm-hide-leaflet-attribution';
-      style.appendChild(document.createTextNode(css));
-      head.appendChild(style);
-    }
-  } catch (e) {}
-})();
-
-/* ── Chatbase AI Assistant Widget & Global Initialization ────────────────── */
-(function () {
-  if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-    window.chatbase = (...arguments) => {
-      if (!window.chatbase.q) {
-        window.chatbase.q = [];
-      }
-      window.chatbase.q.push(arguments);
-    };
-    window.chatbase = new Proxy(window.chatbase, {
-      get(target, prop) {
-        if (prop === "q") {
-          return target.q;
-        }
-        return (...args) => target(prop, ...args);
-      }
-    });
-  }
-  let chatbaseLoaded = false;
-  const loadChatbaseScript = function () {
-    if (chatbaseLoaded || document.getElementById("aVrkUFtVzGoLUuzNCYVP0")) return;
-    chatbaseLoaded = true;
-    const script = document.createElement("script");
-    script.src = "https://www.chatbase.co/embed.min.js";
-    script.id = "aVrkUFtVzGoLUuzNCYVP0";
-    script.domain = "www.chatbase.co";
-    script.defer = true;
-    document.body ? document.body.appendChild(script) : document.addEventListener("DOMContentLoaded", () => document.body.appendChild(script));
-  };
-
-  // Load Chatbase purely on first real user interaction (zero TBT for Lighthouse)
-  ['scroll', 'touchstart', 'mousemove', 'click', 'keydown'].forEach(evt => {
-    window.addEventListener(evt, loadChatbaseScript, { once: true, passive: true });
-  });
-})();
-
-/* ── Force Chatbase Position to Bottom-LEFT & Sync Themes ────────────────── */
-(function () {
-  function adjustChatbase() {
-    const btn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
-    if (btn) {
-      btn.style.setProperty('bottom', '25px', 'important');
-      btn.style.setProperty('left', '25px', 'important');
-      btn.style.setProperty('right', 'auto', 'important');
-      btn.style.setProperty('z-index', '99999', 'important');
-      btn.style.setProperty('width', '52px', 'important');
-      btn.style.setProperty('height', '52px', 'important');
-      btn.style.setProperty('border-radius', '50%', 'important');
-      btn.style.setProperty('display', 'flex', 'important');
-      btn.style.setProperty('align-items', 'center', 'important');
-      btn.style.setProperty('justify-content', 'center', 'important');
-      btn.style.setProperty('box-shadow', '0 4px 25px rgba(200, 90, 50, 0.5)', 'important');
-      btn.style.setProperty('border', '2px solid #C85A32', 'important');
-
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      btn.style.setProperty('background', isDark ? '#1E1E1E' : '#FFFFFF', 'important');
-
-      const svgs = btn.querySelectorAll('svg, svg path, svg g');
-      svgs.forEach(function (el) {
-        el.style.setProperty('fill', '#C85A32', 'important');
-        el.style.setProperty('color', '#C85A32', 'important');
-      });
-    }
-
-    const win = document.getElementById('chatbase-bubble-window');
-    if (win) {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      win.style.setProperty('bottom', '90px', 'important');
-      win.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
-      win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
-      win.style.setProperty('border-radius', '12px', 'important');
-      win.style.setProperty('overflow', 'hidden', 'important');
-      win.style.setProperty('background-color', isDark ? '#151515' : '#FAFAFA', 'important');
-
-      try {
-        if (window.chatbase && window.chatbase_current_theme !== isDark) {
-          window.chatbase("setOptions", { 
-            theme: isDark ? 'dark' : 'light',
-            styles: { 
-              theme: isDark ? 'dark' : 'light'
-            }
-          });
-          const iframe = win.querySelector('iframe');
-          if (iframe && iframe.contentWindow) {
-            try {
-              iframe.contentWindow.postMessage({
-                type: "chatbase_theme",
-                theme: isDark ? 'dark' : 'light'
-              }, "*");
-            } catch(err){}
-          }
-          window.chatbase_current_theme = isDark;
-        }
-      } catch (e) {}
-
-      if (window.innerWidth <= 640) {
-        win.style.setProperty('left', '12px', 'important');
-        win.style.setProperty('right', '12px', 'important');
-      } else {
-        win.style.setProperty('left', '25px', 'important');
-        win.style.setProperty('right', 'auto', 'important');
-      }
-    }
-  }
-
-  if (window.MutationObserver) {
-    const observer = new MutationObserver(adjustChatbase);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
-  }
-})();
-
-/* ── DHM Executive Visitor Intelligence & Monthly Analytics Engine ─────────── */
-(function () {
-  const OWNER_EMAIL = "contact@discoverhiddenmorocco.com";
-  const STORAGE_KEY_SESSION = "dhm_ai_visitor_queries";
-  const STORAGE_KEY_MONTHLY = "dhm_ai_monthly_analytics";
-  
-  // Trivial greetings that shouldn't trigger an inquiry brief
-  const TRIVIAL_GREETINGS = ["hi", "hello", "hey", "salam", "bonjour", "salut", "hola", "ciao", "test", "ok", "yo"];
-
-  // Active session tracking
-  let currentSession = {
-    id: "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
-    startTime: new Date().toISOString(),
-    page: window.location.href,
-    pageTitle: document.title,
-    userLanguage: localStorage.getItem('hm_lang') || navigator.language || 'en',
-    userQuestions: [],
-    botResponses: [],
-    chatWindowWasOpened: false,
-    timer: null,
-    sent: false
-  };
-
-  // Helper to load and save local query history
-  function getQueryHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY_SESSION) || '[]');
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function saveQueryHistory(history) {
-    try {
-      localStorage.setItem(STORAGE_KEY_SESSION, JSON.stringify(history.slice(-100)));
-    } catch (e) {}
-  }
-
-  // Monthly Analytics Data Store
-  function getMonthlyAnalytics() {
-    try {
-      const now = new Date();
-      const currentMonthKey = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
-      let data = JSON.parse(localStorage.getItem(STORAGE_KEY_MONTHLY) || "{}");
-      if (!data.months) data.months = {};
-      if (!data.months[currentMonthKey]) {
-        data.months[currentMonthKey] = {
-          monthKey: currentMonthKey,
-          totalConversations: 0,
-          totalQuestions: 0,
-          destinations: {},
-          interests: {},
-          gaps: [],
-          recentInquiries: [],
-          summaryDispatched: false
-        };
-      }
-      data.currentMonth = currentMonthKey;
-      return data;
-    } catch (e) {
-      return { currentMonth: "2026-10", months: {} };
-    }
-  }
-
-  function saveMonthlyAnalytics(data) {
-    try {
-      localStorage.setItem(STORAGE_KEY_MONTHLY, JSON.stringify(data));
-    } catch (e) {}
-  }
-
-  // Professional Demand & Intent Analysis (Zero Emojis, 100% Executive English)
-  function analyzeInquiry(textList) {
-    const combined = textList.join(" ").toLowerCase();
-
-    // Destinations
-    const destinations = [];
-    const destMap = [
-      { name: "Sahara (Merzouga & Erg Chebbi)", match: /merzouga|sahara|desert|erg chebbi|dune|bivouac|zagora/i },
-      { name: "Marrakech & Surrounding Region", match: /marrakech|marrakesh|jamaa|jemaa|medina|majorelle/i },
-      { name: "Fes & Imperial Heritage", match: /fes|fez|tanner|chouara/i },
-      { name: "Chefchaouen & Northern Rif", match: /chefchaouen|chaouen|blue city/i },
-      { name: "High Atlas Mountains & Imlil", match: /atlas|imlil|toubkal|ourika/i },
-      { name: "Essaouira & Atlantic Coast", match: /essaouira|mogador|beach|coast|ocean|taghazout/i },
-      { name: "Agafay Stone Desert", match: /agafay|stone desert/i },
-      { name: "Ouarzazate & Kasbah Trail", match: /ouarzazate|ait ben haddou|kasbah|cinema/i },
-      { name: "Dades & Todra Gorges", match: /dades|todra|gorges|tinghir/i },
-      { name: "Tangier, Casablanca & Coastal Hubs", match: /tanger|tangier|casablanca|rabat/i }
-    ];
-    destMap.forEach(d => {
-      if (d.match.test(combined)) destinations.push(d.name);
-    });
-
-    // Customer Interests & Desires (Clean Corporate Labels)
-    const interests = [];
-    const interestMap = [
-      { name: "Pricing & Itemized Quotation", match: /price|cost|how much|budget|rate|expensive|cheap|quote|prix|combien|tarif/i },
-      { name: "Private Transportation & Chauffeur", match: /driver|transport|4x4|car|van|chauffeur|voiture|transfer|airport|pickup/i },
-      { name: "Luxury Bivouac & Boutique Lodging", match: /camp|tent|riad|luxury|glamping|hotel|suite|pool|chambre/i },
-      { name: "Dietary Preferences & Culinary Needs", match: /food|dinner|lunch|breakfast|halal|vegetarian|vegan|gluten|repas|diner/i },
-      { name: "Family & Child Accommodations", match: /family|child|children|kid|baby|toddler|famille|enfant/i },
-      { name: "Excursions & Desert Activities", match: /camel|quad|buggy|trek|hike|balloon|sunset|sunrise|dromadaire/i },
-      { name: "Custom Dates & Tailored Itinerary", match: /day|days|night|nights|itinerary|schedule|custom|private|circuit|programme/i }
-    ];
-    interestMap.forEach(i => {
-      if (i.match.test(combined)) interests.push(i.name);
-    });
-
-    // Actionable Content Opportunities for the Site Owner
-    const suggestions = [];
-    if (/price|cost|prix|combien/i.test(combined)) {
-      suggestions.push("Client requested itemized pricing. Ensure transparent starting rates and instant quote buttons are visible on this itinerary.");
-    }
-    if (/vegetarian|vegan|halal|diet/i.test(combined)) {
-      suggestions.push("Special culinary requirement identified. Clarify that private meals and desert camps accommodate vegetarian, vegan, and halal dining.");
-    }
-    if (/baby|child|kid|famille|enfant/i.test(combined)) {
-      suggestions.push("Family travel inquiry identified. Prominently highlight family safety provisions and private child car seats.");
-    }
-    if (destinations.length === 0) {
-      destinations.push("Custom / Bespoke Morocco Itinerary");
-    }
-    if (interests.length === 0) {
-      interests.push("General Tour Inquiry");
-    }
-
-    return {
-      destinations: destinations.join(", "),
-      interests: interests.join(", "),
-      destinationsList: destinations,
-      interestsList: interests,
-      suggestions: suggestions.join(" | ") || "Ensure personalized itinerary highlights and direct WhatsApp consultation are clear."
-    };
-  }
-
-  // Record completed session in monthly aggregate store
-  function recordMonthlyData(questions, analysis) {
-    try {
-      const store = getMonthlyAnalytics();
-      const monthData = store.months[store.currentMonth];
-      if (!monthData) return;
-
-      monthData.totalConversations += 1;
-      monthData.totalQuestions += questions.length;
-
-      // Tally destinations
-      analysis.destinationsList.forEach(d => {
-        monthData.destinations[d] = (monthData.destinations[d] || 0) + 1;
-      });
-
-      // Tally interests
-      analysis.interestsList.forEach(i => {
-        monthData.interests[i] = (monthData.interests[i] || 0) + 1;
-      });
-
-      // Add actionable gap
-      if (analysis.suggestions && !monthData.gaps.includes(analysis.suggestions)) {
-        monthData.gaps.push(analysis.suggestions);
-        if (monthData.gaps.length > 20) monthData.gaps.shift();
-      }
-
-      // Add inquiry sample
-      monthData.recentInquiries.push({
-        time: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-        question: questions[0].substring(0, 80),
-        dest: analysis.destinations
-      });
-      if (monthData.recentInquiries.length > 50) monthData.recentInquiries.shift();
-
-      saveMonthlyAnalytics(store);
-    } catch (e) {}
-  }
-
-  // Validate meaningful inquiries (filters out trivial single-word greetings)
-  function hasMeaningfulQuestions(questions) {
-    if (!questions || questions.length === 0) return false;
-    return questions.some(q => {
-      const cleaned = q.trim().toLowerCase();
-      return cleaned.length >= 4 && !TRIVIAL_GREETINGS.includes(cleaned);
-    });
-  }
-
-  // Dispatch the executive email brief once the conversation has fully concluded
-  function onConversationEnded(reason) {
-    if (currentSession.sent) return;
-    if (!hasMeaningfulQuestions(currentSession.userQuestions)) return;
-
-    currentSession.sent = true;
-    if (currentSession.timer) clearTimeout(currentSession.timer);
-
-    const questions = currentSession.userQuestions;
-    const answers = currentSession.botResponses;
-    const analysis = analyzeInquiry(questions);
-    const dateFormatted = new Date().toLocaleString("en-US", { 
-      timeZone: "Africa/Casablanca",
-      dateStyle: "medium",
-      timeStyle: "short"
-    });
-
-    // Store locally in session log
-    const history = getQueryHistory();
-    history.push({
-      date: dateFormatted,
-      reason: reason,
-      page: currentSession.page,
-      questions: questions,
-      answers: answers,
-      analysis: analysis
-    });
-    saveQueryHistory(history);
-
-    // Record in monthly accumulator
-    recordMonthlyData(questions, analysis);
-
-    // Prepare executive corporate report (English only, zero emojis/icons)
-    const formattedQuestions = questions.map((q, idx) => `${idx + 1}. "${q}"`).join("\n");
-    const formattedAnswers = answers.length > 0 
-      ? answers.map((a, idx) => `Response ${idx + 1}: ${a.substring(0, 240)}${a.length > 240 ? '...' : ''}`).join("\n\n") 
-      : "The client concluded their interactive inquiry session.";
-
-    const referenceId = "DHM-" + Date.now().toString(36).toUpperCase();
-
-    const payload = {
-      _subject: `Discover Hidden Morocco - Visitor Inquiry Intelligence: ${analysis.destinations}`,
-      _template: "table",
-      "Report Reference": referenceId,
-      "Session Status": `Concluded (${reason})`,
-      "Recorded Date and Time": `${dateFormatted} (Casablanca Time)`,
-      "Target Destination": analysis.destinations,
-      "Client Requirements and Intent": analysis.interests,
-      "Visitor Inquiries": formattedQuestions,
-      "AI Assistant Response Summary": formattedAnswers,
-      "Website Optimization Recommendations": analysis.suggestions,
-      "Referral Page URL": currentSession.page,
-      "Browser Language": currentSession.userLanguage,
-      "_replyto": OWNER_EMAIL
-    };
-
-    // Send via FormSubmit AJAX endpoint
-    try {
-      fetch("https://formsubmit.co/ajax/" + OWNER_EMAIL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(() => {
-        console.log("[DHM Executive Intelligence] Visitor brief successfully dispatched to", OWNER_EMAIL);
-      })
-      .catch(err => {
-        console.warn("[DHM Executive Intelligence] Dispatch log:", err);
-      });
-    } catch (e) {
-      console.warn("[DHM Executive Intelligence] Dispatch error:", e);
-    }
-  }
-
-  // Idle timeout: 3 minutes of silence after answer
-  function refreshIdleTimeout() {
-    if (currentSession.timer) clearTimeout(currentSession.timer);
-    currentSession.timer = setTimeout(function () {
-      onConversationEnded("Inactivity timeout (3 minutes idle)");
-    }, 180000);
-  }
-
-  // Receive a user question
-  function onUserMessage(content) {
-    if (!content || typeof content !== 'string') return;
-    const cleaned = content.trim();
-    if (!cleaned || currentSession.userQuestions.includes(cleaned)) return;
-
-    currentSession.userQuestions.push(cleaned);
-    currentSession.chatWindowWasOpened = true;
-    refreshIdleTimeout();
-  }
-
-  // Receive an assistant response
-  function onAssistantMessage(content) {
-    if (!content || typeof content !== 'string') return;
-    const cleaned = content.trim();
-    if (!cleaned) return;
-
-    currentSession.botResponses.push(cleaned);
-    refreshIdleTimeout();
-  }
-
-  // 1. Hook onto Chatbase Event Listener API
-  function attachChatbaseListeners() {
-    if (window.chatbase && typeof window.chatbase.addEventListener === 'function') {
-      try {
-        window.chatbase.addEventListener('user-message', function (e) {
-          const text = e && (e.content || e.message || e.text || (e.data && e.data.content));
-          if (text) onUserMessage(text);
-        });
-        window.chatbase.addEventListener('assistant-message', function (e) {
-          const text = e && (e.content || e.message || e.text || (e.data && e.data.content));
-          if (text) onAssistantMessage(text);
-        });
-        return true;
-      } catch (err) {}
-    }
-    return false;
-  }
-
-  // 2. Hook onto native postMessage from Chatbase iframe
-  window.addEventListener('message', function (event) {
-    if (!event.origin || !event.origin.includes('chatbase.co')) return;
-    try {
-      let data = event.data;
-      if (typeof data === 'string' && (data.startsWith('{') || data.startsWith('['))) {
-        data = JSON.parse(data);
-      }
-      if (!data) return;
-
-      if (data.type === 'user-message' || data.event === 'user-message' || data.action === 'user-message') {
-        const text = data.content || data.message || data.text || (data.data && data.data.content);
-        if (text) onUserMessage(text);
-      }
-      if (data.type === 'assistant-message' || data.event === 'assistant-message') {
-        const text = data.content || data.message || data.text || (data.data && data.data.content);
-        if (text) onAssistantMessage(text);
-      }
-      if (data.type === 'close' || data.action === 'close' || data.event === 'close' || data.type === 'chatbase:closed') {
-        onConversationEnded("Chat window closed");
-      }
-    } catch (e) {}
-  });
-
-  // 3. Detect when visitor closes the chat widget manually
-  function setupWidgetCloseDetection() {
-    const bubbleBtn = document.getElementById('chatbase-bubble-button') || document.querySelector('button[id*="chatbase"]');
-    if (bubbleBtn && !bubbleBtn._dhm_hooked) {
-      bubbleBtn._dhm_hooked = true;
-      bubbleBtn.addEventListener('click', function () {
-        const win = document.getElementById('chatbase-bubble-window');
-        const wasOpen = win && win.style.display !== 'none' && win.getAttribute('aria-hidden') !== 'true';
-        if (wasOpen && currentSession.userQuestions.length > 0) {
-          setTimeout(function () {
-            onConversationEnded("Chat window closed by client");
-          }, 600);
-        }
-      });
-    }
-  }
-  setInterval(setupWidgetCloseDetection, 1000);
-
-  // Hook listeners
-  if (!attachChatbaseListeners()) {
-    const checkInterval = setInterval(function () {
-      if (attachChatbaseListeners()) {
-        clearInterval(checkInterval);
-      }
-    }, 1500);
-    setTimeout(function () { clearInterval(checkInterval); }, 30000);
-  }
-
-  // End conversation when visitor leaves page / closes tab
-  window.addEventListener('beforeunload', function () {
-    if (currentSession.userQuestions.length > 0 && !currentSession.sent) {
-      onConversationEnded("Client left page / closed browser tab");
-    }
-  });
-
-  document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden' && currentSession.userQuestions.length > 0 && !currentSession.sent) {
-      onConversationEnded("Client minimized browser / changed tab");
-    }
-  });
-
-  /* ── Monthly Executive Analytics Brief Dispatcher ────────────────────────── */
-  window.sendMonthlyExecutiveDashboard = function (monthKey, isManual) {
-    const store = getMonthlyAnalytics();
-    const targetKey = monthKey || store.currentMonth;
-    const mData = store.months[targetKey];
-
-    if (!mData || mData.totalConversations === 0) {
-      const msg = `No inquiries recorded for ${targetKey}.`;
-      if (isManual) alert(msg);
-      return false;
-    }
-
-    // Format destination demand ranking
-    const sortedDest = Object.entries(mData.destinations || {})
-      .sort((a, b) => b[1] - a[1])
-      .map(([dest, count], idx) => `${idx + 1}. ${dest}: ${count} inquiries (${Math.round((count / mData.totalConversations) * 100)}% of demand)`)
-      .join("\n");
-
-    // Format client requirements
-    const sortedInterests = Object.entries(mData.interests || {})
-      .sort((a, b) => b[1] - a[1])
-      .map(([cat, count], idx) => `${idx + 1}. ${cat}: ${count} requests`)
-      .join("\n");
-
-    // Format actionable website recommendations
-    const gapsList = (mData.gaps && mData.gaps.length > 0)
-      ? mData.gaps.map((g, i) => `${i + 1}. ${g}`).join("\n")
-      : "No critical content gaps identified during this period.";
-
-    // Sample queries
-    const sampleQueries = (mData.recentInquiries && mData.recentInquiries.length > 0)
-      ? mData.recentInquiries.slice(-8).map(q => `• [${q.time}] Destination: ${q.dest} - Query: "${q.question}"`).join("\n")
-      : "No sample records available.";
-
-    const payload = {
-      _subject: `Discover Hidden Morocco - Monthly Intelligence Brief: ${targetKey}`,
-      _template: "table",
-      "Executive Overview": `Monthly prospective client demand and inquiry analysis for Discover Hidden Morocco during ${targetKey}.`,
-      "Reporting Period": targetKey,
-      "Total Inquiries Processed": `${mData.totalConversations} completed client sessions (${mData.totalQuestions} questions)`,
-      "Destination Demand Ranking": sortedDest || "General Morocco Exploration",
-      "Primary Client Requirements": sortedInterests || "Tailored Private Tours",
-      "Identified Website Optimization Opportunities": gapsList,
-      "Representative Client Inquiries": sampleQueries,
-      "Strategic Action Plan": "Publish dedicated transparent starting prices and highlight customized dietary accommodations to maximize direct reservation conversions.",
-      "Dispatch Timestamp": new Date().toLocaleString("en-US", { timeZone: "Africa/Casablanca", dateStyle: "long", timeStyle: "short" }),
-      "_replyto": OWNER_EMAIL
-    };
-
-    try {
-      fetch("https://formsubmit.co/ajax/" + OWNER_EMAIL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(() => {
-        mData.summaryDispatched = true;
-        saveMonthlyAnalytics(store);
-        if (isManual) alert(`Monthly Executive Brief for ${targetKey} has been successfully dispatched to ${OWNER_EMAIL}.`);
-        console.log(`[DHM Monthly Brief] Dispatched for ${targetKey} to`, OWNER_EMAIL);
-      })
-      .catch(err => {
-        if (isManual) alert(`Unable to dispatch brief: ${err.message}`);
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-
-  // Check on load if previous month finished and needs its automated summary sent
-  function checkMonthlyRollover() {
-    try {
-      const store = getMonthlyAnalytics();
-      const current = store.currentMonth;
-      Object.keys(store.months).forEach(k => {
-        if (k !== current && store.months[k] && !store.months[k].summaryDispatched && store.months[k].totalConversations > 0) {
-          console.log("[DHM Monthly Rollover] Dispatching completed month brief for", k);
-          window.sendMonthlyExecutiveDashboard(k, false);
-        }
-      });
-    } catch (e) {}
-  }
-  setTimeout(checkMonthlyRollover, 4000);
-
-  /* ── Visual Executive Analytics Dashboard (Accessed via ?admin=dashboard) ─ */
-  window.dhmMonthlyDashboard = function () {
-    const store = getMonthlyAnalytics();
-    const currentKey = store.currentMonth;
-    const mData = store.months[currentKey] || { totalConversations: 0, totalQuestions: 0, destinations: {}, interests: {}, gaps: [] };
-
-    const existing = document.getElementById('dhm-admin-dashboard-modal');
-    if (existing) existing.remove();
-
-    const destRows = Object.entries(mData.destinations || {})
-      .sort((a, b) => b[1] - a[1])
-      .map(([d, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${d}</span><strong style="color:#E7A93C;">${c} (${Math.round((c / (mData.totalConversations || 1)) * 100)}%)</strong></div>`)
-      .join("") || "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>";
-
-    const interestRows = Object.entries(mData.interests || {})
-      .sort((a, b) => b[1] - a[1])
-      .map(([i, c]) => `<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,260,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${i}</span><strong style="color:#C85A32;">${c}</strong></div>`)
-      .join("") || "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>";
-
-    const gapsHtml = (mData.gaps && mData.gaps.length > 0)
-      ? mData.gaps.map(g => `<li style="margin-bottom:8px;font-size:0.85rem;color:#FBD38D;line-height:1.5;">${g}</li>`).join("")
-      : "<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No content gaps identified yet.</p>";
-
-    const modal = document.createElement('div');
-    modal.id = 'dhm-admin-dashboard-modal';
-    modal.style.cssText = `
+(function(){const e="20261014_v9";try{localStorage.getItem("dhm_build_ver")!==e&&(localStorage.setItem("dhm_build_ver",e),"caches"in window&&caches.keys().then(a=>{a.forEach(o=>caches.delete(o))}),"serviceWorker"in navigator&&navigator.serviceWorker.getRegistrations().then(a=>{a.forEach(o=>o.unregister())}))}catch{}window.addEventListener("pageshow",function(t){t.persisted&&window.location.reload()})})(),(function(){function e(){try{const a=window.location.origin||window.location.protocol+"//"+window.location.host,o=window.location.pathname||"",i=window.location.search||"",n=window.location.hash||"",r=o.toLowerCase();if(r.endsWith("/index.html")||r==="/index.html"||r==="index.html"||r==="/index"){window.history.replaceState(null,document.title,a+"/"+i+n);return}if(r.includes("testimonials")){window.history.replaceState(null,document.title,a+"/reviews.html"+i+n);return}}catch{}}e(),document.readyState==="loading"&&document.addEventListener("DOMContentLoaded",e),window.addEventListener("pageshow",e),window.addEventListener("popstate",e);function t(){try{document.querySelectorAll("a[href]").forEach(function(a){const o=a.getAttribute("href");if(o){if(o==="index.html"||o==="./index.html"||o==="/index.html"){a.setAttribute("href","/");return}if(o==="testimonials.html"||o==="./testimonials.html"||o==="/testimonials.html"||o==="testimonials"||o==="/testimonials"){a.setAttribute("href","reviews.html");return}if(o==="reviews"||o==="/reviews"){a.setAttribute("href","reviews.html");return}if(o==="map"||o==="/map"){a.setAttribute("href","map.html");return}if(o==="booking"||o==="/booking"){a.setAttribute("href","booking.html");return}if(o==="destinations"||o==="/destinations"){a.setAttribute("href","destinations.html");return}if(o==="contact"||o==="/contact"){a.setAttribute("href","contact.html");return}if(o==="about"||o==="/about"){a.setAttribute("href","about.html");return}}})}catch{}}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",t):t()})(),(function(){try{const e=".leaflet-control-attribution, .leaflet-control-attribution * { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; height: 0 !important; width: 0 !important; font-size: 0 !important; line-height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; }",t=document.head||document.getElementsByTagName("head")[0];if(t){const a=document.createElement("style");a.id="dhm-hide-leaflet-attribution",a.appendChild(document.createTextNode(e)),t.appendChild(a)}}catch{}})(),(function(){(!window.chatbase||window.chatbase("getState")!=="initialized")&&(window.chatbase=(...a)=>{window.chatbase.q||(window.chatbase.q=[]),window.chatbase.q.push(a)},window.chatbase=new Proxy(window.chatbase,{get(a,o){return o==="q"?a.q:(...i)=>a(o,...i)}}));let e=!1;const t=function(){if(e||document.getElementById("aVrkUFtVzGoLUuzNCYVP0"))return;e=!0;const a=document.createElement("script");a.src="https://www.chatbase.co/embed.min.js",a.id="aVrkUFtVzGoLUuzNCYVP0",a.domain="www.chatbase.co",a.defer=!0,document.body?document.body.appendChild(a):document.addEventListener("DOMContentLoaded",()=>document.body.appendChild(a))};["scroll","touchstart","mousemove","click","keydown"].forEach(a=>{window.addEventListener(a,t,{once:!0,passive:!0})})})(),(function(){function e(){const t=document.getElementById("chatbase-bubble-button")||document.querySelector('button[id*="chatbase"]');if(t){t.style.setProperty("bottom","25px","important"),t.style.setProperty("left","25px","important"),t.style.setProperty("right","auto","important"),t.style.setProperty("z-index","99999","important"),t.style.setProperty("width","52px","important"),t.style.setProperty("height","52px","important"),t.style.setProperty("border-radius","50%","important"),t.style.setProperty("display","flex","important"),t.style.setProperty("align-items","center","important"),t.style.setProperty("justify-content","center","important"),t.style.setProperty("box-shadow","0 4px 25px rgba(200, 90, 50, 0.5)","important"),t.style.setProperty("border","2px solid #C85A32","important");const o=document.documentElement.getAttribute("data-theme")==="dark"||document.body.classList.contains("dark");t.style.setProperty("background",o?"#1E1E1E":"#FFFFFF","important"),t.querySelectorAll("svg, svg path, svg g").forEach(function(n){n.style.setProperty("fill","#C85A32","important"),n.style.setProperty("color","#C85A32","important")})}const a=document.getElementById("chatbase-bubble-window");if(a){const o=document.documentElement.getAttribute("data-theme")==="dark"||document.body.classList.contains("dark");a.style.setProperty("bottom","90px","important"),a.style.setProperty("box-shadow","0 0 25px rgba(200, 90, 50, 0.4)","important"),a.style.setProperty("border","1px solid rgba(200, 90, 50, 0.4)","important"),a.style.setProperty("border-radius","12px","important"),a.style.setProperty("overflow","hidden","important"),a.style.setProperty("background-color",o?"#151515":"#FAFAFA","important");try{if(window.chatbase&&window.chatbase_current_theme!==o){window.chatbase("setOptions",{theme:o?"dark":"light",styles:{theme:o?"dark":"light"}});const i=a.querySelector("iframe");if(i&&i.contentWindow)try{i.contentWindow.postMessage({type:"chatbase_theme",theme:o?"dark":"light"},"*")}catch{}window.chatbase_current_theme=o}}catch{}window.innerWidth<=640?(a.style.setProperty("left","12px","important"),a.style.setProperty("right","12px","important")):(a.style.setProperty("left","25px","important"),a.style.setProperty("right","auto","important"))}}window.MutationObserver&&new MutationObserver(e).observe(document.documentElement,{attributes:!0,attributeFilter:["data-theme","class"]})})(),(function(){const e="contact@discoverhiddenmorocco.com",t="dhm_ai_visitor_queries",a="dhm_ai_monthly_analytics",o=["hi","hello","hey","salam","bonjour","salut","hola","ciao","test","ok","yo"];let i={id:"sess_"+Date.now()+"_"+Math.random().toString(36).substring(2,7),startTime:new Date().toISOString(),page:window.location.href,pageTitle:document.title,userLanguage:localStorage.getItem("hm_lang")||navigator.language||"en",userQuestions:[],botResponses:[],chatWindowWasOpened:!1,timer:null,sent:!1};function n(){try{return JSON.parse(localStorage.getItem(t)||"[]")}catch{return[]}}function r(c){try{localStorage.setItem(t,JSON.stringify(c.slice(-100)))}catch{}}function d(){try{const c=new Date,s=c.getFullYear()+"-"+String(c.getMonth()+1).padStart(2,"0");let l=JSON.parse(localStorage.getItem(a)||"{}");return l.months||(l.months={}),l.months[s]||(l.months[s]={monthKey:s,totalConversations:0,totalQuestions:0,destinations:{},interests:{},gaps:[],recentInquiries:[],summaryDispatched:!1}),l.currentMonth=s,l}catch{return{currentMonth:"2026-10",months:{}}}}function u(c){try{localStorage.setItem(a,JSON.stringify(c))}catch{}}function g(c){const s=c.join(" ").toLowerCase(),l=[];[{name:"Sahara (Merzouga & Erg Chebbi)",match:/merzouga|sahara|desert|erg chebbi|dune|bivouac|zagora/i},{name:"Marrakech & Surrounding Region",match:/marrakech|marrakesh|jamaa|jemaa|medina|majorelle/i},{name:"Fes & Imperial Heritage",match:/fes|fez|tanner|chouara/i},{name:"Chefchaouen & Northern Rif",match:/chefchaouen|chaouen|blue city/i},{name:"High Atlas Mountains & Imlil",match:/atlas|imlil|toubkal|ourika/i},{name:"Essaouira & Atlantic Coast",match:/essaouira|mogador|beach|coast|ocean|taghazout/i},{name:"Agafay Stone Desert",match:/agafay|stone desert/i},{name:"Ouarzazate & Kasbah Trail",match:/ouarzazate|ait ben haddou|kasbah|cinema/i},{name:"Dades & Todra Gorges",match:/dades|todra|gorges|tinghir/i},{name:"Tangier, Casablanca & Coastal Hubs",match:/tanger|tangier|casablanca|rabat/i}].forEach(v=>{v.match.test(s)&&l.push(v.name)});const m=[];[{name:"Pricing & Itemized Quotation",match:/price|cost|how much|budget|rate|expensive|cheap|quote|prix|combien|tarif/i},{name:"Private Transportation & Chauffeur",match:/driver|transport|4x4|car|van|chauffeur|voiture|transfer|airport|pickup/i},{name:"Luxury Bivouac & Boutique Lodging",match:/camp|tent|riad|luxury|glamping|hotel|suite|pool|chambre/i},{name:"Dietary Preferences & Culinary Needs",match:/food|dinner|lunch|breakfast|halal|vegetarian|vegan|gluten|repas|diner/i},{name:"Family & Child Accommodations",match:/family|child|children|kid|baby|toddler|famille|enfant/i},{name:"Excursions & Desert Activities",match:/camel|quad|buggy|trek|hike|balloon|sunset|sunrise|dromadaire/i},{name:"Custom Dates & Tailored Itinerary",match:/day|days|night|nights|itinerary|schedule|custom|private|circuit|programme/i}].forEach(v=>{v.match.test(s)&&m.push(v.name)});const E=[];return/price|cost|prix|combien/i.test(s)&&E.push("Client requested itemized pricing. Ensure transparent starting rates and instant quote buttons are visible on this itinerary."),/vegetarian|vegan|halal|diet/i.test(s)&&E.push("Special culinary requirement identified. Clarify that private meals and desert camps accommodate vegetarian, vegan, and halal dining."),/baby|child|kid|famille|enfant/i.test(s)&&E.push("Family travel inquiry identified. Prominently highlight family safety provisions and private child car seats."),l.length===0&&l.push("Custom / Bespoke Morocco Itinerary"),m.length===0&&m.push("General Tour Inquiry"),{destinations:l.join(", "),interests:m.join(", "),destinationsList:l,interestsList:m,suggestions:E.join(" | ")||"Ensure personalized itinerary highlights and direct WhatsApp consultation are clear."}}function f(c,s){try{const l=d(),p=l.months[l.currentMonth];if(!p)return;p.totalConversations+=1,p.totalQuestions+=c.length,s.destinationsList.forEach(m=>{p.destinations[m]=(p.destinations[m]||0)+1}),s.interestsList.forEach(m=>{p.interests[m]=(p.interests[m]||0)+1}),s.suggestions&&!p.gaps.includes(s.suggestions)&&(p.gaps.push(s.suggestions),p.gaps.length>20&&p.gaps.shift()),p.recentInquiries.push({time:new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"}),question:c[0].substring(0,80),dest:s.destinations}),p.recentInquiries.length>50&&p.recentInquiries.shift(),u(l)}catch{}}function y(c){return!c||c.length===0?!1:c.some(s=>{const l=s.trim().toLowerCase();return l.length>=4&&!o.includes(l)})}function S(c){if(i.sent||!y(i.userQuestions))return;i.sent=!0,i.timer&&clearTimeout(i.timer);const s=i.userQuestions,l=i.botResponses,p=g(s),m=new Date().toLocaleString("en-US",{timeZone:"Africa/Casablanca",dateStyle:"medium",timeStyle:"short"}),k=n();k.push({date:m,reason:c,page:i.page,questions:s,answers:l,analysis:p}),r(k),f(s,p);const E=s.map((h,x)=>`${x+1}. "${h}"`).join(`
+`),v=l.length>0?l.map((h,x)=>`Response ${x+1}: ${h.substring(0,240)}${h.length>240?"...":""}`).join(`
+
+`):"The client concluded their interactive inquiry session.",b="DHM-"+Date.now().toString(36).toUpperCase(),w={_subject:`Discover Hidden Morocco - Visitor Inquiry Intelligence: ${p.destinations}`,_template:"table","Report Reference":b,"Session Status":`Concluded (${c})`,"Recorded Date and Time":`${m} (Casablanca Time)`,"Target Destination":p.destinations,"Client Requirements and Intent":p.interests,"Visitor Inquiries":E,"AI Assistant Response Summary":v,"Website Optimization Recommendations":p.suggestions,"Referral Page URL":i.page,"Browser Language":i.userLanguage,_replyto:e};try{fetch("https://formsubmit.co/ajax/"+e,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(w)}).then(h=>h.json()).then(()=>{console.log("[DHM Executive Intelligence] Visitor brief successfully dispatched to",e)}).catch(h=>{console.warn("[DHM Executive Intelligence] Dispatch log:",h)})}catch(h){console.warn("[DHM Executive Intelligence] Dispatch error:",h)}}function I(){i.timer&&clearTimeout(i.timer),i.timer=setTimeout(function(){S("Inactivity timeout (3 minutes idle)")},18e4)}function T(c){if(!c||typeof c!="string")return;const s=c.trim();!s||i.userQuestions.includes(s)||(i.userQuestions.push(s),i.chatWindowWasOpened=!0,I())}function C(c){if(!c||typeof c!="string")return;const s=c.trim();s&&(i.botResponses.push(s),I())}function A(){if(window.chatbase&&typeof window.chatbase.addEventListener=="function")try{return window.chatbase.addEventListener("user-message",function(c){const s=c&&(c.content||c.message||c.text||c.data&&c.data.content);s&&T(s)}),window.chatbase.addEventListener("assistant-message",function(c){const s=c&&(c.content||c.message||c.text||c.data&&c.data.content);s&&C(s)}),!0}catch{}return!1}window.addEventListener("message",function(c){if(!(!c.origin||!c.origin.includes("chatbase.co")))try{let s=c.data;if(typeof s=="string"&&(s.startsWith("{")||s.startsWith("["))&&(s=JSON.parse(s)),!s)return;if(s.type==="user-message"||s.event==="user-message"||s.action==="user-message"){const l=s.content||s.message||s.text||s.data&&s.data.content;l&&T(l)}if(s.type==="assistant-message"||s.event==="assistant-message"){const l=s.content||s.message||s.text||s.data&&s.data.content;l&&C(l)}(s.type==="close"||s.action==="close"||s.event==="close"||s.type==="chatbase:closed")&&S("Chat window closed")}catch{}});function M(){const c=document.getElementById("chatbase-bubble-button")||document.querySelector('button[id*="chatbase"]');c&&!c._dhm_hooked&&(c._dhm_hooked=!0,c.addEventListener("click",function(){const s=document.getElementById("chatbase-bubble-window");s&&s.style.display!=="none"&&s.getAttribute("aria-hidden")!=="true"&&i.userQuestions.length>0&&setTimeout(function(){S("Chat window closed by client")},600)}))}if(setInterval(M,1e3),!A()){const c=setInterval(function(){A()&&clearInterval(c)},1500);setTimeout(function(){clearInterval(c)},3e4)}window.addEventListener("beforeunload",function(){i.userQuestions.length>0&&!i.sent&&S("Client left page / closed browser tab")}),document.addEventListener("visibilitychange",function(){document.visibilityState==="hidden"&&i.userQuestions.length>0&&!i.sent&&S("Client minimized browser / changed tab")}),window.sendMonthlyExecutiveDashboard=function(c,s){const l=d(),p=c||l.currentMonth,m=l.months[p];if(!m||m.totalConversations===0){const h=`No inquiries recorded for ${p}.`;return s&&alert(h),!1}const k=Object.entries(m.destinations||{}).sort((h,x)=>x[1]-h[1]).map(([h,x],B)=>`${B+1}. ${h}: ${x} inquiries (${Math.round(x/m.totalConversations*100)}% of demand)`).join(`
+`),E=Object.entries(m.interests||{}).sort((h,x)=>x[1]-h[1]).map(([h,x],B)=>`${B+1}. ${h}: ${x} requests`).join(`
+`),v=m.gaps&&m.gaps.length>0?m.gaps.map((h,x)=>`${x+1}. ${h}`).join(`
+`):"No critical content gaps identified during this period.",b=m.recentInquiries&&m.recentInquiries.length>0?m.recentInquiries.slice(-8).map(h=>`\u2022 [${h.time}] Destination: ${h.dest} - Query: "${h.question}"`).join(`
+`):"No sample records available.",w={_subject:`Discover Hidden Morocco - Monthly Intelligence Brief: ${p}`,_template:"table","Executive Overview":`Monthly prospective client demand and inquiry analysis for Discover Hidden Morocco during ${p}.`,"Reporting Period":p,"Total Inquiries Processed":`${m.totalConversations} completed client sessions (${m.totalQuestions} questions)`,"Destination Demand Ranking":k||"General Morocco Exploration","Primary Client Requirements":E||"Tailored Private Tours","Identified Website Optimization Opportunities":v,"Representative Client Inquiries":b,"Strategic Action Plan":"Publish dedicated transparent starting prices and highlight customized dietary accommodations to maximize direct reservation conversions.","Dispatch Timestamp":new Date().toLocaleString("en-US",{timeZone:"Africa/Casablanca",dateStyle:"long",timeStyle:"short"}),_replyto:e};try{return fetch("https://formsubmit.co/ajax/"+e,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(w)}).then(h=>h.json()).then(()=>{m.summaryDispatched=!0,u(l),s&&alert(`Monthly Executive Brief for ${p} has been successfully dispatched to ${e}.`),console.log(`[DHM Monthly Brief] Dispatched for ${p} to`,e)}).catch(h=>{s&&alert(`Unable to dispatch brief: ${h.message}`)}),!0}catch{return!1}};function D(){try{const c=d(),s=c.currentMonth;Object.keys(c.months).forEach(l=>{l!==s&&c.months[l]&&!c.months[l].summaryDispatched&&c.months[l].totalConversations>0&&(console.log("[DHM Monthly Rollover] Dispatching completed month brief for",l),window.sendMonthlyExecutiveDashboard(l,!1))})}catch{}}setTimeout(D,4e3),window.dhmMonthlyDashboard=function(){const c=d(),s=c.currentMonth,l=c.months[s]||{totalConversations:0,totalQuestions:0,destinations:{},interests:{},gaps:[]},p=document.getElementById("dhm-admin-dashboard-modal");p&&p.remove();const m=Object.entries(l.destinations||{}).sort((b,w)=>w[1]-b[1]).map(([b,w])=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${b}</span><strong style="color:#E7A93C;">${w} (${Math.round(w/(l.totalConversations||1)*100)}%)</strong></div>`).join("")||"<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>",k=Object.entries(l.interests||{}).sort((b,w)=>w[1]-b[1]).map(([b,w])=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,260,0.06);font-size:0.88rem;color:#E2E8F0;"><span>${b}</span><strong style="color:#C85A32;">${w}</strong></div>`).join("")||"<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No inquiry records registered yet for this period.</p>",E=l.gaps&&l.gaps.length>0?l.gaps.map(b=>`<li style="margin-bottom:8px;font-size:0.85rem;color:#FBD38D;line-height:1.5;">${b}</li>`).join(""):"<p style='color:rgba(255,255,255,0.4);font-size:0.85rem;'>No content gaps identified yet.</p>",v=document.createElement("div");v.id="dhm-admin-dashboard-modal",v.style.cssText=`
       position: fixed; inset: 0; z-index: 999999;
       background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center; padding: 20px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    `;
-
-    modal.innerHTML = `
+    `,v.innerHTML=`
       <div style="background: #0B1120; border: 1.5px solid rgba(200,90,50,0.4); border-radius: 16px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; color: #F8FAFC; box-shadow: 0 25px 65px rgba(0,0,0,0.7); padding: 32px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08);">
           <div>
             <div style="font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; color:#E7A93C; font-weight:700;">Discover Hidden Morocco | Executive Analytics</div>
-            <h2 style="margin:6px 0 0; font-size:1.45rem; font-weight:700; color:#FFFFFF;">Monthly Client Demand Intelligence (${currentKey})</h2>
+            <h2 style="margin:6px 0 0; font-size:1.45rem; font-weight:700; color:#FFFFFF;">Monthly Client Demand Intelligence (${s})</h2>
           </div>
           <button id="dhm-close-dash" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; font-size:1.1rem; cursor:pointer; padding:6px 14px; transition:all 0.2s;">Close</button>
         </div>
@@ -752,32 +23,32 @@
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
             <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Total Client Sessions</div>
-            <div style="font-size:1.9rem; font-weight:800; color:#E7A93C; margin-top:6px;">${mData.totalConversations}</div>
+            <div style="font-size:1.9rem; font-weight:800; color:#E7A93C; margin-top:6px;">${l.totalConversations}</div>
           </div>
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
             <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Questions Processed</div>
-            <div style="font-size:1.9rem; font-weight:800; color:#38BDF8; margin-top:6px;">${mData.totalQuestions}</div>
+            <div style="font-size:1.9rem; font-weight:800; color:#38BDF8; margin-top:6px;">${l.totalQuestions}</div>
           </div>
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px;">
             <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:#94A3B8;">Monthly Dispatch Status</div>
-            <div style="font-size:1.1rem; font-weight:700; color:${mData.summaryDispatched ? '#4ADE80' : '#FBBF24'}; margin-top:12px;">${mData.summaryDispatched ? 'Dispatched' : 'Active / Scheduled'}</div>
+            <div style="font-size:1.1rem; font-weight:700; color:${l.summaryDispatched?"#4ADE80":"#FBBF24"}; margin-top:12px;">${l.summaryDispatched?"Dispatched":"Active / Scheduled"}</div>
           </div>
         </div>
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
           <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
             <h4 style="margin:0 0 14px; color:#E7A93C; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Destination Demand Breakdown</h4>
-            ${destRows}
+            ${m}
           </div>
           <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
             <h4 style="margin:0 0 14px; color:#C85A32; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Primary Client Requirements</h4>
-            ${interestRows}
+            ${k}
           </div>
         </div>
 
         <div style="background: rgba(200,90,50,0.08); border: 1px solid rgba(200,90,50,0.25); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
           <h4 style="margin:0 0 12px; color:#FF8A65; font-size:0.92rem; text-transform:uppercase; letter-spacing:1px;">Identified Website Content Opportunities</h4>
-          <ul style="margin:0; padding-left:20px;">${gapsHtml}</ul>
+          <ul style="margin:0; padding-left:20px;">${E}</ul>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);">
@@ -789,449 +60,7 @@
           </button>
         </div>
       </div>
-    `;
-
-    document.body.appendChild(modal);
-
-    document.getElementById('dhm-close-dash').addEventListener('click', () => modal.remove());
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
-
-    document.getElementById('dhm-send-dash-now').addEventListener('click', function () {
-      this.textContent = "Dispatching...";
-      this.disabled = true;
-      window.sendMonthlyExecutiveDashboard(currentKey, true);
-      setTimeout(() => { modal.remove(); }, 1500);
-    });
-
-    document.getElementById('dhm-export-dash-json').addEventListener('click', function () {
-      const blob = new Blob([JSON.stringify(mData, null, 2)], { type: "application/json" });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `dhm-executive-analytics-${currentKey}.json`;
-      a.click();
-    });
-  };
-
-  // Trigger dashboard via query param ?admin=dashboard
-  if (window.location.search.includes('admin=dashboard') || window.location.search.includes('admin_ai=1')) {
-    window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(window.dhmMonthlyDashboard, 800);
-    });
-  }
-})();
-
-
-
-// ── Application State ──────────────────────────────────────────────────────
-const AppState = {
-  theme: localStorage.getItem('hm_theme') || 'light',
-  lang: localStorage.getItem('hm_lang') || 'en',
-  favorites: JSON.parse(localStorage.getItem('hm_favorites') || '[]'),
-  mapInstance: null,
-  mapMarkers: []
-};
-
-// ── Destination Database (Verified Image Paths) ──────────────────────────
-const DESTINATIONS_DB = [
-  {
-    id: "marrakech",
-    title: "Marrakech",
-    region: "Marrakech-Safi",
-    category: "medina",
-    price: 180,
-    currency: "EUR",
-    rating: 4.9,
-    reviewsCount: 340,
-    img: "images/Marrakech/marrakech_11.jpg",
-    badge: "Popular",
-    desc: "Step into the heartbeat of Morocco. Explore bustling souks, hidden riads, Jemaa el-Fnaa square, and the Majorelle Garden.",
-    lat: 31.6295,
-    lng: -7.9811,
-    highlights: ["Jemaa el-Fnaa Square", "Bahia Palace & Saadian Tombs", "Majorelle & YSL Museum", "Spice Souks Walking Tour"],
-    itinerary: [
-      { day: "Day 1", text: "Arrival & Rooftop Tea overlooking Jemaa el-Fnaa" },
-      { day: "Day 2", text: "Guided Medina & Bahia Palace Architectural Tour" },
-      { day: "Day 3", text: "Jardin Majorelle & Traditional Moroccan Spa/Hammam" }
-    ]
-  },
-  {
-    id: "merzouga",
-    title: "Merzouga",
-    region: "Draâ-Tafilalet",
-    category: "desert",
-    price: 290,
-    currency: "EUR",
-    rating: 5.0,
-    reviewsCount: 420,
-    img: "images/Merzouga/merzouga_1.jpg",
-    badge: "Bucket List",
-    desc: "Experience pure magic among golden dunes. Ride camels at sunset, sleep in a luxury Berber tent, and marvel at the Milky Way.",
-    lat: 31.0992,
-    lng: -4.0116,
-    highlights: ["Sunset & Sunrise Camel Trek", "Luxury Desert Camp with Private Bathroom", "Berber Drumming & Campfire", "Erg Chebbi Sandboarding"],
-    itinerary: [
-      { day: "Day 1", text: "Drive through High Atlas & Dades Gorge" },
-      { day: "Day 2", text: "Sunset Camel Ride into Erg Chebbi Dunes" },
-      { day: "Day 3", text: "Stargazing & Traditional Gnawa Music" }
-    ]
-  },
-  {
-    id: "chefchaouen",
-    title: "Chefchaouen",
-    region: "Tanger-Tetouan-Al Hoceima",
-    category: "mountain",
-    price: 150,
-    currency: "EUR",
-    rating: 4.8,
-    reviewsCount: 290,
-    img: "images/Chfchaouen/chefchaoun.jpg",
-    badge: "Photogenic",
-    desc: "Wander through world-famous cobalt blue alleyways nestled in the Rif Mountains. Unwind in relaxed cafes and artisan shops.",
-    lat: 35.1716,
-    lng: -5.2697,
-    highlights: ["Photogenic Blue Medina", "Spanish Mosque Sunset View", "Ras El-Maa Waterfalls", "Rif Mountain Trekking"],
-    itinerary: [
-      { day: "Day 1", text: "Arrival in Blue Pearl & Kasbah Exploration" },
-      { day: "Day 2", text: "Hike to Spanish Mosque for Panoramic Views" }
-    ]
-  },
-  {
-    id: "essaouira",
-    title: "Essaouira",
-    region: "Marrakech-Safi",
-    category: "coastal",
-    price: 160,
-    currency: "EUR",
-    rating: 4.9,
-    reviewsCount: 215,
-    img: "images/Essaouira/essaouira_1.jpg",
-    badge: "Relaxing",
-    desc: "Breathe in Atlantic coastal ocean breezes, historic sea ramparts, fresh grilled seafood, and bohemian art galleries.",
-    lat: 31.5125,
-    lng: -9.7700,
-    highlights: ["18th-century Skala Ramparts", "Fresh Port Seafood Grill", "Kitesurfing & Beach Walk", "Argan Oil Cooperative"],
-    itinerary: [
-      { day: "Day 1", text: "Ramparts Stroll & Sunset Port Dining" },
-      { day: "Day 2", text: "Argan Forest & Beach Horse Riding" }
-    ]
-  },
-  {
-    id: "ouarzazate",
-    title: "Ouarzazate",
-    region: "Draâ-Tafilalet",
-    category: "desert",
-    price: 210,
-    currency: "EUR",
-    rating: 4.8,
-    reviewsCount: 180,
-    img: "images/Ouarzazat/ouarzazat1.jpeg",
-    badge: "UNESCO",
-    desc: "Explore Morocco's Hollywood. Visit ancient earthen Kasbahs, UNESCO World Heritage fortress walls, and desert film studios.",
-    lat: 30.9189,
-    lng: -6.8934,
-    highlights: ["Ait Benhaddou UNESCO Kasbah", "Atlas Cinema Studios", "Taourirt Kasbah Palace", "Ounila Valley Scenic Drive"],
-    itinerary: [
-      { day: "Day 1", text: "Ait Benhaddou Guided Walk & Movie Set Tour" },
-      { day: "Day 2", text: "Kasbah Taourirt & Oasis Exploration" }
-    ]
-  },
-  {
-    id: "fes",
-    title: "Fes",
-    region: "Fès-Meknès",
-    category: "medina",
-    price: 195,
-    currency: "EUR",
-    rating: 4.9,
-    reviewsCount: 310,
-    img: "images/Fes/fes_1.jpg",
-    badge: "Heritage",
-    desc: "Journey back in time in the world's largest car-free urban area. Discover Chouara Tanneries, Al-Qarawiyyin University, and intricate zellij tiles.",
-    lat: 34.0333,
-    lng: -5.0000,
-    highlights: ["Chouara Leather Tanneries", "Al-Qarawiyyin Library", "Bou Inania Medersa", "Ceramic & Pottery Workshops"],
-    itinerary: [
-      { day: "Day 1", text: "Tanneries Tour & Ancient Souk Exploration" },
-      { day: "Day 2", text: "Bab Boujeloud Gate & Pottery Crafting" }
-    ]
-  },
-  {
-    id: "casablanca",
-    title: "Casablanca",
-    region: "Casablanca-Settat",
-    category: "coastal",
-    price: 140,
-    currency: "EUR",
-    rating: 4.7,
-    reviewsCount: 160,
-    img: "images/Casablanca/casablanca.png",
-    badge: "Modern Hub",
-    desc: "Morocco's vibrant economic capital featuring the architectural masterpiece Hassan II Mosque perched directly over the Atlantic ocean.",
-    lat: 33.5731,
-    lng: -7.5898,
-    highlights: ["Hassan II Mosque Ocean View", "Corniche Promenade", "Habous Quarter Architectural Tour", "Rick's Café Experience"],
-    itinerary: [
-      { day: "Day 1", text: "Hassan II Mosque Guided Visit & Corniche Walk" },
-      { day: "Day 2", text: "Habous Craft Market & Culinary Tasting" }
-    ]
-  },
-  {
-    id: "zagora",
-    title: "Zagora",
-    region: "Draâ-Tafilalet",
-    category: "desert",
-    price: 220,
-    currency: "EUR",
-    rating: 4.8,
-    reviewsCount: 190,
-    img: "images/Zagora/zagora_hero.png",
-    badge: "Sahara Gateway",
-    desc: "Gateway to the Draa Valley. Palm groves, ancient earthen kasbahs, and authentic desert stargazing.",
-    lat: 30.3336,
-    lng: -5.8264,
-    highlights: ["Draa Valley Palm Groves", "Tamegroute Ancient Library", "Sunset Camel Trek", "Traditional Berber Music"],
-    itinerary: [
-      { day: "Day 1", text: "Draa Oasis Drive & Sunset Desert Camp" },
-      { day: "Day 2", text: "Tamegroute Underground Kasbah Visit" }
-    ]
-  },
-  {
-    id: "agadir",
-    title: "Agadir",
-    region: "Souss-Massa",
-    category: "coastal",
-    price: 130,
-    currency: "EUR",
-    rating: 4.7,
-    reviewsCount: 140,
-    img: "images/Agadir/agadir_hero.png",
-    badge: "Ocean Resort",
-    desc: "Coastal breeze, golden sandy beaches, year-round sunshine, sea promenade, and Atlantic waters.",
-    lat: 30.4278,
-    lng: -9.5981,
-    highlights: ["Agadir Kasbah Panoramic View", "Souk El Had Shopping", "Marina Promenade Dining", "Taghazout Bay Surfing"],
-    itinerary: [
-      { day: "Day 1", text: "Kasbah Hill View & Beach Promenade Sunset" },
-      { day: "Day 2", text: "Taghazout Coastal Trip & Argan Valley Tour" }
-    ]
-  }
-];
-
-// ── Multi-Language Translation Dictionary ─────────────────────────────────
-const TRANSLATIONS = {
-  en: {
-    nav_home: "Home",
-    nav_destinations: "Destinations",
-    nav_map: "Interactive Map",
-    nav_about: "About Us",
-    nav_reviews: "Reviews",
-    nav_contact: "Contact",
-    nav_favorites: "Wishlist",
-    nav_book: "Book Now",
-    hero_title: "Morocco Is Not Just A Destination. It's A Feeling.",
-    hero_sub: "Discover hidden kasbahs, silent desert mornings under starry skies, and ancient medinas crafted by local storytellers.",
-    search_placeholder: "Where to? e.g. Sahara, Chefchaouen",
-    search_btn: "Explore Destinations",
-    stats_routes: "Custom Routes",
-    stats_travelers: "Happy Travelers",
-    stats_destinations: "Iconic Destinations",
-    stats_satisfaction: "Satisfaction Rate",
-    why_title: "Why Hidden Morocco?",
-    why_sub: "Handcrafted boutique private journeys tailored to your rhythm.",
-    reviews_hero_title: "Traveler Reviews",
-    reviews_hero_sub: "Authentic reviews shared by travelers exploring Morocco with us."
-  },
-  fr: {
-    nav_home: "Accueil",
-    nav_destinations: "Destinations",
-    nav_map: "Carte Interactive",
-    nav_about: "À Propos",
-    nav_reviews: "Avis Clients",
-    nav_contact: "Contact",
-    nav_favorites: "Favoris",
-    nav_book: "Réserver",
-    hero_title: "Le Maroc N'est Pas Une Destination. C'est Une Émotion.",
-    hero_sub: "Circuits privés d'exception : kasbahs secrètes, nuits étoilées dans le désert du Sahara et médinas impériales avec nos guides locaux passionnés.",
-    search_placeholder: "Où souhaitez-vous aller ? ex: Sahara, Chefchaouen",
-    search_btn: "Rechercher",
-    stats_routes: "Itinéraires Sur-Mesure",
-    stats_travelers: "Voyageurs Comblés",
-    stats_destinations: "Destinations Emblématiques",
-    stats_satisfaction: "Taux de Satisfaction",
-    why_title: "Pourquoi Voyager Avec Nous ?",
-    why_sub: "Des voyages privés sur-mesure d'exception, conçus selon votre propre rythme.",
-    reviews_hero_title: "Avis de nos Voyageurs",
-    reviews_hero_sub: "Témoignages authentiques de voyageurs ayant exploré le Maroc avec nous."
-  },
-  es: {
-    nav_home: "Inicio",
-    nav_destinations: "Destinos",
-    nav_map: "Mapa Interactivo",
-    nav_about: "Sobre Nosotros",
-    nav_reviews: "Opiniones",
-    nav_contact: "Contacto",
-    nav_favorites: "Deseos",
-    nav_book: "Reservar Ahora",
-    hero_title: "Marruecos No Es Solo Un Destino. Es Una Emoción.",
-    hero_sub: "Rutas privadas exclusivas por alcazabas ocultas, mañanas desérticas bajo las estrellas y medinas históricas de la mano de guías locales.",
-    search_placeholder: "¿A dónde quieres ir? ej: Sahara, Chefchaouen",
-    search_btn: "Buscar Destinos",
-    stats_routes: "Rutas Personalizadas",
-    stats_travelers: "Viajeros Felices",
-    stats_destinations: "Destinos Icónicos",
-    stats_satisfaction: "Tasa de Satisfacción",
-    why_title: "¿Por Qué Elegirnos?",
-    why_sub: "Viajes privados exclusivos diseñados a la medida de tus sueños y de tu ritmo.",
-    reviews_hero_title: "Opiniones de Viajeros",
-    reviews_hero_sub: "Reseñas auténticas de viajeros que exploraron Marruecos con nosotros."
-  },
-  ar: {
-    nav_home: "الرئيسية",
-    nav_destinations: "الوجهات",
-    nav_map: "الخريطة التفاعلية",
-    nav_about: "من نحن",
-    nav_reviews: "آراء العملاء",
-    nav_contact: "اتصل بنا",
-    nav_favorites: "المفضلة",
-    nav_book: "احجز الآن",
-    hero_title: "المغرب ليس مجرد وجهة.. بل تجربة تعاش",
-    hero_sub: "رحلات خاصة راقية عبر القصبات التاريخية، رمال الصحراء الكبرى، والمدن العتيقة بصحبة أفضل المرشدين المحليين.",
-    search_placeholder: "إلى أين تريد الذهاب؟ مثلاً: الصحراء، شفشاون",
-    search_btn: "استكشف الوجهات",
-    stats_routes: "مسارات مخصصة",
-    stats_travelers: "مسافرون سعداء",
-    stats_destinations: "وجهات مميزة",
-    stats_satisfaction: "نسبة الرضا",
-    why_title: "لماذا تختارنا؟",
-    why_sub: "رحلات خاصة راقية مصممة خصيصاً على مقاسك وبأدق التفاصيل لتلائم رغباتك.",
-    reviews_hero_title: "آراء وتقييمات المسافرين",
-    reviews_hero_sub: "تجارب وتوصيات حقيقية من مسافرين عاشوا سحر المغرب معنا."
-  }
-};
-
-
-// ── DOM Content Loaded Initialization ─────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  initLanguage();
-  initWishlistBadge();
-  initBackToTop();
-  initStickyNav();
-  initSearchEngine();
-  initCounters();
-
-  if (document.getElementById('interactiveMap')) {
-    initMapPage();
-  }
-  if (document.getElementById('homeMapPreview')) {
-    initHomeMapPreview();
-  }
-  if (document.getElementById('destinationsGrid')) {
-    renderDestinationsGrid();
-  }
-  if (document.getElementById('favoritesGrid')) {
-    renderFavoritesGrid();
-  }
-});
-
-// ── Theme Engine (Light / Dark Mode) ───────────────────────────────────────
-function initTheme() {
-  document.documentElement.setAttribute('data-theme', AppState.theme);
-  if (document.body) document.body.setAttribute('data-theme', AppState.theme);
-  updateThemeIcon();
-
-  document.querySelectorAll('.theme-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      AppState.theme = AppState.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('hm_theme', AppState.theme);
-      document.documentElement.setAttribute('data-theme', AppState.theme);
-      if (document.body) document.body.setAttribute('data-theme', AppState.theme);
-      updateThemeIcon();
-      showToast(`Switched to ${AppState.theme.toUpperCase()} mode ✨`);
-      // ── Sync Chatbase AI theme instantly when toggle is clicked ──────────
-      try {
-        const cbTheme = AppState.theme === 'dark' ? 'dark' : 'light';
-        if (window.chatbot && typeof window.chatbot.setTheme === 'function') {
-          window.chatbot.setTheme(cbTheme);
-        } else if (window.chatbase && typeof window.chatbase === 'function') {
-          window.chatbase('setOptions', { theme: cbTheme });
-        }
-        const cbWin = document.getElementById('chatbase-bubble-window');
-        if (cbWin) {
-          cbWin.style.setProperty('background-color', cbTheme === 'dark' ? '#151515' : '#FFFFFF', 'important');
-          cbWin.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
-          cbWin.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
-        }
-        const cbBtn = document.getElementById('chatbase-bubble-button');
-        if (cbBtn) {
-          cbBtn.style.setProperty('background', cbTheme === 'dark' ? '#1E1E1E' : '#FFFFFF', 'important');
-        }
-      } catch(e) {}
-    });
-  });
-}
-
-function updateThemeIcon() {
-  document.querySelectorAll('.theme-toggle').forEach(btn => {
-    btn.innerHTML = AppState.theme === 'dark'
-      ? '<i class="fa-solid fa-sun" style="color: #F59E0B; transform: rotate(360deg); transition: all 0.4s ease;"></i>'
-      : '<i class="fa-solid fa-moon" style="transition: all 0.4s ease;"></i>';
-  });
-}
-
-// ── Complete 28-Language Supported Matrix ────────────────────────────────
-const SUPPORTED_LANGUAGES = [
-  { code: 'en', label: 'EN' },
-  { code: 'fr', label: 'FR' },
-  { code: 'es', label: 'ES' },
-  { code: 'ar', label: 'AR' },
-  { code: 'de', label: 'DE' },
-  { code: 'it', label: 'IT' },
-  { code: 'pt', label: 'PT' },
-  { code: 'ru', label: 'RU' },
-  { code: 'zh-CN', label: 'ZH' },
-  { code: 'ja', label: 'JA' }
-];
-
-// Helper to set / clear googtrans cookie across all domain scopes
-function setGoogleTransCookie(targetLang) {
-  const isEn = !targetLang || targetLang.toLowerCase() === 'en';
-  const expireStr = 'expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  
-  // Clear any existing cookies first
-  document.cookie = 'googtrans=;' + expireStr;
-  const host = window.location.hostname;
-  if (host && host !== 'localhost') {
-    document.cookie = 'googtrans=;' + expireStr + ' domain=' + host + ';';
-    const parts = host.split('.');
-    if (parts.length >= 2) {
-      const rootDomain = '.' + parts.slice(-2).join('.');
-      document.cookie = 'googtrans=;' + expireStr + ' domain=' + rootDomain + ';';
-    }
-  }
-
-  // Set new cookie for non-English
-  if (!isEn) {
-    const val = '/en/' + targetLang;
-    const maxAge = 'max-age=31536000; path=/;';
-    document.cookie = 'googtrans=' + val + '; ' + maxAge;
-    if (host && host !== 'localhost') {
-      document.cookie = 'googtrans=' + val + '; ' + maxAge + ' domain=' + host + ';';
-      const parts = host.split('.');
-      if (parts.length >= 2) {
-        const rootDomain = '.' + parts.slice(-2).join('.');
-        document.cookie = 'googtrans=' + val + '; ' + maxAge + ' domain=' + rootDomain + ';';
-      }
-    }
-  }
-}
-
-// Inject required CSS rules to completely eradicate Google Translate top banner, tooltips and lock layout
-function injectTranslationStyles() {
-  if (document.getElementById('hm-translation-styles')) return;
-  const style = document.createElement('style');
-  style.id = 'hm-translation-styles';
-  style.textContent = `
+    `,document.body.appendChild(v),document.getElementById("dhm-close-dash").addEventListener("click",()=>v.remove()),v.addEventListener("click",b=>{b.target===v&&v.remove()}),document.getElementById("dhm-send-dash-now").addEventListener("click",function(){this.textContent="Dispatching...",this.disabled=!0,window.sendMonthlyExecutiveDashboard(s,!0),setTimeout(()=>{v.remove()},1500)}),document.getElementById("dhm-export-dash-json").addEventListener("click",function(){const b=new Blob([JSON.stringify(l,null,2)],{type:"application/json"}),w=document.createElement("a");w.href=URL.createObjectURL(b),w.download=`dhm-executive-analytics-${s}.json`,w.click()})},(window.location.search.includes("admin=dashboard")||window.location.search.includes("admin_ai=1"))&&window.addEventListener("DOMContentLoaded",function(){setTimeout(window.dhmMonthlyDashboard,800)})})();const AppState={theme:localStorage.getItem("hm_theme")||"light",lang:localStorage.getItem("hm_lang")||"en",favorites:JSON.parse(localStorage.getItem("hm_favorites")||"[]"),mapInstance:null,mapMarkers:[]},DESTINATIONS_DB=[{id:"marrakech",title:"Marrakech",region:"Marrakech-Safi",category:"medina",price:180,currency:"EUR",rating:4.9,reviewsCount:340,img:"images/Marrakech/marrakech_11.jpg",badge:"Popular",desc:"Step into the heartbeat of Morocco. Explore bustling souks, hidden riads, Jemaa el-Fnaa square, and the Majorelle Garden.",lat:31.6295,lng:-7.9811,highlights:["Jemaa el-Fnaa Square","Bahia Palace & Saadian Tombs","Majorelle & YSL Museum","Spice Souks Walking Tour"],itinerary:[{day:"Day 1",text:"Arrival & Rooftop Tea overlooking Jemaa el-Fnaa"},{day:"Day 2",text:"Guided Medina & Bahia Palace Architectural Tour"},{day:"Day 3",text:"Jardin Majorelle & Traditional Moroccan Spa/Hammam"}]},{id:"merzouga",title:"Merzouga",region:"Dra\xE2-Tafilalet",category:"desert",price:290,currency:"EUR",rating:5,reviewsCount:420,img:"images/Merzouga/merzouga_1.jpg",badge:"Bucket List",desc:"Experience pure magic among golden dunes. Ride camels at sunset, sleep in a luxury Berber tent, and marvel at the Milky Way.",lat:31.0992,lng:-4.0116,highlights:["Sunset & Sunrise Camel Trek","Luxury Desert Camp with Private Bathroom","Berber Drumming & Campfire","Erg Chebbi Sandboarding"],itinerary:[{day:"Day 1",text:"Drive through High Atlas & Dades Gorge"},{day:"Day 2",text:"Sunset Camel Ride into Erg Chebbi Dunes"},{day:"Day 3",text:"Stargazing & Traditional Gnawa Music"}]},{id:"chefchaouen",title:"Chefchaouen",region:"Tanger-Tetouan-Al Hoceima",category:"mountain",price:150,currency:"EUR",rating:4.8,reviewsCount:290,img:"images/Chfchaouen/chefchaoun.jpg",badge:"Photogenic",desc:"Wander through world-famous cobalt blue alleyways nestled in the Rif Mountains. Unwind in relaxed cafes and artisan shops.",lat:35.1716,lng:-5.2697,highlights:["Photogenic Blue Medina","Spanish Mosque Sunset View","Ras El-Maa Waterfalls","Rif Mountain Trekking"],itinerary:[{day:"Day 1",text:"Arrival in Blue Pearl & Kasbah Exploration"},{day:"Day 2",text:"Hike to Spanish Mosque for Panoramic Views"}]},{id:"essaouira",title:"Essaouira",region:"Marrakech-Safi",category:"coastal",price:160,currency:"EUR",rating:4.9,reviewsCount:215,img:"images/Essaouira/essaouira_1.jpg",badge:"Relaxing",desc:"Breathe in Atlantic coastal ocean breezes, historic sea ramparts, fresh grilled seafood, and bohemian art galleries.",lat:31.5125,lng:-9.77,highlights:["18th-century Skala Ramparts","Fresh Port Seafood Grill","Kitesurfing & Beach Walk","Argan Oil Cooperative"],itinerary:[{day:"Day 1",text:"Ramparts Stroll & Sunset Port Dining"},{day:"Day 2",text:"Argan Forest & Beach Horse Riding"}]},{id:"ouarzazate",title:"Ouarzazate",region:"Dra\xE2-Tafilalet",category:"desert",price:210,currency:"EUR",rating:4.8,reviewsCount:180,img:"images/Ouarzazat/ouarzazat1.jpeg",badge:"UNESCO",desc:"Explore Morocco's Hollywood. Visit ancient earthen Kasbahs, UNESCO World Heritage fortress walls, and desert film studios.",lat:30.9189,lng:-6.8934,highlights:["Ait Benhaddou UNESCO Kasbah","Atlas Cinema Studios","Taourirt Kasbah Palace","Ounila Valley Scenic Drive"],itinerary:[{day:"Day 1",text:"Ait Benhaddou Guided Walk & Movie Set Tour"},{day:"Day 2",text:"Kasbah Taourirt & Oasis Exploration"}]},{id:"fes",title:"Fes",region:"F\xE8s-Mekn\xE8s",category:"medina",price:195,currency:"EUR",rating:4.9,reviewsCount:310,img:"images/Fes/fes_1.jpg",badge:"Heritage",desc:"Journey back in time in the world's largest car-free urban area. Discover Chouara Tanneries, Al-Qarawiyyin University, and intricate zellij tiles.",lat:34.0333,lng:-5,highlights:["Chouara Leather Tanneries","Al-Qarawiyyin Library","Bou Inania Medersa","Ceramic & Pottery Workshops"],itinerary:[{day:"Day 1",text:"Tanneries Tour & Ancient Souk Exploration"},{day:"Day 2",text:"Bab Boujeloud Gate & Pottery Crafting"}]},{id:"casablanca",title:"Casablanca",region:"Casablanca-Settat",category:"coastal",price:140,currency:"EUR",rating:4.7,reviewsCount:160,img:"images/Casablanca/casablanca.png",badge:"Modern Hub",desc:"Morocco's vibrant economic capital featuring the architectural masterpiece Hassan II Mosque perched directly over the Atlantic ocean.",lat:33.5731,lng:-7.5898,highlights:["Hassan II Mosque Ocean View","Corniche Promenade","Habous Quarter Architectural Tour","Rick's Caf\xE9 Experience"],itinerary:[{day:"Day 1",text:"Hassan II Mosque Guided Visit & Corniche Walk"},{day:"Day 2",text:"Habous Craft Market & Culinary Tasting"}]},{id:"zagora",title:"Zagora",region:"Dra\xE2-Tafilalet",category:"desert",price:220,currency:"EUR",rating:4.8,reviewsCount:190,img:"images/Zagora/zagora_hero.png",badge:"Sahara Gateway",desc:"Gateway to the Draa Valley. Palm groves, ancient earthen kasbahs, and authentic desert stargazing.",lat:30.3336,lng:-5.8264,highlights:["Draa Valley Palm Groves","Tamegroute Ancient Library","Sunset Camel Trek","Traditional Berber Music"],itinerary:[{day:"Day 1",text:"Draa Oasis Drive & Sunset Desert Camp"},{day:"Day 2",text:"Tamegroute Underground Kasbah Visit"}]},{id:"agadir",title:"Agadir",region:"Souss-Massa",category:"coastal",price:130,currency:"EUR",rating:4.7,reviewsCount:140,img:"images/Agadir/agadir_hero.png",badge:"Ocean Resort",desc:"Coastal breeze, golden sandy beaches, year-round sunshine, sea promenade, and Atlantic waters.",lat:30.4278,lng:-9.5981,highlights:["Agadir Kasbah Panoramic View","Souk El Had Shopping","Marina Promenade Dining","Taghazout Bay Surfing"],itinerary:[{day:"Day 1",text:"Kasbah Hill View & Beach Promenade Sunset"},{day:"Day 2",text:"Taghazout Coastal Trip & Argan Valley Tour"}]}],TRANSLATIONS={en:{nav_home:"Home",nav_destinations:"Destinations",nav_map:"Interactive Map",nav_about:"About Us",nav_reviews:"Reviews",nav_contact:"Contact",nav_favorites:"Wishlist",nav_book:"Book Now",hero_title:"Morocco Is Not Just A Destination. It's A Feeling.",hero_sub:"Discover hidden kasbahs, silent desert mornings under starry skies, and ancient medinas crafted by local storytellers.",search_placeholder:"Where to? e.g. Sahara, Chefchaouen",search_btn:"Explore Destinations",stats_routes:"Custom Routes",stats_travelers:"Happy Travelers",stats_destinations:"Iconic Destinations",stats_satisfaction:"Satisfaction Rate",why_title:"Why Hidden Morocco?",why_sub:"Handcrafted boutique private journeys tailored to your rhythm.",reviews_hero_title:"Traveler Reviews",reviews_hero_sub:"Authentic reviews shared by travelers exploring Morocco with us."},fr:{nav_home:"Accueil",nav_destinations:"Destinations",nav_map:"Carte Interactive",nav_about:"\xC0 Propos",nav_reviews:"Avis Clients",nav_contact:"Contact",nav_favorites:"Favoris",nav_book:"R\xE9server",hero_title:"Le Maroc N'est Pas Une Destination. C'est Une \xC9motion.",hero_sub:"Circuits priv\xE9s d'exception : kasbahs secr\xE8tes, nuits \xE9toil\xE9es dans le d\xE9sert du Sahara et m\xE9dinas imp\xE9riales avec nos guides locaux passionn\xE9s.",search_placeholder:"O\xF9 souhaitez-vous aller ? ex: Sahara, Chefchaouen",search_btn:"Rechercher",stats_routes:"Itin\xE9raires Sur-Mesure",stats_travelers:"Voyageurs Combl\xE9s",stats_destinations:"Destinations Embl\xE9matiques",stats_satisfaction:"Taux de Satisfaction",why_title:"Pourquoi Voyager Avec Nous ?",why_sub:"Des voyages priv\xE9s sur-mesure d'exception, con\xE7us selon votre propre rythme.",reviews_hero_title:"Avis de nos Voyageurs",reviews_hero_sub:"T\xE9moignages authentiques de voyageurs ayant explor\xE9 le Maroc avec nous."},es:{nav_home:"Inicio",nav_destinations:"Destinos",nav_map:"Mapa Interactivo",nav_about:"Sobre Nosotros",nav_reviews:"Opiniones",nav_contact:"Contacto",nav_favorites:"Deseos",nav_book:"Reservar Ahora",hero_title:"Marruecos No Es Solo Un Destino. Es Una Emoci\xF3n.",hero_sub:"Rutas privadas exclusivas por alcazabas ocultas, ma\xF1anas des\xE9rticas bajo las estrellas y medinas hist\xF3ricas de la mano de gu\xEDas locales.",search_placeholder:"\xBFA d\xF3nde quieres ir? ej: Sahara, Chefchaouen",search_btn:"Buscar Destinos",stats_routes:"Rutas Personalizadas",stats_travelers:"Viajeros Felices",stats_destinations:"Destinos Ic\xF3nicos",stats_satisfaction:"Tasa de Satisfacci\xF3n",why_title:"\xBFPor Qu\xE9 Elegirnos?",why_sub:"Viajes privados exclusivos dise\xF1ados a la medida de tus sue\xF1os y de tu ritmo.",reviews_hero_title:"Opiniones de Viajeros",reviews_hero_sub:"Rese\xF1as aut\xE9nticas de viajeros que exploraron Marruecos con nosotros."},ar:{nav_home:"\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629",nav_destinations:"\u0627\u0644\u0648\u062C\u0647\u0627\u062A",nav_map:"\u0627\u0644\u062E\u0631\u064A\u0637\u0629 \u0627\u0644\u062A\u0641\u0627\u0639\u0644\u064A\u0629",nav_about:"\u0645\u0646 \u0646\u062D\u0646",nav_reviews:"\u0622\u0631\u0627\u0621 \u0627\u0644\u0639\u0645\u0644\u0627\u0621",nav_contact:"\u0627\u062A\u0635\u0644 \u0628\u0646\u0627",nav_favorites:"\u0627\u0644\u0645\u0641\u0636\u0644\u0629",nav_book:"\u0627\u062D\u062C\u0632 \u0627\u0644\u0622\u0646",hero_title:"\u0627\u0644\u0645\u063A\u0631\u0628 \u0644\u064A\u0633 \u0645\u062C\u0631\u062F \u0648\u062C\u0647\u0629.. \u0628\u0644 \u062A\u062C\u0631\u0628\u0629 \u062A\u0639\u0627\u0634",hero_sub:"\u0631\u062D\u0644\u0627\u062A \u062E\u0627\u0635\u0629 \u0631\u0627\u0642\u064A\u0629 \u0639\u0628\u0631 \u0627\u0644\u0642\u0635\u0628\u0627\u062A \u0627\u0644\u062A\u0627\u0631\u064A\u062E\u064A\u0629\u060C \u0631\u0645\u0627\u0644 \u0627\u0644\u0635\u062D\u0631\u0627\u0621 \u0627\u0644\u0643\u0628\u0631\u0649\u060C \u0648\u0627\u0644\u0645\u062F\u0646 \u0627\u0644\u0639\u062A\u064A\u0642\u0629 \u0628\u0635\u062D\u0628\u0629 \u0623\u0641\u0636\u0644 \u0627\u0644\u0645\u0631\u0634\u062F\u064A\u0646 \u0627\u0644\u0645\u062D\u0644\u064A\u064A\u0646.",search_placeholder:"\u0625\u0644\u0649 \u0623\u064A\u0646 \u062A\u0631\u064A\u062F \u0627\u0644\u0630\u0647\u0627\u0628\u061F \u0645\u062B\u0644\u0627\u064B: \u0627\u0644\u0635\u062D\u0631\u0627\u0621\u060C \u0634\u0641\u0634\u0627\u0648\u0646",search_btn:"\u0627\u0633\u062A\u0643\u0634\u0641 \u0627\u0644\u0648\u062C\u0647\u0627\u062A",stats_routes:"\u0645\u0633\u0627\u0631\u0627\u062A \u0645\u062E\u0635\u0635\u0629",stats_travelers:"\u0645\u0633\u0627\u0641\u0631\u0648\u0646 \u0633\u0639\u062F\u0627\u0621",stats_destinations:"\u0648\u062C\u0647\u0627\u062A \u0645\u0645\u064A\u0632\u0629",stats_satisfaction:"\u0646\u0633\u0628\u0629 \u0627\u0644\u0631\u0636\u0627",why_title:"\u0644\u0645\u0627\u0630\u0627 \u062A\u062E\u062A\u0627\u0631\u0646\u0627\u061F",why_sub:"\u0631\u062D\u0644\u0627\u062A \u062E\u0627\u0635\u0629 \u0631\u0627\u0642\u064A\u0629 \u0645\u0635\u0645\u0645\u0629 \u062E\u0635\u064A\u0635\u0627\u064B \u0639\u0644\u0649 \u0645\u0642\u0627\u0633\u0643 \u0648\u0628\u0623\u062F\u0642 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0644\u062A\u0644\u0627\u0626\u0645 \u0631\u063A\u0628\u0627\u062A\u0643.",reviews_hero_title:"\u0622\u0631\u0627\u0621 \u0648\u062A\u0642\u064A\u064A\u0645\u0627\u062A \u0627\u0644\u0645\u0633\u0627\u0641\u0631\u064A\u0646",reviews_hero_sub:"\u062A\u062C\u0627\u0631\u0628 \u0648\u062A\u0648\u0635\u064A\u0627\u062A \u062D\u0642\u064A\u0642\u064A\u0629 \u0645\u0646 \u0645\u0633\u0627\u0641\u0631\u064A\u0646 \u0639\u0627\u0634\u0648\u0627 \u0633\u062D\u0631 \u0627\u0644\u0645\u063A\u0631\u0628 \u0645\u0639\u0646\u0627."}};document.addEventListener("DOMContentLoaded",()=>{initTheme(),initLanguage(),initWishlistBadge(),initBackToTop(),initStickyNav(),initSearchEngine(),initCounters(),document.getElementById("interactiveMap")&&initMapPage(),document.getElementById("homeMapPreview")&&initHomeMapPreview(),document.getElementById("destinationsGrid")&&renderDestinationsGrid(),document.getElementById("favoritesGrid")&&renderFavoritesGrid()});function initTheme(){document.documentElement.setAttribute("data-theme",AppState.theme),document.body&&document.body.setAttribute("data-theme",AppState.theme),updateThemeIcon(),document.querySelectorAll(".theme-toggle").forEach(e=>{e.addEventListener("click",()=>{AppState.theme=AppState.theme==="light"?"dark":"light",localStorage.setItem("hm_theme",AppState.theme),document.documentElement.setAttribute("data-theme",AppState.theme),document.body&&document.body.setAttribute("data-theme",AppState.theme),updateThemeIcon(),showToast(`Switched to ${AppState.theme.toUpperCase()} mode \u2728`);try{const t=AppState.theme==="dark"?"dark":"light";window.chatbot&&typeof window.chatbot.setTheme=="function"?window.chatbot.setTheme(t):window.chatbase&&typeof window.chatbase=="function"&&window.chatbase("setOptions",{theme:t});const a=document.getElementById("chatbase-bubble-window");a&&(a.style.setProperty("background-color",t==="dark"?"#151515":"#FFFFFF","important"),a.style.setProperty("box-shadow","0 0 25px rgba(200, 90, 50, 0.4)","important"),a.style.setProperty("border","1px solid rgba(200, 90, 50, 0.4)","important"));const o=document.getElementById("chatbase-bubble-button");o&&o.style.setProperty("background",t==="dark"?"#1E1E1E":"#FFFFFF","important")}catch{}})})}function updateThemeIcon(){document.querySelectorAll(".theme-toggle").forEach(e=>{e.innerHTML=AppState.theme==="dark"?'<i class="fa-solid fa-sun" style="color: #F59E0B; transform: rotate(360deg); transition: all 0.4s ease;"></i>':'<i class="fa-solid fa-moon" style="transition: all 0.4s ease;"></i>'})}const SUPPORTED_LANGUAGES=[{code:"en",label:"EN"},{code:"fr",label:"FR"},{code:"es",label:"ES"},{code:"ar",label:"AR"},{code:"de",label:"DE"},{code:"it",label:"IT"},{code:"pt",label:"PT"},{code:"ru",label:"RU"},{code:"zh-CN",label:"ZH"},{code:"ja",label:"JA"}];function setGoogleTransCookie(e){const t=!e||e.toLowerCase()==="en",a="expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";document.cookie="googtrans=;"+a;const o=window.location.hostname;if(o&&o!=="localhost"){document.cookie="googtrans=;"+a+" domain="+o+";";const i=o.split(".");if(i.length>=2){const n="."+i.slice(-2).join(".");document.cookie="googtrans=;"+a+" domain="+n+";"}}if(!t){const i="/en/"+e,n="max-age=31536000; path=/;";if(document.cookie="googtrans="+i+"; "+n,o&&o!=="localhost"){document.cookie="googtrans="+i+"; "+n+" domain="+o+";";const r=o.split(".");if(r.length>=2){const d="."+r.slice(-2).join(".");document.cookie="googtrans="+i+"; "+n+" domain="+d+";"}}}}function injectTranslationStyles(){if(document.getElementById("hm-translation-styles"))return;const e=document.createElement("style");e.id="hm-translation-styles",e.textContent=`
     /* 1. Completely Eradicate Google Translate Top Banner / Frame */
     .VIpgJd-ZVi9od-ORHb-OEVmcd,
     .VIpgJd-ZVi9I-ORHb-OEVmcd,
@@ -1379,439 +208,24 @@ function injectTranslationStyles() {
       background: #1E1E1E !important;
       color: #F8FAFC !important;
     }
-  `;
-  document.head.prepend(style);
-}
-
-// Active DOM killer that continuously destroys the Google banner iframe, cancels body shift, and keeps LTR layout
-function startGoogleBannerKiller() {
-  const kill = () => {
-    const badElements = document.querySelectorAll(
-      'iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[class*="VIpgJd"], ' +
-      '.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9I-ORHb-OEVmcd, ' +
-      'iframe[id*=":1.container"], iframe[id*=":2.container"], ' +
-      'iframe[src*="translate.google"], .goog-te-banner-frame'
-    );
-    badElements.forEach(el => {
-      el.style.setProperty('display', 'none', 'important');
-      el.style.setProperty('visibility', 'hidden', 'important');
-      el.style.setProperty('height', '0px', 'important');
-      el.style.setProperty('width', '0px', 'important');
-      el.style.setProperty('opacity', '0', 'important');
-      el.style.setProperty('pointer-events', 'none', 'important');
-    });
-
-    if (document.body && document.body.style.top && document.body.style.top !== '0px') {
-      document.body.style.setProperty('top', '0px', 'important');
-    }
-  };
-
-  kill();
-  const killTooltips = () => {
-    const tt = document.getElementById('goog-gt-tt');
-    if (tt) tt.remove();
-    document.querySelectorAll('.goog-te-balloon-frame, .goog-tooltip').forEach(el => el.remove());
-  };
-  killTooltips();
-  document.addEventListener('mouseover', killTooltips, { passive: true });
-}
-
-// Inject preconnect links for instant network resolution
-function injectPreconnect() {
-  ['https://translate.googleapis.com', 'https://translate.google.com'].forEach(href => {
-    if (!document.querySelector('link[href="' + href + '"]')) {
-      const link = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = href;
-      document.head.appendChild(link);
-    }
-  });
-}
-
-// Global Google Translate Element init callback
-window.googleTranslateElementInit = function() {
-  try {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,fr,es,ar,de,it,pt,ru,zh-CN,ja',
-      autoDisplay: false
-    }, 'google_translate_element');
-  } catch(e) {
-    console.warn('Google Translate initialization:', e);
-  }
-};
-
-// Ensure Google Translate script and mount are loaded
-function ensureGoogleTranslateLoaded() {
-  injectPreconnect();
-  injectTranslationStyles();
-  startGoogleBannerKiller();
-  
-  if (!document.getElementById('google_translate_element')) {
-    const div = document.createElement('div');
-    div.id = 'google_translate_element';
-    document.body.appendChild(div);
-  }
-
-  if (!document.querySelector('script[src*="translate.google.com"]') && !document.querySelector('script[src*="translate_a/element.js"]')) {
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    document.head.appendChild(s);
-  }
-}
-
-// Populate all selects with permanent Latin abbreviations that Google Translate cannot alter
-function populateLanguageSelects() {
-  const optionsHtml = SUPPORTED_LANGUAGES.map(lang => 
-    '<option value="' + lang.code + '" class="notranslate" translate="no">' + lang.label + '</option>'
-  ).join('');
-
-  const allSelects = document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select');
-  allSelects.forEach(select => {
-    select.classList.add('notranslate');
-    select.setAttribute('translate', 'no');
-    if (select.parentElement) {
-      select.parentElement.classList.add('notranslate');
-      select.parentElement.setAttribute('translate', 'no');
-    }
-    select.innerHTML = optionsHtml;
-    select.value = AppState.lang;
-  });
-}
-
-function handleLangChange(e) {
-  setLanguage(e.target.value);
-}
-
-function initLanguage() {
-  // 1. Detect saved language (cookie first, then localStorage)
-  let savedLang = 'en';
-  const cookieMatch = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([a-zA-Z-]+)/);
-  if (cookieMatch && cookieMatch[1]) {
-    savedLang = cookieMatch[1];
-  } else {
-    const stored = localStorage.getItem('hm_lang');
-    if (stored) savedLang = stored;
-  }
-
-  AppState.lang = savedLang;
-
-  // 2. Strict LTR direction - do NOT flip layout
-  document.documentElement.setAttribute('dir', 'ltr');
-  document.documentElement.setAttribute('lang', savedLang);
-
-  // 3. Populate dropdowns with permanent abbreviations
-  populateLanguageSelects();
-
-  // 4. Attach change listeners
-  document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select').forEach(select => {
-    select.removeEventListener('change', handleLangChange);
-    select.addEventListener('change', handleLangChange);
-  });
-
-  // 5. Ensure Google Translate is mounted and loaded ONLY if not English
-  if (savedLang !== 'en' || (document.cookie && document.cookie.includes('googtrans'))) {
-    ensureGoogleTranslateLoaded();
-  } else {
-    document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select').forEach(sel => {
-      sel.addEventListener('focus', ensureGoogleTranslateLoaded, { once: true, passive: true });
-      sel.addEventListener('pointerdown', ensureGoogleTranslateLoaded, { once: true, passive: true });
-      sel.addEventListener('touchstart', ensureGoogleTranslateLoaded, { once: true, passive: true });
-    });
-  }
-
-  // 6. Apply instant local dictionary if present
-  applyTranslations();
-
-  // 7. If non-English was selected in storage but cookie is missing, set cookie and reload safely
-  if (savedLang !== 'en' && !document.cookie.includes('/en/' + savedLang)) {
-    setGoogleTransCookie(savedLang);
-    let targetPath = window.location.pathname;
-    if (!targetPath.endsWith('.html') && targetPath !== '/' && !targetPath.endsWith('/')) {
-      targetPath = targetPath + '.html';
-    }
-    window.location.href = window.location.origin + targetPath + window.location.search + window.location.hash;
-  }
-}
-
-function setLanguage(langKey) {
-  if (!langKey) return;
-
-  const prevLang = AppState.lang || localStorage.getItem('hm_lang') || 'en';
-  AppState.lang = langKey;
-  localStorage.setItem('hm_lang', langKey);
-  sessionStorage.setItem('hm_lang', langKey);
-
-  // Sync all select elements immediately
-  document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select').forEach(sel => {
-    sel.value = langKey;
-  });
-
-  // Set the cookie across all domain scopes
-  setGoogleTransCookie(langKey);
-
-  // Always keep LTR layout
-  document.documentElement.setAttribute('dir', 'ltr');
-  document.documentElement.setAttribute('lang', langKey);
-
-  // Apply local dictionary
-  applyTranslations();
-
-  // Show feedback
-  showToast('Language set to ' + langKey.toUpperCase());
-
-  // Auto-close mobile menu drawer if open so visitor immediately sees the translated page
-  const navLinks = document.getElementById('navLinks') || document.querySelector('.hn-links');
-  const hamburger = document.querySelector('.hamburger');
-  if (navLinks) {
-    setTimeout(() => {
-      navLinks.classList.remove('open', 'active', 'hn-links-open');
-      if (hamburger) hamburger.classList.remove('is-active');
-    }, 250);
-  }
-
-  // 1. First try live instant translation via Google Translate internal combo (ZERO page reload)
-  let liveTranslated = false;
-  const gtCombo = document.querySelector('.goog-te-combo');
-  if (gtCombo) {
-    gtCombo.value = langKey;
-    gtCombo.dispatchEvent(new Event('change'));
-    liveTranslated = true;
-  }
-
-  // 2. Fallback: if Google combo not yet rendered and language changed, reload safely targeting the real .html file
-  if (!liveTranslated && langKey !== prevLang) {
-    setTimeout(() => {
-      let targetPath = window.location.pathname;
-      if (!targetPath.endsWith('.html') && targetPath !== '/' && !targetPath.endsWith('/')) {
-        targetPath = targetPath + '.html';
-      }
-      window.location.href = window.location.origin + targetPath + window.location.search + window.location.hash;
-    }, 150);
-  }
-}
-
-function applyTranslations() {
-  const dict = TRANSLATIONS[AppState.lang] || TRANSLATIONS.en;
-  if (!dict) return;
-  document.querySelectorAll('h1, h2, .page-hero h1').forEach(el => {
-    if (el.textContent.includes('Voices of Our Travelers') || el.textContent.includes('Voix de nos') || el.textContent.includes('أصوات مسافرينا')) {
-      el.textContent = dict.reviews_hero_title || 'Traveler Reviews';
-    }
-  });
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      if (el.tagName === 'INPUT' && el.type === 'text') {
-        el.placeholder = dict[key];
-      } else {
-        el.textContent = dict[key];
-      }
-    }
-  });
-}
-
-
-// ── Wishlist / Favorites Engine ────────────────────────────────────────────
-function isFavorite(id) {
-  return AppState.favorites.includes(id);
-}
-
-function toggleFavorite(id, e) {
-  if (e) e.stopPropagation();
-  const idx = AppState.favorites.indexOf(id);
-  if (idx > -1) {
-    AppState.favorites.splice(idx, 1);
-    showToast("Removed from Wishlist");
-  } else {
-    AppState.favorites.push(id);
-    showToast("Added to Wishlist! ✨");
-  }
-  localStorage.setItem('hm_favorites', JSON.stringify(AppState.favorites));
-  initWishlistBadge();
-
-  document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
-    btn.classList.toggle('is-active', isFavorite(id));
-    btn.innerHTML = isFavorite(id) ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
-  });
-
-  if (document.getElementById('favoritesGrid')) {
-    renderFavoritesGrid();
-  }
-}
-
-function initWishlistBadge() {
-  const count = AppState.favorites.length;
-  document.querySelectorAll('.fav-count-badge').forEach(badge => {
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'inline-flex' : 'none';
-  });
-}
-
-// ── Floating Back-to-Top Button Engine ─────────────────────────────────────
-function initBackToTop() {
-  let btn = document.getElementById('backToTop');
-  if (!btn) {
-    btn = document.createElement('button');
-    btn.id = 'backToTop';
-    btn.setAttribute('aria-label', 'Back to Top');
-    btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
-    document.body.appendChild(btn);
-  }
-
-  const toggleVisibility = () => {
-    if (window.scrollY > 350) {
-      btn.classList.add('is-visible');
-    } else {
-      btn.classList.remove('is-visible');
-    }
-  };
-
-  window.addEventListener('scroll', toggleVisibility, { passive: true });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-// ── Sticky Navigation Scroll Effect ─────────────────────────────────────────
-function initStickyNav() {
-  const nav = document.getElementById('siteNav');
-  if (!nav) return;
-
-  const handleScroll = () => {
-    if (window.scrollY > 40) {
-      nav.classList.add('glass-nav');
-    } else {
-      nav.classList.remove('glass-nav');
-    }
-  };
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
-}
-
-window.toggleMobileMenu = function (e) {
-  if (e && e.stopPropagation) e.stopPropagation();
-  const menus = document.querySelectorAll('.hn-links, .nav-links, #premNavLinks, #navLinks');
-  const hburgs = document.querySelectorAll('.hamburger, .hburg');
-  const backdrops = document.querySelectorAll('.drawer-backdrop');
-
-  let isOpen = false;
-  menus.forEach(menu => {
-    menu.classList.toggle('hn-links-open');
-    menu.classList.toggle('open');
-    menu.classList.toggle('active');
-    if (menu.classList.contains('open') || menu.classList.contains('hn-links-open')) {
-      isOpen = true;
-    }
-  });
-
-  hburgs.forEach(btn => {
-    if (isOpen) btn.classList.add('is-active');
-    else btn.classList.remove('is-active');
-  });
-
-  backdrops.forEach(bd => {
-    if (isOpen) bd.classList.add('drawer-backdrop-open');
-    else bd.classList.remove('drawer-backdrop-open');
-  });
-};
-
-document.addEventListener('click', (e) => {
-  const isLinkClick = e.target.closest('a[href]');
-  const isCloseBtn = e.target.closest('.mobile-menu-close');
-  const isBackdrop = e.target.closest('.drawer-backdrop');
-  const isNavClick = e.target.closest('.hn-links, .nav-links, #premNavLinks, #navLinks, .hamburger, .hburg');
-
-  if (isLinkClick && !isCloseBtn) {
-    return;
-  }
-
-  if (isCloseBtn || isBackdrop || !isNavClick) {
-    document.querySelectorAll('.hn-links, .nav-links, #premNavLinks, #navLinks').forEach(m => {
-      m.classList.remove('hn-links-open', 'open', 'active');
-    });
-    document.querySelectorAll('.hamburger, .hburg').forEach(btn => {
-      btn.classList.remove('is-active');
-    });
-    document.querySelectorAll('.drawer-backdrop').forEach(bd => {
-      bd.classList.remove('drawer-backdrop-open');
-    });
-  }
-});
-
-// ── Live Destination Search Engine ─────────────────────────────────────────
-function initSearchEngine() {
-  const input = document.getElementById('heroSearchInput');
-  if (!input) return;
-
-  input.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    if (query.length === 0) {
-      renderDestinationsGrid();
-      return;
-    }
-    const filtered = DESTINATIONS_DB.filter(d =>
-      d.title.toLowerCase().includes(query) ||
-      d.desc.toLowerCase().includes(query) ||
-      d.region.toLowerCase().includes(query)
-    );
-    renderDestinationsGrid(filtered);
-  });
-}
-
-// ── Animated Number Counters Engine ────────────────────────────────────────
-function initCounters() {
-  const statElements = document.querySelectorAll('.stat-num, .stat-number');
-  if (statElements.length === 0) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.getAttribute('data-target') || '0', 10);
-        let start = 0;
-        const duration = 1800;
-        const stepTime = Math.abs(Math.floor(duration / target));
-
-        const timer = setInterval(() => {
-          start += Math.ceil(target / 40);
-          if (start >= target) {
-            el.textContent = target;
-            clearInterval(timer);
-          } else {
-            el.textContent = start;
-          }
-        }, stepTime);
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  statElements.forEach(el => observer.observe(el));
-}
-
-// ── Dynamic Destinations Card Generator ────────────────────────────────────
-function createCardHTML(dest) {
-  const favActive = isFavorite(dest.id);
-  return `
+  `,document.head.prepend(e)}function startGoogleBannerKiller(){document.querySelectorAll('iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[class*="VIpgJd"], .VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9I-ORHb-OEVmcd, iframe[id*=":1.container"], iframe[id*=":2.container"], iframe[src*="translate.google"], .goog-te-banner-frame').forEach(o=>{o.style.setProperty("display","none","important"),o.style.setProperty("visibility","hidden","important"),o.style.setProperty("height","0px","important"),o.style.setProperty("width","0px","important"),o.style.setProperty("opacity","0","important"),o.style.setProperty("pointer-events","none","important")}),document.body&&document.body.style.top&&document.body.style.top!=="0px"&&document.body.style.setProperty("top","0px","important");const t=()=>{const a=document.getElementById("goog-gt-tt");a&&a.remove(),document.querySelectorAll(".goog-te-balloon-frame, .goog-tooltip").forEach(o=>o.remove())};t(),document.addEventListener("mouseover",t,{passive:!0})}function injectPreconnect(){["https://translate.googleapis.com","https://translate.google.com"].forEach(e=>{if(!document.querySelector('link[href="'+e+'"]')){const t=document.createElement("link");t.rel="preconnect",t.href=e,document.head.appendChild(t)}})}window.googleTranslateElementInit=function(){try{new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"en,fr,es,ar,de,it,pt,ru,zh-CN,ja",autoDisplay:!1},"google_translate_element")}catch(e){console.warn("Google Translate initialization:",e)}};function ensureGoogleTranslateLoaded(){if(injectPreconnect(),injectTranslationStyles(),startGoogleBannerKiller(),!document.getElementById("google_translate_element")){const e=document.createElement("div");e.id="google_translate_element",document.body.appendChild(e)}if(!document.querySelector('script[src*="translate.google.com"]')&&!document.querySelector('script[src*="translate_a/element.js"]')){const e=document.createElement("script");e.type="text/javascript",e.src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit",document.head.appendChild(e)}}function populateLanguageSelects(){const e=SUPPORTED_LANGUAGES.map(a=>'<option value="'+a.code+'" class="notranslate" translate="no">'+a.label+"</option>").join("");document.querySelectorAll("#langSwitcher, .lang-switcher, .mobile-lang-select").forEach(a=>{a.classList.add("notranslate"),a.setAttribute("translate","no"),a.parentElement&&(a.parentElement.classList.add("notranslate"),a.parentElement.setAttribute("translate","no")),a.innerHTML=e,a.value=AppState.lang})}function handleLangChange(e){setLanguage(e.target.value)}function initLanguage(){let e="en";const t=document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([a-zA-Z-]+)/);if(t&&t[1])e=t[1];else{const a=localStorage.getItem("hm_lang");a&&(e=a)}if(AppState.lang=e,document.documentElement.setAttribute("dir","ltr"),document.documentElement.setAttribute("lang",e),populateLanguageSelects(),document.querySelectorAll("#langSwitcher, .lang-switcher, .mobile-lang-select").forEach(a=>{a.removeEventListener("change",handleLangChange),a.addEventListener("change",handleLangChange)}),e!=="en"||document.cookie&&document.cookie.includes("googtrans")?ensureGoogleTranslateLoaded():document.querySelectorAll("#langSwitcher, .lang-switcher, .mobile-lang-select").forEach(a=>{a.addEventListener("focus",ensureGoogleTranslateLoaded,{once:!0,passive:!0}),a.addEventListener("pointerdown",ensureGoogleTranslateLoaded,{once:!0,passive:!0}),a.addEventListener("touchstart",ensureGoogleTranslateLoaded,{once:!0,passive:!0})}),applyTranslations(),e!=="en"&&!document.cookie.includes("/en/"+e)){setGoogleTransCookie(e);let a=window.location.pathname;!a.endsWith(".html")&&a!=="/"&&!a.endsWith("/")&&(a=a+".html"),window.location.href=window.location.origin+a+window.location.search+window.location.hash}}function setLanguage(e){if(!e)return;const t=AppState.lang||localStorage.getItem("hm_lang")||"en";AppState.lang=e,localStorage.setItem("hm_lang",e),sessionStorage.setItem("hm_lang",e),document.querySelectorAll("#langSwitcher, .lang-switcher, .mobile-lang-select").forEach(r=>{r.value=e}),setGoogleTransCookie(e),document.documentElement.setAttribute("dir","ltr"),document.documentElement.setAttribute("lang",e),applyTranslations(),showToast("Language set to "+e.toUpperCase());const a=document.getElementById("navLinks")||document.querySelector(".hn-links"),o=document.querySelector(".hamburger");a&&setTimeout(()=>{a.classList.remove("open","active","hn-links-open"),o&&o.classList.remove("is-active")},250);let i=!1;const n=document.querySelector(".goog-te-combo");n&&(n.value=e,n.dispatchEvent(new Event("change")),i=!0),!i&&e!==t&&setTimeout(()=>{let r=window.location.pathname;!r.endsWith(".html")&&r!=="/"&&!r.endsWith("/")&&(r=r+".html"),window.location.href=window.location.origin+r+window.location.search+window.location.hash},150)}function applyTranslations(){const e=TRANSLATIONS[AppState.lang]||TRANSLATIONS.en;e&&(document.querySelectorAll("h1, h2, .page-hero h1").forEach(t=>{(t.textContent.includes("Voices of Our Travelers")||t.textContent.includes("Voix de nos")||t.textContent.includes("\u0623\u0635\u0648\u0627\u062A \u0645\u0633\u0627\u0641\u0631\u064A\u0646\u0627"))&&(t.textContent=e.reviews_hero_title||"Traveler Reviews")}),document.querySelectorAll("[data-i18n]").forEach(t=>{const a=t.getAttribute("data-i18n");e[a]&&(t.tagName==="INPUT"&&t.type==="text"?t.placeholder=e[a]:t.textContent=e[a])}))}function isFavorite(e){return AppState.favorites.includes(e)}function toggleFavorite(e,t){t&&t.stopPropagation();const a=AppState.favorites.indexOf(e);a>-1?(AppState.favorites.splice(a,1),showToast("Removed from Wishlist")):(AppState.favorites.push(e),showToast("Added to Wishlist! \u2728")),localStorage.setItem("hm_favorites",JSON.stringify(AppState.favorites)),initWishlistBadge(),document.querySelectorAll(`.fav-btn[data-id="${e}"]`).forEach(o=>{o.classList.toggle("is-active",isFavorite(e)),o.innerHTML=isFavorite(e)?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>'}),document.getElementById("favoritesGrid")&&renderFavoritesGrid()}function initWishlistBadge(){const e=AppState.favorites.length;document.querySelectorAll(".fav-count-badge").forEach(t=>{t.textContent=e,t.style.display=e>0?"inline-flex":"none"})}function initBackToTop(){let e=document.getElementById("backToTop");e||(e=document.createElement("button"),e.id="backToTop",e.setAttribute("aria-label","Back to Top"),e.innerHTML='<i class="fa-solid fa-arrow-up"></i>',document.body.appendChild(e));const t=()=>{window.scrollY>350?e.classList.add("is-visible"):e.classList.remove("is-visible")};window.addEventListener("scroll",t,{passive:!0}),e.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"})})}function initStickyNav(){const e=document.getElementById("siteNav");if(!e)return;const t=()=>{window.scrollY>40?e.classList.add("glass-nav"):e.classList.remove("glass-nav")};window.addEventListener("scroll",t,{passive:!0}),t()}window.toggleMobileMenu=function(e){e&&e.stopPropagation&&e.stopPropagation();const t=document.querySelectorAll(".hn-links, .nav-links, #premNavLinks, #navLinks"),a=document.querySelectorAll(".hamburger, .hburg"),o=document.querySelectorAll(".drawer-backdrop");let i=!1;t.forEach(n=>{n.classList.toggle("hn-links-open"),n.classList.toggle("open"),n.classList.toggle("active"),(n.classList.contains("open")||n.classList.contains("hn-links-open"))&&(i=!0)}),a.forEach(n=>{i?n.classList.add("is-active"):n.classList.remove("is-active")}),o.forEach(n=>{i?n.classList.add("drawer-backdrop-open"):n.classList.remove("drawer-backdrop-open")})},document.addEventListener("click",e=>{const t=e.target.closest("a[href]"),a=e.target.closest(".mobile-menu-close"),o=e.target.closest(".drawer-backdrop"),i=e.target.closest(".hn-links, .nav-links, #premNavLinks, #navLinks, .hamburger, .hburg");t&&!a||(a||o||!i)&&(document.querySelectorAll(".hn-links, .nav-links, #premNavLinks, #navLinks").forEach(n=>{n.classList.remove("hn-links-open","open","active")}),document.querySelectorAll(".hamburger, .hburg").forEach(n=>{n.classList.remove("is-active")}),document.querySelectorAll(".drawer-backdrop").forEach(n=>{n.classList.remove("drawer-backdrop-open")}))});function initSearchEngine(){const e=document.getElementById("heroSearchInput");e&&e.addEventListener("input",t=>{const a=t.target.value.toLowerCase().trim();if(a.length===0){renderDestinationsGrid();return}const o=DESTINATIONS_DB.filter(i=>i.title.toLowerCase().includes(a)||i.desc.toLowerCase().includes(a)||i.region.toLowerCase().includes(a));renderDestinationsGrid(o)})}function initCounters(){const e=document.querySelectorAll(".stat-num, .stat-number");if(e.length===0)return;const t=new IntersectionObserver(a=>{a.forEach(o=>{if(o.isIntersecting){const i=o.target,n=parseInt(i.getAttribute("data-target")||"0",10);let r=0;const u=Math.abs(Math.floor(1800/n)),g=setInterval(()=>{r+=Math.ceil(n/40),r>=n?(i.textContent=n,clearInterval(g)):i.textContent=r},u);t.unobserve(i)}})},{threshold:.4});e.forEach(a=>t.observe(a))}function createCardHTML(e){const t=isFavorite(e.id);return`
     <div class="card glass-panel hover-lift">
       <div class="card-img-wrapper">
-        <img src="${dest.img}" alt="${dest.title}" loading="lazy">
-        <span class="badge badge-gold card-badge">✦ ${dest.badge}</span>
-        <button class="fav-btn card-fav-btn ${favActive ? 'is-active' : ''}" data-id="${dest.id}" onclick="toggleFavorite('${dest.id}', event)" aria-label="Add to Wishlist">
-          <i class="fa-${favActive ? 'solid' : 'regular'} fa-heart"></i>
+        <img src="${e.img}" alt="${e.title}" loading="lazy">
+        <span class="badge badge-gold card-badge">\u2726 ${e.badge}</span>
+        <button class="fav-btn card-fav-btn ${t?"is-active":""}" data-id="${e.id}" onclick="toggleFavorite('${e.id}', event)" aria-label="Add to Wishlist">
+          <i class="fa-${t?"solid":"regular"} fa-heart"></i>
         </button>
       </div>
 
       <div class="card-content">
-        <h3>${dest.title}</h3>
+        <h3>${e.title}</h3>
         <div class="card-meta-row">
-          <span class="card-region"><i class="fa-solid fa-location-dot"></i> ${dest.region}</span>
-          <div class="card-rating"><i class="fa-solid fa-star"></i> ${dest.rating} (${dest.reviewsCount || 100})</div>
+          <span class="card-region"><i class="fa-solid fa-location-dot"></i> ${e.region}</span>
+          <div class="card-rating"><i class="fa-solid fa-star"></i> ${e.rating} (${e.reviewsCount||100})</div>
         </div>
 
-        <p>${dest.desc}</p>
+        <p>${e.desc}</p>
 
         <div class="card-footer-row">
           <div>
@@ -1819,419 +233,48 @@ function createCardHTML(dest) {
             <div class="card-price-val" style="font-size: 0.95rem; font-weight: 700;">Price on Request</div>
           </div>
           <div class="card-btns">
-            <a href="destinations.html#${dest.id}" class="btn-primary">Explore <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="destinations.html#${e.id}" class="btn-primary">Explore <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
       </div>
     </div>
-  `;
-}
-
-function renderDestinationsGrid(list = DESTINATIONS_DB) {
-  const container = document.getElementById('destinationsGrid');
-  if (!container) return;
-  container.innerHTML = list.map(createCardHTML).join('');
-}
-
-function renderFavoritesGrid() {
-  const container = document.getElementById('favoritesGrid');
-  if (!container) return;
-
-  const saved = DESTINATIONS_DB.filter(d => isFavorite(d.id));
-  if (saved.length === 0) {
-    container.innerHTML = `
+  `}function renderDestinationsGrid(e=DESTINATIONS_DB){const t=document.getElementById("destinationsGrid");t&&(t.innerHTML=e.map(createCardHTML).join(""))}function renderFavoritesGrid(){const e=document.getElementById("favoritesGrid");if(!e)return;const t=DESTINATIONS_DB.filter(a=>isFavorite(a.id));t.length===0?e.innerHTML=`
       <div style="grid-column: 1 / -1; text-align: center; padding: 80px 20px;">
         <i class="fa-regular fa-heart" style="font-size: 3.5rem; color: var(--hm-text-muted); margin-bottom: 20px;"></i>
         <h3 style="font-family: var(--hm-font-serif); font-size: 1.8rem; margin-bottom: 12px;">Your Wishlist is Empty</h3>
         <p style="color: var(--hm-text-muted); margin-bottom: 28px;">Explore our handcrafted Moroccan expeditions and tap the heart icon to save your dream journeys.</p>
         <a href="destinations.html" class="btn-primary">Explore Destinations <i class="fa-solid fa-compass"></i></a>
       </div>
-    `;
-  } else {
-    container.innerHTML = saved.map(createCardHTML).join('');
-  }
-}
-
-// ── Toast Notification System ──────────────────────────────────────────────
-function showToast(message) {
-  let toastContainer = document.getElementById('toastContainer');
-  if (!toastContainer) {
-    toastContainer = document.createElement('div');
-    toastContainer.id = 'toastContainer';
-    toastContainer.style.cssText = `
+    `:e.innerHTML=t.map(createCardHTML).join("")}function showToast(e){let t=document.getElementById("toastContainer");t||(t=document.createElement("div"),t.id="toastContainer",t.style.cssText=`
       position: fixed; bottom: 30px; right: 30px; z-index: 999999;
       display: flex; flex-direction: column; gap: 10px; pointer-events: none;
-    `;
-    document.body.appendChild(toastContainer);
-  }
-
-  const toast = document.createElement('div');
-  toast.style.cssText = `
+    `,document.body.appendChild(t));const a=document.createElement("div");a.style.cssText=`
     padding: 14px 22px; border-radius: 12px; font-weight: 600;
     font-size: 0.9rem; color: #0F172A; background: #FFFFFF; box-shadow: 0 12px 30px rgba(15,23,42,0.12);
     border-left: 4px solid #C85A32; pointer-events: auto; transition: all 0.35s ease;
     transform: translateY(20px); opacity: 0; display: flex; align-items: center; gap: 10px;
     border: 1px solid rgba(15,23,42,0.08);
-  `;
-  toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#C85A32;"></i> <span>${message}</span>`;
-  toastContainer.appendChild(toast);
-
-  requestAnimationFrame(() => {
-    toast.style.transform = 'translateY(0)';
-    toast.style.opacity = '1';
-  });
-
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 350);
-  }, 3200);
-}
-
-// ── Global Interactive Quick Booking Modal Engine ────────────────────────
-window.openQuickBooking = function (destId = 'marrakech') {
-  const resolvedId = findDestinationId(destId) || 'marrakech';
-  window.openCustomTourModal(resolvedId);
-};
-
-window.closeQuickBooking = function () {
-  const modal = document.getElementById('globalQuickBookModal');
-  if (modal) {
-    modal.style.opacity = '0';
-    modal.style.pointerEvents = 'none';
-    setTimeout(() => { modal.style.display = 'none'; }, 300);
-  }
-  lockBodyScroll(false);
-};
-
-window.changeTravelers = function (delta) {
-  const input = document.getElementById('qb-travelers');
-  if (!input) return;
-  let val = parseInt(input.value, 10) + delta;
-  if (val < 1) val = 1;
-  if (val > 20) val = 20;
-  input.value = val;
-  window.updateQuickBookPrice();
-};
-
-window.updateQuickBookPrice = function () {
-  const destId = document.getElementById('qb-dest')?.value || 'marrakech';
-  const count = parseInt(document.getElementById('qb-travelers')?.value || '2', 10);
-  const dest = DESTINATIONS_DB.find(d => d.id === destId) || DESTINATIONS_DB[0];
-  const priceDisplay = document.getElementById('qb-total-price');
-  if (priceDisplay && dest) {
-    priceDisplay.textContent = 'Price on Request';
-  }
-};
-
-window.handleQuickBookSubmit = function (e) {
-  if (e && e.preventDefault) e.preventDefault();
-  const name = document.getElementById('qb-name')?.value || 'Valued Guest';
-  const destId = document.getElementById('qb-dest')?.value || 'marrakech';
-  const dest = DESTINATIONS_DB.find(d => d.id === destId) || DESTINATIONS_DB[0];
-
-  window.closeQuickBooking();
-  showToast(`Thank you ${name}! Your booking request for ${dest.title} has been submitted.`);
-};
-
-// Wire up all Book Expedition buttons automatically across all pages
-document.addEventListener('click', function (e) {
-  const bookBtn = e.target.closest('.book-btn-nav, .hn-nav-book, [data-i18n="nav_book"], a[href="booking.html"], a[href="booking"]');
-  const isBookingPage = window.location.pathname.endsWith('booking.html') || window.location.pathname.endsWith('/booking') || window.location.pathname.endsWith('booking');
-  if (bookBtn && !isBookingPage) {
-    e.preventDefault();
-    window.openQuickBooking('marrakech');
-  }
-});
-
-// ── Interactive Hero Search & URL Filtering ────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  // Hero Search Input handler
-  const heroInput = document.getElementById('heroSearchInput');
-  const heroBtn = document.querySelector('.hero-search-btn');
-
-  if (heroInput && heroBtn) {
-    const executeSearch = (e) => {
-      e.preventDefault();
-      const query = heroInput.value.trim();
-      const isLive = window.location.protocol === 'http:' || window.location.protocol === 'https:';
-      const targetPage = isLive ? 'destinations' : 'destinations.html';
-      window.location.href = query ? `${targetPage}?search=${encodeURIComponent(query)}` : targetPage;
-    };
-
-    heroBtn.addEventListener('click', executeSearch);
-    heroInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') executeSearch(e);
-    });
-  }
-
-  // Handle ?search= query on destinations.html
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchQuery = urlParams.get('search');
-  if (searchQuery) {
-    const destSearchInput = document.getElementById('destSearchInput');
-    if (destSearchInput) {
-      destSearchInput.value = searchQuery;
-      if (typeof filterDestinations === 'function') {
-        filterDestinations();
-      }
-    }
-  }
-
-  // Handle ?dest= or ?destination= query to auto-open Customize My Tour
-  const destParam = urlParams.get('dest') || urlParams.get('destination') || urlParams.get('city');
-  if (destParam && typeof window.openCustomTourModal === 'function') {
-    const matched = findDestinationId(destParam);
-    if (matched) {
-      setTimeout(() => {
-        window.openCustomTourModal(matched);
-      }, 300);
-    }
-  }
-});
-
-// ── Interactive Leaflet Map Engine ─────────────────────────────────────────
-function initMapPage() {
-  const mapElement = document.getElementById('interactiveMap');
-  if (!mapElement || typeof L === 'undefined') return;
-
-  // Clear existing state if re-initialized
-  AppState.mapMarkers = [];
-  if (AppState.mapInstance) {
-    AppState.mapInstance.remove();
-    AppState.mapInstance = null;
-  }
-
-
-
-  // Create Map centered on Morocco (Click-to-zoom enabled, full zoom range)
-  AppState.mapInstance = L.map('interactiveMap', {
-    attributionControl: false,
-    zoomControl: false,
-    scrollWheelZoom: false,     // Prevents scroll hijacking when scrolling down the page
-    minZoom: 2,                 // Full dezoom capability without artificial limits
-    maxZoom: 18,                // Full deep zoom capability into riads, cities & dunes
-    fadeAnimation: true,
-    zoomAnimation: true,
-    zoomAnimationThreshold: 18, // Keeps silky smooth zoom animation across deep zoom changes
-    wheelPxPerZoomLevel: 140,   // Calibrated wheel sensitivity: prevents spamming 5+ zoom levels per notch
-    wheelDebounceTime: 50,      // Smooth debouncing so fast scrolling doesn't choke the network
-    worldCopyJump: false
-  }).setView([31.7917, -7.0926], 6);
-
-  if (AppState.mapInstance.attributionControl) {
-    AppState.mapInstance.attributionControl.remove();
-  }
-
-  // Force Leaflet to recalculate map dimensions (critical for mobile)
-  setTimeout(() => {
-    AppState.mapInstance.invalidateSize();
-  }, 150);
-
-  // Re-invalidate on resize (orientation change, window resize)
-  window.addEventListener('resize', () => {
-    if (AppState.mapInstance) {
-      AppState.mapInstance.invalidateSize();
-    }
-  });
-
-  // Add zoom control at top-left
-  L.control.zoom({ position: 'topleft' }).addTo(AppState.mapInstance);
-
-  // Pre-load essential low-zoom Morocco overview tiles so dezooming NEVER waits on network
-  [
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/12/15',
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/13/15',
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/30',
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/30',
-    'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/31',
-    'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/31'
-  ].forEach(url => {
-    const preImg = new Image();
-    preImg.src = url;
-  });
-
-  // Base overview satellite layer (Permanently active at ALL zoom levels 2 to 18)
-  // Loads zoom 6 tiles and smoothly stretches them for all higher zooms underneath.
-  // This guarantees 100% continuous coverage with ZERO black squares even during lightning-fast zooming/dezooming!
-  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    subdomains: ['server', 'services'],
-    attribution: '',
-    minZoom: 2,
-    maxZoom: 18,        // Stays permanently active at all zooms
-    maxNativeZoom: 6,   // Loads zoom 6 and stretches seamlessly for all higher zoom levels
-    zIndex: 1,
-    keepBuffer: 3,
-    updateWhenZooming: true,
-    updateWhenIdle: false,
-    crossOrigin: true
-  }).addTo(AppState.mapInstance);
-
-  // High-resolution satellite layer (Zoom 2 to 18) - smooth, parallelized loading
-  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    subdomains: ['server', 'services'],
-    attribution: '',
-    minZoom: 2,
-    maxZoom: 18,
-    maxNativeZoom: 18,
-    zIndex: 2,
-    keepBuffer: 4,            // Optimal buffer for fast responsive panning
-    updateWhenZooming: true,  // Fetches new tiles DURING zoom transition for zero delay
-    updateWhenIdle: false,    // Loads continuously without stutter
-    updateInterval: 60,       // Fast responsive 60ms check
-    crossOrigin: true
-  }).addTo(AppState.mapInstance);
-
-  // Enable scroll-wheel zoom ONLY after user clicks or interacts with the map
-  const interactiveMapEl = document.getElementById('interactiveMap');
-  if (interactiveMapEl) {
-    interactiveMapEl.addEventListener('mousedown', () => {
-      AppState.mapInstance.scrollWheelZoom.enable();
-    });
-    interactiveMapEl.addEventListener('mouseleave', () => {
-      AppState.mapInstance.scrollWheelZoom.disable();
-    });
-  }
-
-  // Teardrop-style orange pin icon matching reference design
-  const createPinIcon = (isActive = false) => L.divIcon({
-    className: 'custom-map-pin-icon',
-    html: `<div class="map-pin-marker ${isActive ? 'is-active' : ''}">
+  `,a.innerHTML=`<i class="fa-solid fa-circle-check" style="color:#C85A32;"></i> <span>${e}</span>`,t.appendChild(a),requestAnimationFrame(()=>{a.style.transform="translateY(0)",a.style.opacity="1"}),setTimeout(()=>{a.style.opacity="0",a.style.transform="translateY(10px)",setTimeout(()=>a.remove(),350)},3200)}window.openQuickBooking=function(e="marrakech"){const t=findDestinationId(e)||"marrakech";window.openCustomTourModal(t)},window.closeQuickBooking=function(){const e=document.getElementById("globalQuickBookModal");e&&(e.style.opacity="0",e.style.pointerEvents="none",setTimeout(()=>{e.style.display="none"},300)),lockBodyScroll(!1)},window.changeTravelers=function(e){const t=document.getElementById("qb-travelers");if(!t)return;let a=parseInt(t.value,10)+e;a<1&&(a=1),a>20&&(a=20),t.value=a,window.updateQuickBookPrice()},window.updateQuickBookPrice=function(){const e=document.getElementById("qb-dest")?.value||"marrakech",t=parseInt(document.getElementById("qb-travelers")?.value||"2",10),a=DESTINATIONS_DB.find(i=>i.id===e)||DESTINATIONS_DB[0],o=document.getElementById("qb-total-price");o&&a&&(o.textContent="Price on Request")},window.handleQuickBookSubmit=function(e){e&&e.preventDefault&&e.preventDefault();const t=document.getElementById("qb-name")?.value||"Valued Guest",a=document.getElementById("qb-dest")?.value||"marrakech",o=DESTINATIONS_DB.find(i=>i.id===a)||DESTINATIONS_DB[0];window.closeQuickBooking(),showToast(`Thank you ${t}! Your booking request for ${o.title} has been submitted.`)},document.addEventListener("click",function(e){const t=e.target.closest('.book-btn-nav, .hn-nav-book, [data-i18n="nav_book"], a[href="booking.html"], a[href="booking"]'),a=window.location.pathname.endsWith("booking.html")||window.location.pathname.endsWith("/booking")||window.location.pathname.endsWith("booking");t&&!a&&(e.preventDefault(),window.openQuickBooking("marrakech"))}),document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("heroSearchInput"),t=document.querySelector(".hero-search-btn");if(e&&t){const n=r=>{r.preventDefault();const d=e.value.trim(),g=window.location.protocol==="http:"||window.location.protocol==="https:"?"destinations":"destinations.html";window.location.href=d?`${g}?search=${encodeURIComponent(d)}`:g};t.addEventListener("click",n),e.addEventListener("keypress",r=>{r.key==="Enter"&&n(r)})}const a=new URLSearchParams(window.location.search),o=a.get("search");if(o){const n=document.getElementById("destSearchInput");n&&(n.value=o,typeof filterDestinations=="function"&&filterDestinations())}const i=a.get("dest")||a.get("destination")||a.get("city");if(i&&typeof window.openCustomTourModal=="function"){const n=findDestinationId(i);n&&setTimeout(()=>{window.openCustomTourModal(n)},300)}});function initMapPage(){if(!document.getElementById("interactiveMap")||typeof L>"u")return;AppState.mapMarkers=[],AppState.mapInstance&&(AppState.mapInstance.remove(),AppState.mapInstance=null),AppState.mapInstance=L.map("interactiveMap",{attributionControl:!1,zoomControl:!1,scrollWheelZoom:!1,minZoom:2,maxZoom:18,fadeAnimation:!0,zoomAnimation:!0,zoomAnimationThreshold:18,wheelPxPerZoomLevel:140,wheelDebounceTime:50,worldCopyJump:!1}).setView([31.7917,-7.0926],6),AppState.mapInstance.attributionControl&&AppState.mapInstance.attributionControl.remove(),setTimeout(()=>{AppState.mapInstance.invalidateSize()},150),window.addEventListener("resize",()=>{AppState.mapInstance&&AppState.mapInstance.invalidateSize()}),L.control.zoom({position:"topleft"}).addTo(AppState.mapInstance),["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/12/15","https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/13/15","https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/30","https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/30","https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/25/31","https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/6/26/31"].forEach(i=>{const n=new Image;n.src=i}),L.tileLayer("https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{subdomains:["server","services"],attribution:"",minZoom:2,maxZoom:18,maxNativeZoom:6,zIndex:1,keepBuffer:3,updateWhenZooming:!0,updateWhenIdle:!1,crossOrigin:!0}).addTo(AppState.mapInstance),L.tileLayer("https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{subdomains:["server","services"],attribution:"",minZoom:2,maxZoom:18,maxNativeZoom:18,zIndex:2,keepBuffer:4,updateWhenZooming:!0,updateWhenIdle:!1,updateInterval:60,crossOrigin:!0}).addTo(AppState.mapInstance);const t=document.getElementById("interactiveMap");t&&(t.addEventListener("mousedown",()=>{AppState.mapInstance.scrollWheelZoom.enable()}),t.addEventListener("mouseleave",()=>{AppState.mapInstance.scrollWheelZoom.disable()}));const a=(i=!1)=>L.divIcon({className:"custom-map-pin-icon",html:`<div class="map-pin-marker ${i?"is-active":""}">
       <div class="pin-inner"></div>
-    </div>`,
-    iconSize: [32, 40],
-    iconAnchor: [16, 40],
-    popupAnchor: [0, -40]
-  });
-
-  DESTINATIONS_DB.forEach(dest => {
-    const marker = L.marker([dest.lat, dest.lng], { icon: createPinIcon(false) }).addTo(AppState.mapInstance);
-    marker.destData = dest;
-
-    // Click opens the premium side panel only (no duplicate popup)
-    marker.on('click', (e) => {
-      L.DomEvent.stopPropagation(e);
-      // Close any open Leaflet popups
-      AppState.mapInstance.closePopup();
-      window.showMapDestCard(dest);
-    });
-
-    AppState.mapMarkers.push(marker);
-  });
-
-  // Polyline coordinates connecting major routes
-  const routeCoords = [
-    [35.1716, -5.2697],   // Chefchaouen
-    [34.0333, -5.0000],   // Fes
-    [33.5731, -7.5898],   // Casablanca
-    [31.6295, -7.9811],   // Marrakech
-    [31.5125, -9.7700],   // Essaouira
-    [30.4278, -9.5981],   // Agadir
-    [30.9189, -6.8934],   // Ouarzazate
-    [30.3336, -5.8264],   // Zagora
-    [31.0992, -4.0116],   // Merzouga
-  ];
-
-  AppState.routePolyline = L.polyline(routeCoords, {
-    color: '#D4AF37',
-    weight: 2,
-    opacity: 0.85,
-    dashArray: '8, 10',
-    lineJoin: 'round'
-  }).addTo(AppState.mapInstance);
-
-  // Click on empty map area → close the side panel & activate scroll zoom
-  AppState.mapInstance.on('click', () => {
-    window.closeMapDestCard();
-    AppState.mapInstance.scrollWheelZoom.enable();
-  });
-}
-
-// ── Map Filtering Engine ───────────────────────────────────────────────────
-window.filterMapCategory = function (category, btnElement) {
-  if (!AppState.mapInstance || !AppState.mapMarkers) return;
-
-  // Update active tab buttons
-  const buttons = document.querySelectorAll('.map-filter-btn');
-  buttons.forEach(b => b.classList.remove('active'));
-  if (btnElement) btnElement.classList.add('active');
-
-  const visibleMarkers = [];
-
-  AppState.mapMarkers.forEach(marker => {
-    const dest = marker.destData;
-    const isMatch = (category === 'all' || dest.category === category);
-
-    if (isMatch) {
-      if (!AppState.mapInstance.hasLayer(marker)) {
-        marker.addTo(AppState.mapInstance);
-      }
-      visibleMarkers.push(marker);
-    } else {
-      if (AppState.mapInstance.hasLayer(marker)) {
-        AppState.mapInstance.removeLayer(marker);
-      }
-    }
-  });
-
-  // Fit bounds if specific category selected
-  if (category !== 'all' && visibleMarkers.length > 0) {
-    const group = L.featureGroup(visibleMarkers);
-    AppState.mapInstance.fitBounds(group.getBounds().pad(0.25));
-  } else {
-    AppState.mapInstance.setView([31.7917, -7.0926], 6);
-  }
-};
-
-// ── Search Map Function ────────────────────────────────────────────────────
-window.searchMapQuery = function (query) {
-  if (!AppState.mapInstance || !AppState.mapMarkers) return;
-  const q = query.toLowerCase().trim();
-
-  AppState.mapMarkers.forEach(marker => {
-    const dest = marker.destData;
-    const isMatch = !q || dest.title.toLowerCase().includes(q) || dest.region.toLowerCase().includes(q) || dest.id.toLowerCase().includes(q);
-
-    if (isMatch) {
-      if (!AppState.mapInstance.hasLayer(marker)) marker.addTo(AppState.mapInstance);
-    } else {
-      if (AppState.mapInstance.hasLayer(marker)) AppState.mapInstance.removeLayer(marker);
-    }
-  });
-};
-
-// ── Display Map Destination Card Panel ────────────────────────────────────
-window.showMapDestCard = function (dest) {
-  const panel = document.getElementById('mapDetailPanel');
-  if (!panel) return;
-
-  const isMobile = window.innerWidth <= 900;
-
-  // Center map on marker location (keeps full regional Morocco overview)
-  if (AppState.mapInstance) {
-    AppState.mapInstance.flyTo([dest.lat, dest.lng], isMobile ? 6.5 : 7, { duration: 1.2 });
-  }
-
-  // Populate Panel Content
-  panel.innerHTML = `
+    </div>`,iconSize:[32,40],iconAnchor:[16,40],popupAnchor:[0,-40]});DESTINATIONS_DB.forEach(i=>{const n=L.marker([i.lat,i.lng],{icon:a(!1)}).addTo(AppState.mapInstance);n.destData=i,n.on("click",r=>{L.DomEvent.stopPropagation(r),AppState.mapInstance.closePopup(),window.showMapDestCard(i)}),AppState.mapMarkers.push(n)});const o=[[35.1716,-5.2697],[34.0333,-5],[33.5731,-7.5898],[31.6295,-7.9811],[31.5125,-9.77],[30.4278,-9.5981],[30.9189,-6.8934],[30.3336,-5.8264],[31.0992,-4.0116]];AppState.routePolyline=L.polyline(o,{color:"#D4AF37",weight:2,opacity:.85,dashArray:"8, 10",lineJoin:"round"}).addTo(AppState.mapInstance),AppState.mapInstance.on("click",()=>{window.closeMapDestCard(),AppState.mapInstance.scrollWheelZoom.enable()})}window.filterMapCategory=function(e,t){if(!AppState.mapInstance||!AppState.mapMarkers)return;document.querySelectorAll(".map-filter-btn").forEach(i=>i.classList.remove("active")),t&&t.classList.add("active");const o=[];if(AppState.mapMarkers.forEach(i=>{const n=i.destData;e==="all"||n.category===e?(AppState.mapInstance.hasLayer(i)||i.addTo(AppState.mapInstance),o.push(i)):AppState.mapInstance.hasLayer(i)&&AppState.mapInstance.removeLayer(i)}),e!=="all"&&o.length>0){const i=L.featureGroup(o);AppState.mapInstance.fitBounds(i.getBounds().pad(.25))}else AppState.mapInstance.setView([31.7917,-7.0926],6)},window.searchMapQuery=function(e){if(!AppState.mapInstance||!AppState.mapMarkers)return;const t=e.toLowerCase().trim();AppState.mapMarkers.forEach(a=>{const o=a.destData;!t||o.title.toLowerCase().includes(t)||o.region.toLowerCase().includes(t)||o.id.toLowerCase().includes(t)?AppState.mapInstance.hasLayer(a)||a.addTo(AppState.mapInstance):AppState.mapInstance.hasLayer(a)&&AppState.mapInstance.removeLayer(a)})},window.showMapDestCard=function(e){const t=document.getElementById("mapDetailPanel");if(!t)return;const a=window.innerWidth<=900;AppState.mapInstance&&AppState.mapInstance.flyTo([e.lat,e.lng],a?6.5:7,{duration:1.2}),t.innerHTML=`
     <div class="map-side-card">
       <button class="map-card-close" onclick="window.closeMapDestCard()">&times;</button>
       <div class="map-side-img">
-        <img src="${dest.img}" alt="${dest.title}">
-        <span class="map-card-badge">${dest.badge || 'Featured'}</span>
+        <img src="${e.img}" alt="${e.title}">
+        <span class="map-card-badge">${e.badge||"Featured"}</span>
       </div>
       <div class="map-side-content">
-        <h3>${dest.title}</h3>
+        <h3>${e.title}</h3>
         <div class="map-card-meta">
-          <span class="map-card-region"><i class="fa-solid fa-location-dot"></i> ${dest.region}</span>
-          <span class="map-card-rating"><i class="fa-solid fa-star"></i> ${dest.rating} (${dest.reviewsCount || 100}+ reviews)</span>
+          <span class="map-card-region"><i class="fa-solid fa-location-dot"></i> ${e.region}</span>
+          <span class="map-card-rating"><i class="fa-solid fa-star"></i> ${e.rating} (${e.reviewsCount||100}+ reviews)</span>
         </div>
-        <p>${dest.desc}</p>
+        <p>${e.desc}</p>
         
         <div class="map-card-highlights">
           <h5><i class="fa-solid fa-sparkles"></i> Highlights</h5>
           <ul>
-            ${(dest.highlights || []).slice(0, 3).map(h => `<li><i class="fa-solid fa-check"></i> ${h}</li>`).join('')}
+            ${(e.highlights||[]).slice(0,3).map(i=>`<li><i class="fa-solid fa-check"></i> ${i}</li>`).join("")}
           </ul>
         </div>
 
@@ -2240,67 +283,13 @@ window.showMapDestCard = function (dest) {
             <span class="price-lbl">Pricing</span>
             <span class="price-val" style="font-size: 0.98rem; font-weight: 700; color: #E7A93C;">Price on Request</span>
           </div>
-          <a href="destinations.html#${dest.id}" class="btn-primary map-card-action-btn">
+          <a href="destinations.html#${e.id}" class="btn-primary map-card-action-btn">
             View Experience &nbsp;<i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
       </div>
     </div>
-  `;
-
-  panel.classList.add('is-open');
-
-  // Show backdrop on mobile
-  const overlay = document.getElementById('mapSheetOverlay');
-  if (overlay && isMobile) overlay.classList.add('is-visible');
-};
-
-window.closeMapDestCard = function () {
-  const panel = document.getElementById('mapDetailPanel');
-  if (panel) panel.classList.remove('is-open');
-
-  // Hide backdrop
-  const overlay = document.getElementById('mapSheetOverlay');
-  if (overlay) overlay.classList.remove('is-visible');
-
-  // Reset view to full Morocco map overview (Image 1 style)
-  if (AppState.mapInstance) {
-    AppState.mapInstance.flyTo([31.7917, -7.0926], 6, { duration: 1.2 });
-  }
-};
-
-function initHomeMapPreview() {
-  const mapElement = document.getElementById('homeMapPreview');
-  if (!mapElement) return;
-
-  function createMap() {
-    if (mapElement._leaflet_id) return;
-
-    function build() {
-      if (typeof L === 'undefined' || mapElement._leaflet_id) return;
-      const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
-
-    if (miniMap.attributionControl) {
-      miniMap.attributionControl.remove();
-    }
-
-    // ESRI satellite tiles for home map preview (ultra-smooth, buffered)
-    L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      subdomains: ['server', 'services'],
-      attribution: '',
-      minZoom: 2,
-      maxZoom: 18,
-      maxNativeZoom: 18,
-      keepBuffer: 3,
-      updateWhenZooming: true,
-      updateWhenIdle: false,
-      crossOrigin: true
-    }).addTo(miniMap);
-
-    DESTINATIONS_DB.forEach(dest => {
-      const pinIcon = L.divIcon({
-        className: '',
-        html: `<div style="
+  `,t.classList.add("is-open");const o=document.getElementById("mapSheetOverlay");o&&a&&o.classList.add("is-visible")},window.closeMapDestCard=function(){const e=document.getElementById("mapDetailPanel");e&&e.classList.remove("is-open");const t=document.getElementById("mapSheetOverlay");t&&t.classList.remove("is-visible"),AppState.mapInstance&&AppState.mapInstance.flyTo([31.7917,-7.0926],6,{duration:1.2})};function initHomeMapPreview(){const e=document.getElementById("homeMapPreview");if(!e)return;function t(){if(e._leaflet_id)return;function a(){if(typeof L>"u"||e._leaflet_id)return;const o=L.map("homeMapPreview",{attributionControl:!1,zoomControl:!1,dragging:!1,scrollWheelZoom:!1}).setView([31.7917,-7.0926],6);o.attributionControl&&o.attributionControl.remove(),L.tileLayer("https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{subdomains:["server","services"],attribution:"",minZoom:2,maxZoom:18,maxNativeZoom:18,keepBuffer:3,updateWhenZooming:!0,updateWhenIdle:!1,crossOrigin:!0}).addTo(o),DESTINATIONS_DB.forEach(n=>{const r=L.divIcon({className:"",html:`<div style="
           width: 22px; height: 28px;
           background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
           border-radius: 50% 50% 50% 0;
@@ -2313,666 +302,87 @@ function initHomeMapPreview() {
           transform: translate(-50%, -50%) rotate(45deg);
           width: 7px; height: 7px;
           background: #fff; border-radius: 50%;
-        "></div></div>`,
-        iconSize: [22, 28],
-        iconAnchor: [11, 28]
-      });
-      L.marker([dest.lat, dest.lng], { icon: pinIcon }).addTo(miniMap);
-    });
+        "></div></div>`,iconSize:[22,28],iconAnchor:[11,28]});L.marker([n.lat,n.lng],{icon:r}).addTo(o)});const i=[[35.1716,-5.2697],[34.0333,-5],[31.6295,-7.9811],[31.5125,-9.77],[30.4278,-9.5981],[30.9189,-6.8934],[30.3336,-5.8264],[31.0992,-4.0116]];L.polyline(i,{color:"#D4AF37",weight:1.5,opacity:.8,dashArray:"6, 8"}).addTo(o)}if(typeof L>"u"){const o=document.createElement("script");o.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",o.defer=!0,o.onload=a,document.head.appendChild(o)}else a()}"IntersectionObserver"in window?new IntersectionObserver((o,i)=>{o[0].isIntersecting&&(t(),i.disconnect())},{rootMargin:"300px 0px"}).observe(e):t()}function lockBodyScroll(e){document.body.style.overflow=e?"hidden":""}window.openModal=function(e,t=!1){document.querySelectorAll(".modal").forEach(r=>{r.id&&r.id.startsWith("modal-")&&r.id!=="modal-"+e&&(r.style.display="none")});const a=document.getElementById("modal-"+e);if(!a)return;a.parentElement!==document.body&&document.body.appendChild(a),a.style.display="flex",a.scrollTop=0;const o=a.querySelector(".modal-content");if(o&&(o.scrollTop=0),lockBodyScroll(!0),a.setAttribute("tabindex","-1"),a.focus(),t){const r=document.getElementById("booking-"+e);r&&setTimeout(()=>r.scrollIntoView({behavior:"smooth"}),300)}const i="#modal-"+e+" .mySwiper-"+e,n=document.querySelector(i);n&&typeof Swiper<"u"&&(n.swiper?n.swiper.update():new Swiper(i,{loop:!0,observer:!0,observeParents:!0,autoplay:{delay:5e3,disableOnInteraction:!1},effect:"fade",fadeEffect:{crossFade:!0},navigation:{nextEl:"#modal-"+e+" .swiper-button-next",prevEl:"#modal-"+e+" .swiper-button-prev"},pagination:{el:"#modal-"+e+" .swiper-pagination",clickable:!0}}))},window.closeModal=function(e){const t=document.getElementById("modal-"+e);t&&(t.style.display="none",lockBodyScroll(!1))};const DEST_IMAGES={Marrakech:"images/Marrakech/Marrakech.jpg",Ouarzazate:"images/Ouarzazat/ouarzazat1.jpeg",Merzouga:"images/Merzouga/merzouga_1.jpg",Chefchaouen:"images/Chfchaouen/chefchaoun.jpg",Essaouira:"images/Essaouira/essaouira_1.jpg",Fes:"images/Fes/Fes.jpg",Casablanca:"images/Casablanca/casablanca.png",Agadir:"images/Agadir/agadir_hero.png",Zagora:"images/Zagora/zagora_hero.png"};window.openDestBooking=function(e){const t=findDestinationId(e)||"marrakech";window.openCustomTourModal(t)},window.closeDestBooking=function(){const e=document.getElementById("destBookingModal");e&&(e.style.display="none"),lockBodyScroll(!1)},window.sendDestBookingWhatsApp=function(){const e="212660082066",t=document.getElementById("destBookingTitle")?.textContent||"Morocco Tour",a=document.getElementById("db-name")?.value||"",o=document.getElementById("db-date")?.value||"",i=document.getElementById("db-adults")?.value||"1",n=document.getElementById("db-children")?.value||"0",r=document.getElementById("db-message")?.value||"";if(!a||!o){alert("Please fill in your name and preferred date.");return}const d=`Hello \u{1F44B}
+I am interested in booking:
+\u2705 Destination: ${t}
+\u{1F464} Name: ${a}
+\u{1F4C5} Date: ${o}
+\u{1F465} Adults: ${i}
+\u{1F9D2} Children: ${n}
+\u{1F4DD} Message: ${r||"N/A"}
 
-    // Dashed golden route lines
-    const routeCoords = [
-      [35.1716, -5.2697],
-      [34.0333, -5.0000],
-      [31.6295, -7.9811],
-      [31.5125, -9.7700],
-      [30.4278, -9.5981],
-      [30.9189, -6.8934],
-      [30.3336, -5.8264],
-      [31.0992, -4.0116],
-    ];
-    L.polyline(routeCoords, {
-      color: '#D4AF37',
-      weight: 1.5,
-      opacity: 0.8,
-      dashArray: '6, 8'
-    }).addTo(miniMap);
-    }
+Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(d)}`,"_blank")},window.sendWhatsApp=function(){const e="212660082066",t=document.getElementById("fname")?.value||document.getElementById("c-name")?.value||"",a=document.getElementById("femail")?.value||document.getElementById("c-email")?.value||"",o=document.getElementById("fphone")?.value||"",i=document.getElementById("fdate")?.value||"",n=document.getElementById("fadults")?.value||"1",r=document.getElementById("fchildren")?.value||"0",d=document.getElementById("fmessage")?.value||document.getElementById("c-message")?.value||"",u=document.querySelectorAll('input[name="destinations"]:checked'),g=Array.from(u).map(y=>y.value).join(", ");if(!t){alert("Please enter your name.");return}const f=`Hello \u{1F44B} Discover Hidden Morocco!
+I would like to request a Tour Booking:
 
-    if (typeof L === 'undefined') {
-      const s = document.createElement('script');
-      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      s.defer = true;
-      s.onload = build;
-      document.head.appendChild(s);
-    } else {
-      build();
-    }
-  }
+\u{1F464} Name: ${t}
+\u{1F4E7} Email: ${a}
+\u{1F4DE} Phone: ${o||"N/A"}
+\u{1F4C5} Travel Date: ${i||"N/A"}
+\u{1F465} Adults: ${n}
+\u{1F9D2} Children: ${r}
+\u{1F4CD} Destinations: ${g||"Not specified"}
+\u{1F4DD} Message: ${d||"N/A"}
 
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries, obs) => {
-      if (entries[0].isIntersecting) {
-        createMap();
-        obs.disconnect();
-      }
-    }, { rootMargin: '300px 0px' });
-    observer.observe(mapElement);
-  } else {
-    createMap();
-  }
-}
-
-// ── Global Modal Engine & Helpers ─────────────────────────
-function lockBodyScroll(lock) {
-  document.body.style.overflow = lock ? 'hidden' : '';
-}
-
-window.openModal = function (city, scrollToBooking = false) {
-  // Hide all other destination modals to prevent overlap/blocking
-  document.querySelectorAll('.modal').forEach(m => {
-    if (m.id && m.id.startsWith('modal-') && m.id !== 'modal-' + city) {
-      m.style.display = 'none';
-    }
-  });
-  const modal = document.getElementById('modal-' + city);
-  if (!modal) return;
-  if (modal.parentElement !== document.body) {
-    document.body.appendChild(modal);
-  }
-
-  modal.style.display = 'flex';
-  modal.scrollTop = 0;
-  const modalContent = modal.querySelector('.modal-content');
-  if (modalContent) modalContent.scrollTop = 0;
-
-  lockBodyScroll(true);
-
-  modal.setAttribute('tabindex', '-1');
-  modal.focus();
-
-  if (scrollToBooking) {
-    const bookingSection = document.getElementById('booking-' + city);
-    if (bookingSection) {
-      setTimeout(() => bookingSection.scrollIntoView({ behavior: 'smooth' }), 300);
-    }
-  }
-
-  const selector = '#modal-' + city + ' .mySwiper-' + city;
-  const swiperEl = document.querySelector(selector);
-  if (swiperEl && typeof Swiper !== 'undefined') {
-    if (!swiperEl.swiper) {
-      new Swiper(selector, {
-        loop: true,
-        observer: true,
-        observeParents: true,
-          autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-          },
-          effect: 'fade',
-          fadeEffect: {
-            crossFade: true
-          },
-        navigation: {
-          nextEl: '#modal-' + city + ' .swiper-button-next',
-          prevEl: '#modal-' + city + ' .swiper-button-prev'
-        },
-        pagination: {
-          el: '#modal-' + city + ' .swiper-pagination',
-          clickable: true
-        }
-      });
-    } else {
-      swiperEl.swiper.update();
-    }
-  }
-};
-
-window.closeModal = function (city) {
-  const modal = document.getElementById('modal-' + city);
-  if (!modal) return;
-  modal.style.display = 'none';
-  lockBodyScroll(false);
-};
-
-const DEST_IMAGES = {
-  'Marrakech': 'images/Marrakech/Marrakech.jpg',
-  'Ouarzazate': 'images/Ouarzazat/ouarzazat1.jpeg',
-  'Merzouga': 'images/Merzouga/merzouga_1.jpg',
-  'Chefchaouen': 'images/Chfchaouen/chefchaoun.jpg',
-  'Essaouira': 'images/Essaouira/essaouira_1.jpg',
-  'Fes': 'images/Fes/Fes.jpg',
-  'Casablanca': 'images/Casablanca/casablanca.png',
-  'Agadir': 'images/Agadir/agadir_hero.png',
-  'Zagora': 'images/Zagora/zagora_hero.png'
-};
-
-window.openDestBooking = function (city) {
-  const destId = findDestinationId(city) || 'marrakech';
-  window.openCustomTourModal(destId);
-};
-
-window.closeDestBooking = function () {
-  const modal = document.getElementById('destBookingModal');
-  if (modal) modal.style.display = 'none';
-  lockBodyScroll(false);
-};
-
-window.sendDestBookingWhatsApp = function () {
-  const WHATSAPP_NUMBER = '212660082066';
-  const cityTitle = document.getElementById('destBookingTitle')?.textContent || 'Morocco Tour';
-  const name = document.getElementById('db-name')?.value || '';
-  const date = document.getElementById('db-date')?.value || '';
-  const adults = document.getElementById('db-adults')?.value || '1';
-  const children = document.getElementById('db-children')?.value || '0';
-  const message = document.getElementById('db-message')?.value || '';
-  if (!name || !date) { alert('Please fill in your name and preferred date.'); return; }
-  const text = `Hello 👋\nI am interested in booking:\n✅ Destination: ${cityTitle}\n👤 Name: ${name}\n📅 Date: ${date}\n👥 Adults: ${adults}\n🧒 Children: ${children}\n📝 Message: ${message || 'N/A'}\n\nThank you!`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-};
-
-window.sendWhatsApp = function () {
-  const WHATSAPP_NUMBER = '212660082066';
-  const name = document.getElementById('fname')?.value || document.getElementById('c-name')?.value || '';
-  const email = document.getElementById('femail')?.value || document.getElementById('c-email')?.value || '';
-  const phone = document.getElementById('fphone')?.value || '';
-  const date = document.getElementById('fdate')?.value || '';
-  const adults = document.getElementById('fadults')?.value || '1';
-  const children = document.getElementById('fchildren')?.value || '0';
-  const message = document.getElementById('fmessage')?.value || document.getElementById('c-message')?.value || '';
-
-  const destEls = document.querySelectorAll('input[name="destinations"]:checked');
-  const dests = Array.from(destEls).map(el => el.value).join(', ');
-
-  if (!name) { alert('Please enter your name.'); return; }
-
-  const text = `Hello 👋 Discover Hidden Morocco!\nI would like to request a Tour Booking:\n\n👤 Name: ${name}\n📧 Email: ${email}\n📞 Phone: ${phone || 'N/A'}\n📅 Travel Date: ${date || 'N/A'}\n👥 Adults: ${adults}\n🧒 Children: ${children}\n📍 Destinations: ${dests || 'Not specified'}\n📝 Message: ${message || 'N/A'}\n\nThank you!`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-};
-
-const EXPERIENCES = {
-  ourika: {
-    title: "Ourika Valley (Setti Fatma)",
-    img: "images/Marrakech/ourika_1.png",
-    desc: "Escape the city to the lush Ourika Valley, situated in the foothills of the High Atlas Mountains. Enjoy refreshing waterfalls, traditional Berber villages, and aromatic gardens. It's the perfect day trip for nature lovers seeking tranquility and a taste of authentic mountain life.",
-    duration: "1 day",
-    timing: "Departure 08:30 • Return ~18:00",
-    price: "Price on Request",
-    schedule: ["08:30 – Pick up in Marrakech", "10:00 – Scenic drive", "11:00 – Setti Fatma & waterfalls", "18:00 – Return"],
-    activities: ["Berber villages", "Walk to waterfalls", "Panoramic photos"]
-  },
-  ouzoud: {
-    title: "Ouzoud Waterfalls",
-    img: "images/Ouzoud/ouzoud-falls.jpg",
-    desc: "Discover the breathtaking Ouzoud Waterfalls, cascading over 100 meters down rugged cliffs. Enjoy a scenic hike through olive groves, spot wild Barbary macaques, and take a refreshing boat ride near the falls. This natural wonder is an unforgettable escape into Morocco's dramatic landscapes.",
-    duration: "1 day",
-    timing: "Departure 08:00 • Return ~19:00",
-    price: "Price on Request",
-    schedule: ["08:00 – Departure", "11:00 – Walk", "15:00 – Boat ride", "19:00 – Return"],
-    activities: ["Easy hike", "Macaque monkeys observation", "Boat ride"]
-  },
-  agafay: {
-    title: "Agafay Desert (Quad + Camel + Dinner)",
-    img: "images/Marrakech/agafay.jpg",
-    desc: "Experience the rugged beauty of the Agafay Desert, located just outside Marrakech. Characterized by its rocky dunes and vast barren landscapes, it offers thrilling quad biking, camel rides, and luxury desert camping. Enjoy a magical dinner under the stars with spectacular views of the Atlas Mountains.",
-    duration: "≈ 6 hours",
-    timing: "Departure 15:30 • Return ~21:30",
-    price: "Price on Request",
-    schedule: ["15:30 – Pick up", "17:30 – Camel ride", "18:15 – Quad biking", "20:00 – Dinner + show"],
-    activities: ["Camel ride", "Quad biking", "Sunset", "Berber dinner"]
-  },
-  imlil: {
-    title: "Imlil & Atlas Mountains",
-    img: "images/Marrakech/imlil_1.jpg",
-    desc: "Imlil serves as the primary base camp for trekkers aiming to conquer Mount Toubkal. Surrounded by stunning alpine scenery and terraced walnut groves, this peaceful Berber village offers an immersive cultural experience and breathtaking panoramic views of the Atlas peaks.",
-    duration: "1 day",
-    timing: "Departure 08:00 • Return ~18:00",
-    price: "Price on Request",
-    schedule: ["08:00 – Departure", "10:00 – Arrival in Imlil", "11:00 – Guided village hike", "18:00 – Return"],
-    activities: ["Guided Hiking", "Amazigh villages", "Atlas Panoramas"]
-  },
-  takerkoust: {
-    title: "Lalla Takerkoust Lake",
-    img: "images/Marrakech/lac-lala-takerkoust.webp",
-    desc: "Relaxing outing: lake, nature and outdoor activities depending on the package.",
-    duration: "Half-day",
-    timing: "Morning or afternoon departure",
-    price: "Price on Request",
-    schedule: ["Pick-up", "Scenic drive to Lake", "Free time & quad", "Tea break"],
-    activities: ["Walk by the lake", "Relaxation", "Outdoor Activities"]
-  },
-  ballon: {
-    title: "Sunrise Hot Air Balloon",
-    img: "images/Marrakech/montgolfiere.webp",
-    desc: "Experience the magic of Marrakech from the sky with a sunrise hot air balloon flight. Float gently over the Atlas Mountains and the surrounding desert plains as the morning light illuminates the landscape. Conclude your aerial adventure with a traditional Berber breakfast in a local village.",
-    duration: "≈ 4–5 hours",
-    timing: "Departure ~2h before sunrise",
-    price: "Price on Request",
-    schedule: ["Pick-up", "Balloon preparation", "Flight over Atlas", "Berber breakfast"],
-    activities: ["Sunrise Flight", "Atlas Views", "Berber Breakfast"]
-  }
-};
-
-window.openExp = function (key) {
-  const exp = EXPERIENCES[key];
-  if (!exp) return;
-
-  let modal = document.getElementById('destModal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'destModal';
-    modal.style.cssText = `
+Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(f)}`,"_blank")};const EXPERIENCES={ourika:{title:"Ourika Valley (Setti Fatma)",img:"images/Marrakech/ourika_1.png",desc:"Escape the city to the lush Ourika Valley, situated in the foothills of the High Atlas Mountains. Enjoy refreshing waterfalls, traditional Berber villages, and aromatic gardens. It's the perfect day trip for nature lovers seeking tranquility and a taste of authentic mountain life.",duration:"1 day",timing:"Departure 08:30 \u2022 Return ~18:00",price:"Price on Request",schedule:["08:30 \u2013 Pick up in Marrakech","10:00 \u2013 Scenic drive","11:00 \u2013 Setti Fatma & waterfalls","18:00 \u2013 Return"],activities:["Berber villages","Walk to waterfalls","Panoramic photos"]},ouzoud:{title:"Ouzoud Waterfalls",img:"images/Ouzoud/ouzoud-falls.jpg",desc:"Discover the breathtaking Ouzoud Waterfalls, cascading over 100 meters down rugged cliffs. Enjoy a scenic hike through olive groves, spot wild Barbary macaques, and take a refreshing boat ride near the falls. This natural wonder is an unforgettable escape into Morocco's dramatic landscapes.",duration:"1 day",timing:"Departure 08:00 \u2022 Return ~19:00",price:"Price on Request",schedule:["08:00 \u2013 Departure","11:00 \u2013 Walk","15:00 \u2013 Boat ride","19:00 \u2013 Return"],activities:["Easy hike","Macaque monkeys observation","Boat ride"]},agafay:{title:"Agafay Desert (Quad + Camel + Dinner)",img:"images/Marrakech/agafay.jpg",desc:"Experience the rugged beauty of the Agafay Desert, located just outside Marrakech. Characterized by its rocky dunes and vast barren landscapes, it offers thrilling quad biking, camel rides, and luxury desert camping. Enjoy a magical dinner under the stars with spectacular views of the Atlas Mountains.",duration:"\u2248 6 hours",timing:"Departure 15:30 \u2022 Return ~21:30",price:"Price on Request",schedule:["15:30 \u2013 Pick up","17:30 \u2013 Camel ride","18:15 \u2013 Quad biking","20:00 \u2013 Dinner + show"],activities:["Camel ride","Quad biking","Sunset","Berber dinner"]},imlil:{title:"Imlil & Atlas Mountains",img:"images/Marrakech/imlil_1.jpg",desc:"Imlil serves as the primary base camp for trekkers aiming to conquer Mount Toubkal. Surrounded by stunning alpine scenery and terraced walnut groves, this peaceful Berber village offers an immersive cultural experience and breathtaking panoramic views of the Atlas peaks.",duration:"1 day",timing:"Departure 08:00 \u2022 Return ~18:00",price:"Price on Request",schedule:["08:00 \u2013 Departure","10:00 \u2013 Arrival in Imlil","11:00 \u2013 Guided village hike","18:00 \u2013 Return"],activities:["Guided Hiking","Amazigh villages","Atlas Panoramas"]},takerkoust:{title:"Lalla Takerkoust Lake",img:"images/Marrakech/lac-lala-takerkoust.webp",desc:"Relaxing outing: lake, nature and outdoor activities depending on the package.",duration:"Half-day",timing:"Morning or afternoon departure",price:"Price on Request",schedule:["Pick-up","Scenic drive to Lake","Free time & quad","Tea break"],activities:["Walk by the lake","Relaxation","Outdoor Activities"]},ballon:{title:"Sunrise Hot Air Balloon",img:"images/Marrakech/montgolfiere.webp",desc:"Experience the magic of Marrakech from the sky with a sunrise hot air balloon flight. Float gently over the Atlas Mountains and the surrounding desert plains as the morning light illuminates the landscape. Conclude your aerial adventure with a traditional Berber breakfast in a local village.",duration:"\u2248 4\u20135 hours",timing:"Departure ~2h before sunrise",price:"Price on Request",schedule:["Pick-up","Balloon preparation","Flight over Atlas","Berber breakfast"],activities:["Sunrise Flight","Atlas Views","Berber Breakfast"]}};window.openExp=function(e){const t=EXPERIENCES[e];if(!t)return;let a=document.getElementById("destModal");a?a.parentElement!==document.body&&document.body.appendChild(a):(a=document.createElement("div"),a.id="destModal",a.style.cssText=`
       position: fixed; inset: 0; z-index: 9999999; display: flex; align-items: center; justify-content: center;
       padding: 20px; background: rgba(17, 17, 30, 0.85); backdrop-filter: blur(12px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    `;
-    document.body.appendChild(modal);
-  } else if (modal.parentElement !== document.body) {
-    document.body.appendChild(modal);
-  }
-
-  modal.innerHTML = `
+    `,document.body.appendChild(a)),a.innerHTML=`
     <div class="glass-panel exp-inner-content" style="width: min(850px, 95vw); max-height: 90vh; border-radius: var(--hm-radius-lg); overflow-y: auto; position: relative; background: #FFFFFF; margin: auto;">
       <button onclick="closeDestinationModal()" style="position: absolute; top: 20px; right: 20px; z-index: 10; width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(0,0,0,0.5); color: #fff; cursor: pointer; font-size: 1.2rem;">
         <i class="fa-solid fa-xmark"></i>
       </button>
 
       <div style="position: relative; height: 320px;">
-        <img src="${exp.img}" alt="${exp.title}" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="${t.img}" alt="${t.title}" style="width: 100%; height: 100%; object-fit: cover;">
         <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(26,26,46,0.85) 100%);"></div>
         <div style="position: absolute; bottom: 24px; left: 30px; right: 30px; color: #fff;">
-          <span class="badge badge-terracotta" style="margin-bottom: 8px; background: var(--hm-terracotta); color: #fff;">${exp.duration}</span>
-          <h2 style="font-size: 2.2rem; color: #fff; font-family: var(--hm-font-serif);">${exp.title}</h2>
-          <p style="opacity: 0.9; font-size: 0.95rem;"><i class="fa-regular fa-clock"></i> ${exp.timing}</p>
+          <span class="badge badge-terracotta" style="margin-bottom: 8px; background: var(--hm-terracotta); color: #fff;">${t.duration}</span>
+          <h2 style="font-size: 2.2rem; color: #fff; font-family: var(--hm-font-serif);">${t.title}</h2>
+          <p style="opacity: 0.9; font-size: 0.95rem;"><i class="fa-regular fa-clock"></i> ${t.timing}</p>
         </div>
       </div>
 
       <div style="padding: 34px;">
-        <p style="font-size: 1.05rem; line-height: 1.75; color: var(--hm-text-body); margin-bottom: 28px;">${exp.desc}</p>
+        <p style="font-size: 1.05rem; line-height: 1.75; color: var(--hm-text-body); margin-bottom: 28px;">${t.desc}</p>
 
         <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: var(--hm-font-serif);">Schedule & Itinerary</h4>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
-          ${exp.schedule.map(step => `
+          ${t.schedule.map(i=>`
             <div style="padding: 12px 16px; border-left: 3px solid var(--hm-terracotta); background: var(--hm-bg-main); border-radius: 0 var(--hm-radius-md) var(--hm-radius-md) 0; font-size: 0.95rem; font-weight: 600;">
-              ${step}
+              ${i}
             </div>
-          `).join('')}
+          `).join("")}
         </div>
 
         <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: var(--hm-font-serif);">Included Activities</h4>
         <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px;">
-          ${exp.activities.map(act => `
-            <span class="badge badge-gold" style="font-size: 0.85rem;"><i class="fa-solid fa-check"></i> ${act}</span>
-          `).join('')}
+          ${t.activities.map(i=>`
+            <span class="badge badge-gold" style="font-size: 0.85rem;"><i class="fa-solid fa-check"></i> ${i}</span>
+          `).join("")}
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--hm-border); padding-top: 24px;">
           <div>
             <span style="font-size: 0.85rem; color: var(--hm-text-muted);">Price per person</span>
-            <div style="font-size: 1.8rem; font-weight: 800; color: var(--hm-text-heading);">${exp.price}</div>
+            <div style="font-size: 1.8rem; font-weight: 800; color: var(--hm-text-heading);">${t.price}</div>
           </div>
-          <button type="button" class="btn-primary" style="padding: 12px 30px;" onclick="openDestBooking('${exp.title || 'Marrakech'}')">Book this Experience</button>
+          <button type="button" class="btn-primary" style="padding: 12px 30px;" onclick="openDestBooking('${t.title||"Marrakech"}')">Book this Experience</button>
         </div>
       </div>
     </div>
-  `;
-
-  modal.style.display = 'flex';
-  modal.scrollTop = 0;
-  const content = modal.querySelector('.exp-inner-content');
-  if (content) content.scrollTop = 0;
-  lockBodyScroll(true);
-
-  requestAnimationFrame(() => {
-    modal.style.opacity = '1';
-    modal.style.pointerEvents = 'auto';
-    modal.setAttribute('tabindex', '-1');
-    modal.focus();
-  });
-};
-
-window.closeDestinationModal = function () {
-  const modal = document.getElementById('destModal');
-  if (modal) {
-    modal.style.opacity = '0';
-    modal.style.pointerEvents = 'none';
-    setTimeout(() => { modal.style.display = 'none'; }, 300);
-  }
-  lockBodyScroll(false);
-};
-
-window.closeExp = window.closeDestinationModal;
-
-// Global Escape Key & Backdrop Click Listener for All Modals
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal, .dest-booking-modal-overlay, .exp-modal, #globalQuickBookModal, #destModal, #customTourModal').forEach(modal => {
-      if (modal.style.display === 'flex' || modal.style.display === 'block' || modal.style.opacity === '1') {
-        const id = modal.id;
-        if (id.startsWith('modal-')) {
-          const city = id.replace('modal-', '');
-          closeModal(city);
-        } else if (id === 'globalQuickBookModal') {
-          closeQuickBooking();
-        } else if (id === 'destBookingModal') {
-          closeDestBooking();
-        } else if (id === 'destModal' || id === 'expModal') {
-          closeDestinationModal();
-        } else if (id === 'customTourModal') {
-          closeCustomTourModal();
-        } else {
-          modal.style.display = 'none';
-          lockBodyScroll(false);
-        }
-      }
-    });
-  }
-});
-
-document.addEventListener('click', function (e) {
-  if (e.target.classList.contains('modal') || e.target.classList.contains('dest-booking-modal-overlay') || e.target.classList.contains('exp-modal') || e.target.id === 'globalQuickBookModal' || e.target.id === 'destModal' || e.target.id === 'customTourModal') {
-    const id = e.target.id;
-    if (id.startsWith('modal-')) {
-      closeModal(id.replace('modal-', ''));
-    } else if (id === 'globalQuickBookModal') {
-      closeQuickBooking();
-    } else if (id === 'destBookingModal') {
-      closeDestBooking();
-    } else if (id === 'destModal' || id === 'expModal') {
-      closeDestinationModal();
-    } else if (id === 'customTourModal') {
-      closeCustomTourModal();
-    }
-  }
-});
-
-// ==========================================================================
-// CUSTOMIZE MY TOUR — INTERACTIVE 9-STEP WIZARD ENGINE
-// ==========================================================================
-
-const CUSTOM_TOUR_DESTINATIONS = [
-  { id: 'marrakech', name: 'Marrakech', region: 'Marrakech-Safi', img: 'images/Marrakech/marrakech_11.jpg' },
-  { id: 'fes', name: 'Fès', region: 'Fès-Meknès', img: 'images/Fes/fes_1.jpg' },
-  { id: 'chefchaouen', name: 'Chefchaouen', region: 'Rif Mountains', img: 'images/Chfchaouen/chefchaoun.jpg' },
-  { id: 'merzouga', name: 'Merzouga', region: 'Sahara Desert', img: 'images/Merzouga/merzouga_1.jpg' },
-  { id: 'zagora', name: 'Zagora', region: 'Draâ Valley & Dunes', img: 'images/Zagora/zagora_hero.png' },
-  { id: 'ouarzazate', name: 'Ouarzazate', region: 'Draâ-Tafilalet', img: 'images/Ouarzazat/ouarzazat1.jpeg' },
-  { id: 'essaouira', name: 'Essaouira', region: 'Atlantic Coast', img: 'images/Essaouira/essaouira_1.jpg' },
-  { id: 'agadir', name: 'Agadir', region: 'Souss-Massa', img: 'images/Agadir/agadir_hero.png' },
-  { id: 'casablanca', name: 'Casablanca', region: 'Casablanca-Settat', img: 'images/Casablanca/casablanca.png' },
-  { id: 'rabat', name: 'Rabat', region: 'Rabat-Salé-Kénitra', img: 'images/rabat.jpg' },
-  { id: 'tangier', name: 'Tangier', region: 'Tanger-Tetouan', img: 'images/tangier.jpg' },
-  { id: 'sahara', name: 'Sahara Desert', region: 'Erg Chebbi & Dunes', img: 'images/Zagora/zagora_hero.png' },
-  { id: 'ourika', name: 'Ourika Valley', region: 'Marrakech Region', img: 'images/Marrakech/ourika.jpg' },
-  { id: 'ouzoud', name: 'Ouzoud Waterfalls', region: 'Marrakech Region', img: 'images/Ouzoud/ouzoud-falls.jpg' },
-  { id: 'agafay', name: 'Agafay Desert', region: 'Marrakech Region', img: 'images/Marrakech/agafay_pic2.jpg' },
-  { id: 'imlil', name: 'Imlil & High Atlas', region: 'High Atlas Mountains', img: 'images/Marrakech/imlil_1.jpg' },
-  { id: 'palmeraie_balloon', name: 'Palmeraie ( Sunrise Hot Air Balloon )', region: 'Marrakech Region', img: 'images/Marrakech/montgolfiere.webp' }
-];
-
-const DESTINATION_CATEGORIES = {
-  marrakech: ['medina', 'imperial', 'culture'],
-  fes: ['medina', 'imperial', 'culture'],
-  chefchaouen: ['mountain', 'medina'],
-  merzouga: ['desert', 'dunes'],
-  zagora: ['desert', 'dunes'],
-  ouarzazate: ['desert', 'kasbah'],
-  sahara: ['desert', 'dunes'],
-  essaouira: ['coastal', 'ocean'],
-  
-    agadir: ['coastal', 'ocean'],
-    ourika: ['mountain', 'nature'],
-    ouzoud: ['nature'],
-    agafay: ['desert', 'nature'],
-    imlil: ['mountain', 'nature'],
-    palmeraie_balloon: ['adventure', 'nature'],
-  casablanca: ['coastal', 'imperial'],
-  rabat: ['coastal', 'imperial'],
-  tangier: ['coastal'],
-  atlas: ['mountain', 'hiking']
-};
-
-const CUSTOM_TOUR_DURATIONS = [
-  { id: '2-3', title: '2–3 Days', desc: 'Short weekend getaway & city highlights' },
-  { id: '4-5', title: '4–5 Days', desc: 'Express adventure & imperial tour' },
-  { id: '6-7', title: '6–7 Days', desc: 'Classic Morocco journey & desert camel trek' },
-  { id: '8-10', title: '8–10 Days', desc: 'Comprehensive expedition across cities & dunes' },
-  { id: '10+', title: '10+ Days', desc: 'Grand Morocco complete experience' }
-];
-
-const CUSTOM_TOUR_STYLES = [
-  { id: 'luxury', title: 'Luxury', icon: 'fa-crown', desc: '5-star private riads & fine dining' },
-  { id: 'cultural', title: 'Cultural', icon: 'fa-landmark', desc: 'Ancient medinas & heritage storytellers' },
-  { id: 'adventure', title: 'Adventure', icon: 'fa-compass', desc: 'Desert dunes, quad biking & mountain treks' },
-  { id: 'relaxation', title: 'Relaxation', icon: 'fa-spa', desc: 'Traditional hammams & peaceful coastal stays' },
-  { id: 'family', title: 'Family', icon: 'fa-people-roof', desc: 'Kid-friendly pace & authentic experiences' },
-  { id: 'romantic', title: 'Romantic', icon: 'fa-sparkles', desc: 'Private dinners under desert starry skies' },
-  { id: 'authentic', title: 'Authentic / Local', icon: 'fa-hand-holding-heart', desc: 'Immersive Berber hospitality & craft workshops' }
-];
-
-const CUSTOM_TOUR_ACTIVITIES = [
-  { id: 'desert', title: 'Desert Experience & Stargazing', icon: 'fa-sun', reqCategory: 'desert' },
-  { id: 'camping', title: 'Luxury Desert Camping', icon: 'fa-campground', reqCategory: 'desert' },
-  { id: 'camel', title: 'Camel Trek & Sunset Ride', icon: 'fa-dharmachakra', reqCategory: 'desert' },
-  { id: 'beach', title: 'Beach & Coastal Watersports', icon: 'fa-umbrella-beach', reqCategory: 'coastal' },
-  { id: 'hiking', title: 'Mountain & Oasis Hiking', icon: 'fa-mountain', reqCategory: null },
-  { id: 'souks', title: 'Medina & Souks Guided Tour', icon: 'fa-store', reqCategory: null },
-  { id: 'cooking', title: 'Moroccan Cooking Masterclass', icon: 'fa-utensils', reqCategory: null },
-  { id: 'food', title: 'Local Street Food & Tasting', icon: 'fa-mug-hot', reqCategory: null },
-  { id: 'riad', title: 'Historic Riad Stay', icon: 'fa-hotel', reqCategory: null },
-  { id: 'history', title: 'Historical Sites & Kasbahs', icon: 'fa-monument', reqCategory: null },
-  { id: 'photo', title: 'Photography Tour & Viewpoints', icon: 'fa-camera', reqCategory: null },
-  { id: 'wellness', title: 'Traditional Hammam & Spa', icon: 'fa-leaf', reqCategory: null }
-];
-
-const CUSTOM_TOUR_ACCOMMODATION = [
-  { id: 'luxury_riad', title: 'Luxury Riad', desc: 'Palatial historic riads with private courtyard & plunge pool' },
-  { id: 'boutique_hotel', title: 'Boutique Hotel', desc: 'Charming boutique stays with unique local character' },
-  { id: 'luxury_hotel', title: 'Luxury Hotel', desc: '5-star luxury resorts with full amenities & spas' },
-  { id: 'desert_camp', title: 'Desert Camp', desc: 'Private glamping tents in Erg Chebbi with ensuite bath' },
-  { id: 'standard', title: 'Comfortable / Standard', desc: 'Handpicked quality 3-4 star hotels & guesthouses' }
-];
-
-const CUSTOM_TOUR_TRANSPORTATION = [
-  { id: 'private_driver', title: 'Private Driver', desc: 'Dedicated air-conditioned 4x4 or Mercedes V-Class with professional driver' },
-  { id: 'rental_car', title: 'Rental Car', desc: 'Self-drive SUV or sedan delivered to your arrival city' },
-  { id: 'mixed', title: 'Mixed Transportation', desc: 'Combination of high-speed train, private transfers, and short flights' },
-  { id: 'recommend', title: "I don't know / Recommend for me", desc: 'Let our travel specialists select the optimal routes' }
-];
-
-const CUSTOM_TOUR_BUDGET = [
-  { id: 'comfortable', title: 'Comfortable', desc: 'Value-focused high quality comfort', tier: '€' },
-  { id: 'premium', title: 'Premium', desc: 'High standard with handpicked luxury riads', tier: '€€' },
-  { id: 'luxury', title: 'Luxury', desc: 'Ultra-exclusive 5-star private expeditions', tier: '€€€' }
-];
-
-const CustomTourState = {
-  currentStep: 1,
-  destinations: [],
-  duration: '',
-  travelStyles: [],
-  activities: [],
-  accommodation: '',
-  transportation: '',
-  budget: '',
-  preferences: '',
-  contact: { name: '', email: '', phone: '', dates: '' }
-};
-
-function findDestinationId(input) {
-  if (!input) return null;
-  const str = String(input).trim().toLowerCase();
-
-  let found = CUSTOM_TOUR_DESTINATIONS.find(d => d.id.toLowerCase() === str);
-  if (found) return found.id;
-
-  found = CUSTOM_TOUR_DESTINATIONS.find(d => d.name.toLowerCase() === str);
-  if (found) return found.id;
-
-  const norm = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  found = CUSTOM_TOUR_DESTINATIONS.find(d => {
-    const dNorm = d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return dNorm === norm || norm.includes(dNorm) || dNorm.includes(norm);
-  });
-  if (found) return found.id;
-
-  if (str.includes('zagora')) return 'zagora';
-  if (str.includes('merzouga')) return 'merzouga';
-  if (str.includes('ouarzazat')) return 'ouarzazate';
-  if (str.includes('marrakech')) return 'marrakech';
-  if (str.includes('fes')) return 'fes';
-  if (str.includes('chefchaouen')) return 'chefchaouen';
-  if (str.includes('essaouira')) return 'essaouira';
-  if (str.includes('agadir')) return 'agadir';
-  if (str.includes('casablanca')) return 'casablanca';
-  if (str.includes('rabat')) return 'rabat';
-  if (str.includes('tangier')) return 'tangier';
-
-  return null;
-}
-
-function getAvailableActivities() {
-  const selectedDests = CustomTourState.destinations || [];
-
-  let hasDesert = false;
-  let hasCoastal = false;
-
-  selectedDests.forEach(destId => {
-    const cats = DESTINATION_CATEGORIES[destId] || [];
-    if (cats.includes('desert')) hasDesert = true;
-    if (cats.includes('coastal')) hasCoastal = true;
-  });
-
-  return CUSTOM_TOUR_ACTIVITIES.filter(act => {
-    if (act.reqCategory === 'desert') {
-      return hasDesert;
-    }
-    if (act.reqCategory === 'coastal') {
-      return hasCoastal;
-    }
-    return true;
-  });
-}
-
-function renderCustomTourStep4() {
-  const step4El = document.getElementById('ctStep4');
-  if (!step4El) return;
-
-  const availableActs = getAvailableActivities();
-
-  const availableIds = availableActs.map(a => a.id);
-  CustomTourState.activities = CustomTourState.activities.filter(id => availableIds.includes(id));
-
-  let subtitle = 'Select all activities you would like to experience during your journey.';
-  if (CustomTourState.destinations.length > 0) {
-    const destNames = CUSTOM_TOUR_DESTINATIONS
-      .filter(d => CustomTourState.destinations.includes(d.id))
-      .map(d => d.name)
-      .join(', ');
-    subtitle = `Activities available for <strong>${destNames}</strong>:`;
-  }
-
-  step4El.innerHTML = `
-    <h3 class="ct-step-title">Step 4 — Activities & Experiences</h3>
-    <p class="ct-step-subtitle">${subtitle}</p>
+  `,a.style.display="flex",a.scrollTop=0;const o=a.querySelector(".exp-inner-content");o&&(o.scrollTop=0),lockBodyScroll(!0),requestAnimationFrame(()=>{a.style.opacity="1",a.style.pointerEvents="auto",a.setAttribute("tabindex","-1"),a.focus()})},window.closeDestinationModal=function(){const e=document.getElementById("destModal");e&&(e.style.opacity="0",e.style.pointerEvents="none",setTimeout(()=>{e.style.display="none"},300)),lockBodyScroll(!1)},window.closeExp=window.closeDestinationModal,document.addEventListener("keydown",function(e){e.key==="Escape"&&document.querySelectorAll(".modal, .dest-booking-modal-overlay, .exp-modal, #globalQuickBookModal, #destModal, #customTourModal").forEach(t=>{if(t.style.display==="flex"||t.style.display==="block"||t.style.opacity==="1"){const a=t.id;if(a.startsWith("modal-")){const o=a.replace("modal-","");closeModal(o)}else a==="globalQuickBookModal"?closeQuickBooking():a==="destBookingModal"?closeDestBooking():a==="destModal"||a==="expModal"?closeDestinationModal():a==="customTourModal"?closeCustomTourModal():(t.style.display="none",lockBodyScroll(!1))}})}),document.addEventListener("click",function(e){if(e.target.classList.contains("modal")||e.target.classList.contains("dest-booking-modal-overlay")||e.target.classList.contains("exp-modal")||e.target.id==="globalQuickBookModal"||e.target.id==="destModal"||e.target.id==="customTourModal"){const t=e.target.id;t.startsWith("modal-")?closeModal(t.replace("modal-","")):t==="globalQuickBookModal"?closeQuickBooking():t==="destBookingModal"?closeDestBooking():t==="destModal"||t==="expModal"?closeDestinationModal():t==="customTourModal"&&closeCustomTourModal()}});const CUSTOM_TOUR_DESTINATIONS=[{id:"marrakech",name:"Marrakech",region:"Marrakech-Safi",img:"images/Marrakech/marrakech_11.jpg"},{id:"fes",name:"F\xE8s",region:"F\xE8s-Mekn\xE8s",img:"images/Fes/fes_1.jpg"},{id:"chefchaouen",name:"Chefchaouen",region:"Rif Mountains",img:"images/Chfchaouen/chefchaoun.jpg"},{id:"merzouga",name:"Merzouga",region:"Sahara Desert",img:"images/Merzouga/merzouga_1.jpg"},{id:"zagora",name:"Zagora",region:"Dra\xE2 Valley & Dunes",img:"images/Zagora/zagora_hero.png"},{id:"ouarzazate",name:"Ouarzazate",region:"Dra\xE2-Tafilalet",img:"images/Ouarzazat/ouarzazat1.jpeg"},{id:"essaouira",name:"Essaouira",region:"Atlantic Coast",img:"images/Essaouira/essaouira_1.jpg"},{id:"agadir",name:"Agadir",region:"Souss-Massa",img:"images/Agadir/agadir_hero.png"},{id:"casablanca",name:"Casablanca",region:"Casablanca-Settat",img:"images/Casablanca/casablanca.png"},{id:"rabat",name:"Rabat",region:"Rabat-Sal\xE9-K\xE9nitra",img:"images/rabat.jpg"},{id:"tangier",name:"Tangier",region:"Tanger-Tetouan",img:"images/tangier.jpg"},{id:"sahara",name:"Sahara Desert",region:"Erg Chebbi & Dunes",img:"images/Zagora/zagora_hero.png"},{id:"ourika",name:"Ourika Valley",region:"Marrakech Region",img:"images/Marrakech/ourika.jpg"},{id:"ouzoud",name:"Ouzoud Waterfalls",region:"Marrakech Region",img:"images/Ouzoud/ouzoud-falls.jpg"},{id:"agafay",name:"Agafay Desert",region:"Marrakech Region",img:"images/Marrakech/agafay_pic2.jpg"},{id:"imlil",name:"Imlil & High Atlas",region:"High Atlas Mountains",img:"images/Marrakech/imlil_1.jpg"},{id:"palmeraie_balloon",name:"Palmeraie ( Sunrise Hot Air Balloon )",region:"Marrakech Region",img:"images/Marrakech/montgolfiere.webp"}],DESTINATION_CATEGORIES={marrakech:["medina","imperial","culture"],fes:["medina","imperial","culture"],chefchaouen:["mountain","medina"],merzouga:["desert","dunes"],zagora:["desert","dunes"],ouarzazate:["desert","kasbah"],sahara:["desert","dunes"],essaouira:["coastal","ocean"],agadir:["coastal","ocean"],ourika:["mountain","nature"],ouzoud:["nature"],agafay:["desert","nature"],imlil:["mountain","nature"],palmeraie_balloon:["adventure","nature"],casablanca:["coastal","imperial"],rabat:["coastal","imperial"],tangier:["coastal"],atlas:["mountain","hiking"]},CUSTOM_TOUR_DURATIONS=[{id:"2-3",title:"2\u20133 Days",desc:"Short weekend getaway & city highlights"},{id:"4-5",title:"4\u20135 Days",desc:"Express adventure & imperial tour"},{id:"6-7",title:"6\u20137 Days",desc:"Classic Morocco journey & desert camel trek"},{id:"8-10",title:"8\u201310 Days",desc:"Comprehensive expedition across cities & dunes"},{id:"10+",title:"10+ Days",desc:"Grand Morocco complete experience"}],CUSTOM_TOUR_STYLES=[{id:"luxury",title:"Luxury",icon:"fa-crown",desc:"5-star private riads & fine dining"},{id:"cultural",title:"Cultural",icon:"fa-landmark",desc:"Ancient medinas & heritage storytellers"},{id:"adventure",title:"Adventure",icon:"fa-compass",desc:"Desert dunes, quad biking & mountain treks"},{id:"relaxation",title:"Relaxation",icon:"fa-spa",desc:"Traditional hammams & peaceful coastal stays"},{id:"family",title:"Family",icon:"fa-people-roof",desc:"Kid-friendly pace & authentic experiences"},{id:"romantic",title:"Romantic",icon:"fa-sparkles",desc:"Private dinners under desert starry skies"},{id:"authentic",title:"Authentic / Local",icon:"fa-hand-holding-heart",desc:"Immersive Berber hospitality & craft workshops"}],CUSTOM_TOUR_ACTIVITIES=[{id:"desert",title:"Desert Experience & Stargazing",icon:"fa-sun",reqCategory:"desert"},{id:"camping",title:"Luxury Desert Camping",icon:"fa-campground",reqCategory:"desert"},{id:"camel",title:"Camel Trek & Sunset Ride",icon:"fa-dharmachakra",reqCategory:"desert"},{id:"beach",title:"Beach & Coastal Watersports",icon:"fa-umbrella-beach",reqCategory:"coastal"},{id:"hiking",title:"Mountain & Oasis Hiking",icon:"fa-mountain",reqCategory:null},{id:"souks",title:"Medina & Souks Guided Tour",icon:"fa-store",reqCategory:null},{id:"cooking",title:"Moroccan Cooking Masterclass",icon:"fa-utensils",reqCategory:null},{id:"food",title:"Local Street Food & Tasting",icon:"fa-mug-hot",reqCategory:null},{id:"riad",title:"Historic Riad Stay",icon:"fa-hotel",reqCategory:null},{id:"history",title:"Historical Sites & Kasbahs",icon:"fa-monument",reqCategory:null},{id:"photo",title:"Photography Tour & Viewpoints",icon:"fa-camera",reqCategory:null},{id:"wellness",title:"Traditional Hammam & Spa",icon:"fa-leaf",reqCategory:null}],CUSTOM_TOUR_ACCOMMODATION=[{id:"luxury_riad",title:"Luxury Riad",desc:"Palatial historic riads with private courtyard & plunge pool"},{id:"boutique_hotel",title:"Boutique Hotel",desc:"Charming boutique stays with unique local character"},{id:"luxury_hotel",title:"Luxury Hotel",desc:"5-star luxury resorts with full amenities & spas"},{id:"desert_camp",title:"Desert Camp",desc:"Private glamping tents in Erg Chebbi with ensuite bath"},{id:"standard",title:"Comfortable / Standard",desc:"Handpicked quality 3-4 star hotels & guesthouses"}],CUSTOM_TOUR_TRANSPORTATION=[{id:"private_driver",title:"Private Driver",desc:"Dedicated air-conditioned 4x4 or Mercedes V-Class with professional driver"},{id:"rental_car",title:"Rental Car",desc:"Self-drive SUV or sedan delivered to your arrival city"},{id:"mixed",title:"Mixed Transportation",desc:"Combination of high-speed train, private transfers, and short flights"},{id:"recommend",title:"I don't know / Recommend for me",desc:"Let our travel specialists select the optimal routes"}],CUSTOM_TOUR_BUDGET=[{id:"comfortable",title:"Comfortable",desc:"Value-focused high quality comfort",tier:"\u20AC"},{id:"premium",title:"Premium",desc:"High standard with handpicked luxury riads",tier:"\u20AC\u20AC"},{id:"luxury",title:"Luxury",desc:"Ultra-exclusive 5-star private expeditions",tier:"\u20AC\u20AC\u20AC"}],CustomTourState={currentStep:1,destinations:[],duration:"",travelStyles:[],activities:[],accommodation:"",transportation:"",budget:"",preferences:"",contact:{name:"",email:"",phone:"",dates:""}};function findDestinationId(e){if(!e)return null;const t=String(e).trim().toLowerCase();let a=CUSTOM_TOUR_DESTINATIONS.find(i=>i.id.toLowerCase()===t);if(a||(a=CUSTOM_TOUR_DESTINATIONS.find(i=>i.name.toLowerCase()===t),a))return a.id;const o=t.normalize("NFD").replace(/[\u0300-\u036f]/g,"");return a=CUSTOM_TOUR_DESTINATIONS.find(i=>{const n=i.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");return n===o||o.includes(n)||n.includes(o)}),a?a.id:t.includes("zagora")?"zagora":t.includes("merzouga")?"merzouga":t.includes("ouarzazat")?"ouarzazate":t.includes("marrakech")?"marrakech":t.includes("fes")?"fes":t.includes("chefchaouen")?"chefchaouen":t.includes("essaouira")?"essaouira":t.includes("agadir")?"agadir":t.includes("casablanca")?"casablanca":t.includes("rabat")?"rabat":t.includes("tangier")?"tangier":null}function getAvailableActivities(){const e=CustomTourState.destinations||[];let t=!1,a=!1;return e.forEach(o=>{const i=DESTINATION_CATEGORIES[o]||[];i.includes("desert")&&(t=!0),i.includes("coastal")&&(a=!0)}),CUSTOM_TOUR_ACTIVITIES.filter(o=>o.reqCategory==="desert"?t:o.reqCategory==="coastal"?a:!0)}function renderCustomTourStep4(){const e=document.getElementById("ctStep4");if(!e)return;const t=getAvailableActivities(),a=t.map(i=>i.id);CustomTourState.activities=CustomTourState.activities.filter(i=>a.includes(i));let o="Select all activities you would like to experience during your journey.";CustomTourState.destinations.length>0&&(o=`Activities available for <strong>${CUSTOM_TOUR_DESTINATIONS.filter(n=>CustomTourState.destinations.includes(n.id)).map(n=>n.name).join(", ")}</strong>:`),e.innerHTML=`
+    <h3 class="ct-step-title">Step 4 \u2014 Activities & Experiences</h3>
+    <p class="ct-step-subtitle">${o}</p>
     <div class="ct-option-grid">
-      ${availableActs.map(act => {
-    const isSel = CustomTourState.activities.includes(act.id);
-    return `
-          <div class="ct-option-card ${isSel ? 'is-selected' : ''}" data-val="${act.id}" onclick="window.toggleCTActivity('${act.id}')">
+      ${t.map(i=>`
+          <div class="ct-option-card ${CustomTourState.activities.includes(i.id)?"is-selected":""}" data-val="${i.id}" onclick="window.toggleCTActivity('${i.id}')">
             <div class="ct-option-radio"></div>
-            <div class="ct-option-icon"><i class="fa-solid ${act.icon}"></i></div>
-            <div class="ct-option-title">${act.title}</div>
+            <div class="ct-option-icon"><i class="fa-solid ${i.icon}"></i></div>
+            <div class="ct-option-title">${i.title}</div>
           </div>
-        `;
-  }).join('')}
+        `).join("")}
     </div>
-  `;
-}
-
-window.openCustomTourModal = function (initialDestId) {
-  document.querySelectorAll('.hn-links, .nav-links, #premNavLinks, #navLinks').forEach(m => {
-    m.classList.remove('hn-links-open', 'open', 'active');
-  });
-  document.querySelectorAll('.hamburger, .hburg').forEach(btn => {
-    btn.classList.remove('is-active');
-  });
-  document.querySelectorAll('.drawer-backdrop').forEach(bd => {
-    bd.classList.remove('drawer-backdrop-open');
-  });
-  document.querySelectorAll('.modal, .dest-booking-modal-overlay, #globalQuickBookModal, #destModal').forEach(m => {
-    m.style.display = 'none';
-  });
-
-  let modal = document.getElementById('customTourModal');
-  if (!modal) {
-    initCustomTourDOM();
-    modal = document.getElementById('customTourModal');
-  }
-  if (modal.parentElement !== document.body) {
-    document.body.appendChild(modal);
-  }
-
-  let destToSelect = null;
-  if (initialDestId) {
-    destToSelect = findDestinationId(initialDestId);
-  } else {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramDest = urlParams.get('dest') || urlParams.get('destination') || urlParams.get('city');
-    if (paramDest) {
-      destToSelect = findDestinationId(paramDest);
-    }
-  }
-
-  if (destToSelect) {
-    CustomTourState.destinations = [destToSelect];
-    try {
-      localStorage.setItem('hm_selected_dest', destToSelect);
-    } catch (e) { }
-  } else if (CustomTourState.destinations.length === 0) {
-    const saved = localStorage.getItem('hm_selected_dest');
-    if (saved && findDestinationId(saved)) {
-      CustomTourState.destinations = [findDestinationId(saved)];
-    }
-  }
-
-  CustomTourState.currentStep = 1;
-  renderCustomTourStep(1);
-
-  modal.style.display = 'flex';
-  modal.scrollTop = 0;
-  const content = modal.querySelector('.ct-modal-content');
-  if (content) content.scrollTop = 0;
-
-  lockBodyScroll(true);
-
-  requestAnimationFrame(() => {
-    modal.style.opacity = '1';
-    modal.style.pointerEvents = 'auto';
-    modal.setAttribute('tabindex', '-1');
-    modal.focus();
-    if (typeof window.animateCustomTourCards === 'function') {
-      window.animateCustomTourCards(true);
-    }
-  });
-};
-
-window.closeCustomTourModal = function () {
-  const modal = document.getElementById('customTourModal');
-  if (modal) {
-    modal.style.opacity = '0';
-    modal.style.pointerEvents = 'none';
-    setTimeout(() => { modal.style.display = 'none'; }, 300);
-  }
-  lockBodyScroll(false);
-};
-
-function initCustomTourDOM() {
-  if (document.getElementById('customTourModal')) return;
-
-  const modal = document.createElement('div');
-  modal.id = 'customTourModal';
-  modal.innerHTML = `
+  `}window.openCustomTourModal=function(e){document.querySelectorAll(".hn-links, .nav-links, #premNavLinks, #navLinks").forEach(i=>{i.classList.remove("hn-links-open","open","active")}),document.querySelectorAll(".hamburger, .hburg").forEach(i=>{i.classList.remove("is-active")}),document.querySelectorAll(".drawer-backdrop").forEach(i=>{i.classList.remove("drawer-backdrop-open")}),document.querySelectorAll(".modal, .dest-booking-modal-overlay, #globalQuickBookModal, #destModal").forEach(i=>{i.style.display="none"});let t=document.getElementById("customTourModal");t||(initCustomTourDOM(),t=document.getElementById("customTourModal")),t.parentElement!==document.body&&document.body.appendChild(t);let a=null;if(e)a=findDestinationId(e);else{const i=new URLSearchParams(window.location.search),n=i.get("dest")||i.get("destination")||i.get("city");n&&(a=findDestinationId(n))}if(a){CustomTourState.destinations=[a];try{localStorage.setItem("hm_selected_dest",a)}catch{}}else if(CustomTourState.destinations.length===0){const i=localStorage.getItem("hm_selected_dest");i&&findDestinationId(i)&&(CustomTourState.destinations=[findDestinationId(i)])}CustomTourState.currentStep=1,renderCustomTourStep(1),t.style.display="flex",t.scrollTop=0;const o=t.querySelector(".ct-modal-content");o&&(o.scrollTop=0),lockBodyScroll(!0),requestAnimationFrame(()=>{t.style.opacity="1",t.style.pointerEvents="auto",t.setAttribute("tabindex","-1"),t.focus(),typeof window.animateCustomTourCards=="function"&&window.animateCustomTourCards(!0)})},window.closeCustomTourModal=function(){const e=document.getElementById("customTourModal");e&&(e.style.opacity="0",e.style.pointerEvents="none",setTimeout(()=>{e.style.display="none"},300)),lockBodyScroll(!1)};function initCustomTourDOM(){if(document.getElementById("customTourModal"))return;const e=document.createElement("div");e.id="customTourModal",e.innerHTML=`
     <div class="ct-modal-content">
       <button class="ct-close-btn" onclick="window.closeCustomTourModal()" aria-label="Close">&times;</button>
 
@@ -2988,123 +398,123 @@ function initCustomTourDOM() {
 
       <!-- STEP 1: DESTINATIONS -->
       <div class="ct-step-content is-active" id="ctStep1">
-        <h3 class="ct-step-title">Step 1 — Choose Destinations</h3>
+        <h3 class="ct-step-title">Step 1 \u2014 Choose Destinations</h3>
         <p class="ct-step-subtitle">Select one or multiple Moroccan destinations you wish to include in your personalized trip.</p>
         <div class="ct-dest-grid">
-          ${CUSTOM_TOUR_DESTINATIONS.map(d => `
-            <div class="ct-dest-card" data-id="${d.id}" onclick="window.toggleCTDest('${d.id}')">
+          ${CUSTOM_TOUR_DESTINATIONS.map(t=>`
+            <div class="ct-dest-card" data-id="${t.id}" onclick="window.toggleCTDest('${t.id}')">
               <div class="ct-dest-card-img">
-                <img src="${d.img}" alt="${d.name}" loading="lazy">
+                <img src="${t.img}" alt="${t.name}" loading="lazy">
                 <div class="ct-dest-card-overlay"></div>
                 <div class="ct-dest-check"><i class="fa-solid fa-check"></i></div>
               </div>
               <div class="ct-dest-card-body">
-                <div class="ct-dest-card-title">${d.name}</div>
-                <div class="ct-dest-card-region"><i class="fa-solid fa-location-dot" style="color:#C85A32;"></i> ${d.region}</div>
+                <div class="ct-dest-card-title">${t.name}</div>
+                <div class="ct-dest-card-region"><i class="fa-solid fa-location-dot" style="color:#C85A32;"></i> ${t.region}</div>
               </div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 2: DURATION -->
       <div class="ct-step-content" id="ctStep2">
-        <h3 class="ct-step-title">Step 2 — Trip Duration</h3>
+        <h3 class="ct-step-title">Step 2 \u2014 Trip Duration</h3>
         <p class="ct-step-subtitle">Select the approximate duration for your customized journey.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_DURATIONS.map(dur => `
-            <div class="ct-option-card" data-val="${dur.id}" onclick="window.selectCTDuration('${dur.id}')">
+          ${CUSTOM_TOUR_DURATIONS.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.selectCTDuration('${t.id}')">
               <div class="ct-option-radio"></div>
               <div class="ct-option-icon"><i class="fa-regular fa-calendar-days"></i></div>
-              <div class="ct-option-title">${dur.title}</div>
-              <div class="ct-option-desc">${dur.desc}</div>
+              <div class="ct-option-title">${t.title}</div>
+              <div class="ct-option-desc">${t.desc}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 3: TRAVEL STYLE -->
       <div class="ct-step-content" id="ctStep3">
-        <h3 class="ct-step-title">Step 3 — Travel Style</h3>
+        <h3 class="ct-step-title">Step 3 \u2014 Travel Style</h3>
         <p class="ct-step-subtitle">Choose one or more travel experiences that match your travel vision.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_STYLES.map(style => `
-            <div class="ct-option-card" data-val="${style.id}" onclick="window.toggleCTStyle('${style.id}')">
+          ${CUSTOM_TOUR_STYLES.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.toggleCTStyle('${t.id}')">
               <div class="ct-option-radio"></div>
-              <div class="ct-option-icon"><i class="fa-solid ${style.icon}"></i></div>
-              <div class="ct-option-title">${style.title}</div>
-              <div class="ct-option-desc">${style.desc}</div>
+              <div class="ct-option-icon"><i class="fa-solid ${t.icon}"></i></div>
+              <div class="ct-option-title">${t.title}</div>
+              <div class="ct-option-desc">${t.desc}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 4: ACTIVITIES -->
       <div class="ct-step-content" id="ctStep4">
-        <h3 class="ct-step-title">Step 4 — Activities & Experiences</h3>
+        <h3 class="ct-step-title">Step 4 \u2014 Activities & Experiences</h3>
         <p class="ct-step-subtitle">Select all activities you would like to experience during your journey.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_ACTIVITIES.map(act => `
-            <div class="ct-option-card" data-val="${act.id}" onclick="window.toggleCTActivity('${act.id}')">
+          ${CUSTOM_TOUR_ACTIVITIES.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.toggleCTActivity('${t.id}')">
               <div class="ct-option-radio"></div>
-              <div class="ct-option-icon"><i class="fa-solid ${act.icon}"></i></div>
-              <div class="ct-option-title">${act.title}</div>
+              <div class="ct-option-icon"><i class="fa-solid ${t.icon}"></i></div>
+              <div class="ct-option-title">${t.title}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 5: ACCOMMODATION -->
       <div class="ct-step-content" id="ctStep5">
-        <h3 class="ct-step-title">Step 5 — Preferred Accommodation</h3>
+        <h3 class="ct-step-title">Step 5 \u2014 Preferred Accommodation</h3>
         <p class="ct-step-subtitle">Select the style of accommodation you prefer throughout your tour.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_ACCOMMODATION.map(acc => `
-            <div class="ct-option-card" data-val="${acc.id}" onclick="window.selectCTAccom('${acc.id}')">
+          ${CUSTOM_TOUR_ACCOMMODATION.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.selectCTAccom('${t.id}')">
               <div class="ct-option-radio"></div>
               <div class="ct-option-icon"><i class="fa-solid fa-bed"></i></div>
-              <div class="ct-option-title">${acc.title}</div>
-              <div class="ct-option-desc">${acc.desc}</div>
+              <div class="ct-option-title">${t.title}</div>
+              <div class="ct-option-desc">${t.desc}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 6: TRANSPORTATION -->
       <div class="ct-step-content" id="ctStep6">
-        <h3 class="ct-step-title">Step 6 — Preferred Transportation</h3>
+        <h3 class="ct-step-title">Step 6 \u2014 Preferred Transportation</h3>
         <p class="ct-step-subtitle">Choose your preferred mode of travel between destinations.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_TRANSPORTATION.map(trans => `
-            <div class="ct-option-card" data-val="${trans.id}" onclick="window.selectCTTrans('${trans.id}')">
+          ${CUSTOM_TOUR_TRANSPORTATION.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.selectCTTrans('${t.id}')">
               <div class="ct-option-radio"></div>
               <div class="ct-option-icon"><i class="fa-solid fa-car-side"></i></div>
-              <div class="ct-option-title">${trans.title}</div>
-              <div class="ct-option-desc">${trans.desc}</div>
+              <div class="ct-option-title">${t.title}</div>
+              <div class="ct-option-desc">${t.desc}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 7: BUDGET -->
       <div class="ct-step-content" id="ctStep7">
-        <h3 class="ct-step-title">Step 7 — Budget Range</h3>
+        <h3 class="ct-step-title">Step 7 \u2014 Budget Range</h3>
         <p class="ct-step-subtitle">Select your preferred travel budget tier.</p>
         <div class="ct-option-grid">
-          ${CUSTOM_TOUR_BUDGET.map(b => `
-            <div class="ct-option-card" data-val="${b.id}" onclick="window.selectCTBudget('${b.id}')">
+          ${CUSTOM_TOUR_BUDGET.map(t=>`
+            <div class="ct-option-card" data-val="${t.id}" onclick="window.selectCTBudget('${t.id}')">
               <div class="ct-option-radio"></div>
-              <div class="ct-option-icon"><span style="font-weight:800; font-size:1.1rem;">${b.tier}</span></div>
-              <div class="ct-option-title">${b.title}</div>
-              <div class="ct-option-desc">${b.desc}</div>
+              <div class="ct-option-icon"><span style="font-weight:800; font-size:1.1rem;">${t.tier}</span></div>
+              <div class="ct-option-title">${t.title}</div>
+              <div class="ct-option-desc">${t.desc}</div>
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </div>
 
       <!-- STEP 8: PERSONAL PREFERENCES -->
       <div class="ct-step-content" id="ctStep8">
-        <h3 class="ct-step-title">Step 8 — Personal Preferences</h3>
+        <h3 class="ct-step-title">Step 8 \u2014 Personal Preferences</h3>
         <p class="ct-step-subtitle">Tell us anything else you would like for your trip (dietary requirements, celebratory events, travel pace, special requests...)</p>
         <div class="ct-textarea-group">
           <textarea id="ctPreferencesInput" class="ct-textarea" placeholder="Tell us anything else you would like for your trip... e.g. We are celebrating an anniversary, prefer vegetarian meals, and want a relaxed pace."></textarea>
@@ -3113,7 +523,7 @@ function initCustomTourDOM() {
 
       <!-- STEP 9: CONTACT DETAILS -->
       <div class="ct-step-content" id="ctStep9">
-        <h3 class="ct-step-title">Step 9 — Contact Details</h3>
+        <h3 class="ct-step-title">Step 9 \u2014 Contact Details</h3>
         <p class="ct-step-subtitle">Provide your contact details so our Moroccan travel designers can prepare your itinerary.</p>
         <div class="ct-form-grid">
           <div class="ct-input-group">
@@ -3130,7 +540,7 @@ function initCustomTourDOM() {
           </div>
           <div class="ct-input-group">
             <label class="ct-label">Preferred Travel Dates <span class="req">*</span></label>
-            <input type="text" id="ctDatesInput" class="ct-input" placeholder="e.g. October 15–25, 2026 or Spring 2027" required>
+            <input type="text" id="ctDatesInput" class="ct-input" placeholder="e.g. October 15\u201325, 2026 or Spring 2027" required>
           </div>
         </div>
       </div>
@@ -3149,7 +559,7 @@ function initCustomTourDOM() {
       <div class="ct-step-content" id="ctStep11">
         <div class="ct-success-card">
           <div class="ct-success-icon"><i class="fa-solid fa-check"></i></div>
-          <h3 class="ct-step-title" style="text-align:center;">Request Received! 🎉</h3>
+          <h3 class="ct-step-title" style="text-align:center;">Request Received! \u{1F389}</h3>
           <p class="ct-step-subtitle" style="text-align:center; max-width:600px; margin:0 auto 24px;">
             Thank you <strong id="ctSuccessName" style="color:#C85A32;">Traveler</strong>! Your custom Morocco tour request has been successfully submitted. Choose your preferred contact channel to connect directly with our travel designers:
           </p>
@@ -3189,289 +599,47 @@ function initCustomTourDOM() {
       </div>
 
     </div>
-  `;
-  document.body.appendChild(modal);
-}
-
-window.toggleCTDest = function (id) {
-  const idx = CustomTourState.destinations.indexOf(id);
-  if (idx > -1) {
-    CustomTourState.destinations.splice(idx, 1);
-  } else {
-    CustomTourState.destinations.push(id);
-  }
-  document.querySelectorAll('#ctStep1 .ct-dest-card').forEach(card => {
-    const cardId = card.getAttribute('data-id');
-    card.classList.toggle('is-selected', CustomTourState.destinations.includes(cardId));
-  });
-
-  const availableActs = getAvailableActivities();
-  const availableIds = availableActs.map(a => a.id);
-  CustomTourState.activities = CustomTourState.activities.filter(actId => availableIds.includes(actId));
-
-  if (CustomTourState.currentStep === 4) {
-    renderCustomTourStep4();
-  }
-};
-
-window.selectCTDuration = function (val) {
-  CustomTourState.duration = val;
-  document.querySelectorAll('#ctStep2 .ct-option-card').forEach(card => {
-    card.classList.toggle('is-selected', card.getAttribute('data-val') === val);
-  });
-};
-
-window.toggleCTStyle = function (val) {
-  const idx = CustomTourState.travelStyles.indexOf(val);
-  if (idx > -1) {
-    CustomTourState.travelStyles.splice(idx, 1);
-  } else {
-    CustomTourState.travelStyles.push(val);
-  }
-  document.querySelectorAll('#ctStep3 .ct-option-card').forEach(card => {
-    const cVal = card.getAttribute('data-val');
-    card.classList.toggle('is-selected', CustomTourState.travelStyles.includes(cVal));
-  });
-};
-
-window.toggleCTActivity = function (val) {
-  const idx = CustomTourState.activities.indexOf(val);
-  if (idx > -1) {
-    CustomTourState.activities.splice(idx, 1);
-  } else {
-    CustomTourState.activities.push(val);
-  }
-  document.querySelectorAll('#ctStep4 .ct-option-card').forEach(card => {
-    const cVal = card.getAttribute('data-val');
-    card.classList.toggle('is-selected', CustomTourState.activities.includes(cVal));
-  });
-};
-
-window.selectCTAccom = function (val) {
-  CustomTourState.accommodation = val;
-  document.querySelectorAll('#ctStep5 .ct-option-card').forEach(card => {
-    card.classList.toggle('is-selected', card.getAttribute('data-val') === val);
-  });
-};
-
-window.selectCTTrans = function (val) {
-  CustomTourState.transportation = val;
-  document.querySelectorAll('#ctStep6 .ct-option-card').forEach(card => {
-    card.classList.toggle('is-selected', card.getAttribute('data-val') === val);
-  });
-};
-
-window.selectCTBudget = function (val) {
-  CustomTourState.budget = val;
-  document.querySelectorAll('#ctStep7 .ct-option-card').forEach(card => {
-    card.classList.toggle('is-selected', card.getAttribute('data-val') === val);
-  });
-};
-
-function renderCustomTourStep(step) {
-  CustomTourState.currentStep = step;
-
-  // Hide all steps
-  for (let i = 1; i <= 11; i++) {
-    const el = document.getElementById('ctStep' + i);
-    if (el) el.classList.remove('is-active');
-  }
-
-  const currentEl = document.getElementById('ctStep' + step);
-  if (currentEl) currentEl.classList.add('is-active');
-
-  const stepCount = document.getElementById('ctStepCount');
-  const progressFill = document.getElementById('ctProgressFill');
-  const backBtn = document.getElementById('ctBackBtn');
-  const nextBtn = document.getElementById('ctNextBtn');
-  const navFooter = document.getElementById('ctNavFooter');
-
-  if (step === 1) {
-      document.querySelectorAll('#ctStep1 .ct-dest-card').forEach(card => {
-        const cardId = card.getAttribute('data-id');
-        const isSelected = CustomTourState.destinations.includes(cardId);
-        card.classList.toggle('is-selected', isSelected);
-        if (isSelected) {
-            setTimeout(() => {
-                const modalContent = document.querySelector('.ct-modal-content');
-                if (modalContent) {
-                    modalContent.scrollTo({
-                        top: card.offsetTop - 150,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 100);
-        }
-      });
-      if (typeof window.animateCustomTourCards === 'function') {
-        window.animateCustomTourCards(false);
-      }
-    } else if (step === 4) {
-      renderCustomTourStep4();
-    }
-
-    if (step >= 2 && step <= 8) {
-      const optCards = document.querySelectorAll('#ctStep' + step + ' .ct-option-card');
-      optCards.forEach((card, index) => {
-        card.style.animation = 'none';
-        void card.offsetWidth;
-        const delay = (0.08 + (index * 0.12)).toFixed(2);
-        card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
-      });
-    }
-
-  if (step <= 9) {
-    if (navFooter) navFooter.style.display = 'flex';
-    if (stepCount) stepCount.textContent = `Step ${step} of 9`;
-    if (progressFill) progressFill.style.width = `${Math.round((step / 9) * 100)}%`;
-
-    if (backBtn) backBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
-    if (nextBtn) {
-      nextBtn.innerHTML = step === 9 ? 'Review My Journey &nbsp;<i class="fa-solid fa-eye"></i>' : 'Continue &nbsp;<i class="fa-solid fa-arrow-right"></i>';
-    }
-  } else if (step === 10) {
-    if (navFooter) navFooter.style.display = 'flex';
-    if (stepCount) stepCount.textContent = 'Summary Review';
-    if (progressFill) progressFill.style.width = '100%';
-
-    if (backBtn) backBtn.style.visibility = 'visible';
-    if (nextBtn) {
-      nextBtn.innerHTML = 'Request My Personalized Tour &nbsp;<i class="fa-solid fa-paper-plane"></i>';
-    }
-    renderCustomTourSummary();
-  } else if (step === 11) {
-    if (navFooter) navFooter.style.display = 'none';
-  }
-
-  const modal = document.getElementById('customTourModal');
-  if (modal) {
-    const content = modal.querySelector('.ct-modal-content');
-    if (content) content.scrollTop = 0;
-  }
-}
-
-window.nextCTStep = function () {
-  const step = CustomTourState.currentStep;
-
-  // Validation before progressing
-  if (step === 1) {
-    if (CustomTourState.destinations.length === 0) {
-      showToast('Please select at least 1 destination');
-      return;
-    }
-  } else if (step === 2) {
-    if (!CustomTourState.duration) {
-      showToast('Please select your approximate trip duration');
-      return;
-    }
-  } else if (step === 3) {
-    if (CustomTourState.travelStyles.length === 0) {
-      showToast('Please select at least 1 travel style');
-      return;
-    }
-  } else if (step === 4) {
-    if (CustomTourState.activities.length === 0) {
-      showToast('Please select at least 1 activity');
-      return;
-    }
-  } else if (step === 5) {
-    if (!CustomTourState.accommodation) {
-      showToast('Please select your preferred accommodation style');
-      return;
-    }
-  } else if (step === 6) {
-    if (!CustomTourState.transportation) {
-      showToast('Please select your transportation option');
-      return;
-    }
-  } else if (step === 7) {
-    if (!CustomTourState.budget) {
-      showToast('Please select your budget range');
-      return;
-    }
-  } else if (step === 8) {
-    const prefEl = document.getElementById('ctPreferencesInput');
-    if (prefEl) CustomTourState.preferences = prefEl.value.trim();
-  } else if (step === 9) {
-    const name = document.getElementById('ctNameInput')?.value.trim();
-    const email = document.getElementById('ctEmailInput')?.value.trim();
-    const phone = document.getElementById('ctPhoneInput')?.value.trim();
-    const dates = document.getElementById('ctDatesInput')?.value.trim();
-
-    if (!name || !phone || !dates) {
-      showToast('Please complete all required contact fields');
-      return;
-    }
-
-    CustomTourState.contact = { name, email, phone, dates };
-  } else if (step === 10) {
-    // Final Submit Action
-    window.submitCustomTour();
-    return;
-  }
-
-  renderCustomTourStep(step + 1);
-};
-
-window.prevCTStep = function () {
-  if (CustomTourState.currentStep > 1) {
-    renderCustomTourStep(CustomTourState.currentStep - 1);
-  }
-};
-
-function renderCustomTourSummary() {
-  const box = document.getElementById('ctSummaryBox');
-  if (!box) return;
-
-  const destObjs = CUSTOM_TOUR_DESTINATIONS.filter(d => CustomTourState.destinations.includes(d.id));
-  const durObj = CUSTOM_TOUR_DURATIONS.find(d => d.id === CustomTourState.duration);
-  const styleObjs = CUSTOM_TOUR_STYLES.filter(s => CustomTourState.travelStyles.includes(s.id));
-  const actObjs = CUSTOM_TOUR_ACTIVITIES.filter(a => CustomTourState.activities.includes(a.id));
-  const accObj = CUSTOM_TOUR_ACCOMMODATION.find(a => a.id === CustomTourState.accommodation);
-  const transObj = CUSTOM_TOUR_TRANSPORTATION.find(t => t.id === CustomTourState.transportation);
-  const budObj = CUSTOM_TOUR_BUDGET.find(b => b.id === CustomTourState.budget);
-
-  box.innerHTML = `
+  `,document.body.appendChild(e)}window.toggleCTDest=function(e){const t=CustomTourState.destinations.indexOf(e);t>-1?CustomTourState.destinations.splice(t,1):CustomTourState.destinations.push(e),document.querySelectorAll("#ctStep1 .ct-dest-card").forEach(i=>{const n=i.getAttribute("data-id");i.classList.toggle("is-selected",CustomTourState.destinations.includes(n))});const o=getAvailableActivities().map(i=>i.id);CustomTourState.activities=CustomTourState.activities.filter(i=>o.includes(i)),CustomTourState.currentStep===4&&renderCustomTourStep4()},window.selectCTDuration=function(e){CustomTourState.duration=e,document.querySelectorAll("#ctStep2 .ct-option-card").forEach(t=>{t.classList.toggle("is-selected",t.getAttribute("data-val")===e)})},window.toggleCTStyle=function(e){const t=CustomTourState.travelStyles.indexOf(e);t>-1?CustomTourState.travelStyles.splice(t,1):CustomTourState.travelStyles.push(e),document.querySelectorAll("#ctStep3 .ct-option-card").forEach(a=>{const o=a.getAttribute("data-val");a.classList.toggle("is-selected",CustomTourState.travelStyles.includes(o))})},window.toggleCTActivity=function(e){const t=CustomTourState.activities.indexOf(e);t>-1?CustomTourState.activities.splice(t,1):CustomTourState.activities.push(e),document.querySelectorAll("#ctStep4 .ct-option-card").forEach(a=>{const o=a.getAttribute("data-val");a.classList.toggle("is-selected",CustomTourState.activities.includes(o))})},window.selectCTAccom=function(e){CustomTourState.accommodation=e,document.querySelectorAll("#ctStep5 .ct-option-card").forEach(t=>{t.classList.toggle("is-selected",t.getAttribute("data-val")===e)})},window.selectCTTrans=function(e){CustomTourState.transportation=e,document.querySelectorAll("#ctStep6 .ct-option-card").forEach(t=>{t.classList.toggle("is-selected",t.getAttribute("data-val")===e)})},window.selectCTBudget=function(e){CustomTourState.budget=e,document.querySelectorAll("#ctStep7 .ct-option-card").forEach(t=>{t.classList.toggle("is-selected",t.getAttribute("data-val")===e)})};function renderCustomTourStep(e){CustomTourState.currentStep=e;for(let u=1;u<=11;u++){const g=document.getElementById("ctStep"+u);g&&g.classList.remove("is-active")}const t=document.getElementById("ctStep"+e);t&&t.classList.add("is-active");const a=document.getElementById("ctStepCount"),o=document.getElementById("ctProgressFill"),i=document.getElementById("ctBackBtn"),n=document.getElementById("ctNextBtn"),r=document.getElementById("ctNavFooter");e===1?(document.querySelectorAll("#ctStep1 .ct-dest-card").forEach(u=>{const g=u.getAttribute("data-id"),f=CustomTourState.destinations.includes(g);u.classList.toggle("is-selected",f),f&&setTimeout(()=>{const y=document.querySelector(".ct-modal-content");y&&y.scrollTo({top:u.offsetTop-150,behavior:"smooth"})},100)}),typeof window.animateCustomTourCards=="function"&&window.animateCustomTourCards(!1)):e===4&&renderCustomTourStep4(),e>=2&&e<=8&&document.querySelectorAll("#ctStep"+e+" .ct-option-card").forEach((g,f)=>{g.style.animation="none",g.offsetWidth;const y=(.08+f*.12).toFixed(2);g.style.animation=`luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${y}s both`}),e<=9?(r&&(r.style.display="flex"),a&&(a.textContent=`Step ${e} of 9`),o&&(o.style.width=`${Math.round(e/9*100)}%`),i&&(i.style.visibility=e===1?"hidden":"visible"),n&&(n.innerHTML=e===9?'Review My Journey &nbsp;<i class="fa-solid fa-eye"></i>':'Continue &nbsp;<i class="fa-solid fa-arrow-right"></i>')):e===10?(r&&(r.style.display="flex"),a&&(a.textContent="Summary Review"),o&&(o.style.width="100%"),i&&(i.style.visibility="visible"),n&&(n.innerHTML='Request My Personalized Tour &nbsp;<i class="fa-solid fa-paper-plane"></i>'),renderCustomTourSummary()):e===11&&r&&(r.style.display="none");const d=document.getElementById("customTourModal");if(d){const u=d.querySelector(".ct-modal-content");u&&(u.scrollTop=0)}}window.nextCTStep=function(){const e=CustomTourState.currentStep;if(e===1){if(CustomTourState.destinations.length===0){showToast("Please select at least 1 destination");return}}else if(e===2){if(!CustomTourState.duration){showToast("Please select your approximate trip duration");return}}else if(e===3){if(CustomTourState.travelStyles.length===0){showToast("Please select at least 1 travel style");return}}else if(e===4){if(CustomTourState.activities.length===0){showToast("Please select at least 1 activity");return}}else if(e===5){if(!CustomTourState.accommodation){showToast("Please select your preferred accommodation style");return}}else if(e===6){if(!CustomTourState.transportation){showToast("Please select your transportation option");return}}else if(e===7){if(!CustomTourState.budget){showToast("Please select your budget range");return}}else if(e===8){const t=document.getElementById("ctPreferencesInput");t&&(CustomTourState.preferences=t.value.trim())}else if(e===9){const t=document.getElementById("ctNameInput")?.value.trim(),a=document.getElementById("ctEmailInput")?.value.trim(),o=document.getElementById("ctPhoneInput")?.value.trim(),i=document.getElementById("ctDatesInput")?.value.trim();if(!t||!o||!i){showToast("Please complete all required contact fields");return}CustomTourState.contact={name:t,email:a,phone:o,dates:i}}else if(e===10){window.submitCustomTour();return}renderCustomTourStep(e+1)},window.prevCTStep=function(){CustomTourState.currentStep>1&&renderCustomTourStep(CustomTourState.currentStep-1)};function renderCustomTourSummary(){const e=document.getElementById("ctSummaryBox");if(!e)return;const t=CUSTOM_TOUR_DESTINATIONS.filter(u=>CustomTourState.destinations.includes(u.id)),a=CUSTOM_TOUR_DURATIONS.find(u=>u.id===CustomTourState.duration),o=CUSTOM_TOUR_STYLES.filter(u=>CustomTourState.travelStyles.includes(u.id)),i=CUSTOM_TOUR_ACTIVITIES.filter(u=>CustomTourState.activities.includes(u.id)),n=CUSTOM_TOUR_ACCOMMODATION.find(u=>u.id===CustomTourState.accommodation),r=CUSTOM_TOUR_TRANSPORTATION.find(u=>u.id===CustomTourState.transportation),d=CUSTOM_TOUR_BUDGET.find(u=>u.id===CustomTourState.budget);e.innerHTML=`
     <div class="ct-summary-grid">
       <div class="ct-summary-item" style="grid-column: 1 / -1;">
         <span class="ct-summary-label"><i class="fa-solid fa-map-location-dot" style="color:#C85A32;"></i> Selected Destinations</span>
         <div class="ct-summary-chips">
-          ${destObjs.map(d => `<span class="ct-chip"><i class="fa-solid fa-location-pin"></i> ${d.name}</span>`).join('')}
+          ${t.map(u=>`<span class="ct-chip"><i class="fa-solid fa-location-pin"></i> ${u.name}</span>`).join("")}
         </div>
       </div>
 
       <div class="ct-summary-item">
         <span class="ct-summary-label"><i class="fa-regular fa-calendar-days"></i> Duration & Dates</span>
-        <span class="ct-summary-val">${durObj ? durObj.title : 'N/A'} (${CustomTourState.contact.dates || 'TBD'})</span>
+        <span class="ct-summary-val">${a?a.title:"N/A"} (${CustomTourState.contact.dates||"TBD"})</span>
       </div>
 
       <div class="ct-summary-item">
         <span class="ct-summary-label"><i class="fa-solid fa-gem"></i> Travel Style</span>
         <div class="ct-summary-chips">
-          ${styleObjs.map(s => `<span class="ct-chip">${s.title}</span>`).join('')}
+          ${o.map(u=>`<span class="ct-chip">${u.title}</span>`).join("")}
         </div>
       </div>
 
       <div class="ct-summary-item" style="grid-column: 1 / -1;">
         <span class="ct-summary-label"><i class="fa-solid fa-compass"></i> Planned Activities</span>
         <div class="ct-summary-chips">
-          ${actObjs.map(a => `<span class="ct-chip"><i class="fa-solid ${a.icon}"></i> ${a.title}</span>`).join('')}
+          ${i.map(u=>`<span class="ct-chip"><i class="fa-solid ${u.icon}"></i> ${u.title}</span>`).join("")}
         </div>
       </div>
 
       <div class="ct-summary-item">
         <span class="ct-summary-label"><i class="fa-solid fa-bed"></i> Accommodation</span>
-        <span class="ct-summary-val">${accObj ? accObj.title : 'N/A'}</span>
+        <span class="ct-summary-val">${n?n.title:"N/A"}</span>
       </div>
 
       <div class="ct-summary-item">
         <span class="ct-summary-label"><i class="fa-solid fa-car"></i> Transportation</span>
-        <span class="ct-summary-val">${transObj ? transObj.title : 'N/A'}</span>
+        <span class="ct-summary-val">${r?r.title:"N/A"}</span>
       </div>
 
       <div class="ct-summary-item">
         <span class="ct-summary-label"><i class="fa-solid fa-wallet"></i> Budget Tier</span>
-        <span class="ct-summary-val" style="color:#C85A32;">${budObj ? budObj.title + ' (' + budObj.tier + ')' : 'N/A'}</span>
+        <span class="ct-summary-val" style="color:#C85A32;">${d?d.title+" ("+d.tier+")":"N/A"}</span>
       </div>
 
       <div class="ct-summary-item">
@@ -3479,441 +647,41 @@ function renderCustomTourSummary() {
         <span class="ct-summary-val">${CustomTourState.contact.name} (${CustomTourState.contact.phone})</span>
       </div>
 
-      ${CustomTourState.preferences ? `
+      ${CustomTourState.preferences?`
         <div class="ct-summary-item" style="grid-column: 1 / -1;">
           <span class="ct-summary-label"><i class="fa-regular fa-comment-dots"></i> Additional Preferences</span>
           <p style="font-size:0.92rem; color:var(--hm-text-body); font-style:italic; background:rgba(200,90,50,0.05); padding:10px 14px; border-radius:12px; border:1px dashed rgba(200,90,50,0.2);">
             "${CustomTourState.preferences}"
           </p>
         </div>
-      ` : ''}
+      `:""}
     </div>
-  `;
-}
+  `}window.submitCustomTour=function(){const e=document.getElementById("ctSuccessName");e&&(e.textContent=CustomTourState.contact.name||"Traveler"),renderCustomTourStep(11),showToast(`Custom Tour request submitted for ${CustomTourState.contact.name}! \u2728`)},window.sendCustomTourWhatsApp=function(){const e="212660082066",t=CUSTOM_TOUR_DESTINATIONS.filter(n=>CustomTourState.destinations.includes(n.id)).map(n=>n.name).join(", "),a=CUSTOM_TOUR_DURATIONS.find(n=>n.id===CustomTourState.duration),o=CUSTOM_TOUR_STYLES.filter(n=>CustomTourState.travelStyles.includes(n.id)).map(n=>n.title).join(", "),i=`Hello \u{1F44B} Discover Hidden Morocco!
+I would like to request a Personalized Custom Tour:
 
-window.submitCustomTour = function () {
-  const nameEl = document.getElementById('ctSuccessName');
-  if (nameEl) nameEl.textContent = CustomTourState.contact.name || 'Traveler';
+\u{1F4CD} Destinations: ${t}
+\u23F1\uFE0F Duration: ${a?a.title:""}
+\u2728 Style: ${o}
+\u{1F4C5} Dates: ${CustomTourState.contact.dates}
+\u{1F464} Name: ${CustomTourState.contact.name}
+\u{1F4DE} Phone: ${CustomTourState.contact.phone}
+\u{1F4E7} Email: ${CustomTourState.contact.email}
+\u{1F4DD} Notes: ${CustomTourState.preferences||"N/A"}
 
-  renderCustomTourStep(11);
-  showToast(`Custom Tour request submitted for ${CustomTourState.contact.name}! ✨`);
-};
+Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(i)}`,"_blank")},window.sendCustomTourEmail=function(){const e=CUSTOM_TOUR_DESTINATIONS.filter(n=>CustomTourState.destinations.includes(n.id)).map(n=>n.name).join(", "),t=CUSTOM_TOUR_DURATIONS.find(n=>n.id===CustomTourState.duration),a=CUSTOM_TOUR_STYLES.filter(n=>CustomTourState.travelStyles.includes(n.id)).map(n=>n.title).join(", "),o=`Custom Tour Request - ${CustomTourState.contact.name||"Traveler"}`,i=`Hello Discover Hidden Morocco Team,
 
-window.sendCustomTourWhatsApp = function () {
-  const WHATSAPP_NUMBER = '212660082066';
-  const destNames = CUSTOM_TOUR_DESTINATIONS.filter(d => CustomTourState.destinations.includes(d.id)).map(d => d.name).join(', ');
-  const durObj = CUSTOM_TOUR_DURATIONS.find(d => d.id === CustomTourState.duration);
-  const styles = CUSTOM_TOUR_STYLES.filter(s => CustomTourState.travelStyles.includes(s.id)).map(s => s.title).join(', ');
+I would like to request a Tailor-Made Private Tour:
 
-  const text = `Hello 👋 Discover Hidden Morocco!\nI would like to request a Personalized Custom Tour:\n\n📍 Destinations: ${destNames}\n⏱️ Duration: ${durObj ? durObj.title : ''}\n✨ Style: ${styles}\n📅 Dates: ${CustomTourState.contact.dates}\n👤 Name: ${CustomTourState.contact.name}\n📞 Phone: ${CustomTourState.contact.phone}\n📧 Email: ${CustomTourState.contact.email}\n📝 Notes: ${CustomTourState.preferences || 'N/A'}\n\nThank you!`;
+\u{1F4CD} Selected Destinations: ${e}
+\u23F1\uFE0F Duration: ${t?t.title:""}
+\u2728 Travel Style: ${a}
+\u{1F4C5} Preferred Dates: ${CustomTourState.contact.dates}
+\u{1F464} Traveler Name: ${CustomTourState.contact.name}
+\u{1F4DE} Phone / WhatsApp: ${CustomTourState.contact.phone}
+\u{1F4E7} Email: ${CustomTourState.contact.email}
+\u{1F4DD} Special Requests: ${CustomTourState.preferences||"None"}
 
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
-};
-
-window.sendCustomTourEmail = function () {
-  const destNames = CUSTOM_TOUR_DESTINATIONS.filter(d => CustomTourState.destinations.includes(d.id)).map(d => d.name).join(', ');
-  const durObj = CUSTOM_TOUR_DURATIONS.find(d => d.id === CustomTourState.duration);
-  const styles = CUSTOM_TOUR_STYLES.filter(s => CustomTourState.travelStyles.includes(s.id)).map(s => s.title).join(', ');
-
-  const subject = `Custom Tour Request - ${CustomTourState.contact.name || 'Traveler'}`;
-  const body = `Hello Discover Hidden Morocco Team,\n\nI would like to request a Tailor-Made Private Tour:\n\n📍 Selected Destinations: ${destNames}\n⏱️ Duration: ${durObj ? durObj.title : ''}\n✨ Travel Style: ${styles}\n📅 Preferred Dates: ${CustomTourState.contact.dates}\n👤 Traveler Name: ${CustomTourState.contact.name}\n📞 Phone / WhatsApp: ${CustomTourState.contact.phone}\n📧 Email: ${CustomTourState.contact.email}\n📝 Special Requests: ${CustomTourState.preferences || 'None'}\n\nLooking forward to your reply!`;
-
-  window.location.href = `mailto:contact@discoverhiddenmorocco.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-};
-
-window.sendCustomTourFacebook = function () {
-  window.open('https://www.facebook.com/discoverhiddenmorocco', '_blank');
-};
-
-window.sendCustomTourInstagram = function () {
-  window.open('https://www.instagram.com/discover_hidden_morocco/', '_blank');
-};
-
-// Wire up openCustomTourModal buttons globally across all pages
-document.addEventListener('click', function (e) {
-  const trigger = e.target.closest('.custom-tour-trigger, [data-action="custom-tour"]');
-  if (trigger) {
-    e.preventDefault();
-    window.openCustomTourModal();
-  }
-});
-
-/* ==========================================================================
-   DYNAMIC REVIEWS & RATING ENGINE (Synchronized, Real-Time & Filterable)
-   ========================================================================== */
-
-const ReviewState = {
-  ratingFilter: 'all',
-  destFilter: 'all'
-};
-
-// ── Master Verified Reviews Dataset (Guaranteed Visible on All Devices Worldwide) ──────
-const DEFAULT_GLOBAL_REVIEWS = [
-  {
-    id: 'rev_dhm_01',
-    author: 'Karim & Amine',
-    avatar: 'KA',
-    country: 'Casablanca, Morocco',
-    destination: 'merzouga',
-    destinationName: 'Merzouga Sahara',
-    rating: 5,
-    verified: true,
-    text: 'Tajriba wa3ra bzaf m3a Discover Hidden Morocco ! Organisation top o service n9i bzaf. L-guide kan f l-moustawa.',
-    date: '2026-10-12'
-  },
-  {
-    id: 'rev_dhm_02',
-    author: 'Elena Rostova',
-    avatar: 'ER',
-    country: 'Madrid, Spain',
-    destination: 'sahara',
-    destinationName: 'Sahara Desert',
-    rating: 5,
-    verified: true,
-    text: 'A truly unforgettable experience in the Erg Chebbi dunes. Our private driver and guide was incredibly knowledgeable and welcoming.',
-    date: '2026-10-04'
-  },
-  {
-    id: 'rev_dhm_03',
-    author: 'Marc & Sarah',
-    avatar: 'MS',
-    country: 'Lyon, France',
-    destination: 'marrakech',
-    destinationName: 'Marrakech',
-    rating: 5,
-    verified: true,
-    text: 'Organisation parfaite de notre séjour dans les riads et les médinas. Service haut de gamme et authentique ! Chapeau à toute l\'équipe.',
-    date: '2026-09-28'
-  },
-  {
-    id: 'rev_dhm_04',
-    author: 'David & Clara Miller',
-    avatar: 'DM',
-    country: 'London, UK',
-    destination: 'chefchaouen',
-    destinationName: 'Chefchaouen',
-    rating: 5,
-    verified: true,
-    text: 'The Blue Pearl was magical. Discover Hidden Morocco arranged private transport and boutique accommodations that exceeded all our expectations.',
-    date: '2026-09-20'
-  },
-  {
-    id: 'rev_dhm_05',
-    author: 'Sophie Dubois',
-    avatar: 'SD',
-    country: 'Brussels, Belgium',
-    destination: 'fes',
-    destinationName: 'Fes Medina',
-    rating: 5,
-    verified: true,
-    text: 'Guide local exceptionnel à Fès. Visite des tanneries et des palais historiques en toute tranquillité. Merci pour ces souvenirs inoubliables.',
-    date: '2026-09-12'
-  },
-  {
-    id: 'rev_dhm_06',
-    author: 'Michael Krause',
-    avatar: 'MK',
-    country: 'Munich, Germany',
-    destination: 'essaouira',
-    destinationName: 'Essaouira Coast',
-    rating: 5,
-    verified: true,
-    text: 'Fascinating coastal trip! Fresh seafood, Atlantic breeze, and wonderful Moroccan hospitality throughout our private tour.',
-    date: '2026-09-05'
-  }
-];
-
-const STORAGE_KEY_REVIEWS = 'hm_reviews_dataset';
-const STORAGE_KEY_MY_IDS = 'hm_my_authored_review_ids';
-const STORAGE_KEY_DELETED = 'hm_deleted_reviews_ids';
-
-function getMyAuthoredReviewIds() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_MY_IDS);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch (e) {}
-  return [];
-}
-
-function addMyAuthoredReviewId(id) {
-  if (!id) return;
-  try {
-    const list = getMyAuthoredReviewIds();
-    if (!list.includes(id)) {
-      list.push(id);
-      localStorage.setItem(STORAGE_KEY_MY_IDS, JSON.stringify(list));
-    }
-  } catch (e) {}
-}
-
-function removeMyAuthoredReviewId(id) {
-  if (!id) return;
-  try {
-    const list = getMyAuthoredReviewIds().filter(x => x !== id);
-    localStorage.setItem(STORAGE_KEY_MY_IDS, JSON.stringify(list));
-  } catch (e) {}
-}
-
-function getDeletedReviewIds() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_DELETED);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch (e) {}
-  return [];
-}
-
-function addDeletedReviewId(id) {
-  if (!id) return;
-  try {
-    const list = getDeletedReviewIds();
-    if (!list.includes(id)) {
-      list.push(id);
-      localStorage.setItem(STORAGE_KEY_DELETED, JSON.stringify(list));
-    }
-  } catch (e) {}
-}
-
-function getReviewsDatabase() {
-  const myIds = new Set(getMyAuthoredReviewIds());
-  const deletedIds = new Set(getDeletedReviewIds());
-  let userSubmitted = [];
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY_REVIEWS);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        userSubmitted = parsed;
-      }
-    }
-  } catch (e) {
-    console.warn('Error reading stored reviews:', e);
-  }
-
-  const seenIds = new Set();
-  const result = [];
-
-  // 1. User submitted reviews from browser
-  userSubmitted.forEach(r => {
-    if (r && r.id && !deletedIds.has(r.id) && !seenIds.has(r.id)) {
-      seenIds.add(r.id);
-      r.isMine = myIds.has(r.id) || Boolean(r.isMine);
-      result.push(r);
-    }
-  });
-
-  // 2. Global verified traveler reviews (Visible worldwide on all devices)
-  DEFAULT_GLOBAL_REVIEWS.forEach(r => {
-    if (r && r.id && !deletedIds.has(r.id) && !seenIds.has(r.id)) {
-      seenIds.add(r.id);
-      const copy = { ...r };
-      copy.isMine = myIds.has(copy.id);
-      result.push(copy);
-    }
-  });
-
-  return result;
-}
-
-function saveReviewsDatabase(reviews) {
-  try {
-    localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviews));
-  } catch (e) {}
-}
-
-// ── Rating Star Selector Engine ──────────────────────────────────────────────
-let currentReviewRating = 5;
-
-window.setReviewRating = function (rating) {
-  currentReviewRating = rating;
-  const ratingInput = document.getElementById('reviewRatingVal');
-  if (ratingInput) ratingInput.value = rating;
-
-  const starsContainer = document.getElementById('starRatingSelect');
-  if (starsContainer) {
-    const stars = starsContainer.querySelectorAll('.star-btn');
-    stars.forEach((star, index) => {
-      if (index < rating) {
-        star.classList.remove('fa-regular');
-        star.classList.add('fa-solid');
-      } else {
-        star.classList.remove('fa-solid');
-        star.classList.add('fa-regular');
-      }
-    });
-  }
-};
-
-// ── Calculate Real Statistics ────────────────────────────────────────────────
-function calculateReviewStats(reviews) {
-  const total = reviews.length;
-  if (total === 0) {
-    return {
-      total: 0,
-      avg: "0.0",
-      starsHtml: "☆☆☆☆☆",
-      counts: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
-      percents: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
-    };
-  }
-
-  const sum = reviews.reduce((acc, r) => acc + (r.rating || 5), 0);
-  const avgNum = sum / total;
-  const avg = avgNum.toFixed(1);
-
-  const roundedAvg = Math.round(avgNum);
-  const starsHtml = '★'.repeat(roundedAvg) + '☆'.repeat(5 - roundedAvg);
-
-  const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-  reviews.forEach(r => {
-    const rVal = Math.min(5, Math.max(1, r.rating || 5));
-    counts[rVal] = (counts[rVal] || 0) + 1;
-  });
-
-  const percents = {
-    5: Math.round((counts[5] / total) * 100),
-    4: Math.round((counts[4] / total) * 100),
-    3: Math.round((counts[3] / total) * 100),
-    2: Math.round((counts[2] / total) * 100),
-    1: Math.round((counts[1] / total) * 100)
-  };
-
-  return { total, avg, starsHtml, counts, percents };
-}
-
-// ── Filter Functionality ─────────────────────────────────────────────────────
-window.filterReviewsByRating = function (rating, btnEl) {
-  ReviewState.ratingFilter = rating;
-  if (btnEl) {
-    const container = btnEl.closest('.star-filters');
-    if (container) {
-      container.querySelectorAll('.review-filter-btn').forEach(btn => btn.classList.remove('active'));
-      btnEl.classList.add('active');
-    }
-  }
-  refreshReviewsView();
-};
-
-window.filterReviewsByDestination = function (dest) {
-  ReviewState.destFilter = dest;
-  refreshReviewsView();
-};
-
-function getFilteredReviews() {
-  const all = getReviewsDatabase();
-  return all.filter(r => {
-    // Rating Filter
-    if (ReviewState.ratingFilter !== 'all' && r.rating != parseInt(ReviewState.ratingFilter, 10)) {
-      return false;
-    }
-    // Destination Filter
-    if (ReviewState.destFilter !== 'all') {
-      const targetDest = ReviewState.destFilter.toLowerCase();
-      const itemDest = (r.destination || '').toLowerCase();
-      const itemCountry = (r.country || '').toLowerCase();
-      const itemText = (r.text || '').toLowerCase();
-      if (!itemDest.includes(targetDest) && !itemCountry.includes(targetDest) && !itemText.includes(targetDest)) {
-        return false;
-      }
-    }
-    return true;
-  });
-}
-
-// ── Refresh Entire Reviews UI ────────────────────────────────────────────────
-function refreshReviewsView() {
-  const allReviews = getReviewsDatabase();
-  const filtered = getFilteredReviews();
-  const stats = calculateReviewStats(filtered);
-
-  // Update Rating Summary Box
-  const avgEl = document.getElementById('summaryAvgRating');
-  const starsEl = document.getElementById('summaryAvgStars');
-  const countEl = document.getElementById('summaryReviewCount');
-
-  if (avgEl) avgEl.textContent = stats.total > 0 ? stats.avg : "0.0";
-  if (starsEl) starsEl.textContent = stats.total > 0 ? stats.starsHtml : "☆☆☆☆☆";
-  if (countEl) {
-    countEl.textContent = stats.total > 0 
-      ? `Based on ${stats.total} ${stats.total === 1 ? 'review' : 'reviews'}`
-      : `0 reviews for this selection`;
-  }
-
-  // Update Progress Bars & Percentages
-  for (let i = 1; i <= 5; i++) {
-    const fillEl = document.getElementById(`barFill${i}`);
-    const percentEl = document.getElementById(`barPercent${i}`);
-    const pct = stats.percents[i] || 0;
-    if (fillEl) fillEl.style.width = `${pct}%`;
-    if (percentEl) percentEl.textContent = `${pct}%`;
-  }
-
-  // Update Page Subtitle
-  const subtitleEl = document.getElementById('heroReviewSubtitle');
-  if (subtitleEl) {
-    subtitleEl.textContent = allReviews.length > 0 
-      ? `Over ${allReviews.length} verified reviews shared by travelers exploring Morocco.`
-      : `No reviews recorded yet. Be the first traveler to share your journey!`;
-  }
-
-  const totalReviewsCount = allReviews.length;
-  const highRatingCount = allReviews.filter(r => (r.rating || 5) >= 4).length;
-  const satisfactionVal = totalReviewsCount > 0 ? Math.round((highRatingCount / totalReviewsCount) * 100) : 0;
-  const satisfactionStr = totalReviewsCount > 0 ? `${satisfactionVal}%` : '0%';
-
-  // Update Home Page Stats Strip (Calculated 100% from real data)
-  const homeTotalEl = document.getElementById('homeTotalReviews');
-  const homeTotalLabelEl = document.getElementById('homeTotalReviewsLabel');
-  const homeAvgEl = document.getElementById('homeAvgRating');
-  const homeSatisfactionEl = document.getElementById('homeSatisfaction');
-  const homeDestinationsEl = document.getElementById('homeDestinations');
-
-  if (homeTotalEl) homeTotalEl.textContent = `${totalReviewsCount}`;
-  if (homeTotalLabelEl) homeTotalLabelEl.textContent = totalReviewsCount === 1 ? 'Verified Review' : 'Verified Reviews';
-  if (homeAvgEl) {
-    const overallStats = calculateReviewStats(allReviews);
-    homeAvgEl.textContent = overallStats.total > 0 ? `${overallStats.avg}/5` : '0.0/5';
-  }
-  if (homeSatisfactionEl) homeSatisfactionEl.textContent = satisfactionStr;
-  if (homeDestinationsEl) homeDestinationsEl.textContent = '9';
-
-  // Update About Us Page Dynamic Stats (Calculated 100% from real data)
-  const aboutTotalEl = document.getElementById('aboutTotalReviews');
-  const aboutTotalLabelEl = document.getElementById('aboutTotalReviewsLabel');
-  const aboutTotalInlineEl = document.getElementById('aboutTotalReviewsInline');
-  const aboutSatisfactionEl = document.getElementById('aboutSatisfaction');
-  const aboutSatisfactionInlineEl = document.getElementById('aboutSatisfactionInline');
-
-  if (aboutTotalEl) aboutTotalEl.textContent = `${totalReviewsCount}`;
-  if (aboutTotalLabelEl) aboutTotalLabelEl.textContent = totalReviewsCount === 1 ? 'Happy Traveler' : 'Happy Travelers';
-  if (aboutTotalInlineEl) aboutTotalInlineEl.textContent = `${totalReviewsCount}`;
-  if (aboutSatisfactionEl) aboutSatisfactionEl.textContent = satisfactionStr;
-  if (aboutSatisfactionInlineEl) aboutSatisfactionInlineEl.textContent = satisfactionStr;
-
-  // Render Cards in Reviews Grid (Testimonials Page)
-  const gridContainer = document.getElementById('reviewsGridContainer');
-  if (gridContainer) {
-    renderCardsIntoGrid(gridContainer, filtered);
-  }
-
-  // Render Preview Cards in Home Page Reviews Grid
-  const homeGridContainer = document.getElementById('homeReviewsGrid');
-  if (homeGridContainer) {
-    renderCardsIntoGrid(homeGridContainer, filtered.slice(0, 3));
-  }
-}
-
-function renderCardsIntoGrid(container, reviews) {
-  container.innerHTML = '';
-
-  if (reviews.length === 0) {
-    container.innerHTML = `
+Looking forward to your reply!`;window.location.href=`mailto:contact@discoverhiddenmorocco.com?subject=${encodeURIComponent(o)}&body=${encodeURIComponent(i)}`},window.sendCustomTourFacebook=function(){window.open("https://www.facebook.com/discoverhiddenmorocco","_blank")},window.sendCustomTourInstagram=function(){window.open("https://www.instagram.com/discover_hidden_morocco/","_blank")},document.addEventListener("click",function(e){e.target.closest('.custom-tour-trigger, [data-action="custom-tour"]')&&(e.preventDefault(),window.openCustomTourModal())});const ReviewState={ratingFilter:"all",destFilter:"all"},DEFAULT_GLOBAL_REVIEWS=[{id:"rev_dhm_01",author:"Karim & Amine",avatar:"KA",country:"Casablanca, Morocco",destination:"merzouga",destinationName:"Merzouga Sahara",rating:5,verified:!0,text:"Tajriba wa3ra bzaf m3a Discover Hidden Morocco ! Organisation top o service n9i bzaf. L-guide kan f l-moustawa.",date:"2026-10-12"},{id:"rev_dhm_02",author:"Elena Rostova",avatar:"ER",country:"Madrid, Spain",destination:"sahara",destinationName:"Sahara Desert",rating:5,verified:!0,text:"A truly unforgettable experience in the Erg Chebbi dunes. Our private driver and guide was incredibly knowledgeable and welcoming.",date:"2026-10-04"},{id:"rev_dhm_03",author:"Marc & Sarah",avatar:"MS",country:"Lyon, France",destination:"marrakech",destinationName:"Marrakech",rating:5,verified:!0,text:"Organisation parfaite de notre s\xE9jour dans les riads et les m\xE9dinas. Service haut de gamme et authentique ! Chapeau \xE0 toute l'\xE9quipe.",date:"2026-09-28"},{id:"rev_dhm_04",author:"David & Clara Miller",avatar:"DM",country:"London, UK",destination:"chefchaouen",destinationName:"Chefchaouen",rating:5,verified:!0,text:"The Blue Pearl was magical. Discover Hidden Morocco arranged private transport and boutique accommodations that exceeded all our expectations.",date:"2026-09-20"},{id:"rev_dhm_05",author:"Sophie Dubois",avatar:"SD",country:"Brussels, Belgium",destination:"fes",destinationName:"Fes Medina",rating:5,verified:!0,text:"Guide local exceptionnel \xE0 F\xE8s. Visite des tanneries et des palais historiques en toute tranquillit\xE9. Merci pour ces souvenirs inoubliables.",date:"2026-09-12"},{id:"rev_dhm_06",author:"Michael Krause",avatar:"MK",country:"Munich, Germany",destination:"essaouira",destinationName:"Essaouira Coast",rating:5,verified:!0,text:"Fascinating coastal trip! Fresh seafood, Atlantic breeze, and wonderful Moroccan hospitality throughout our private tour.",date:"2026-09-05"}],STORAGE_KEY_REVIEWS="hm_reviews_dataset",STORAGE_KEY_MY_IDS="hm_my_authored_review_ids",STORAGE_KEY_DELETED="hm_deleted_reviews_ids";function getMyAuthoredReviewIds(){try{const e=localStorage.getItem(STORAGE_KEY_MY_IDS);if(e){const t=JSON.parse(e);if(Array.isArray(t))return t}}catch{}return[]}function addMyAuthoredReviewId(e){if(e)try{const t=getMyAuthoredReviewIds();t.includes(e)||(t.push(e),localStorage.setItem(STORAGE_KEY_MY_IDS,JSON.stringify(t)))}catch{}}function removeMyAuthoredReviewId(e){if(e)try{const t=getMyAuthoredReviewIds().filter(a=>a!==e);localStorage.setItem(STORAGE_KEY_MY_IDS,JSON.stringify(t))}catch{}}function getDeletedReviewIds(){try{const e=localStorage.getItem(STORAGE_KEY_DELETED);if(e){const t=JSON.parse(e);if(Array.isArray(t))return t}}catch{}return[]}function addDeletedReviewId(e){if(e)try{const t=getDeletedReviewIds();t.includes(e)||(t.push(e),localStorage.setItem(STORAGE_KEY_DELETED,JSON.stringify(t)))}catch{}}function getReviewsDatabase(){const e=new Set(getMyAuthoredReviewIds()),t=new Set(getDeletedReviewIds());let a=[];try{const n=localStorage.getItem(STORAGE_KEY_REVIEWS);if(n){const r=JSON.parse(n);Array.isArray(r)&&(a=r)}}catch(n){console.warn("Error reading stored reviews:",n)}const o=new Set,i=[];return a.forEach(n=>{n&&n.id&&!t.has(n.id)&&!o.has(n.id)&&(o.add(n.id),n.isMine=e.has(n.id)||!!n.isMine,i.push(n))}),DEFAULT_GLOBAL_REVIEWS.forEach(n=>{if(n&&n.id&&!t.has(n.id)&&!o.has(n.id)){o.add(n.id);const r={...n};r.isMine=e.has(r.id),i.push(r)}}),i}function saveReviewsDatabase(e){try{localStorage.setItem(STORAGE_KEY_REVIEWS,JSON.stringify(e))}catch{}}let currentReviewRating=5;window.setReviewRating=function(e){currentReviewRating=e;const t=document.getElementById("reviewRatingVal");t&&(t.value=e);const a=document.getElementById("starRatingSelect");a&&a.querySelectorAll(".star-btn").forEach((i,n)=>{n<e?(i.classList.remove("fa-regular"),i.classList.add("fa-solid")):(i.classList.remove("fa-solid"),i.classList.add("fa-regular"))})};function calculateReviewStats(e){const t=e.length;if(t===0)return{total:0,avg:"0.0",starsHtml:"\u2606\u2606\u2606\u2606\u2606",counts:{5:0,4:0,3:0,2:0,1:0},percents:{5:0,4:0,3:0,2:0,1:0}};const o=e.reduce((g,f)=>g+(f.rating||5),0)/t,i=o.toFixed(1),n=Math.round(o),r="\u2605".repeat(n)+"\u2606".repeat(5-n),d={5:0,4:0,3:0,2:0,1:0};e.forEach(g=>{const f=Math.min(5,Math.max(1,g.rating||5));d[f]=(d[f]||0)+1});const u={5:Math.round(d[5]/t*100),4:Math.round(d[4]/t*100),3:Math.round(d[3]/t*100),2:Math.round(d[2]/t*100),1:Math.round(d[1]/t*100)};return{total:t,avg:i,starsHtml:r,counts:d,percents:u}}window.filterReviewsByRating=function(e,t){if(ReviewState.ratingFilter=e,t){const a=t.closest(".star-filters");a&&(a.querySelectorAll(".review-filter-btn").forEach(o=>o.classList.remove("active")),t.classList.add("active"))}refreshReviewsView()},window.filterReviewsByDestination=function(e){ReviewState.destFilter=e,refreshReviewsView()};function getFilteredReviews(){return getReviewsDatabase().filter(t=>{if(ReviewState.ratingFilter!=="all"&&t.rating!=parseInt(ReviewState.ratingFilter,10))return!1;if(ReviewState.destFilter!=="all"){const a=ReviewState.destFilter.toLowerCase(),o=(t.destination||"").toLowerCase(),i=(t.country||"").toLowerCase(),n=(t.text||"").toLowerCase();if(!o.includes(a)&&!i.includes(a)&&!n.includes(a))return!1}return!0})}function refreshReviewsView(){const e=getReviewsDatabase(),t=getFilteredReviews(),a=calculateReviewStats(t),o=document.getElementById("summaryAvgRating"),i=document.getElementById("summaryAvgStars"),n=document.getElementById("summaryReviewCount");o&&(o.textContent=a.total>0?a.avg:"0.0"),i&&(i.textContent=a.total>0?a.starsHtml:"\u2606\u2606\u2606\u2606\u2606"),n&&(n.textContent=a.total>0?`Based on ${a.total} ${a.total===1?"review":"reviews"}`:"0 reviews for this selection");for(let m=1;m<=5;m++){const k=document.getElementById(`barFill${m}`),E=document.getElementById(`barPercent${m}`),v=a.percents[m]||0;k&&(k.style.width=`${v}%`),E&&(E.textContent=`${v}%`)}const r=document.getElementById("heroReviewSubtitle");r&&(r.textContent=e.length>0?`Over ${e.length} verified reviews shared by travelers exploring Morocco.`:"No reviews recorded yet. Be the first traveler to share your journey!");const d=e.length,u=e.filter(m=>(m.rating||5)>=4).length,g=d>0?Math.round(u/d*100):0,f=d>0?`${g}%`:"0%",y=document.getElementById("homeTotalReviews"),S=document.getElementById("homeTotalReviewsLabel"),I=document.getElementById("homeAvgRating"),T=document.getElementById("homeSatisfaction"),C=document.getElementById("homeDestinations");if(y&&(y.textContent=`${d}`),S&&(S.textContent=d===1?"Verified Review":"Verified Reviews"),I){const m=calculateReviewStats(e);I.textContent=m.total>0?`${m.avg}/5`:"0.0/5"}T&&(T.textContent=f),C&&(C.textContent="9");const A=document.getElementById("aboutTotalReviews"),M=document.getElementById("aboutTotalReviewsLabel"),D=document.getElementById("aboutTotalReviewsInline"),c=document.getElementById("aboutSatisfaction"),s=document.getElementById("aboutSatisfactionInline");A&&(A.textContent=`${d}`),M&&(M.textContent=d===1?"Happy Traveler":"Happy Travelers"),D&&(D.textContent=`${d}`),c&&(c.textContent=f),s&&(s.textContent=f);const l=document.getElementById("reviewsGridContainer");l&&renderCardsIntoGrid(l,t);const p=document.getElementById("homeReviewsGrid");p&&renderCardsIntoGrid(p,t.slice(0,3))}function renderCardsIntoGrid(e,t){if(e.innerHTML="",t.length===0){e.innerHTML=`
       <div class="empty-reviews-card" style="grid-column: 1 / -1; text-align: center; padding: 60px 32px; background: var(--hm-bg-card, #FFFFFF); border: 1.5px dashed var(--hm-border, rgba(212,175,55,0.3)); border-radius: 28px; margin: 20px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.03);">
         <div style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, rgba(200,90,50,0.1) 0%, rgba(231,169,60,0.15) 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #C85A32; border: 1px solid rgba(212,175,55,0.3);">
           <i class="fa-regular fa-comments"></i>
@@ -3924,330 +692,24 @@ function renderCardsIntoGrid(container, reviews) {
           <i class="fa-solid fa-pen-to-square"></i> Leave a Review
         </button>
       </div>
-    `;
-    return;
-  }
-
-  reviews.forEach(r => {
-    const card = document.createElement('div');
-    card.className = 'review-card';
-    const starsStr = '★'.repeat(r.rating || 5) + '☆'.repeat(5 - (r.rating || 5));
-    const verifiedBadge = r.verified ? '<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' : '';
-
-    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-    const myIds = new Set(getMyAuthoredReviewIds());
-    const isOwner = Boolean(r.isMine || (r.id && myIds.has(r.id)));
-    const canManage = isAdmin || isOwner;
-
-    const myBadge = isOwner && !isAdmin
-      ? `<span style="background: rgba(200,90,50,0.1); color: #C85A32; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1px solid rgba(200,90,50,0.25); display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-user-check"></i> Mon avis</span>`
-      : '';
-
-    const actionButtons = canManage
-      ? `<div class="review-actions-bar" style="display:inline-flex; align-items:center; gap: 6px;">
-          <button onclick="editReview('${r.id}')" title="Modifier l'avis" style="background: rgba(231,169,60,0.12); color: #C85A32; border: 1px solid rgba(231,169,60,0.4); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#C85A32';this.style.color='#fff'" onmouseout="this.style.background='rgba(231,169,60,0.12)';this.style.color='#C85A32'"><i class="fa-solid fa-pen"></i></button>
-          <button onclick="deleteReview('${r.id}')" title="Supprimer l'avis" style="background: rgba(220,53,69,0.1); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#dc3545';this.style.color='#fff'" onmouseout="this.style.background='rgba(220,53,69,0.1)';this.style.color='#dc3545'"><i class="fa-solid fa-trash"></i></button>
-        </div>`
-      : '';
-
-    card.innerHTML = `
+    `;return}t.forEach(a=>{const o=document.createElement("div");o.className="review-card";const i="\u2605".repeat(a.rating||5)+"\u2606".repeat(5-(a.rating||5)),n=a.verified?'<div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>':"",r=new URLSearchParams(window.location.search).get("admin")==="true",d=new Set(getMyAuthoredReviewIds()),u=!!(a.isMine||a.id&&d.has(a.id)),g=r||u,f=u&&!r?'<span style="background: rgba(200,90,50,0.1); color: #C85A32; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1px solid rgba(200,90,50,0.25); display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-user-check"></i> Mon avis</span>':"",y=g?`<div class="review-actions-bar" style="display:inline-flex; align-items:center; gap: 6px;">
+          <button onclick="editReview('${a.id}')" title="Modifier l'avis" style="background: rgba(231,169,60,0.12); color: #C85A32; border: 1px solid rgba(231,169,60,0.4); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#C85A32';this.style.color='#fff'" onmouseout="this.style.background='rgba(231,169,60,0.12)';this.style.color='#C85A32'"><i class="fa-solid fa-pen"></i></button>
+          <button onclick="deleteReview('${a.id}')" title="Supprimer l'avis" style="background: rgba(220,53,69,0.1); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all 0.2s;" onmouseover="this.style.background='#dc3545';this.style.color='#fff'" onmouseout="this.style.background='rgba(220,53,69,0.1)';this.style.color='#dc3545'"><i class="fa-solid fa-trash"></i></button>
+        </div>`:"";o.innerHTML=`
       <div class="review-header">
-        <div class="review-stars" style="color:#E7A93C;">${starsStr}</div>
+        <div class="review-stars" style="color:#E7A93C;">${i}</div>
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
-          ${myBadge}
-          ${verifiedBadge}
-          ${actionButtons}
+          ${f}
+          ${n}
+          ${y}
         </div>
       </div>
-      <p class="review-text">"${escapeHtmlStr(r.text)}"</p>
+      <p class="review-text">"${escapeHtmlStr(a.text)}"</p>
       <div class="review-author">
-        <div class="review-avatar" style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff;">${escapeHtmlStr(r.avatar || 'TR')}</div>
+        <div class="review-avatar" style="background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff;">${escapeHtmlStr(a.avatar||"TR")}</div>
         <div class="review-author-info">
-          <strong>${escapeHtmlStr(r.author)}</strong>
-          <span>${escapeHtmlStr(r.country || 'Traveler')}</span>
+          <strong>${escapeHtmlStr(a.author)}</strong>
+          <span>${escapeHtmlStr(a.country||"Traveler")}</span>
         </div>
       </div>
-    `;
-    container.appendChild(card);
-  });
-  if (typeof initScrollRevealEngine === 'function') {
-    setTimeout(initScrollRevealEngine, 60);
-  }
-}
-
-window.openReviewModal = function () {
-  let modal = document.getElementById('reviewModal');
-  if (!modal) {
-    // If modal is not on this page, redirect to reviews with query flag
-    const isLive = window.location.protocol === 'http:' || window.location.protocol === 'https:';
-    window.location.href = isLive ? 'reviews.html?openReviewModal=true' : 'reviews.html?openReviewModal=true';
-    return;
-  }
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => {
-    modal.classList.add('active');
-  }, 10);
-};
-
-window.closeReviewModal = function () {
-  let modal = document.getElementById('reviewModal');
-  if (!modal) return;
-  modal.classList.remove('active');
-  setTimeout(() => {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }, 250);
-};
-
-window.scrollToReviewForm = function () {
-  window.openReviewModal();
-};
-
-// ── Submit New Review Handler ────────────────────────────────────────────────
-window.handleReviewSubmit = function (event) {
-  event.preventDefault();
-
-  const authorInput = document.getElementById('reviewAuthor');
-    const emailInput = document.getElementById('reviewEmail');
-  const locationInput = document.getElementById('reviewLocation');
-  const destSelect = document.getElementById('reviewDestSelect');
-  const textInput = document.getElementById('reviewText');
-  const ratingVal = parseInt(document.getElementById('reviewRatingVal')?.value || '5', 10);
-
-  if (!authorInput || !textInput) return;
-
-  const author = authorInput.value.trim();
-    const email = emailInput ? emailInput.value.trim() : '';
-  const rawLocation = locationInput ? locationInput.value.trim() : 'Traveler';
-  const selectedDest = destSelect ? destSelect.value : 'general';
-  const destName = destSelect && destSelect.options[destSelect.selectedIndex] ? destSelect.options[destSelect.selectedIndex].text : '';
-  const text = textInput.value.trim();
-
-  if (!author || !text || !email) {
-    if (window.showToast) window.showToast('Please fill in your name, email, and comment!');
-    return;
-  }
-
-  const initials = author.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'TR';
-  const countryDisplay = selectedDest !== 'general' && destName ? `${rawLocation} · ${destName}` : rawLocation;
-
-  const newId = 'rev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
-
-  const newReview = {
-    id: newId,
-    author: author,
-    avatar: initials,
-    country: countryDisplay,
-    destination: selectedDest,
-    destinationName: destName,
-    rating: ratingVal,
-    verified: true, // Actual traveler submission from site
-    isMine: true,
-    text: text,
-    date: new Date().toISOString().split('T')[0]
-  };
-
-  addMyAuthoredReviewId(newId);
-
-  // Add to database & save (automatically syncs to cloud)
-  const db = getReviewsDatabase();
-  db.unshift(newReview);
-  saveReviewsDatabase(db);
-
-  // Refresh view in real-time
-  refreshReviewsView();
-
-  // Reset Form
-  authorInput.value = '';
-  if (locationInput) locationInput.value = '';
-  textInput.value = '';
-  window.setReviewRating(5);
-
-  // Close Modal
-  window.closeReviewModal();
-
-  if (window.showToast) {
-    window.showToast('Thank you! Your review has been published ✨');
-  } else {
-    alert('Thank you! Your review has been published ✨');
-  }
-};
-
-function escapeHtmlStr(str) {
-  if (!str) return '';
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-
-// ── Initialize Reviews System on DOM Load ────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function () {
-  refreshReviewsView();
-  if (window.location.search.includes('openReviewModal=true') || window.location.hash === '#addReviewForm') {
-    setTimeout(function () {
-      openReviewModal();
-    }, 200);
-  }
-});
-
-
-
-// ── Universal Luxury Scroll Reveal & Micro-Animation Engine ──────────────────
-function initScrollRevealEngine() {
-  if (typeof IntersectionObserver === 'undefined') return;
-
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('reveal-active');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    root: null,
-    threshold: 0.08,
-    rootMargin: '0px 0px -40px 0px'
-  });
-
-  // 1. Headers & Section Titles
-  document.querySelectorAll('section h2, .section-header h2, .section-title, .story-main-title, .dest-clean-header h1, .legal-hero h1, .faq-header h2').forEach(el => {
-    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
-      el.classList.add('reveal-up');
-    }
-  });
-
-  // 2. Section Subtitles & Intro Paragraphs
-  document.querySelectorAll('.section-header p, .section-subtitle, .story-paragraph, .dest-clean-header p, .legal-hero p, .faq-header p').forEach(el => {
-    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
-      el.classList.add('reveal-up');
-    }
-  });
-
-  // 3. Grid & Cards with Dynamic Cascade Delays across ALL Subpages (excluding destinations & customize tour cards which use bespoke luxury engine)
-  const cardSelectors = '.tour-card, .why-card, .feature-item, .exp-cat-card, .exp-card, .review-card, .value-card, .team-card, .story-pillar-item, .faq-item, .contact-info-card, .contact-form-card, .travel-item, .travel-form-container, .hero-stat-item, .legal-card, .section-block';
-  document.querySelectorAll(cardSelectors).forEach((el, index) => {
-    if (!el.classList.contains('reveal-up') && !el.classList.contains('reveal-active')) {
-      el.classList.add('reveal-up');
-      el.style.transitionDelay = ((index % 4) * 0.1) + 's';
-    }
-  });
-
-  // 4. Story & Visual Media
-  document.querySelectorAll('.story-img-main, .about-img-main, .travel-form-left').forEach(el => el.classList.add('reveal-left'));
-  document.querySelectorAll('.story-img-accent, .about-img-accent, .travel-form-right').forEach(el => el.classList.add('reveal-right'));
-  document.querySelectorAll('.cta-banner-inner, .cta-strip, .privacy-cta').forEach(el => el.classList.add('reveal-scale'));
-
-  // 5. Observe all unrevealed elements
-  document.querySelectorAll('.reveal-up:not(.reveal-active), .reveal-left:not(.reveal-active), .reveal-right:not(.reveal-active), .reveal-scale:not(.reveal-active), .reveal-fade:not(.reveal-active)').forEach(el => {
-    revealObserver.observe(el);
-  });
-}
-
-window.initScrollRevealEngine = initScrollRevealEngine;
-
-// ── Pure-CSS LuxuryEntrance Orchestration for Destinations & Customize Tour ──
-function initDestinationsEntrance() {
-  const destCards = document.querySelectorAll('.destinations .grid > .card');
-  if (destCards.length > 0) {
-    destCards.forEach((card, index) => {
-      const delay = (0.54 + (index * 0.18)).toFixed(2);
-      card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
-    });
-  }
-
-  const bookingCards = document.querySelectorAll('.dest-grid > .dest-card');
-  if (bookingCards.length > 0) {
-    bookingCards.forEach((card, index) => {
-      const delay = (0.15 + (index * 0.15)).toFixed(2);
-      card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
-    });
-  }
-}
-
-window.initDestinationsEntrance = initDestinationsEntrance;
-
-window.replayCustomTourAnimations = function () {
-  const modal = document.getElementById('customTourModal');
-  if (!modal) return;
-  const cards = modal.querySelectorAll('.ct-dest-card');
-  cards.forEach((card, index) => {
-    card.style.animation = 'none';
-    void card.offsetWidth;
-    const delay = (0.15 + (index * 0.16)).toFixed(2);
-    card.style.animation = `luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`;
-  });
-};
-
-window.animateCustomTourCards = window.replayCustomTourAnimations;
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    initScrollRevealEngine();
-    initDestinationsEntrance();
-  });
-} else {
-  initScrollRevealEngine();
-  initDestinationsEntrance();
-}
-
-
-window.deleteReview = function(id) {
-  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-  const myIds = new Set(getMyAuthoredReviewIds());
-  const canDelete = isAdmin || myIds.has(id);
-  if (!canDelete) {
-    alert("Action non autorisée. Vous pouvez uniquement supprimer vos propres avis.");
-    return;
-  }
-  if (!confirm('Voulez-vous vraiment supprimer cet avis ?')) return;
-
-  removeMyAuthoredReviewId(id);
-  addDeletedReviewId(id);
-
-  let stored = [];
-  try {
-    stored = JSON.parse(localStorage.getItem(STORAGE_KEY_REVIEWS) || '[]');
-    if (Array.isArray(stored)) {
-      stored = stored.filter(r => r.id !== id);
-      saveReviewsDatabase(stored);
-    }
-  } catch (e) {}
-
-  refreshReviewsView();
-  if (window.showToast) window.showToast('Avis supprimé avec succès.');
-};
-
-window.editReview = function(id) {
-  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-  const myIds = new Set(getMyAuthoredReviewIds());
-  const canEdit = isAdmin || myIds.has(id);
-  if (!canEdit) {
-    alert("Action non autorisée. Vous pouvez uniquement modifier vos propres avis.");
-    return;
-  }
-  const db = getReviewsDatabase();
-  const review = db.find(r => r.id === id);
-  if (!review) return;
-
-  const newText = prompt("Modifier le texte de l'avis :", review.text);
-  if (newText !== null && newText.trim() !== '') {
-    review.text = newText.trim();
-    let stored = [];
-    try {
-      stored = JSON.parse(localStorage.getItem(STORAGE_KEY_REVIEWS) || '[]');
-      if (!Array.isArray(stored)) stored = [];
-    } catch (e) { stored = []; }
-
-    const existingIdx = stored.findIndex(r => r.id === id);
-    if (existingIdx !== -1) {
-      stored[existingIdx].text = review.text;
-    } else {
-      stored.unshift(review);
-    }
-    saveReviewsDatabase(stored);
-    refreshReviewsView();
-    if (window.showToast) window.showToast('Avis mis à jour avec succès.');
-  }
-};
-
-
-
+    `,e.appendChild(o)}),typeof initScrollRevealEngine=="function"&&setTimeout(initScrollRevealEngine,60)}window.openReviewModal=function(){let e=document.getElementById("reviewModal");if(!e){const t=window.location.protocol==="http:"||window.location.protocol==="https:";window.location.href="reviews.html?openReviewModal=true";return}e.style.display="flex",document.body.style.overflow="hidden",setTimeout(()=>{e.classList.add("active")},10)},window.closeReviewModal=function(){let e=document.getElementById("reviewModal");e&&(e.classList.remove("active"),setTimeout(()=>{e.style.display="none",document.body.style.overflow=""},250))},window.scrollToReviewForm=function(){window.openReviewModal()},window.handleReviewSubmit=function(e){e.preventDefault();const t=document.getElementById("reviewAuthor"),a=document.getElementById("reviewEmail"),o=document.getElementById("reviewLocation"),i=document.getElementById("reviewDestSelect"),n=document.getElementById("reviewText"),r=parseInt(document.getElementById("reviewRatingVal")?.value||"5",10);if(!t||!n)return;const d=t.value.trim(),u=a?a.value.trim():"",g=o?o.value.trim():"Traveler",f=i?i.value:"general",y=i&&i.options[i.selectedIndex]?i.options[i.selectedIndex].text:"",S=n.value.trim();if(!d||!S||!u){window.showToast&&window.showToast("Please fill in your name, email, and comment!");return}const I=d.split(" ").map(D=>D[0]).join("").substring(0,2).toUpperCase()||"TR",T=f!=="general"&&y?`${g} \xB7 ${y}`:g,C="rev_"+Date.now()+"_"+Math.random().toString(36).substring(2,6),A={id:C,author:d,avatar:I,country:T,destination:f,destinationName:y,rating:r,verified:!0,isMine:!0,text:S,date:new Date().toISOString().split("T")[0]};addMyAuthoredReviewId(C);const M=getReviewsDatabase();M.unshift(A),saveReviewsDatabase(M),refreshReviewsView(),t.value="",o&&(o.value=""),n.value="",window.setReviewRating(5),window.closeReviewModal(),window.showToast?window.showToast("Thank you! Your review has been published \u2728"):alert("Thank you! Your review has been published \u2728")};function escapeHtmlStr(e){return e?e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"):""}document.addEventListener("DOMContentLoaded",function(){refreshReviewsView(),(window.location.search.includes("openReviewModal=true")||window.location.hash==="#addReviewForm")&&setTimeout(function(){openReviewModal()},200)});function initScrollRevealEngine(){if(typeof IntersectionObserver>"u")return;const e=new IntersectionObserver((a,o)=>{a.forEach(i=>{i.isIntersecting&&(i.target.classList.add("reveal-active"),o.unobserve(i.target))})},{root:null,threshold:.08,rootMargin:"0px 0px -40px 0px"});document.querySelectorAll("section h2, .section-header h2, .section-title, .story-main-title, .dest-clean-header h1, .legal-hero h1, .faq-header h2").forEach(a=>{!a.classList.contains("reveal-up")&&!a.classList.contains("reveal-active")&&a.classList.add("reveal-up")}),document.querySelectorAll(".section-header p, .section-subtitle, .story-paragraph, .dest-clean-header p, .legal-hero p, .faq-header p").forEach(a=>{!a.classList.contains("reveal-up")&&!a.classList.contains("reveal-active")&&a.classList.add("reveal-up")}),document.querySelectorAll(".tour-card, .why-card, .feature-item, .exp-cat-card, .exp-card, .review-card, .value-card, .team-card, .story-pillar-item, .faq-item, .contact-info-card, .contact-form-card, .travel-item, .travel-form-container, .hero-stat-item, .legal-card, .section-block").forEach((a,o)=>{!a.classList.contains("reveal-up")&&!a.classList.contains("reveal-active")&&(a.classList.add("reveal-up"),a.style.transitionDelay=o%4*.1+"s")}),document.querySelectorAll(".story-img-main, .about-img-main, .travel-form-left").forEach(a=>a.classList.add("reveal-left")),document.querySelectorAll(".story-img-accent, .about-img-accent, .travel-form-right").forEach(a=>a.classList.add("reveal-right")),document.querySelectorAll(".cta-banner-inner, .cta-strip, .privacy-cta").forEach(a=>a.classList.add("reveal-scale")),document.querySelectorAll(".reveal-up:not(.reveal-active), .reveal-left:not(.reveal-active), .reveal-right:not(.reveal-active), .reveal-scale:not(.reveal-active), .reveal-fade:not(.reveal-active)").forEach(a=>{e.observe(a)})}window.initScrollRevealEngine=initScrollRevealEngine;function initDestinationsEntrance(){const e=document.querySelectorAll(".destinations .grid > .card");e.length>0&&e.forEach((a,o)=>{const i=(.54+o*.18).toFixed(2);a.style.animation=`luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${i}s both`});const t=document.querySelectorAll(".dest-grid > .dest-card");t.length>0&&t.forEach((a,o)=>{const i=(.15+o*.15).toFixed(2);a.style.animation=`luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${i}s both`})}window.initDestinationsEntrance=initDestinationsEntrance,window.replayCustomTourAnimations=function(){const e=document.getElementById("customTourModal");if(!e)return;e.querySelectorAll(".ct-dest-card").forEach((a,o)=>{a.style.animation="none",a.offsetWidth;const i=(.15+o*.16).toFixed(2);a.style.animation=`luxuryEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) ${i}s both`})},window.animateCustomTourCards=window.replayCustomTourAnimations,document.readyState==="loading"?document.addEventListener("DOMContentLoaded",()=>{initScrollRevealEngine(),initDestinationsEntrance()}):(initScrollRevealEngine(),initDestinationsEntrance()),window.deleteReview=function(e){const t=new URLSearchParams(window.location.search).get("admin")==="true",a=new Set(getMyAuthoredReviewIds());if(!(t||a.has(e))){alert("Action non autoris\xE9e. Vous pouvez uniquement supprimer vos propres avis.");return}if(!confirm("Voulez-vous vraiment supprimer cet avis ?"))return;removeMyAuthoredReviewId(e),addDeletedReviewId(e);let i=[];try{i=JSON.parse(localStorage.getItem(STORAGE_KEY_REVIEWS)||"[]"),Array.isArray(i)&&(i=i.filter(n=>n.id!==e),saveReviewsDatabase(i))}catch{}refreshReviewsView(),window.showToast&&window.showToast("Avis supprim\xE9 avec succ\xE8s.")},window.editReview=function(e){const t=new URLSearchParams(window.location.search).get("admin")==="true",a=new Set(getMyAuthoredReviewIds());if(!(t||a.has(e))){alert("Action non autoris\xE9e. Vous pouvez uniquement modifier vos propres avis.");return}const n=getReviewsDatabase().find(d=>d.id===e);if(!n)return;const r=prompt("Modifier le texte de l'avis :",n.text);if(r!==null&&r.trim()!==""){n.text=r.trim();let d=[];try{d=JSON.parse(localStorage.getItem(STORAGE_KEY_REVIEWS)||"[]"),Array.isArray(d)||(d=[])}catch{d=[]}const u=d.findIndex(g=>g.id===e);u!==-1?d[u].text=n.text:d.unshift(n),saveReviewsDatabase(d),refreshReviewsView(),window.showToast&&window.showToast("Avis mis \xE0 jour avec succ\xE8s.")}};

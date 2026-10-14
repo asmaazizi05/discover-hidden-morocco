@@ -8,33 +8,14 @@
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="preload" as="image" href="images/hero-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
   <link rel="preload" as="image" href="images/hero.jpg" media="(min-width: 769px)" fetchpriority="high">
-    <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd5LDf-iNM8.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSqn7B6D.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
   <script>
     (function () {
-      var BUILD_VERSION = '20261014_v11';
-      try {
-        var lastVer = localStorage.getItem('dhm_cache_v');
-        if (lastVer !== BUILD_VERSION) {
-          localStorage.setItem('dhm_cache_v', BUILD_VERSION);
-          if ('caches' in window) {
-            caches.keys().then(function (names) {
-              names.forEach(function (n) { caches.delete(n); });
-            });
-          }
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (regs) {
-              regs.forEach(function (r) { r.unregister(); });
-            });
-          }
-        }
-      } catch (e) {}
       window.addEventListener('pageshow', function (e) {
-        if (e.persisted) {
-          window.location.reload();
-        }
+        if (e.persisted) { window.location.reload(); }
       });
     })();
   </script>
@@ -100,7 +81,7 @@
 
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="theme.css?v=20261014_v11">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="setTimeout(()=>{this.media='all'},300)">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>
@@ -1931,7 +1912,8 @@
       <div class="hero-bg">
         <picture class="hero-picture">
           <source media="(max-width: 768px)" srcset="images/hero-mobile.jpg">
-          <img src="images/hero.jpg" alt="Morocco Desert Kasbah - Ait Benhaddou" fetchpriority="high" width="1920" height="1080">
+          <source media="(min-width: 769px)" srcset="images/hero.jpg">
+          <img src="images/hero-mobile.jpg" alt="Morocco Desert Kasbah - Ait Benhaddou" fetchpriority="high" width="1920" height="1080">
         </picture>
         <div class="hero-overlay"></div>
       </div>
