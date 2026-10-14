@@ -6157,3 +6157,66 @@ select::placeholder {
     box-shadow: -10px 24px 60px rgba(0, 0, 0, 0.5) !important;
   }
 }
+
+/* ==============================================================================
+   8. LUXURY DESTINATIONS & CUSTOMIZE TOUR STAGGERED & SCROLL REVEAL (v10)
+   - Initial entrance: First 3 cards appear first in sequence (smooth & luxury).
+   - Immediately after: Subsequent visible cards cascade in gently.
+   - On scroll down: Remaining cards reveal smoothly as they enter viewport.
+   ============================================================================== */
+.card.luxury-card-reveal,
+.destination-card.luxury-card-reveal,
+.ct-dest-card.luxury-card-reveal,
+.dest-card.luxury-card-reveal,
+.luxury-card-reveal {
+  opacity: 0 !important;
+  transform: translateY(32px) !important;
+  will-change: opacity, transform;
+  transition: opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.card.luxury-card-reveal.is-revealed,
+.destination-card.luxury-card-reveal.is-revealed,
+.ct-dest-card.luxury-card-reveal.is-revealed,
+.dest-card.luxury-card-reveal.is-revealed,
+.luxury-card-reveal.is-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Ensure hover lift remains silky and responsive after being revealed */
+.card.luxury-card-reveal.is-revealed:hover,
+.destination-card.luxury-card-reveal.is-revealed:hover {
+  transform: translateY(-7px) !important;
+  box-shadow: 0 20px 45px rgba(200, 90, 50, 0.18), 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.4s ease !important;
+}
+
+.ct-dest-card.luxury-card-reveal.is-revealed:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 10px 24px rgba(200, 90, 50, 0.18) !important;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.3s ease !important;
+}
+
+.ct-dest-card.luxury-card-reveal.is-revealed.is-selected {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(200, 90, 50, 0.35) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.luxury-card-reveal,
+  .destination-card.luxury-card-reveal,
+  .ct-dest-card.luxury-card-reveal,
+  .dest-card.luxury-card-reveal,
+  .luxury-card-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
