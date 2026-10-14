@@ -4183,18 +4183,10 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     initScrollRevealEngine();
     initDestinationsEntrance();
-    setTimeout(() => {
-      initScrollRevealEngine();
-      initDestinationsEntrance();
-    }, 250);
   });
 } else {
   initScrollRevealEngine();
   initDestinationsEntrance();
-  setTimeout(() => {
-    initScrollRevealEngine();
-    initDestinationsEntrance();
-  }, 250);
 }
 
 
