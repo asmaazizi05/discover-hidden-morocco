@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -15,7 +15,21 @@
           clean = '/reviews';
         }
         if (clean && !clean.endsWith('.html')) {
-          window.location.replace(origin + clean + '.html' + search + hash);
+          var targetHtml = origin + clean + '.html' + search + hash;
+          // Use fetch to render clean URL in-place without adding .html to address bar
+          fetch(origin + clean + '.html')
+            .then(function(res) {
+              if (res.ok) return res.text();
+              throw new Error('Not found');
+            })
+            .then(function(htmlText) {
+              document.open();
+              document.write(htmlText);
+              document.close();
+            })
+            .catch(function() {
+              window.location.replace(targetHtml);
+            });
           return;
         }
       } catch (e) {}

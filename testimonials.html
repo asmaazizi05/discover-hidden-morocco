@@ -4,6 +4,24 @@
 <head>
   <script>
     (function () {
+      try {
+        var p = window.location.pathname;
+        var s = window.location.search || '';
+        var h = window.location.hash || '';
+        if (p && p.length > 1) {
+          var lower = p.toLowerCase();
+          if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
+            window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
+          } else if (lower.endsWith('.html')) {
+            var clean = p.replace(/\.html$/i, '');
+            window.history.replaceState(null, document.title, clean + s + h);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <script>
+    (function () {
       var BUILD_VERSION = '20261014_v11';
       try {
         var lastVer = localStorage.getItem('dhm_cache_v');

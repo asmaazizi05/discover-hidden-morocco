@@ -4,62 +4,23 @@
 <head>
   <script>
     (function () {
-      var BUILD_VERSION = '20261014_v11';
       try {
-        var lastVer = localStorage.getItem('dhm_cache_v');
-        if (lastVer !== BUILD_VERSION) {
-          localStorage.setItem('dhm_cache_v', BUILD_VERSION);
-          if ('caches' in window) {
-            caches.keys().then(function (names) {
-              names.forEach(function (n) { caches.delete(n); });
-            });
+        var p = window.location.pathname;
+        var s = window.location.search || '';
+        var h = window.location.hash || '';
+        if (p && p.length > 1) {
+          var lower = p.toLowerCase();
+          if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
+            window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
+          } else if (lower.endsWith('.html')) {
+            var clean = p.replace(/\.html$/i, '');
+            window.history.replaceState(null, document.title, clean + s + h);
           }
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (regs) {
-              regs.forEach(function (r) { r.unregister(); });
-            });
-          }
-        }
-      } catch (e) {}
-      window.addEventListener('pageshow', function (e) {
-        if (e.persisted) {
-          window.location.reload();
-        }
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      try {
-        var savedTheme = localStorage.getItem('hm_theme');
-        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          document.documentElement.classList.add('dark');
-          document.documentElement.style.backgroundColor = '#151515';
-          document.documentElement.style.colorScheme = 'dark';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-          document.documentElement.classList.remove('dark');
-          document.documentElement.style.backgroundColor = '#FAF7F2';
-          document.documentElement.style.colorScheme = 'light';
-        }
-
-        var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
-        if (!isLocal && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
-          var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-          var path = window.location.pathname || '';
-          var search = window.location.search || '';
-          var hash = window.location.hash || '';
-          var lowerPath = path.toLowerCase();
-          if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
-            window.history.replaceState(null, document.title, origin + '/' + search + hash);
-          } else if (lowerPath.includes('testimonials') ) {
-            window.history.replaceState(null, document.title, origin + '/reviews.html' + search + hash);
-          } 
         }
       } catch (e) {}
     })();
   </script>
+  
   <link rel="preconnect" href="https://translate.googleapis.com">
   <link rel="preconnect" href="https://translate.google.com">
   <meta charset="UTF-8">
