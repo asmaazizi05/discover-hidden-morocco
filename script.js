@@ -2274,9 +2274,11 @@ function initHomeMapPreview() {
   if (!mapElement) return;
 
   function createMap() {
-    if (typeof L === 'undefined' || mapElement._leaflet_id) return;
+    if (mapElement._leaflet_id) return;
 
-    const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
+    function build() {
+      if (typeof L === 'undefined' || mapElement._leaflet_id) return;
+      const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
 
     if (miniMap.attributionControl) {
       miniMap.attributionControl.remove();
@@ -2335,6 +2337,17 @@ function initHomeMapPreview() {
       opacity: 0.8,
       dashArray: '6, 8'
     }).addTo(miniMap);
+    }
+
+    if (typeof L === 'undefined') {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      s.defer = true;
+      s.onload = build;
+      document.head.appendChild(s);
+    } else {
+      build();
+    }
   }
 
   if ('IntersectionObserver' in window) {
