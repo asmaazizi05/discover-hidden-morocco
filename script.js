@@ -3,7 +3,35 @@
    Terracotta & Sahara Gold Theme, Wishlist, Language Switcher, Maps, Search
    ========================================================================== */
 
-/* ── Clean Pretty URLs Engine (Removes .html from Address Bar & Navigation) ─ */
+/* ── DHM Client-Side Auto-Update & Cache Purge Sentinel ──────────────────── */
+(function () {
+  const CURRENT_BUILD = '20261014_v8';
+  try {
+    const savedBuild = localStorage.getItem('dhm_build_ver');
+    if (savedBuild !== CURRENT_BUILD) {
+      localStorage.setItem('dhm_build_ver', CURRENT_BUILD);
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => caches.delete(name));
+        });
+      }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(reg => reg.unregister());
+        });
+      }
+    }
+  } catch (e) {}
+
+  // Auto-reload if page was restored from back-forward cache or frozen tab
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+})();
+
+/* ── Canonical URL & Navigation Link Protector (Guarantees Actualiser Never 404s) ─ */
 (function () {
   function sanitizeCurrentUrl() {
     try {
@@ -13,24 +41,22 @@
       const hash = window.location.hash || '';
       const lowerPath = path.toLowerCase();
 
-      // 1. If on index.html (home page), clean the address bar to root '/'
+      // 1. Only clean /index.html to root '/'
       if (lowerPath.endsWith('/index.html') || lowerPath === '/index.html' || lowerPath === 'index.html' || lowerPath === '/index') {
         window.history.replaceState(null, document.title, origin + '/' + search + hash);
         return;
       }
 
-      // 2. If on testimonials or reviews (/testimonials.html, /testimonials, /reviews.html) -> clean to '/reviews'
-      if (lowerPath.includes('testimonials') || lowerPath.endsWith('/reviews.html') || lowerPath === '/reviews.html') {
-        window.history.replaceState(null, document.title, origin + '/reviews' + search + hash);
+      // 2. If user lands on /testimonials or /testimonials.html, canonicalize to reviews.html
+      if (lowerPath.includes('testimonials')) {
+        window.history.replaceState(null, document.title, origin + '/reviews.html' + search + hash);
         return;
       }
 
-      // 3. For any other subpage (e.g. /destinations.html -> /destinations), clean the address bar
-      if (lowerPath.endsWith('.html')) {
-        const cleanPath = path.replace(/\.html$/i, '');
-        window.history.replaceState(null, document.title, origin + cleanPath + search + hash);
-        return;
-      }
+      // NOTE: We intentionally PRESERVE the .html extension on all other pages
+      // (e.g. map.html, booking.html, destinations.html, reviews.html, contact.html)
+      // so that whenever any visitor presses Actualiser / Refresh, the server
+      // ALWAYS returns the real file (200 OK) instead of 404!
     } catch (e) {}
   }
 
@@ -44,7 +70,7 @@
   window.addEventListener('pageshow', sanitizeCurrentUrl);
   window.addEventListener('popstate', sanitizeCurrentUrl);
 
-  // Normalize all navigation links across the document
+  // Normalize all navigation links across the document to real .html files
   function cleanNavigationLinks() {
     try {
       document.querySelectorAll('a[href]').forEach(function (link) {
@@ -63,9 +89,29 @@
           return;
         }
 
-        // Keep reviews.html clean
-        if (href === './reviews.html' || href === '/reviews.html') {
+        // Ensure links to subpages use real .html extension for bulletproof reliability
+        if (href === 'reviews' || href === '/reviews') {
           link.setAttribute('href', 'reviews.html');
+          return;
+        }
+        if (href === 'map' || href === '/map') {
+          link.setAttribute('href', 'map.html');
+          return;
+        }
+        if (href === 'booking' || href === '/booking') {
+          link.setAttribute('href', 'booking.html');
+          return;
+        }
+        if (href === 'destinations' || href === '/destinations') {
+          link.setAttribute('href', 'destinations.html');
+          return;
+        }
+        if (href === 'contact' || href === '/contact') {
+          link.setAttribute('href', 'contact.html');
+          return;
+        }
+        if (href === 'about' || href === '/about') {
+          link.setAttribute('href', 'about.html');
           return;
         }
       });
@@ -1407,7 +1453,7 @@ function startGoogleBannerKiller() {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ['style', 'class', 'dir']
+      attributeFilter: ['style', 'class']
     });
   }
 }
@@ -1548,6 +1594,16 @@ function setLanguage(langKey) {
 
   // Show feedback
   showToast('Language set to ' + langKey.toUpperCase());
+
+  // Auto-close mobile menu drawer if open so visitor immediately sees the translated page
+  const navLinks = document.getElementById('navLinks') || document.querySelector('.hn-links');
+  const hamburger = document.querySelector('.hamburger');
+  if (navLinks) {
+    setTimeout(() => {
+      navLinks.classList.remove('open', 'active', 'hn-links-open');
+      if (hamburger) hamburger.classList.remove('is-active');
+    }, 250);
+  }
 
   // 1. First try live instant translation via Google Translate internal combo (ZERO page reload)
   let liveTranslated = false;

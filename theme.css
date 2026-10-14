@@ -1297,9 +1297,11 @@ body {
     #navLinks.hn-links-open {
       display: flex !important;
       position: fixed !important;
-      top: 64px !important;
-      left: 10px !important;
-      right: 10px !important;
+      top: 66px !important;
+      right: 14px !important;
+      left: auto !important;
+      width: calc(100vw - 28px) !important;
+      max-width: 320px !important;
       max-height: calc(100vh - 80px) !important;
       overflow-y: auto !important;
       background: var(--hm-bg-card, #FFFFFF) !important;
@@ -5161,6 +5163,7 @@ iframe.goog-te-banner-frame,
   height: 0 !important;
 }
 
+@media (min-width: 992px) {
 /* 3. Refined Desktop Language Selector Pill */
 .lang-wrapper {
   position: relative !important;
@@ -5248,29 +5251,42 @@ iframe.goog-te-banner-frame,
   color: #F8FAFC !important;
 }
 
-/* 5. Right-To-Left (RTL) Support for Arabic & Hebrew */
-[dir="rtl"] {
-  text-align: right;
 }
 
-[dir="rtl"] .hn-nav-links {
-  direction: rtl;
+/* 5. Right-To-Left (RTL) Stability - Never Scramble Layout */
+html[dir="rtl"],
+html.translated-rtl,
+body[dir="rtl"],
+body.translated-rtl {
+  direction: ltr !important;
+  top: 0 !important;
+  position: static !important;
+  margin-top: 0 !important;
 }
 
-[dir="rtl"] .hero-content,
-[dir="rtl"] .why-inner,
-[dir="rtl"] .footer-col {
-  text-align: right;
+.hn-nav,
+.hn-links,
+.site-header,
+.hn-nav-actions,
+.grid,
+.destinations,
+.hero-section,
+.booking-container,
+.footer {
+  direction: ltr !important;
 }
 
-[dir="rtl"] .lang-wrapper i.lang-icon {
-  left: auto !important;
-  right: 12px !important;
-}
-
-[dir="rtl"] .lang-switcher,
-[dir="rtl"] .lang-sw {
-  padding: 0 32px 0 14px !important;
+html[lang="ar"] p,
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html.translated-rtl p,
+html.translated-rtl h1,
+html.translated-rtl h2,
+html.translated-rtl h3,
+html.translated-rtl .hero-eyebrow,
+html.translated-rtl .dest-desc {
+  text-align: right !important;
 }
 
 /* ==========================================================================
@@ -6060,5 +6076,58 @@ select::placeholder {
     pointer-events: none !important;
     transform: scale(0.8) !important;
     transition: opacity 0.25s, transform 0.25s !important;
+  }
+}
+/* ==========================================================================
+   MOBILE SUITE: REMOVE GLOBE FROM HEADER & ANCHOR DRAWER TO RIGHT (3la limn)
+   ========================================================================== */
+@media (max-width: 991px) {
+  /* Completely remove any globe or language pill from mobile header */
+  .hn-nav .lang-wrapper,
+  .hn-nav-actions .lang-wrapper,
+  .hn-nav .lang-icon,
+  .hn-nav-actions .lang-icon,
+  .hn-nav-actions i.fa-globe,
+  .hn-nav-actions i.lang-icon,
+  .hn-nav-actions .nav-icon-btn,
+  .hn-nav-actions .theme-toggle,
+  .hn-nav-actions .fav-count-badge {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* Hamburger Clean 3 Stripes Only */
+  .hamburger,
+  .hburg {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    order: 99 !important;
+  }
+
+  /* Anchor Mobile Drawer Menu to the RIGHT (3la limn) */
+  .hn-links.hn-links-open,
+  .hn-links.open,
+  .hn-links.active,
+  .nav-links.open,
+  .nav-links.hn-links-open,
+  .nav-links.active,
+  #premNavLinks.open,
+  #navLinks.open,
+  #navLinks.hn-links-open {
+    right: 14px !important;
+    left: auto !important;
+    top: 66px !important;
+    width: calc(100vw - 28px) !important;
+    max-width: 310px !important;
+    border-radius: 24px !important;
+    box-shadow: -10px 24px 60px rgba(0, 0, 0, 0.5) !important;
   }
 }
