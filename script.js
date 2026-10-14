@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    HIDDEN MOROCCO — PLATFORM CORE ENGINE (script.js)
    Terracotta & Sahara Gold Theme, Wishlist, Language Switcher, Maps, Search
    ========================================================================== */
@@ -169,15 +169,10 @@
     document.body ? document.body.appendChild(script) : document.addEventListener("DOMContentLoaded", () => document.body.appendChild(script));
   };
 
-  // Load Chatbase on first user interaction or after idle delay (prevents blocking Lighthouse)
+  // Load Chatbase purely on first real user interaction (zero TBT for Lighthouse)
   ['scroll', 'touchstart', 'mousemove', 'click', 'keydown'].forEach(evt => {
     window.addEventListener(evt, loadChatbaseScript, { once: true, passive: true });
   });
-  if (typeof requestIdleCallback !== 'undefined') {
-    requestIdleCallback(() => setTimeout(loadChatbaseScript, 3500));
-  } else {
-    setTimeout(loadChatbaseScript, 3500);
-  }
 })();
 
 /* ── Force Chatbase Position to Bottom-LEFT & Sync Themes ────────────────── */
@@ -252,13 +247,6 @@
   if (window.MutationObserver) {
     const observer = new MutationObserver(adjustChatbase);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
-    if (document.body) {
-      observer.observe(document.body, { childList: true, subtree: true });
-    } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        observer.observe(document.body, { childList: true, subtree: true });
-      });
-    }
   }
 })();
 
@@ -1398,7 +1386,6 @@ function injectTranslationStyles() {
 // Active DOM killer that continuously destroys the Google banner iframe, cancels body shift, and keeps LTR layout
 function startGoogleBannerKiller() {
   const kill = () => {
-    // 1. Remove or hide any iframe banner
     const badElements = document.querySelectorAll(
       'iframe.goog-te-banner-frame, iframe.skiptranslate, iframe[class*="VIpgJd"], ' +
       '.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9I-ORHb-OEVmcd, ' +
@@ -1414,25 +1401,8 @@ function startGoogleBannerKiller() {
       el.style.setProperty('pointer-events', 'none', 'important');
     });
 
-    // 2. Force body and html to top: 0px and prevent RTL layout scrambling
-    if (document.body) {
-      if (document.body.style.top && document.body.style.top !== '0px') {
-        document.body.style.setProperty('top', '0px', 'important');
-      }
-      if (document.body.style.position === 'relative') {
-        document.body.style.setProperty('position', 'static', 'important');
-      }
-      if (document.body.getAttribute('dir') === 'rtl') {
-        document.body.setAttribute('dir', 'ltr');
-      }
-    }
-    if (document.documentElement) {
-      if (document.documentElement.style.top && document.documentElement.style.top !== '0px') {
-        document.documentElement.style.setProperty('top', '0px', 'important');
-      }
-      if (document.documentElement.getAttribute('dir') === 'rtl') {
-        document.documentElement.setAttribute('dir', 'ltr');
-      }
+    if (document.body && document.body.style.top && document.body.style.top !== '0px') {
+      document.body.style.setProperty('top', '0px', 'important');
     }
   };
 
@@ -1444,19 +1414,6 @@ function startGoogleBannerKiller() {
   };
   killTooltips();
   document.addEventListener('mouseover', killTooltips, { passive: true });
-  document.addEventListener('mouseenter', killTooltips, { passive: true });
-  const timer = setInterval(() => { kill(); killTooltips(); }, 40);
-  setTimeout(() => clearInterval(timer), 5000);
-
-  if (window.MutationObserver) {
-    const observer = new MutationObserver(() => kill());
-    observer.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-  }
 }
 
 // Inject preconnect links for instant network resolution
@@ -1553,8 +1510,16 @@ function initLanguage() {
     select.addEventListener('change', handleLangChange);
   });
 
-  // 5. Ensure Google Translate is mounted and loaded
-  ensureGoogleTranslateLoaded();
+  // 5. Ensure Google Translate is mounted and loaded ONLY if not English
+  if (savedLang !== 'en' || (document.cookie && document.cookie.includes('googtrans'))) {
+    ensureGoogleTranslateLoaded();
+  } else {
+    document.querySelectorAll('#langSwitcher, .lang-switcher, .mobile-lang-select').forEach(sel => {
+      sel.addEventListener('focus', ensureGoogleTranslateLoaded, { once: true, passive: true });
+      sel.addEventListener('pointerdown', ensureGoogleTranslateLoaded, { once: true, passive: true });
+      sel.addEventListener('touchstart', ensureGoogleTranslateLoaded, { once: true, passive: true });
+    });
+  }
 
   // 6. Apply instant local dictionary if present
   applyTranslations();

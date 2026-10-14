@@ -6311,3 +6311,26 @@ button[id*="chatbase"] svg path {
     right: auto !important;
   }
 }
+
+
+/* Permanent Google Translate banner & tooltip suppression (Zero JS / Zero CPU) */
+.goog-te-banner-frame,
+.skiptranslate,
+iframe[id*=":1.container"],
+iframe[id*=":2.container"],
+iframe[src*="translate.google"],
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9I-ORHb-OEVmcd {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0px !important;
+  width: 0px !important;
+  pointer-events: none !important;
+}
+html, body {
+  top: 0px !important;
+}
