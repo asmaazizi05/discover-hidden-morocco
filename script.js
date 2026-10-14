@@ -157,8 +157,10 @@
       }
     });
   }
-  const onLoad = function () {
-    if (document.getElementById("aVrkUFtVzGoLUuzNCYVP0")) return;
+  let chatbaseLoaded = false;
+  const loadChatbaseScript = function () {
+    if (chatbaseLoaded || document.getElementById("aVrkUFtVzGoLUuzNCYVP0")) return;
+    chatbaseLoaded = true;
     const script = document.createElement("script");
     script.src = "https://www.chatbase.co/embed.min.js";
     script.id = "aVrkUFtVzGoLUuzNCYVP0";
@@ -166,10 +168,15 @@
     script.defer = true;
     document.body ? document.body.appendChild(script) : document.addEventListener("DOMContentLoaded", () => document.body.appendChild(script));
   };
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", onLoad);
+
+  // Load Chatbase on first user interaction or after idle delay (prevents blocking Lighthouse)
+  ['scroll', 'touchstart', 'mousemove', 'click', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, loadChatbaseScript, { once: true, passive: true });
+  });
+  if (typeof requestIdleCallback !== 'undefined') {
+    requestIdleCallback(() => setTimeout(loadChatbaseScript, 3500));
   } else {
-    onLoad();
+    setTimeout(loadChatbaseScript, 3500);
   }
 })();
 
@@ -192,11 +199,7 @@
       btn.style.setProperty('border', '2px solid #C85A32', 'important');
 
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      if (isDark) {
-        btn.style.setProperty('background', '#1E1E1E', 'important');
-      } else {
-        btn.style.setProperty('background', '#FFFFFF', 'important');
-      }
+      btn.style.setProperty('background', isDark ? '#1E1E1E' : '#FFFFFF', 'important');
 
       const svgs = btn.querySelectorAll('svg, svg path, svg g');
       svgs.forEach(function (el) {
@@ -208,7 +211,6 @@
     const win = document.getElementById('chatbase-bubble-window');
     if (win) {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.body.classList.contains('dark');
-      
       win.style.setProperty('bottom', '90px', 'important');
       win.style.setProperty('box-shadow', '0 0 25px rgba(200, 90, 50, 0.4)', 'important');
       win.style.setProperty('border', '1px solid rgba(200, 90, 50, 0.4)', 'important');
@@ -258,7 +260,6 @@
       });
     }
   }
-  setInterval(adjustChatbase, 300);
 })();
 
 /* ── DHM Executive Visitor Intelligence & Monthly Analytics Engine ─────────── */
@@ -2305,67 +2306,83 @@ window.closeMapDestCard = function () {
 
 function initHomeMapPreview() {
   const mapElement = document.getElementById('homeMapPreview');
-  if (!mapElement || typeof L === 'undefined') return;
+  if (!mapElement) return;
 
-  const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
+  function createMap() {
+    if (typeof L === 'undefined' || mapElement._leaflet_id) return;
 
-  if (miniMap.attributionControl) {
-    miniMap.attributionControl.remove();
+    const miniMap = L.map('homeMapPreview', { attributionControl: false, zoomControl: false, dragging: false, scrollWheelZoom: false }).setView([31.7917, -7.0926], 6);
+
+    if (miniMap.attributionControl) {
+      miniMap.attributionControl.remove();
+    }
+
+    // ESRI satellite tiles for home map preview (ultra-smooth, buffered)
+    L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      subdomains: ['server', 'services'],
+      attribution: '',
+      minZoom: 2,
+      maxZoom: 18,
+      maxNativeZoom: 18,
+      keepBuffer: 3,
+      updateWhenZooming: true,
+      updateWhenIdle: false,
+      crossOrigin: true
+    }).addTo(miniMap);
+
+    DESTINATIONS_DB.forEach(dest => {
+      const pinIcon = L.divIcon({
+        className: '',
+        html: `<div style="
+          width: 22px; height: 28px;
+          background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          border: 2px solid #fff;
+          box-shadow: 0 2px 8px rgba(200,90,50,0.6);
+          position: relative;
+        "><div style="
+          position: absolute; top: 50%; left: 50%;
+          transform: translate(-50%, -50%) rotate(45deg);
+          width: 7px; height: 7px;
+          background: #fff; border-radius: 50%;
+        "></div></div>`,
+        iconSize: [22, 28],
+        iconAnchor: [11, 28]
+      });
+      L.marker([dest.lat, dest.lng], { icon: pinIcon }).addTo(miniMap);
+    });
+
+    // Dashed golden route lines
+    const routeCoords = [
+      [35.1716, -5.2697],
+      [34.0333, -5.0000],
+      [31.6295, -7.9811],
+      [31.5125, -9.7700],
+      [30.4278, -9.5981],
+      [30.9189, -6.8934],
+      [30.3336, -5.8264],
+      [31.0992, -4.0116],
+    ];
+    L.polyline(routeCoords, {
+      color: '#D4AF37',
+      weight: 1.5,
+      opacity: 0.8,
+      dashArray: '6, 8'
+    }).addTo(miniMap);
   }
 
-  // ESRI satellite tiles for home map preview (ultra-smooth, buffered)
-  L.tileLayer('https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    subdomains: ['server', 'services'],
-    attribution: '',
-    minZoom: 2,
-    maxZoom: 18,
-    maxNativeZoom: 18,
-    keepBuffer: 3,
-    updateWhenZooming: true,
-    updateWhenIdle: false,
-    crossOrigin: true
-  }).addTo(miniMap);
-
-  DESTINATIONS_DB.forEach(dest => {
-    const pinIcon = L.divIcon({
-      className: '',
-      html: `<div style="
-        width: 22px; height: 28px;
-        background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%);
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        border: 2px solid #fff;
-        box-shadow: 0 2px 8px rgba(200,90,50,0.6);
-        position: relative;
-      "><div style="
-        position: absolute; top: 50%; left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
-        width: 7px; height: 7px;
-        background: #fff; border-radius: 50%;
-      "></div></div>`,
-      iconSize: [22, 28],
-      iconAnchor: [11, 28]
-    });
-    L.marker([dest.lat, dest.lng], { icon: pinIcon }).addTo(miniMap);
-  });
-
-  // Dashed golden route lines
-  const routeCoords = [
-    [35.1716, -5.2697],
-    [34.0333, -5.0000],
-    [31.6295, -7.9811],
-    [31.5125, -9.7700],
-    [30.4278, -9.5981],
-    [30.9189, -6.8934],
-    [30.3336, -5.8264],
-    [31.0992, -4.0116],
-  ];
-  L.polyline(routeCoords, {
-    color: '#D4AF37',
-    weight: 1.5,
-    opacity: 0.8,
-    dashArray: '6, 8'
-  }).addTo(miniMap);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) {
+        createMap();
+        obs.disconnect();
+      }
+    }, { rootMargin: '300px 0px' });
+    observer.observe(mapElement);
+  } else {
+    createMap();
+  }
 }
 
 // ── Global Modal Engine & Helpers ─────────────────────────

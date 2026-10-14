@@ -2,9 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preload" as="image" href="images/hero.jpg" fetchpriority="high">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
   <script>
     (function () {
       var BUILD_VERSION = '20261014_v11';
@@ -1797,7 +1800,7 @@
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
@@ -1919,7 +1922,7 @@
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-bg">
-        <img src="images/hero.jpg" alt="Morocco Desert Kasbah — Ait Benhaddou" fetchpriority="high">
+        <img src="images/hero.jpg" alt="Morocco Desert Kasbah — Ait Benhaddou" fetchpriority="high" width="1920" height="1080">
         <div class="hero-overlay"></div>
       </div>
 
@@ -2025,8 +2028,7 @@
         <div class="story-welcome-inner">
           <!-- Left Column: Riad Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img"
-              loading="lazy">
+            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img" loading="lazy" width="800" height="533">
             <div class="story-img-badge">
               <i class="fa-solid fa-gem"></i>
               <span>100% Private Expeditions</span>
@@ -2086,7 +2088,7 @@
           <!-- Category 1: Sahara Desert -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy">
+              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy" width="600" height="400">
               <span class="badge badge-gold exp-cat-badge">Desert &amp; Dunes</span>
             </div>
             <div class="exp-cat-body">
@@ -2101,7 +2103,7 @@
           <!-- Category 2: Imperial Medinas -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy">
+              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy" width="600" height="400">
               <span class="badge badge-terracotta exp-cat-badge">Cultural Heritage</span>
             </div>
             <div class="exp-cat-body">
@@ -2116,7 +2118,7 @@
           <!-- Category 3: Atlas Mountains -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy">
+              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy" width="600" height="400">
               <span class="badge badge-gold exp-cat-badge">Mountain Treks</span>
             </div>
             <div class="exp-cat-body">
@@ -2132,7 +2134,7 @@
           <!-- Category 4: Coastal Escapes -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy">
+              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy" width="600" height="400">
               <span class="badge badge-terracotta exp-cat-badge">Coastal Escape</span>
             </div>
             <div class="exp-cat-body">
@@ -2199,7 +2201,7 @@
 
           <!-- Right Column: Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy">
+            <img src="images/hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy" width="800" height="533">
             <div class="story-img-badge">
               <i class="fa-solid fa-sliders"></i>
               <span>100% Tailor-Made</span>
@@ -2302,7 +2304,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
-          <img src="logo-icon.png" alt="Discover Hidden Morocco">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" loading="lazy">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
         <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara
@@ -2376,9 +2378,9 @@
     </div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11"></script>
+<script src="script.js?v=20261014_v11" defer></script>
 </body>
 
 </html>

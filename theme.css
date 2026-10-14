@@ -1,9 +1,9 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    HIDDEN MOROCCO � BOUTIQUE MOROCCAN DESIGN SYSTEM (theme.css)
    Warm Terracotta, Sahara Gold, Linen Light & Deep Charcoal Palette
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+/* Fonts loaded via HTML link rel=preload/stylesheet */
 
 :root {
   /* Official Global Brand Accent Tokens (#C85A32 -> #E7A93C) */
@@ -6256,3 +6256,58 @@ select::placeholder {
   }
 }
 
+
+
+/* ==============================================================================
+   CHATBASE ZERO-CPU PURE CSS STYLES (Replaces 300ms polling loop)
+   ============================================================================== */
+#chatbase-bubble-button,
+button[id*="chatbase"] {
+  bottom: 25px !important;
+  left: 25px !important;
+  right: auto !important;
+  z-index: 99999 !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 25px rgba(200, 90, 50, 0.5) !important;
+  border: 2px solid #C85A32 !important;
+  background: #FFFFFF !important;
+}
+
+[data-theme="dark"] #chatbase-bubble-button,
+[data-theme="dark"] button[id*="chatbase"] {
+  background: #1E1E1E !important;
+}
+
+#chatbase-bubble-button svg,
+button[id*="chatbase"] svg,
+#chatbase-bubble-button svg path,
+button[id*="chatbase"] svg path {
+  fill: #C85A32 !important;
+  color: #C85A32 !important;
+}
+
+#chatbase-bubble-window {
+  bottom: 90px !important;
+  box-shadow: 0 0 25px rgba(200, 90, 50, 0.4) !important;
+  border: 1px solid rgba(200, 90, 50, 0.4) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 640px) {
+  #chatbase-bubble-window {
+    left: 12px !important;
+    right: 12px !important;
+  }
+}
+@media (min-width: 641px) {
+  #chatbase-bubble-window {
+    left: 25px !important;
+    right: auto !important;
+  }
+}
