@@ -954,6 +954,66 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(192, 57, 43, 0.45);
     }
+  
+/* ==============================================================================
+   CLEAN LUXURY EDITORIAL TYPOGRAPHY - ZERO GAPS BETWEEN WORDS
+   ============================================================================== */
+p,
+.card p,
+.destination-card p,
+.exp-card p,
+.exp-desc,
+.why-card p,
+.feature-item p,
+.feature-content p,
+.review-card p,
+.review-text,
+.travel-form-left p,
+.travel-item p,
+.hmp-desc,
+.acc-desc {
+  text-align: left !important;
+  text-justify: auto !important;
+  word-spacing: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.65 !important;
+  text-wrap: pretty;
+}
+
+.destination-article p,
+.article-content p,
+.legal-card p,
+.section-block p,
+.story-paragraph {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;
+  word-spacing: normal !important;
+  line-height: 1.8;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.hero-title,
+.hero-title *,
+.hero-subtitle,
+.section-header h2,
+.section-header p,
+.dest-clean-header h1,
+.dest-clean-header p,
+.dest-clean-eyebrow,
+.dest-clean-subtitle,
+.badge,
+.text-center,
+.text-center p,
+.cta-banner h2,
+.cta-banner p,
+.privacy-cta h2,
+.privacy-cta p {
+  text-align: center !important;
+  text-align-last: center !important;
+}
+
   </style>
 
 
@@ -968,13 +1028,13 @@
       <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="premNavLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="destinations.html" class="active">Destinations</a></li>
+        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
+        <li><a href="destinations.html" class="active" data-i18n="nav_destinations">Destinations</a></li>
         <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
-        <li><a href="map.html">Interactive Map</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="reviews.html">Reviews</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">

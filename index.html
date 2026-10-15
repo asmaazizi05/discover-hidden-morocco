@@ -1990,40 +1990,44 @@
     }
   
 /* ==============================================================================
-   LUXURY EDITORIAL TYPOGRAPHY: JUSTIFIED PARAGRAPHS & CONTENT BLOCKS
-   Aligned and flush on BOTH left and right margins (clean book & magazine style)
+   CLEAN LUXURY EDITORIAL TYPOGRAPHY - ZERO GAPS BETWEEN WORDS
    ============================================================================== */
 p,
-.story-paragraph,
-.story-desc,
-.story-text p,
-.about-text p,
-.about-content p,
-.destination-article p,
-.article-content p,
-.exp-desc,
 .card p,
 .destination-card p,
+.exp-card p,
+.exp-desc,
 .why-card p,
 .feature-item p,
 .feature-content p,
 .review-card p,
 .review-text,
-.legal-card p,
-.section-block p,
-.modal-content p,
 .travel-form-left p,
 .travel-item p,
-.faq-answer,
-.faq-answer p,
-.map-text p,
-.hmp-desc {
-  text-align: justify !important;
-  text-justify: inter-word !important;
-  text-align-last: left !important;
+.hmp-desc,
+.acc-desc {
+  text-align: left !important;
+  text-justify: auto !important;
+  word-spacing: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.65 !important;
+  text-wrap: pretty;
 }
 
-/* Explicitly preserve centered alignment for titles, subtitles, headers and badges */
+.destination-article p,
+.article-content p,
+.legal-card p,
+.section-block p,
+.story-paragraph {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;
+  word-spacing: normal !important;
+  line-height: 1.8;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
 .hero-title,
 .hero-title *,
 .hero-subtitle,
@@ -2059,13 +2063,13 @@ p,
           class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
-        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="index.html" class="active" data-i18n="nav_home">Home</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
         <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
         <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
         <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">

@@ -516,6 +516,66 @@
       .cookie-table { font-size: 0.8rem; }
       .cookie-table th, .cookie-table td { padding: 10px 12px; }
     }
+  
+/* ==============================================================================
+   CLEAN LUXURY EDITORIAL TYPOGRAPHY - ZERO GAPS BETWEEN WORDS
+   ============================================================================== */
+p,
+.card p,
+.destination-card p,
+.exp-card p,
+.exp-desc,
+.why-card p,
+.feature-item p,
+.feature-content p,
+.review-card p,
+.review-text,
+.travel-form-left p,
+.travel-item p,
+.hmp-desc,
+.acc-desc {
+  text-align: left !important;
+  text-justify: auto !important;
+  word-spacing: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.65 !important;
+  text-wrap: pretty;
+}
+
+.destination-article p,
+.article-content p,
+.legal-card p,
+.section-block p,
+.story-paragraph {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;
+  word-spacing: normal !important;
+  line-height: 1.8;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.hero-title,
+.hero-title *,
+.hero-subtitle,
+.section-header h2,
+.section-header p,
+.dest-clean-header h1,
+.dest-clean-header p,
+.dest-clean-eyebrow,
+.dest-clean-subtitle,
+.badge,
+.text-center,
+.text-center p,
+.cta-banner h2,
+.cta-banner p,
+.privacy-cta h2,
+.privacy-cta p {
+  text-align: center !important;
+  text-align-last: center !important;
+}
+
   </style>
 </head>
 
@@ -531,64 +591,14 @@
 
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
         <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
         <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
         <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
         <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
 
-        <li class="mobile-only-settings-row">
-          <div class="mobile-settings-title">MORE SETTINGS</div>
-          <div class="mobile-settings-icons">
-            <div class="setting-icon-item lang-item">
-              <i class="fa-solid fa-globe"></i>
-              <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
-              </select>
-            </div>
-            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
-              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
-            </button>
-            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
-              <i class="fa-regular fa-heart"></i>
-            </a>
-          </div>
-        </li>
-
-        <li class="mobile-only-cta">
-          <a href="#" class="mobile-book-btn custom-tour-trigger">
-            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </li>
-      </ul>
+        </ul>
 
       <div class="hn-nav-actions">
         <div class="lang-wrapper">
