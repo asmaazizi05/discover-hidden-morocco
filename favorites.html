@@ -311,42 +311,59 @@
 /* ==============================================================================
    CLEAN LUXURY EDITORIAL TYPOGRAPHY - ZERO GAPS BETWEEN WORDS
    ============================================================================== */
+/* Body text & content paragraphs justified ("star 3bar 1"), flush left and flush right */
 p,
+.story-text p,
+.story-inner p,
+.story-section p,
+.destination-article p,
+.article-content p,
+.article-intro,
+.legal-card p,
+.section-block p,
+.legal-content p,
+.story-paragraph,
+.about-text p,
+.about-content p,
+.travel-form-left p,
+.details-content p,
+.modal-desc p,
+.modal-body p {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  text-align-last: left !important;
+  hyphens: auto !important;
+  -webkit-hyphens: auto !important;
+  word-spacing: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.75 !important;
+}
+
+/* Narrow cards, review quotes, and small widgets */
 .card p,
 .destination-card p,
 .exp-card p,
+.exp-cat-body p,
 .exp-desc,
 .why-card p,
 .feature-item p,
 .feature-content p,
 .review-card p,
 .review-text,
-.travel-form-left p,
 .travel-item p,
 .hmp-desc,
-.acc-desc {
+.acc-desc,
+.value-card p,
+.team-card p {
   text-align: left !important;
-  text-justify: auto !important;
+  text-align-last: left !important;
   word-spacing: normal !important;
   letter-spacing: normal !important;
   line-height: 1.65 !important;
   text-wrap: pretty;
 }
 
-.destination-article p,
-.article-content p,
-.legal-card p,
-.section-block p,
-.story-paragraph {
-  text-align: justify;
-  text-justify: inter-word;
-  text-align-last: left;
-  word-spacing: normal !important;
-  line-height: 1.8;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-}
-
+/* Headings, hero banners, badges, and CTAs centered */
 .hero-title,
 .hero-title *,
 .hero-subtitle,
@@ -362,7 +379,9 @@ p,
 .cta-banner h2,
 .cta-banner p,
 .privacy-cta h2,
-.privacy-cta p {
+.privacy-cta p,
+.page-hero h1,
+.page-hero p {
   text-align: center !important;
   text-align-last: center !important;
 }
