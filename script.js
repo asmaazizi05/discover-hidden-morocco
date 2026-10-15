@@ -9,7 +9,7 @@
       position: fixed; inset: 0; z-index: 999999;
       background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center; padding: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-family: 'Open Sans', Arial, sans-serif;
     `,x.innerHTML=`
       <div style="background: #0B1120; border: 1.5px solid rgba(200,90,50,0.4); border-radius: 16px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; color: #F8FAFC; box-shadow: 0 25px 65px rgba(0,0,0,0.7); padding: 32px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -241,7 +241,7 @@
   `}function renderDestinationsGrid(e=DESTINATIONS_DB){const t=document.getElementById("destinationsGrid");t&&(t.innerHTML=e.map(createCardHTML).join(""))}function renderFavoritesGrid(){const e=document.getElementById("favoritesGrid");if(!e)return;const t=DESTINATIONS_DB.filter(a=>isFavorite(a.id));t.length===0?e.innerHTML=`
       <div style="grid-column: 1 / -1; text-align: center; padding: 80px 20px;">
         <i class="fa-regular fa-heart" style="font-size: 3.5rem; color: var(--hm-text-muted); margin-bottom: 20px;"></i>
-        <h3 style="font-family: var(--hm-font-serif); font-size: 1.8rem; margin-bottom: 12px;">Your Wishlist is Empty</h3>
+        <h3 style="font-family: 'Open Sans', Arial, sans-serif; font-size: 1.8rem; margin-bottom: 12px;">Your Wishlist is Empty</h3>
         <p style="color: var(--hm-text-muted); margin-bottom: 28px;">Explore our handcrafted Moroccan expeditions and tap the heart icon to save your dream journeys.</p>
         <a href="destinations.html" class="btn-primary">Explore Destinations <i class="fa-solid fa-compass"></i></a>
       </div>
@@ -324,7 +324,7 @@ Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(v)}`,"_bla
         <div style="position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(26,26,46,0.85) 100%);"></div>
         <div style="position: absolute; bottom: 24px; left: 30px; right: 30px; color: #fff;">
           <span class="badge badge-terracotta" style="margin-bottom: 8px; background: var(--hm-terracotta); color: #fff;">${t.duration}</span>
-          <h2 style="font-size: 2.2rem; color: #fff; font-family: var(--hm-font-serif);">${t.title}</h2>
+          <h2 style="font-size: 2.2rem; color: #fff; font-family: 'Open Sans', Arial, sans-serif;">${t.title}</h2>
           <p style="opacity: 0.9; font-size: 0.95rem;"><i class="fa-regular fa-clock"></i> ${t.timing}</p>
         </div>
       </div>
@@ -332,7 +332,7 @@ Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(v)}`,"_bla
       <div style="padding: 34px;">
         <p style="font-size: 1.05rem; line-height: 1.75; color: var(--hm-text-body); margin-bottom: 28px;">${t.desc}</p>
 
-        <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: var(--hm-font-serif);">Schedule & Itinerary</h4>
+        <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: 'Open Sans', Arial, sans-serif;">Schedule & Itinerary</h4>
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
           ${t.schedule.map(o=>`
             <div style="padding: 12px 16px; border-left: 3px solid var(--hm-terracotta); background: var(--hm-bg-main); border-radius: 0 var(--hm-radius-md) var(--hm-radius-md) 0; font-size: 0.95rem; font-weight: 600;">
@@ -341,7 +341,7 @@ Thank you!`;window.open(`https://wa.me/${e}?text=${encodeURIComponent(v)}`,"_bla
           `).join("")}
         </div>
 
-        <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: var(--hm-font-serif);">Included Activities</h4>
+        <h4 style="font-size: 1.15rem; margin-bottom: 14px; font-family: 'Open Sans', Arial, sans-serif;">Included Activities</h4>
         <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px;">
           ${t.activities.map(o=>`
             <span class="badge badge-gold" style="font-size: 0.85rem;"><i class="fa-solid fa-check"></i> ${o}</span>
@@ -673,7 +673,7 @@ Looking forward to your reply!`;window.location.href=`mailto:contact@discoverhid
         <div style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: linear-gradient(135deg, rgba(200,90,50,0.1) 0%, rgba(231,169,60,0.15) 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #C85A32; border: 1px solid rgba(212,175,55,0.3);">
           <i class="fa-regular fa-comments"></i>
         </div>
-        <h3 style="font-family: var(--hm-font-serif, serif); font-size: 1.6rem; color: var(--hm-text-heading); margin-bottom: 10px; letter-spacing: -0.01em;">No Reviews Recorded Yet</h3>
+        <h3 style="font-family: 'Open Sans', Arial, sans-serif; font-size: 1.6rem; color: var(--hm-text-heading); margin-bottom: 10px; letter-spacing: -0.01em;">No Reviews Recorded Yet</h3>
         <p style="color: var(--hm-text-muted); font-size: 1rem; max-width: 480px; margin: 0 auto 24px; line-height: 1.6;">Be the first traveler to share your journey and leave feedback about your private tour with Discover Hidden Morocco.</p>
         <button class="btn-primary" onclick="openReviewModal()" style="padding: 14px 34px; border-radius: 99px; border: none; font-weight: 600; font-size: 0.98rem; cursor: pointer; background: linear-gradient(135deg, #C85A32 0%, #E7A93C 100%); color: #fff; box-shadow: 0 10px 30px rgba(200,90,50,0.35); transition: all 0.3s ease;">
           <i class="fa-solid fa-pen-to-square"></i> Leave a Review

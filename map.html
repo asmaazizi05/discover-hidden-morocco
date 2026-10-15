@@ -10,11 +10,9 @@
         var h = window.location.hash || '';
         if (p && p.length > 1) {
           var lower = p.toLowerCase();
+          // Normalize /index.html to root /
           if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
             window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
-          } else if (lower.endsWith('.html')) {
-            var clean = p.replace(/\.html$/i, '');
-            window.history.replaceState(null, document.title, clean + s + h);
           }
         }
       } catch (e) {}
@@ -45,10 +43,12 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+
   <link rel="stylesheet" href="theme.css?v=20261014_v11">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -1189,7 +1189,7 @@ p, a, button, input, select, textarea, label,
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -1370,7 +1370,7 @@ p, a, button, input, select, textarea, label,
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
-          <img src="logo-icon.png" alt="Discover Hidden Morocco">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
         <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara
@@ -1438,7 +1438,7 @@ p, a, button, input, select, textarea, label,
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11"></script>
+<script src="script.js?v=20261014_v11" defer></script>
 </body>
 
 </html>

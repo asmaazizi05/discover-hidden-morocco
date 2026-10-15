@@ -10,27 +10,21 @@
         var h = window.location.hash || '';
         if (p && p.length > 1) {
           var lower = p.toLowerCase();
+          // Normalize /index.html to root /
           if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
             window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
-          } else if (lower.endsWith('.html')) {
-            var clean = p.replace(/\.html$/i, '');
-            window.history.replaceState(null, document.title, clean + s + h);
           }
         }
       } catch (e) {}
     })();
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preload" as="image" href="images/hero-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
-  <link rel="preload" as="image" href="images/hero.jpg" media="(min-width: 769px)" fetchpriority="high">
-    <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSqn7B6D.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2" as="font" type="font/woff2" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+
+  <noscript></noscript>
   
   <link rel="preconnect" href="https://translate.googleapis.com">
   <link rel="preconnect" href="https://translate.google.com">
@@ -378,7 +372,7 @@
 
     .hero-title-hidden {
       display: block;
-      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      font-family: 'Open Sans', Arial, sans-serif;
       font-style: italic;
       font-weight: 600;
       font-size: clamp(3.8rem, 8.5vw, 6.6rem);
@@ -2104,7 +2098,7 @@ p, a, button, input, select, textarea, label,
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48"><span
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
@@ -2229,7 +2223,7 @@ p, a, button, input, select, textarea, label,
         <picture class="hero-picture">
           <source media="(max-width: 768px)" srcset="images/hero-mobile.jpg">
           <source media="(min-width: 769px)" srcset="images/hero.jpg">
-          <img src="images/hero-mobile.jpg" alt="Morocco Desert Kasbah - Ait Benhaddou" fetchpriority="high" width="1920" height="1080">
+          <img src="images/hero-mobile.jpg" alt="Morocco Desert Kasbah - Ait Benhaddou" fetchpriority="high" width="1920" height="1080" decoding="async">
         </picture>
         <div class="hero-overlay"></div>
       </div>
@@ -2336,7 +2330,7 @@ p, a, button, input, select, textarea, label,
         <div class="story-welcome-inner">
           <!-- Left Column: Riad Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img" loading="lazy" width="800" height="533">
+            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img" loading="lazy" width="800" height="533" decoding="async">
             <div class="story-img-badge">
               <i class="fa-solid fa-gem"></i>
               <span>100% Private Expeditions</span>
@@ -2396,7 +2390,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 1: Sahara Desert -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy" width="600" height="400">
+              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-gold exp-cat-badge">Desert &amp; Dunes</span>
             </div>
             <div class="exp-cat-body">
@@ -2411,7 +2405,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 2: Imperial Medinas -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy" width="600" height="400">
+              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-terracotta exp-cat-badge">Cultural Heritage</span>
             </div>
             <div class="exp-cat-body">
@@ -2426,7 +2420,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 3: Atlas Mountains -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy" width="600" height="400">
+              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-gold exp-cat-badge">Mountain Treks</span>
             </div>
             <div class="exp-cat-body">
@@ -2442,7 +2436,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 4: Coastal Escapes -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy" width="600" height="400">
+              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-terracotta exp-cat-badge">Coastal Escape</span>
             </div>
             <div class="exp-cat-body">
@@ -2509,7 +2503,7 @@ p, a, button, input, select, textarea, label,
 
           <!-- Right Column: Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy" width="800" height="533">
+            <img src="images/hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy" width="800" height="533" decoding="async">
             <div class="story-img-badge">
               <i class="fa-solid fa-sliders"></i>
               <span>100% Tailor-Made</span>
@@ -2612,7 +2606,7 @@ p, a, button, input, select, textarea, label,
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
-          <img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" loading="lazy">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" loading="lazy" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
         <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara

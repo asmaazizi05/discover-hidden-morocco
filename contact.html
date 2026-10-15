@@ -10,11 +10,9 @@
         var h = window.location.hash || '';
         if (p && p.length > 1) {
           var lower = p.toLowerCase();
+          // Normalize /index.html to root /
           if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
             window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
-          } else if (lower.endsWith('.html')) {
-            var clean = p.replace(/\.html$/i, '');
-            window.history.replaceState(null, document.title, clean + s + h);
           }
         }
       } catch (e) {}
@@ -45,10 +43,12 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+
   <link rel="stylesheet" href="theme.css?v=20261014_v11">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -984,7 +984,7 @@ p, a, button, input, select, textarea, label,
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -1172,6 +1172,17 @@ p, a, button, input, select, textarea, label,
             <i class="fa-solid fa-shield-halved" style="color: #10B981;"></i>
             <span>No payment required to inquire · 100% Private tailor-made proposal</span>
           </div>
+
+          <div id="contactSuccessMsg" style="display: none; margin-top: 18px; padding: 18px 20px; background: rgba(16, 185, 129, 0.12); border: 1.5px solid #10B981; border-radius: 14px; text-align: center; color: #065F46;">
+            <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 1.2rem;"></i>
+              <span>Inquiry Prepared Successfully!</span>
+            </div>
+            <p style="margin: 0 0 12px 0; font-size: 0.92rem; color: var(--hm-text-heading); text-align: center !important;">Connecting directly with our Marrakech concierge on WhatsApp...</p>
+            <a id="contactWaFallback" href="#" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #FFF; padding: 10px 22px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.15rem;"></i> Click to Send Message on WhatsApp
+            </a>
+          </div>
         </form>
       </div>
 
@@ -1343,17 +1354,51 @@ p, a, button, input, select, textarea, label,
 
     function handleContactForm(e) {
       e.preventDefault();
-      const name = document.getElementById('c-name').value;
-      const email = document.getElementById('c-email').value;
-      const phone = document.getElementById('c-phone').value;
-      const trip = document.getElementById('c-trip').value;
-      const message = document.getElementById('c-message').value;
-      const text = `Hello Hidden Morocco 👋\n\n👤 Name: ${name}\n📱 Phone/WhatsApp: ${phone}\n📧 Email: ${email || 'N/A'}\n🧳 Trip Style: ${trip || 'Custom Expedition'}\n📝 Message: ${message}\n\nThank you!`;
-      window.open(`https://wa.me/212660082066?text=${encodeURIComponent(text)}`, '_blank');
+      const nameEl = document.getElementById('c-name');
+      const emailEl = document.getElementById('c-email');
+      const phoneEl = document.getElementById('c-phone');
+      const tripEl = document.getElementById('c-trip');
+      const msgEl = document.getElementById('c-message');
+
+      const name = nameEl ? nameEl.value.trim() : '';
+      const email = emailEl ? emailEl.value.trim() : '';
+      const phone = phoneEl ? phoneEl.value.trim() : '';
+      const trip = tripEl ? tripEl.value.trim() : '';
+      const message = msgEl ? msgEl.value.trim() : '';
+
+      if (!name || !phone || !message) {
+        if (typeof window.showToast === 'function') window.showToast('Please fill in your name, phone, and travel message!');
+        else alert('Please fill in your name, phone, and travel message!');
+        return;
+      }
+
+      const text = `Hello Discover Hidden Morocco 🇲🇦\n\n👤 Name: ${name}\n📱 Phone/WhatsApp: ${phone}\n✉️ Email: ${email || 'N/A'}\n🧭 Trip Category: ${trip || 'Custom Tailor-Made Itinerary'}\n💬 Message: ${message}\n\nThank you!`;
+      const waUrl = `https://wa.me/212660082066?text=${encodeURIComponent(text)}`;
+
+      const successBox = document.getElementById('contactSuccessMsg');
+      const fallbackLink = document.getElementById('contactWaFallback');
+      if (successBox) {
+        successBox.style.display = 'block';
+        if (fallbackLink) fallbackLink.href = waUrl;
+        successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      if (typeof window.showToast === 'function') {
+        window.showToast('Opening WhatsApp to send your inquiry ✨');
+      }
+
+      try {
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          setTimeout(function() { window.location.href = waUrl; }, 300);
+        }
+      } catch (err) {
+        window.location.href = waUrl;
+      }
     }
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-  <script src="script.js?v=20261014_v11"></script>
+  <script src="script.js?v=20261014_v11" defer></script>
 </body>
 
 </html>

@@ -10,11 +10,9 @@
         var h = window.location.hash || '';
         if (p && p.length > 1) {
           var lower = p.toLowerCase();
+          // Normalize /index.html to root /
           if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
             window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
-          } else if (lower.endsWith('.html')) {
-            var clean = p.replace(/\.html$/i, '');
-            window.history.replaceState(null, document.title, clean + s + h);
           }
         }
       } catch (e) {}
@@ -46,14 +44,11 @@
     content="Explore handpicked Moroccan destinations: Marrakech, Merzouga Sahara, Chefchaouen, Essaouira, Fes, Casablanca, Agadir, and more.">
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/Merzouga/merzouga_desert.jpg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="theme.css?v=20261014_v11">
-  <link rel="stylesheet" href="slider.css">
-  <link rel="stylesheet" href="exp.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
   <!-- Swiper CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -1063,13 +1058,13 @@ p, a, button, input, select, textarea, label,
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="theme.css?v=20261014_v11">
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="premNavLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -1183,7 +1178,7 @@ p, a, button, input, select, textarea, label,
       <!-- Marrakech -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Marrakech/Marrakech.jpg" alt="Marrakech" loading="lazy">
+          <img src="images/Marrakech/Marrakech.jpg" alt="Marrakech" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Popular</span>
           <button class="fav-btn card-fav-btn" data-id="marrakech" onclick="toggleFavorite('marrakech', event)"
             aria-label="Add to Wishlist">
@@ -1218,15 +1213,15 @@ p, a, button, input, select, textarea, label,
           <h2>Marrakech</h2>
           <div class="swiper mySwiper-marrakech">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_11.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_12.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_4.webp"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_7.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_13.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_14.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakrch_9.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrakech_15.jpg"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/marrkech_13.jpg"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_11.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_12.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_4.webp" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_7.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_13.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_14.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakrch_9.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrakech_15.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/marrkech_13.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -1549,7 +1544,7 @@ p, a, button, input, select, textarea, label,
             <div class="marr-accordion">
 
               <div class="acc-item" onclick="openModal('ourika')">
-                <img src="images/Marrakech/ourika_1.png" alt="Ourika Valley">
+                <img src="images/Marrakech/ourika_1.png" alt="Ourika Valley" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
@@ -1559,7 +1554,7 @@ p, a, button, input, select, textarea, label,
               </div>
 
               <div class="acc-item" onclick="openModal('ouzoud')">
-                <img src="images/Ouzoud/ouzoud-falls.jpg" alt="Ouzoud Waterfalls">
+                <img src="images/Ouzoud/ouzoud-falls.jpg" alt="Ouzoud Waterfalls" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
@@ -1569,7 +1564,7 @@ p, a, button, input, select, textarea, label,
               </div>
 
               <div class="acc-item" onclick="openModal('agafay')">
-                <img src="images/Marrakech/agafay.jpg" alt="Agafay Desert">
+                <img src="images/Marrakech/agafay.jpg" alt="Agafay Desert" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Evening</span>
@@ -1579,7 +1574,7 @@ p, a, button, input, select, textarea, label,
               </div>
 
               <div class="acc-item" onclick="openModal('imlil')">
-                <img src="images/Marrakech/imlil-village.jpg" alt="Imlil & Atlas">
+                <img src="images/Marrakech/imlil-village.jpg" alt="Imlil & Atlas" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
@@ -1589,7 +1584,7 @@ p, a, button, input, select, textarea, label,
               </div>
 
               <div class="acc-item" onclick="openModal('takerkoust')">
-                <img src="images/Marrakech/lac-lala-takerkoust.webp" alt="Lalla Takerkoust">
+                <img src="images/Marrakech/lac-lala-takerkoust.webp" alt="Lalla Takerkoust" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Half-day</span>
@@ -1599,7 +1594,7 @@ p, a, button, input, select, textarea, label,
               </div>
 
               <div class="acc-item" onclick="openModal('ballon')">
-                <img src="images/Marrakech/montgolfiere.webp" alt="Hot Air Balloon">
+                <img src="images/Marrakech/montgolfiere.webp" alt="Hot Air Balloon" loading="lazy" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Sunrise</span>
@@ -1619,7 +1614,7 @@ p, a, button, input, select, textarea, label,
       <!-- Ouarzazate -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Ouarzazat/ouarzazat11.jpg" alt="Ouarzazate" loading="lazy">
+          <img src="images/Ouarzazat/ouarzazat11.jpg" alt="Ouarzazate" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o UNESCO</span>
           <button class="fav-btn card-fav-btn" data-id="ouarzazate" onclick="toggleFavorite('ouarzazate', event)"
             aria-label="Add to Wishlist">
@@ -1654,16 +1649,16 @@ p, a, button, input, select, textarea, label,
           <h2>Ouarzazate</h2>
           <div class="swiper mySwiper-ouarzazate">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat1.jpeg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat3.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat6.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat12.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat8.jpg"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat9.webp"></div>
-              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat10.png"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat1.jpeg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat6.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat12.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat8.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat9.webp" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat10.png" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -1779,7 +1774,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
-                  <img src="images/dads_vally.jpg" class="timeline-img" alt="Day 1 Dades Valley">
+                  <img src="images/dads_vally.jpg" class="timeline-img" alt="Day 1 Dades Valley" loading="lazy" decoding="async">
                   <h4>Day 1: Ouarzazate – Ait Ben Haddou – Dades Valley</h4>
                   <ul>
                     <li>Your trip begins in Ouarzazate with a visit to the legendary Ait Ben Haddou Kasbah, a fortified
@@ -1796,7 +1791,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
-                  <img src="images/rourge.jpg" class="timeline-img" alt="Day 2 Todra Gorges">
+                  <img src="images/rourge.jpg" class="timeline-img" alt="Day 2 Todra Gorges" loading="lazy" decoding="async">
                   <h4>Day 2: Dades Valley – Todra Gorges – Merzouga Desert</h4>
                   <ul>
                     <li>After breakfast, head toward the spectacular Todra Gorges. Take time to walk between the
@@ -1812,7 +1807,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">3</div>
                 <div class="timeline-content">
-                  <img src="images/merzouga_desert.jpg" class="timeline-img" alt="Day 3 Merzouga">
+                  <img src="images/merzouga_desert.jpg" class="timeline-img" alt="Day 3 Merzouga" loading="lazy" decoding="async">
                   <h4>Day 3: Merzouga – Ouarzazate – Marrakech</h4>
                   <ul>
                     <li>Wake up early to admire the sunrise over the dunes. After breakfast at the camp, begin the
@@ -1910,7 +1905,7 @@ p, a, button, input, select, textarea, label,
       <!-- Merzouga -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Merzouga/merzouga.jpg" alt="Merzouga" loading="lazy">
+          <img src="images/Merzouga/merzouga.jpg" alt="Merzouga" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Bucket List</span>
           <button class="fav-btn card-fav-btn" data-id="merzouga" onclick="toggleFavorite('merzouga', event)"
             aria-label="Add to Wishlist">
@@ -1945,15 +1940,15 @@ p, a, button, input, select, textarea, label,
           <h2>Merzouga</h2>
           <div class="swiper mySwiper-merzouga">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_1.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_3.webp"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_6.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_7.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_8.jpg"></div>
-              <div class="swiper-slide"><img src="images/Merzouga/merzouga_9.jpg"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_1.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_3.webp" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_6.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_7.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_8.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Merzouga/merzouga_9.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -2159,7 +2154,7 @@ p, a, button, input, select, textarea, label,
       <!-- Chefchaouen -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Chfchaouen/chefchaoun_b.jpg" alt="Chefchaouen" loading="lazy">
+          <img src="images/Chfchaouen/chefchaoun_b.jpg" alt="Chefchaouen" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Photogenic</span>
           <button class="fav-btn card-fav-btn" data-id="chefchaouen" onclick="toggleFavorite('chefchaouen', event)"
             aria-label="Add to Wishlist">
@@ -2194,16 +2189,16 @@ p, a, button, input, select, textarea, label,
           <h2>Chefchaouen</h2>
           <div class="swiper mySwiper-chefchaouen">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_1.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_3.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chfchaouen_5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_6.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_7.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_8.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_9.jpg"></div>
-              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_10.jpg"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_1.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chfchaouen_5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_6.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_7.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_8.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_9.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Chfchaouen/chefchaouen_10.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -2302,7 +2297,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
-                  <img src="images/Ouarzazat/ouarzazat1.jpeg" class="timeline-img" alt="Day 1">
+                  <img src="images/Ouarzazat/ouarzazat1.jpeg" class="timeline-img" alt="Day 1" loading="lazy" decoding="async">
                   <h4>Day 1: Marrakech › Ait Benhaddou › Ouarzazate › Valley of Roses</h4>
                   <ul>
                     <li>Depart from Marrakech at 8:00 AM, ascending the winding roads of the Tizi n'Tichka pass (2,260m)
@@ -2319,7 +2314,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
-                  <img src="images/Merzouga/merzouga_1.jpg" class="timeline-img" alt="Day 2">
+                  <img src="images/Merzouga/merzouga_1.jpg" class="timeline-img" alt="Day 2" loading="lazy" decoding="async">
                   <h4>Day 2: Valley of Roses › Todra Gorges › Merzouga (Sahara)</h4>
                   <ul>
                     <li>After breakfast, head to the Dades Valley to admire the unique "Monkey Toes" rock formations.
@@ -2337,7 +2332,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">3</div>
                 <div class="timeline-content">
-                  <img src="images/Fes/fes_4.jpg" class="timeline-img" alt="Day 3">
+                  <img src="images/Fes/fes_4.jpg" class="timeline-img" alt="Day 3" loading="lazy" decoding="async">
                   <h4>Day 3: Merzouga › Ziz Valley › Azrou › Ifrane › Fes</h4>
                   <ul>
                     <li>Wake up early for a sunrise that will stay with you forever.</li>
@@ -2355,7 +2350,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">4</div>
                 <div class="timeline-content">
-                  <img src="images/Chfchaouen/chechaouen_1.jpg" class="timeline-img" alt="Day 4">
+                  <img src="images/Chfchaouen/chechaouen_1.jpg" class="timeline-img" alt="Day 4" loading="lazy" decoding="async">
                   <h4>Day 4: Fes Medina Exploration › Chefchaouen</h4>
                   <ul>
                     <li>Spend your final morning diving into the rich history of Fes.</li>
@@ -2417,7 +2412,7 @@ p, a, button, input, select, textarea, label,
       <!-- Essaouira -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Essaouira/Essaouira.jpg" alt="Essaouira" loading="lazy">
+          <img src="images/Essaouira/Essaouira.jpg" alt="Essaouira" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Relaxing</span>
           <button class="fav-btn card-fav-btn" data-id="essaouira" onclick="toggleFavorite('essaouira', event)"
             aria-label="Add to Wishlist">
@@ -2452,18 +2447,18 @@ p, a, button, input, select, textarea, label,
           <h2>Essaouira</h2>
           <div class="swiper mySwiper-essaouira">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_1.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_3.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_6.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_7.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_8.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_9.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_10.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_11.jpg"></div>
-              <div class="swiper-slide"><img src="images/Essaouira/essaouira_12.jpg"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_1.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_6.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_7.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_8.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_9.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_10.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_11.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Essaouira/essaouira_12.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -2735,7 +2730,7 @@ p, a, button, input, select, textarea, label,
                 <div class="timeline-dot"><i class="fa-solid fa-van-shuttle" style="color:white; font-size:12px;"></i>
                 </div>
                 <div class="timeline-content">
-                  <img src="images/Essaouira/essaouira_1.jpg" class="timeline-img" alt="Morning">
+                  <img src="images/Essaouira/essaouira_1.jpg" class="timeline-img" alt="Morning" loading="lazy" decoding="async">
                   <h4>Morning: Departure & Scenic Landscapes</h4>
                   <ul>
                     <li>Your journey begins smoothly with a pick-up from your Marrakech accommodation between 08:00 AM
@@ -2751,7 +2746,7 @@ p, a, button, input, select, textarea, label,
                 <div class="timeline-dot"><i class="fa-solid fa-map-location-dot"
                     style="color:white; font-size:12px;"></i></div>
                 <div class="timeline-content">
-                  <img src="images/Essaouira/essaouira_2.jpg" class="timeline-img" alt="Midday">
+                  <img src="images/Essaouira/essaouira_2.jpg" class="timeline-img" alt="Midday" loading="lazy" decoding="async">
                   <h4>Midday: Medina Exploration & Ocean Views</h4>
                   <ul>
                     <li>Immerse yourself in the enchanting atmosphere of the Medina, a UNESCO World Heritage site.</li>
@@ -2769,7 +2764,7 @@ p, a, button, input, select, textarea, label,
                 <div class="timeline-dot"><i class="fa-solid fa-house-user" style="color:white; font-size:12px;"></i>
                 </div>
                 <div class="timeline-content">
-                  <img src="images/Essaouira/essaouira_3.jpg" class="timeline-img" alt="Afternoon">
+                  <img src="images/Essaouira/essaouira_3.jpg" class="timeline-img" alt="Afternoon" loading="lazy" decoding="async">
                   <h4>Afternoon: Beach, History, and Return</h4>
                   <ul>
                     <li>After savoring your meal, head down to the beach for a relaxing camel ride—a delightful
@@ -2824,7 +2819,7 @@ p, a, button, input, select, textarea, label,
       <!-- Fès -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Fes/Fes.jpg" alt="Fès" loading="lazy">
+          <img src="images/Fes/Fes.jpg" alt="Fès" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Heritage</span>
           <button class="fav-btn card-fav-btn" data-id="fes" onclick="toggleFavorite('fes', event)"
             aria-label="Add to Wishlist">
@@ -2859,16 +2854,16 @@ p, a, button, input, select, textarea, label,
           <h2>Fès</h2>
           <div class="swiper mySwiper-fes">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Fes/fes_1.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_3.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_6.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_7.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_8.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_9.jpg"></div>
-              <div class="swiper-slide"><img src="images/Fes/fes_10.jpg"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_1.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_6.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_7.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_8.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_9.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Fes/fes_10.jpg" loading="lazy" decoding="async"></div>
 
             </div>
             <div class="swiper-pagination"></div>
@@ -3024,7 +3019,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
-                  <img src="images/Fes/fes_3.jpg" class="timeline-img" alt="Day 1 Fes to Merzouga">
+                  <img src="images/Fes/fes_3.jpg" class="timeline-img" alt="Day 1 Fes to Merzouga" loading="lazy" decoding="async">
                   <h4>Day 1: Fes › Ifrane › Azrou › Midelt › Erfoud › Merzouga</h4>
                   <ul>
                     <li>Your expedition begins with an 8:00 AM pickup from your Fes accommodation. We head south into
@@ -3042,7 +3037,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
-                  <img src="images/Merzouga/merzouga_1.jpg" class="timeline-img" alt="Day 2 Merzouga & Erg Chebbi">
+                  <img src="images/Merzouga/merzouga_1.jpg" class="timeline-img" alt="Day 2 Merzouga & Erg Chebbi" loading="lazy" decoding="async">
                   <h4>Day 2: Merzouga › Rissani › Khamlia › Erg Chebbi Dunes</h4>
                   <ul>
                     <li>After breakfast, explore the magic of the Saharan region. Visit the historic city of Rissani,
@@ -3061,7 +3056,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">3</div>
                 <div class="timeline-content">
-                  <img src="images/rourge.jpg" class="timeline-img" alt="Day 3 Todra Gorges">
+                  <img src="images/rourge.jpg" class="timeline-img" alt="Day 3 Todra Gorges" loading="lazy" decoding="async">
                   <h4>Day 3: Erg Chebbi › Merzouga › Todra Gorges › Dades Valley</h4>
                   <ul>
                     <li>Wake up early to witness a majestic desert sunrise painting the dunes in vibrant colors—a true
@@ -3080,7 +3075,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">4</div>
                 <div class="timeline-content">
-                  <img src="images/dads_vally.jpg" class="timeline-img" alt="Day 4 Ait Benhaddou & Marrakech">
+                  <img src="images/dads_vally.jpg" class="timeline-img" alt="Day 4 Ait Benhaddou & Marrakech" loading="lazy" decoding="async">
                   <h4>Day 4: Dades Valley › Skoura › Ouarzazate › Ait Benhaddou › Marrakech</h4>
                   <ul>
                     <li>Drive through the fragrant Valley of the Roses and the palm-rich Skoura Oasis before reaching
@@ -3188,7 +3183,7 @@ p, a, button, input, select, textarea, label,
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
           <img src="images/Casablanca/casablanca.png" alt="Casablanca" loading="lazy"
-            style="object-position: center top !important;">
+            style="object-position: center top !important;" decoding="async">
           <span class="badge badge-gold card-badge">o Ocean Hub</span>
           <button class="fav-btn card-fav-btn" data-id="casablanca" onclick="toggleFavorite('casablanca', event)"
             aria-label="Add to Wishlist">
@@ -3224,18 +3219,17 @@ p, a, button, input, select, textarea, label,
           <div class="swiper mySwiper-casablanca">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Casablanca/casablanca.png"
-                  style="object-position: center top !important;"></div>
+                  style="object-position: center top !important;" loading="lazy" decoding="async"></div>
               <div class="swiper-slide"><img src="images/Casablanca/casablanca_1.jpg"
-                  style="object-position: center top !important;"></div>
-              <div class="swiper-slide"><img src="images/Casablanca/casablanca_2.jpg"></div>
-              <div class="swiper-slide"><img src="images/Casablanca/casablanca_4.jpg"></div>
-              <div class="swiper-slide"><img src="images/Casablanca/casablanca_5.jpg"></div>
-              <div class="swiper-slide"><img src="images/Casablanca/casablanca_6.jpg"></div>
+                  style="object-position: center top !important;" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/casablanca_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/casablanca_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/casablanca_5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/casablanca_6.jpg" loading="lazy" decoding="async"></div>
               <div class="swiper-slide"><img src="images/Casablanca/Casablanca mosquée hassan 2.jpeg"
-                  style="object-position: center top !important;"></div>
-              <div class="swiper-slide"><img
-                  src="images/Casablanca/Inside Hassan II Mosque in Casablanca – what it’s really like.jpeg"></div>
-              <div class="swiper-slide"><img src="images/Casablanca/Travel Morocco.jpeg"></div>
+                  style="object-position: center top !important;" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/Inside Hassan II Mosque in Casablanca – what it’s really like.jpeg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Casablanca/Travel Morocco.jpeg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -3426,7 +3420,7 @@ p, a, button, input, select, textarea, label,
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
                   <img src="images/Casablanca/casablanca_1.jpg" class="timeline-img"
-                    alt="Day 1 Casablanca to Chefchaouen">
+                    alt="Day 1 Casablanca to Chefchaouen" loading="lazy" decoding="async">
                   <h4>Day 1: Casablanca to Chefchaouen (Discovering the Blue Medina)</h4>
                   <ul>
                     <li>Your journey begins with a morning pick-up from Casablanca. Settle into your comfortable,
@@ -3447,7 +3441,7 @@ p, a, button, input, select, textarea, label,
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
                   <img src="images/Casablanca/casablanca_2.jpg" class="timeline-img"
-                    alt="Day 2 Chefchaouen to Casablanca">
+                    alt="Day 2 Chefchaouen to Casablanca" loading="lazy" decoding="async">
                   <h4>Day 2: Chefchaouen to Casablanca (Morning Explorations & Return)</h4>
                   <ul>
                     <li>Wake up to a wonderful, traditional Moroccan breakfast at your Riad.</li>
@@ -3543,7 +3537,7 @@ p, a, button, input, select, textarea, label,
       <!-- Zagora -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Zagora/zagora_hero.png" alt="Zagora" loading="lazy">
+          <img src="images/Zagora/zagora_hero.png" alt="Zagora" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Oasis & Dunes</span>
           <button class="fav-btn card-fav-btn" data-id="zagora" onclick="toggleFavorite('zagora', event)"
             aria-label="Add to Wishlist">
@@ -3578,15 +3572,15 @@ p, a, button, input, select, textarea, label,
           <h2>Zagora</h2>
           <div class="swiper mySwiper-zagora">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Zagora/zagora_hero.png" alt="Zagora Desert"></div>
-              <div class="swiper-slide"><img src="images/Zagora/zagoura_1.jpg" alt="Zagora"></div>
-              <div class="swiper-slide"><img src="images/Zagora/zagoura_2.jpg" alt="Zagora"></div>
-              <div class="swiper-slide"><img src="images/Zagora/zagoura_3.jpeg" alt="Zagora"></div>
-              <div class="swiper-slide"><img src="images/Zagora/zagoura_4.webp" alt="Zagora"></div>
-              <div class="swiper-slide"><img src="images/Zagora/zagoura_5.webp" alt="Zagora"></div>
-              <div class="swiper-slide"><img src="images/Zagora/kasbah-sirocco.jpg" alt="Kasbah Sirocco Zagora"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagora_hero.png" alt="Zagora Desert" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagoura_1.jpg" alt="Zagora" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagoura_2.jpg" alt="Zagora" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagoura_3.jpeg" alt="Zagora" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagoura_4.webp" alt="Zagora" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/zagoura_5.webp" alt="Zagora" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Zagora/kasbah-sirocco.jpg" alt="Kasbah Sirocco Zagora" loading="lazy" decoding="async"></div>
               <div class="swiper-slide"><img src="images/Zagora/dar-hnini-zagora-031-57503-728x400.jpg"
-                  alt="Dar Hnini Zagora"></div>
+                  alt="Dar Hnini Zagora" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -3710,7 +3704,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
-                  <img src="images/Zagora/zagora_hero.png" class="timeline-img" alt="Day 1">
+                  <img src="images/Zagora/zagora_hero.png" class="timeline-img" alt="Day 1" decoding="async">
                   <h4>Day 1: High Atlas › Aït Ben Haddou › Draa Valley › Zagora Desert Camp</h4>
                   <ul>
                     <li>Your journey begins at 7:00 AM with a pick-up from Marrakech. We’ll ascend the High Atlas
@@ -3731,7 +3725,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
-                  <img src="images/Zagora/zagoura_2.jpg" class="timeline-img" alt="Day 2">
+                  <img src="images/Zagora/zagoura_2.jpg" class="timeline-img" alt="Day 2" loading="lazy" decoding="async">
                   <h4>Day 2: Desert Sunrise › Ouarzazate › Return to Marrakech</h4>
                   <ul>
                     <li>Wake up before dawn to witness a magical desert sunrise, watching the soft morning light spread
@@ -3813,7 +3807,7 @@ p, a, button, input, select, textarea, label,
       <!-- Agadir -->
       <div class="card glass-panel hover-lift">
         <div class="card-img-wrapper">
-          <img src="images/Agadir/agadir_hero.png" alt="Agadir" loading="lazy">
+          <img src="images/Agadir/agadir_hero.png" alt="Agadir" loading="lazy" decoding="async">
           <span class="badge badge-gold card-badge">o Ocean Resort</span>
           <button class="fav-btn card-fav-btn" data-id="agadir" onclick="toggleFavorite('agadir', event)"
             aria-label="Add to Wishlist">
@@ -3848,15 +3842,15 @@ p, a, button, input, select, textarea, label,
           <h2>Agadir</h2>
           <div class="swiper mySwiper-agadir">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Agadir/agadir_hero.png" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_1.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_2.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_3.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_4.webp" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_5.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_6.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_7.jpg" alt="Agadir"></div>
-              <div class="swiper-slide"><img src="images/Agadir/agadir_8.webp" alt="Agadir"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_hero.png" alt="Agadir" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_1.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_2.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_3.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_4.webp" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_5.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_6.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_7.jpg" alt="Agadir" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Agadir/agadir_8.webp" alt="Agadir" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4116,7 +4110,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
                 <div class="timeline-content">
-                  <img src="images/Agadir/agadir_1.jpg" class="timeline-img" alt="Day 1">
+                  <img src="images/Agadir/agadir_1.jpg" class="timeline-img" alt="Day 1" loading="lazy" decoding="async">
                   <h4>Day 1: Agadir › Ait Ben Haddou › Rose Valley › Tinghir</h4>
                   <ul>
                     <li>Your adventure kicks off with a 7:00 AM pick-up from your Agadir accommodation.</li>
@@ -4135,7 +4129,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">2</div>
                 <div class="timeline-content">
-                  <img src="images/Agadir/agadir_3.jpg" class="timeline-img" alt="Day 2">
+                  <img src="images/Agadir/agadir_3.jpg" class="timeline-img" alt="Day 2" loading="lazy" decoding="async">
                   <h4>Day 2: Tinghir › Todra Gorge › Merzouga › Erg Chebbi Desert Camp</h4>
                   <ul>
                     <li>After a hearty breakfast, we dive into the scenic Todra Valley, a vibrant green ribbon of palm
@@ -4156,7 +4150,7 @@ p, a, button, input, select, textarea, label,
               <div class="timeline-item">
                 <div class="timeline-dot">3</div>
                 <div class="timeline-content">
-                  <img src="images/Agadir/agadir_5.jpg" class="timeline-img" alt="Day 3">
+                  <img src="images/Agadir/agadir_5.jpg" class="timeline-img" alt="Day 3" loading="lazy" decoding="async">
                   <h4>Day 3: Merzouga › Ziz Valley › Middle Atlas › Fes</h4>
                   <ul>
                     <li>Wake up early to catch a peaceful and mesmerizing sunrise over the dunes from the back of your
@@ -4223,7 +4217,7 @@ p, a, button, input, select, textarea, label,
       <button class="dest-booking-close" onclick="closeDestBooking()">✕</button>
 
       <div class="travel-form-left">
-        <img id="destBookingImg" src="images/Marrakech/marrakech_11.jpg" alt="Destination" class="form-bg-img">
+        <img id="destBookingImg" src="images/Marrakech/marrakech_11.jpg" alt="Destination" class="form-bg-img" loading="lazy" decoding="async">
         <div class="form-left-content">
           <h2 id="destBookingTitle">Start Your Journey</h2>
           <p>Tell us your preferences, and we will craft a tailor-made experience exclusively for you.</p>
@@ -4341,7 +4335,7 @@ p, a, button, input, select, textarea, label,
       <button class="exp-x" type="button" onclick="closeExp()">✕</button>
 
       <div class="exp-hero">
-        <img id="expImg" src="" alt="" />
+        <img id="expImg" src="" alt="" / loading="lazy" decoding="async">
         <!-- Swiper for gallery -->
         <div id="expSwiper" class="swiper exp-swiper" style="display:none;">
           <div id="expSwiperWrapper" class="swiper-wrapper"></div>
@@ -4530,10 +4524,10 @@ p, a, button, input, select, textarea, label,
           <h2>Ourika Valley</h2>
           <div class="swiper mySwiper-ourika">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/ourika.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/ourika_1.png" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/ourika_2.avif" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/ourika_2.jpg" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/ourika.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/ourika_1.png" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/ourika_2.avif" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/ourika_2.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4713,12 +4707,12 @@ p, a, button, input, select, textarea, label,
           <h2>Ouzoud Waterfalls</h2>
           <div class="swiper mySwiper-ouzoud">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud-falls.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_1.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_2.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_3.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_4.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_5.jpg" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud-falls.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_1.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Ouzoud/ouzoud_5.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4758,11 +4752,11 @@ p, a, button, input, select, textarea, label,
           <h2>Agafay Desert</h2>
           <div class="swiper mySwiper-agafay">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic2.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic5.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic3.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic4.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic1.jpg" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic2.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic5.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic3.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic4.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/agafay_pic1.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4801,9 +4795,9 @@ p, a, button, input, select, textarea, label,
           <h2>Imlil & High Atlas</h2>
           <div class="swiper mySwiper-imlil">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/imlil-village.jpg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/Imlil.jpeg" loading="lazy"></div>
-              <div class="swiper-slide"><img src="images/Marrakech/imlil_1.jpg" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/imlil-village.jpg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/Imlil.jpeg" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/imlil_1.jpg" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4842,7 +4836,7 @@ p, a, button, input, select, textarea, label,
           <h2>Lalla Takerkoust Lake</h2>
           <div class="swiper mySwiper-takerkoust">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/lac-lala-takerkoust.webp" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/lac-lala-takerkoust.webp" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4885,7 +4879,7 @@ p, a, button, input, select, textarea, label,
           <h2>Sunrise Hot Air Balloon</h2>
           <div class="swiper mySwiper-ballon">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img src="images/Marrakech/montgolfiere.webp" loading="lazy"></div>
+              <div class="swiper-slide"><img src="images/Marrakech/montgolfiere.webp" loading="lazy" decoding="async"></div>
             </div>
             <div class="swiper-pagination"></div>
             <div class="swiper-button-next"></div>
@@ -4927,7 +4921,7 @@ p, a, button, input, select, textarea, label,
     <div class="footer-inner">
       <div class="footer-brand">
         <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
-          <img src="logo-icon.png" alt="Discover Hidden Morocco">
+          <img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
         <p>Boutique travel agency crafting unforgettable private journeys across Morocco's imperial cities, Sahara
@@ -5004,7 +4998,7 @@ p, a, button, input, select, textarea, label,
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11"></script>
+<script src="script.js?v=20261014_v11" defer></script>
 
 
   

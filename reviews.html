@@ -10,11 +10,9 @@
         var h = window.location.hash || '';
         if (p && p.length > 1) {
           var lower = p.toLowerCase();
+          // Normalize /index.html to root /
           if (lower.endsWith('/index.html') || lower === '/index.html' || lower === '/index') {
             window.history.replaceState(null, document.title, (p.replace(/\/index(\.html)?$/i, '') || '/') + s + h);
-          } else if (lower.endsWith('.html')) {
-            var clean = p.replace(/\.html$/i, '');
-            window.history.replaceState(null, document.title, clean + s + h);
           }
         }
       } catch (e) {}
@@ -47,10 +45,12 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+
   <link rel="stylesheet" href="theme.css?v=20261014_v11">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -800,7 +800,7 @@ p, a, button, input, select, textarea, label,
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco"><span
+      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
       <ul class="hn-links" id="navLinks">
         <li><a href="index.html" data-i18n="nav_home">Home</a></li>
@@ -922,15 +922,14 @@ p, a, button, input, select, textarea, label,
       <!-- Dynamic Rating Summary Box -->
       <div class="rating-summary" id="ratingSummaryBox">
         <div class="rating-big">
-          <div class="big-num" id="summaryAvgRating">0.0</div>
-          <div class="big-stars" id="summaryAvgStars">☆☆☆☆☆</div>
-          <p id="summaryReviewCount">Loading reviews...</p>
+          <div class="big-num" id="summaryAvgRating">5.0</div>
+          <div class="big-stars" id="summaryAvgStars">★★★★★</div>
+          <p id="summaryReviewCount">Based on 6 verified reviews</p>
         </div>
         <div class="rating-bars">
           <div class="rating-bar-row"><span>5★</span>
             <div class="rating-bar-track">
-              <div class="rating-bar-fill" id="barFill5" style="width:0%"></div>
-            </div><span id="barPercent5">0%</span>
+              <div class="rating-bar-fill" id="barFill5" style="width:100%"></div></div><span id="barPercent5">100%</span>
           </div>
           <div class="rating-bar-row"><span>4★</span>
             <div class="rating-bar-track">
@@ -987,7 +986,97 @@ p, a, button, input, select, textarea, label,
 
       <!-- Dynamic Reviews Grid Container -->
       <div class="reviews-grid" id="reviewsGridContainer">
-        <!-- Rendered dynamically via script.js?v=20261014_v11 -->
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"Tajriba wa3ra bzaf m3a Discover Hidden Morocco ! Organisation top o service n9i bzaf. L-guide kan f l-moustawa."</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">KA</div>
+            <div class="review-author-info">
+              <h4>Karim & Amine</h4>
+              <p>Casablanca, Morocco · Merzouga Sahara</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"A truly unforgettable experience in the Erg Chebbi dunes. Our private driver and guide was incredibly knowledgeable and welcoming."</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">ER</div>
+            <div class="review-author-info">
+              <h4>Elena Rostova</h4>
+              <p>Madrid, Spain · Sahara Desert</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"Organisation parfaite de notre séjour dans les riads et les médinas. Service haut de gamme et authentique ! Chapeau à toute l'équipe."</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">MS</div>
+            <div class="review-author-info">
+              <h4>Marc & Sarah</h4>
+              <p>Lyon, France · Marrakech</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"From the pickup in Marrakech to our high-luxury tent in Merzouga, everything exceeded our highest expectations. Worth every single penny."</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">DM</div>
+            <div class="review-author-info">
+              <h4>David & Clara Miller</h4>
+              <p>London, UK · Atlas Mountains</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"Une immersion totale au cœur du Maroc authentique. Chefchaouen et les montagnes du Rif étaient magiques."</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">SD</div>
+            <div class="review-author-info">
+              <h4>Sophie Dubois</h4>
+              <p>Geneva, Switzerland · Chefchaouen</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          </div>
+          <p class="review-text">"Hidden Morocco made us feel like VIP royalty while maintaining deep local respect and cultural connection. Highly recommended!"</p>
+          <div class="review-author-wrap">
+            <div class="review-avatar">ME</div>
+            <div class="review-author-info">
+              <h4>Michael & Emma</h4>
+              <p>New York, USA · Fes Medina</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1075,7 +1164,7 @@ p, a, button, input, select, textarea, label,
   </footer>
 
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11"></script>
+<script src="script.js?v=20261014_v11" defer></script>
 </body>
 
 </html>
