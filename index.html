@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -28,7 +28,8 @@
   <link rel="preload" as="image" href="images/hero.jpg" media="(min-width: 769px)" fetchpriority="high">
     <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSqn7B6D.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yygg_vb.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"></noscript>
   
   <link rel="preconnect" href="https://translate.googleapis.com">
@@ -2067,6 +2068,31 @@ p,
   text-align-last: center !important;
 }
 
+  
+
+/* ==============================================================================
+   UNIVERSAL UNIFIED TYPOGRAPHY — OPEN SANS (MARRAKECH ARTICLE STYLE)
+   ============================================================================== */
+:root {
+  --hm-font-sans: 'Open Sans', Arial, sans-serif !important;
+  --hm-font-serif: 'Open Sans', Arial, sans-serif !important;
+  --hm-font-display: 'Open Sans', Arial, sans-serif !important;
+  --hm-font-body: 'Open Sans', Arial, sans-serif !important;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, a, button, input, select, textarea, label,
+.hn-links a, .hn-logo-text, .badge,
+.hero-title, .hero-subtitle, .page-hero h1, .page-hero p,
+.section-header h2, .section-header p,
+.story-text h2, .story-text p, .story-stat-val,
+.card-header-block h2, .card-header-block p,
+.dest-clean-header h1, .dest-clean-header p,
+.destination-article, .destination-article * {
+  font-family: 'Open Sans', Arial, sans-serif !important;
+}
+
   </style>
 </head>
 
@@ -2663,5 +2689,3 @@ p,
 </body>
 
 </html>
-
-
