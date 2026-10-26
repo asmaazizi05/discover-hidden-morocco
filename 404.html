@@ -1,42 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 <head>
-  <meta charset="utf-8">
-  <title>Discover Hidden Morocco</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <script>
-    (function () {
-      try {
-        var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-        var path = window.location.pathname || '';
-        var search = window.location.search || '';
-        var hash = window.location.hash || '';
-        var clean = path.replace(/\/+$/, '');
-        if (clean.toLowerCase().includes('testimonials')) {
-          clean = '/reviews';
-        }
-        if (clean && !clean.endsWith('.html')) {
-          var targetHtml = origin + clean + '.html' + search + hash;
-          // Use fetch to render clean URL in-place without adding .html to address bar
-          fetch(origin + clean + '.html')
-            .then(function(res) {
-              if (res.ok) return res.text();
-              throw new Error('Not found');
-            })
-            .then(function(htmlText) {
-              document.open();
-              document.write(htmlText);
-              document.close();
-            })
-            .catch(function() {
-              window.location.replace(targetHtml);
-            });
-          return;
-        }
-      } catch (e) {}
-      window.location.replace(origin + '/');
-    })();
-  </script>
+  (function () {
+    try {
+      var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+      var path = window.location.pathname || '';
+      var search = window.location.search || '';
+      var hash = window.location.hash || '';
+      var clean = path.replace(/\/+$/, '').replace(/^\/+/, '');
+      if (clean.toLowerCase().includes('testimonials')) clean = 'reviews';
+      if (clean && !clean.endsWith('.html')) {
+        window.location.replace(origin + '/' + clean + '.html' + search + hash);
+        return;
+      }
+    } catch (e) {}
+    window.location.replace(origin + '/index.html');
+  })();
+</script>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    
+  <link rel="stylesheet" href="theme.css?v=20261025_v35">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body style="background: #151515; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
   <p style="color: #E7A93C; font-size: 1.1rem; letter-spacing: 1px;">Loading Discover Hidden Morocco...</p>

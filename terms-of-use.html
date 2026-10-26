@@ -1,8 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
 <head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <script>
+    (function() {
+      var saved = localStorage.getItem('hm_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      document.documentElement.style.backgroundColor = saved === 'dark' ? '#151515' : '#FAF7F2';
+    })();
+    window._lastThemeToggle = 0;
+    window.toggleTheme = function(e) {
+      if (e) { try { e.preventDefault(); e.stopPropagation(); } catch(err){} }
+      var now = Date.now();
+      if (window._lastThemeToggle && (now - window._lastThemeToggle < 350)) return;
+      window._lastThemeToggle = now;
+
+      var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      var nxt = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nxt);
+      if (document.body) document.body.setAttribute('data-theme', nxt);
+      try { localStorage.setItem('hm_theme', nxt); } catch(err){}
+      if (typeof AppState !== 'undefined') AppState.theme = nxt;
+      document.querySelectorAll('.theme-toggle').forEach(function(b) {
+        b.innerHTML = nxt === 'dark' 
+          ? '<i class="fa-solid fa-sun" style="color: #F59E0B; transition: transform 0.4s ease;"></i>' 
+          : '<i class="fa-solid fa-moon" style="color: #4A5568; transition: transform 0.4s ease;"></i>';
+      });
+    };
+    window.toggleThemeMobile = window.toggleTheme;
+    var toggleTheme = window.toggleTheme;
+  </script>
+  <style>
+    html, html[data-theme="dark"], html[data-theme="dark"] body {
+      background-color: #151515 !important;
+      color: #FAF7F2 !important;
+    }
+    html[data-theme="light"], html[data-theme="light"] body {
+      background-color: #FAF7F2 !important;
+      color: #151515 !important;
+    }
+  </style>
+  
+  
+  
+  <script id="dhm-instant-theme">
+    (function () {
+      try {
+        if (localStorage.getItem('dhm_default_v12') !== '1') {
+          localStorage.setItem('hm_theme', 'dark');
+          localStorage.setItem('hm_lang', 'en');
+          localStorage.setItem('dhm_default_v12', '1');
+        }
+        var t = localStorage.getItem('hm_theme') || 'dark';
+        var d = document.documentElement;
+        d.setAttribute('data-theme', t);
+        d.classList.add('no-theme-transition');
+        d.style.backgroundColor = (t === 'dark') ? '#151515' : '#FAF7F2';
+        d.style.colorScheme = (t === 'dark') ? 'dark' : 'light';
+        window.addEventListener('DOMContentLoaded', function () {
+          if (document.body) document.body.setAttribute('data-theme', t);
+          setTimeout(function () { d.classList.remove('no-theme-transition'); }, 120);
+        });
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script id="dhm-clean-urls">
+    (function () {
+      try {
+        var p = window.location.pathname;
+        if (p && p.length > 1 && p.endsWith('.html')) {
+          var clean = p.replace(/\.html$/i, '');
+          if (clean.toLowerCase().endsWith('/index')) clean = clean.slice(0, -6) || '/';
+          window.history.replaceState(null, document.title, clean + window.location.search + window.location.hash);
+        }
+      } catch (e) {}
+
+      var routeMap = {
+        '/about': 'about.html',
+        '/destinations': 'destinations.html',
+        '/map': 'map.html',
+        '/reviews': 'reviews.html',
+        '/contact': 'contact.html',
+        '/booking': 'booking.html',
+        '/favorites': 'favorites.html',
+        '/privacy-policy': 'privacy-policy.html',
+        '/terms-of-use': 'terms-of-use.html',
+        '/cookie-policy': 'cookie-policy.html',
+        '/testimonials': 'reviews.html'
+      };
+
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href');
+        if (!h) return;
+        if (h.startsWith('http://') || h.startsWith('https://') || h.startsWith('mailto:') || h.startsWith('tel:') || h.startsWith('#') || h.startsWith('javascript:')) return;
+        if (a.classList.contains('custom-tour-trigger') && typeof window.openCustomTourModal === 'function') return;
+        var cleanPath = h.split('?')[0].split('#')[0];
+        if (routeMap[cleanPath]) {
+          e.preventDefault();
+          var q = h.indexOf('?') !== -1 ? '?' + h.split('?')[1].split('#')[0] : '';
+          var hash = h.indexOf('#') !== -1 ? '#' + h.split('#')[1] : '';
+          window.location.href = routeMap[cleanPath] + q + hash;
+        }
+      }, true);
+
+      // Auto-fallback for images: if requested under images/ but file is in root, auto-switch to root file
+      window.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG') {
+          var src = t.getAttribute('src');
+          if (src && src.includes('/') && !t.dataset.imgFallback) {
+            t.dataset.imgFallback = '1';
+            var file = src.split('?')[0].split('/').pop();
+            t.src = file;
+          }
+        }
+      }, true);
+
+      function updateLangDisplay(l) {
+        var code = (l || 'en').toLowerCase();
+        var txt = (code === 'es') ? 'Esp' : (code === 'fr' ? 'FR' : 'EN');
+        document.querySelectorAll('.lang-cur-text, #langCurText').forEach(function (b) {
+          b.textContent = txt;
+        });
+      }
+
+      try {
+        var savedL = localStorage.getItem('hm_lang') || 'en';
+        window.addEventListener('DOMContentLoaded', function () {
+          updateLangDisplay(savedL);
+        });
+      } catch (e) {}
+    })();
+  </script>
+<script>
     (function () {
       try {
         var p = window.location.pathname;
@@ -47,10 +184,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+    <noscript></noscript>
 
-  <link rel="stylesheet" href="theme.css?v=20261014_v11">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
   <style>
     .hn-nav {
       position: fixed;
@@ -519,11 +655,14 @@ p, a, button, input, select, textarea, label,
 .story-text h2, .story-text p, .story-stat-val,
 .card-header-block h2, .card-header-block p,
 .dest-clean-header h1, .dest-clean-header p,
-.destination-article, .destination-article * {
+.destination-article, .destination-article *:not(.fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], i) {
   font-family: 'Open Sans', Arial, sans-serif !important;
 }
 
   </style>
+  
+  <link rel="stylesheet" href="theme.css?v=20261025_v35">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -531,19 +670,20 @@ p, a, button, input, select, textarea, label,
   <div id="google_translate_element" style="display:none;" class="notranslate"></div>
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
+  <!-- HEADER / NAVBAR -->
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
+      <a href="/" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async" loading="lazy"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
-        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
-        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
-        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/about" data-i18n="nav_about">About Us</a></li>
+        <li><a href="/destinations" data-i18n="nav_destinations">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger" onclick="window.openCustomTourModal && window.openCustomTourModal(); return false;" data-i18n="nav_customize">Customize Tour</a></li>
+        <li><a href="/map" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="/reviews" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/contact" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
@@ -552,98 +692,64 @@ p, a, button, input, select, textarea, label,
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="es">ES</option>
               </select>
             </div>
-            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
-              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+            <button class="setting-icon-item theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle-icon"><i class="fa-solid fa-sun" style="color: #F59E0B;"></i></span>
             </button>
-            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
+            <a href="/favorites" class="setting-icon-item wishlist-item" aria-label="Wishlist">
               <i class="fa-regular fa-heart"></i>
+              <span class="wishlist-badge">0</span>
             </a>
           </div>
         </li>
-
-        <!-- Customize My Tour Button -->
-        <li class="mobile-only-cta">
-          <a href="#" class="mobile-book-btn custom-tour-trigger">
-            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </li>
       </ul>
 
-      <div class="hn-nav-actions">
-        <div class="lang-wrapper">
-          <i class="fa-solid fa-globe lang-icon"></i>
-          <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
-          </select>
+            <div class="hn-actions">
+        <!-- Luxury Language Dropdown -->
+        <div class="lang-dropdown-wrapper" id="langDropdownWrapper">
+          <button type="button" class="lang-toggle-btn" id="langToggleBtn" onclick="window.toggleLangMenu(event)" aria-label="Select Language" aria-expanded="false">
+            <span class="lang-current-code" id="langCurText">EN</span>
+            <i class="fa-solid fa-chevron-down lang-chevron"></i>
+          </button>
+          <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu">
+            <button type="button" class="lang-dropdown-item is-selected" data-lang="en" onclick="window.selectAppLanguage('en', event)">
+              <span class="lang-item-flag">🇬🇧</span>
+              <span class="lang-item-name">English</span>
+              <span class="lang-item-code">EN</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="fr" onclick="window.selectAppLanguage('fr', event)">
+              <span class="lang-item-flag">🇫🇷</span>
+              <span class="lang-item-name">Français</span>
+              <span class="lang-item-code">FR</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="es" onclick="window.selectAppLanguage('es', event)">
+              <span class="lang-item-flag">🇪🇸</span>
+              <span class="lang-item-name">Español</span>
+              <span class="lang-item-code">Esp</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+          </div>
         </div>
 
-        <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme">
-          <i class="fa-solid fa-moon"></i>
+        <!-- Mode Sombre / Claire Toggle Button -->
+        <button class="nav-icon-btn theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme" title="Toggle Theme">
+          <i class="fa-solid fa-sun" style="color: #F59E0B;"></i>
         </button>
 
-        <a href="favorites.html" class="nav-icon-btn" aria-label="Wishlist">
+        <!-- Wishlist / Favorites Button -->
+        <a href="/favorites" class="nav-icon-btn nav-fav-btn" aria-label="Favorites" title="Favorites">
           <i class="fa-regular fa-heart"></i>
-          <span class="fav-count-badge">0</span>
+          <span class="fav-count-badge" id="favCountBadge">0</span>
         </a>
 
-        <button class="hamburger" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -651,45 +757,113 @@ p, a, button, input, select, textarea, label,
   </nav>
 
   <header class="legal-hero">
-    <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Terms & Conditions</span>
+    <span class="badge badge-terracotta" style="margin-bottom: 16px;">✦ Terms &amp; Conditions</span>
     <h1>Terms of Use</h1>
-    <p>Last updated: September 2026. Terms governing our boutique travel services and booking agreement.</p>
+    <div class="moroccan-divider"></div>
+    <p>Last updated: September 2026 &middot; Version 2.0 &middot; Terms governing our boutique private travel services and booking agreement.</p>
   </header>
 
+  <nav class="toc-bar" aria-label="Page sections">
+    <a href="#t1" class="toc-link">1. Acceptance of Terms</a>
+    <a href="#t2" class="toc-link">2. Tailor-Made Bookings</a>
+    <a href="#t3" class="toc-link">3. Payment &amp; Cancellation</a>
+    <a href="#t4" class="toc-link">4. Itinerary &amp; Weather</a>
+    <a href="#t5" class="toc-link">5. Passports &amp; Health</a>
+    <a href="#t6" class="toc-link">6. Intellectual Property</a>
+    <a href="#t7" class="toc-link">7. Governing Law</a>
+  </nav>
+
   <main class="legal-content">
-    <div class="legal-card">
-      <h2>1. Acceptance of Terms</h2>
-      <p>By accessing the Discover Hidden Morocco website or booking any private tour, expedition, or transfer service, you agree to be bound by these Terms of Use and our booking policies.</p>
+    <div class="legal-card destination-article">
+      <div class="section-block">
+        <h2 class="section-title" id="t1">1. Acceptance of Terms</h2>
+        <p>By accessing the Discover Hidden Morocco website or booking any private tour, desert expedition, cultural excursion, or luxury transfer service, you agree to be bound by these Terms of Use and our booking policies. These terms constitute a transparent agreement between you ("the Traveler") and Discover Hidden Morocco (Licence n° CIMR-2024-MRK-002041, Marrakech).</p>
+      </div>
 
-      <h2>2. Booking & Tailor-Made Services</h2>
-      <p>Discover Hidden Morocco specializes in 100% private, tailor-made itineraries. Booking confirmations, custom itineraries, and final pricing are agreed upon prior to departure. Minimum participant requirements (e.g. 2 participants for certain itineraries) may apply as specified during booking.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="t2">2. Booking &amp; Tailor-Made Services</h2>
+        <p>Discover Hidden Morocco specializes in 100% private, tailor-made itineraries across the Kingdom of Morocco. All route proposals, hand-picked riad selections, desert camp categories, and final pricing are mutually agreed upon in writing prior to departure. Minimum participant requirements (such as 2 participants for select private desert circuits) are clearly specified in your personalized quotation.</p>
+      </div>
 
-      <h2>3. Payment & Cancellation Policy</h2>
-      <ul>
-        <li><strong>Deposit:</strong> A deposit or full confirmation via WhatsApp/Email is required to lock in vehicle, guide, and riad reservations.</li>
-        <li><strong>Cancellations 7+ Days Prior:</strong> Eligible for a full refund of deposit payments.</li>
-        <li><strong>Cancellations Within 48 Hours:</strong> Non-refundable due to pre-paid riad and driver commitments.</li>
-        <li><strong>Travel Insurance:</strong> We strongly advise all travelers to purchase comprehensive travel insurance covering trip cancellations, medical emergencies, and luggage.</li>
-      </ul>
+      <div class="section-block">
+        <h2 class="section-title" id="t3">3. Payment &amp; Cancellation Policy</h2>
+        <p>To secure luxury riads, private 4x4 vehicles, and licensed multilingual guides, bookings follow a clear and fair reservation schedule:</p>
+        <div class="article-table-container">
+          <table class="article-table">
+            <thead>
+              <tr>
+                <th>Booking Stage / Notice Period</th>
+                <th>Policy &amp; Applicable Terms</th>
+                <th>Refund / Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Reservation Confirmation</strong></td>
+                <td>Deposit or written confirmation via WhatsApp / Email to lock in vehicles, riads, and luxury desert camps.</td>
+                <td>Guaranteed Booking</td>
+              </tr>
+              <tr>
+                <td><strong>7+ Days Before Departure</strong></td>
+                <td>Cancellation or date modification requested at least 7 full days prior to the scheduled start date.</td>
+                <td>100% Full Deposit Refund</td>
+              </tr>
+              <tr>
+                <td><strong>3 to 6 Days Before Departure</strong></td>
+                <td>Late modification or cancellation where riad and camp allocations have already been finalized.</td>
+                <td>50% Refund or Free Date Credit</td>
+              </tr>
+              <tr>
+                <td><strong>Within 48 Hours of Departure</strong></td>
+                <td>Last-minute cancellation or no-show after drivers, guides, and camp provisions are dispatched.</td>
+                <td>Non-Refundable</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Travel Insurance:</strong> We strongly advise all travelers to purchase comprehensive international travel insurance covering trip cancellation, medical assistance, repatriation, and personal luggage.</p>
+      </div>
 
-      <h2>4. Itinerary Adjustments & Weather</h2>
-      <p>While we make every effort to execute agreed itineraries seamlessly, local weather conditions (such as mountain snow or desert sandstorms) or unexpected road closures may require adjustments. Our local experts reserve the right to modify routes in the interest of traveler safety and comfort.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="t4">4. Itinerary Adjustments &amp; Weather Conditions</h2>
+        <p>While we make every effort to execute agreed itineraries seamlessly, occasional local weather conditions (such as High Atlas mountain snow or seasonal Sahara windstorms) or unexpected road works may require route adjustments. Our experienced local drivers and guides reserve the right to adapt schedules in the interest of traveler safety, comfort, and quality of experience.</p>
+      </div>
 
-      <h2>5. Health, Passports & Visas</h2>
-      <p>Travelers are responsible for ensuring they possess a valid passport (valid for at least 6 months beyond travel dates) and any required Moroccan visas. Please inform us in advance of any mobility limits, medical conditions, or dietary restrictions.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="t5">5. Health, Passports &amp; Visas</h2>
+        <p>Travelers are responsible for ensuring they carry a valid passport (valid for at least 6 months beyond the planned departure date from Morocco) and any applicable visa required for entry. Please inform our concierge team in advance of any dietary requirements, allergies, or mobility considerations so we can tailor every stop accordingly.</p>
+      </div>
 
-      <h2>6. Intellectual Property</h2>
-      <p>All content on this website—including photography, text, branding, graphics, and custom tour wizard workflows—is the property of Discover Hidden Morocco and protected by intellectual property laws.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="t6">6. Intellectual Property</h2>
+        <p>All content published on this website — including editorial articles, photography, brand emblems, custom tour builder workflows, and interactive maps — is the exclusive property of Discover Hidden Morocco and is protected under Moroccan and international copyright laws.</p>
+      </div>
 
-      <h2>7. Governing Law</h2>
-      <p>These Terms of Use are governed by and construed in accordance with the laws of the Kingdom of Morocco. Any disputes shall be subject to the jurisdiction of the courts of Marrakech.</p>
+      <div class="section-block">
+        <h2 class="section-title" id="t7">7. Governing Law &amp; Jurisdiction</h2>
+        <p>These Terms of Use are governed by and construed in accordance with the laws of the Kingdom of Morocco. Any dispute arising in connection with these terms or our travel services shall fall under the exclusive jurisdiction of the courts of Marrakech, Morocco.</p>
+      </div>
     </div>
   </main>
+
+  <section class="privacy-cta">
+    <h2>Questions About Our Booking Terms?</h2>
+    <div class="moroccan-divider"></div>
+    <p>Our Marrakech concierge team is available 7 days a week to clarify any itinerary or reservation details.</p>
+    <div class="privacy-cta-btns">
+      <a href="mailto:contact@discoverhiddenmorocco.com" class="btn-cta-white">
+        <i class="fa-solid fa-envelope"></i> Email Concierge
+      </a>
+      <a href="https://wa.me/212660082066" target="_blank" rel="noopener" class="btn-cta-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+      </a>
+    </div>
+  </section>
 
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
+        <a href="/" class="hn-logo" style="margin-bottom: 18px;">
           <img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
@@ -719,12 +893,12 @@ p, a, button, input, select, textarea, label,
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="map.html">Interactive Map</a></li>
-          <li><a href="reviews.html">Reviews</a></li>
-          <li><a href="booking.html">Book Expedition</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="favorites.html">My Wishlist</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/map">Interactive Map</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/booking">Book Expedition</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/favorites">My Wishlist</a></li>
         </ul>
       </div>
 
@@ -748,15 +922,14 @@ p, a, button, input, select, textarea, label,
     <div class="footer-bottom">
       <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
       <div class="footer-bottom-links">
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-use.html">Terms of Use</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="/cookie-policy">Cookie Policy</a>
       </div>
     </div>
   </footer>
 
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11" defer></script>
+    <script src="script.js?v=20261025_v35" defer></script>
 </body>
 
 </html>

@@ -1,8 +1,145 @@
-<!DOCTYPE html>
-<html lang="fr">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
 <head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <script>
+    (function() {
+      var saved = localStorage.getItem('hm_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      document.documentElement.style.backgroundColor = saved === 'dark' ? '#151515' : '#FAF7F2';
+    })();
+    window._lastThemeToggle = 0;
+    window.toggleTheme = function(e) {
+      if (e) { try { e.preventDefault(); e.stopPropagation(); } catch(err){} }
+      var now = Date.now();
+      if (window._lastThemeToggle && (now - window._lastThemeToggle < 350)) return;
+      window._lastThemeToggle = now;
+
+      var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      var nxt = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nxt);
+      if (document.body) document.body.setAttribute('data-theme', nxt);
+      try { localStorage.setItem('hm_theme', nxt); } catch(err){}
+      if (typeof AppState !== 'undefined') AppState.theme = nxt;
+      document.querySelectorAll('.theme-toggle').forEach(function(b) {
+        b.innerHTML = nxt === 'dark' 
+          ? '<i class="fa-solid fa-sun" style="color: #F59E0B; transition: transform 0.4s ease;"></i>' 
+          : '<i class="fa-solid fa-moon" style="color: #4A5568; transition: transform 0.4s ease;"></i>';
+      });
+    };
+    window.toggleThemeMobile = window.toggleTheme;
+    var toggleTheme = window.toggleTheme;
+  </script>
+  <style>
+    html, html[data-theme="dark"], html[data-theme="dark"] body {
+      background-color: #151515 !important;
+      color: #FAF7F2 !important;
+    }
+    html[data-theme="light"], html[data-theme="light"] body {
+      background-color: #FAF7F2 !important;
+      color: #151515 !important;
+    }
+  </style>
+  
+  
+  
+  <script id="dhm-instant-theme">
+    (function () {
+      try {
+        if (localStorage.getItem('dhm_default_v12') !== '1') {
+          localStorage.setItem('hm_theme', 'dark');
+          localStorage.setItem('hm_lang', 'en');
+          localStorage.setItem('dhm_default_v12', '1');
+        }
+        var t = localStorage.getItem('hm_theme') || 'dark';
+        var d = document.documentElement;
+        d.setAttribute('data-theme', t);
+        d.classList.add('no-theme-transition');
+        d.style.backgroundColor = (t === 'dark') ? '#151515' : '#FAF7F2';
+        d.style.colorScheme = (t === 'dark') ? 'dark' : 'light';
+        window.addEventListener('DOMContentLoaded', function () {
+          if (document.body) document.body.setAttribute('data-theme', t);
+          setTimeout(function () { d.classList.remove('no-theme-transition'); }, 120);
+        });
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script id="dhm-clean-urls">
+    (function () {
+      try {
+        var p = window.location.pathname;
+        if (p && p.length > 1 && p.endsWith('.html')) {
+          var clean = p.replace(/\.html$/i, '');
+          if (clean.toLowerCase().endsWith('/index')) clean = clean.slice(0, -6) || '/';
+          window.history.replaceState(null, document.title, clean + window.location.search + window.location.hash);
+        }
+      } catch (e) {}
+
+      var routeMap = {
+        '/about': 'about.html',
+        '/destinations': 'destinations.html',
+        '/map': 'map.html',
+        '/reviews': 'reviews.html',
+        '/contact': 'contact.html',
+        '/booking': 'booking.html',
+        '/favorites': 'favorites.html',
+        '/privacy-policy': 'privacy-policy.html',
+        '/terms-of-use': 'terms-of-use.html',
+        '/cookie-policy': 'cookie-policy.html',
+        '/testimonials': 'reviews.html'
+      };
+
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href');
+        if (!h) return;
+        if (h.startsWith('http://') || h.startsWith('https://') || h.startsWith('mailto:') || h.startsWith('tel:') || h.startsWith('#') || h.startsWith('javascript:')) return;
+        if (a.classList.contains('custom-tour-trigger') && typeof window.openCustomTourModal === 'function') return;
+        var cleanPath = h.split('?')[0].split('#')[0];
+        if (routeMap[cleanPath]) {
+          e.preventDefault();
+          var q = h.indexOf('?') !== -1 ? '?' + h.split('?')[1].split('#')[0] : '';
+          var hash = h.indexOf('#') !== -1 ? '#' + h.split('#')[1] : '';
+          window.location.href = routeMap[cleanPath] + q + hash;
+        }
+      }, true);
+
+      // Auto-fallback for images: if requested under images/ but file is in root, auto-switch to root file
+      window.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG') {
+          var src = t.getAttribute('src');
+          if (src && src.includes('/') && !t.dataset.imgFallback) {
+            t.dataset.imgFallback = '1';
+            var file = src.split('?')[0].split('/').pop();
+            t.src = file;
+          }
+        }
+      }, true);
+
+      function updateLangDisplay(l) {
+        var code = (l || 'en').toLowerCase();
+        var txt = (code === 'es') ? 'Esp' : (code === 'fr' ? 'FR' : 'EN');
+        document.querySelectorAll('.lang-cur-text, #langCurText').forEach(function (b) {
+          b.textContent = txt;
+        });
+      }
+
+      try {
+        var savedL = localStorage.getItem('hm_lang') || 'en';
+        window.addEventListener('DOMContentLoaded', function () {
+          updateLangDisplay(savedL);
+        });
+      } catch (e) {}
+    })();
+  </script>
+<script>
     (function () {
       try {
         var p = window.location.pathname;
@@ -48,19 +185,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+    <noscript></noscript>
   <!-- Swiper CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  
 
-</head>
-
-<body>
-  <!-- Hidden Google Translate Element -->
-  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
-
-  <!-- Premium Navigation -->
   <style>
     /* Override old style.css nav rules for this page */
     .site-nav,
@@ -1049,31 +1179,45 @@ p, a, button, input, select, textarea, label,
 .story-text h2, .story-text p, .story-stat-val,
 .card-header-block h2, .card-header-block p,
 .dest-clean-header h1, .dest-clean-header p,
-.destination-article, .destination-article * {
+.destination-article, .destination-article *:not(.fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], i) {
   font-family: 'Open Sans', Arial, sans-serif !important;
 }
 
   </style>
+  
+  <link rel="stylesheet" href="theme.css?v=20261025_v35">
+  <link rel="stylesheet" href="exp.css?v=20261019_v22">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display:none;" class="notranslate"></div>
+
+  <!-- Premium Navigation -->
+  
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
-  <link rel="stylesheet" href="theme.css?v=20261014_v11">
+  
 
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
-  <nav class="hn-nav">
+  <!-- HEADER / NAVBAR -->
+  <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
+      <a href="/" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async" loading="lazy"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
-      <ul class="hn-links" id="premNavLinks">
-        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="destinations.html" class="active" data-i18n="nav_destinations">Destinations</a></li>
-        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
-        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
+
+      <ul class="hn-links" id="navLinks">
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/about" data-i18n="nav_about">About Us</a></li>
+        <li><a href="/destinations" class="active" data-i18n="nav_destinations">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger" onclick="window.openCustomTourModal && window.openCustomTourModal(); return false;" data-i18n="nav_customize">Customize Tour</a></li>
+        <li><a href="/map" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="/reviews" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/contact" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
@@ -1082,68 +1226,64 @@ p, a, button, input, select, textarea, label,
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
-              </select>
-            </div>
-            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
-              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
-            </button>
-            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
-              <i class="fa-regular fa-heart"></i>
-            </a>
-          </div>
-        </li>
-
-        <!-- Customize My Tour Button -->
-        <li class="mobile-only-cta">
-          <a href="#" class="mobile-book-btn custom-tour-trigger">
-            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </li>
-      </ul>
-      <div class="hn-nav-actions">
-        <div class="lang-wrapper">
-          <i class="fa-solid fa-globe lang-icon"></i>
-          <select class="lang-sw" id="langSwitcher" aria-label="Language">
             <option value="en">EN</option>
             <option value="fr">FR</option>
             <option value="es">ES</option>
-          </select>
+              </select>
+            </div>
+            <button class="setting-icon-item theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle-icon"><i class="fa-solid fa-sun" style="color: #F59E0B;"></i></span>
+            </button>
+            <a href="/favorites" class="setting-icon-item wishlist-item" aria-label="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+              <span class="wishlist-badge">0</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+
+            <div class="hn-actions">
+        <!-- Luxury Language Dropdown -->
+        <div class="lang-dropdown-wrapper" id="langDropdownWrapper">
+          <button type="button" class="lang-toggle-btn" id="langToggleBtn" onclick="window.toggleLangMenu(event)" aria-label="Select Language" aria-expanded="false">
+            <span class="lang-current-code" id="langCurText">EN</span>
+            <i class="fa-solid fa-chevron-down lang-chevron"></i>
+          </button>
+          <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu">
+            <button type="button" class="lang-dropdown-item is-selected" data-lang="en" onclick="window.selectAppLanguage('en', event)">
+              <span class="lang-item-flag">🇬🇧</span>
+              <span class="lang-item-name">English</span>
+              <span class="lang-item-code">EN</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="fr" onclick="window.selectAppLanguage('fr', event)">
+              <span class="lang-item-flag">🇫🇷</span>
+              <span class="lang-item-name">Français</span>
+              <span class="lang-item-code">FR</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="es" onclick="window.selectAppLanguage('es', event)">
+              <span class="lang-item-flag">🇪🇸</span>
+              <span class="lang-item-name">Español</span>
+              <span class="lang-item-code">Esp</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+          </div>
         </div>
-        <button class="nav-icon-btn2 theme-toggle" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
-        <a href="favorites.html" class="nav-icon-btn2" aria-label="Wishlist">
+
+        <!-- Mode Sombre / Claire Toggle Button -->
+        <button class="nav-icon-btn theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme" title="Toggle Theme">
+          <i class="fa-solid fa-sun" style="color: #F59E0B;"></i>
+        </button>
+
+        <!-- Wishlist / Favorites Button -->
+        <a href="/favorites" class="nav-icon-btn nav-fav-btn" aria-label="Favorites" title="Favorites">
           <i class="fa-regular fa-heart"></i>
-          <span class="fav-badge2 fav-count-badge">0</span>
+          <span class="fav-count-badge" id="favCountBadge">0</span>
         </a>
-        <a href="booking.html" class="book-btn2" data-i18n="nav_book">Book Now</a>
-        <button class="hburg" onclick="document.getElementById('premNavLinks').classList.toggle('open')">
+
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -1160,6 +1300,7 @@ p, a, button, input, select, textarea, label,
       <h1
         style="font-family: 'Open Sans', sans-serif; font-size: clamp(2.4rem, 4.5vw, 3.4rem); color: var(--hm-text-heading); font-weight: 700; margin-bottom: 12px; line-height: 1.15;">
         Our Destinations</h1>
+      <div class="moroccan-divider"></div>
       <p style="font-size: 1.05rem; color: var(--hm-text-body); max-width: 600px; margin: 0 auto 20px; line-height: 1.6;">Explore
         imperial cities, vast Sahara desert dunes, and coastal hideaways across Morocco.</p>
 
@@ -1211,6 +1352,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('marrakech')">&times;</span>
           <h2>Marrakech</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-marrakech">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/marrakech_11.jpg" loading="lazy" decoding="async"></div>
@@ -1537,69 +1679,69 @@ p, a, button, input, select, textarea, label,
           <div class="marr-exp">
             <div class="marr-exp-head">
               <h3 class="section-title">Our Experiences around Marrakech</h3>
-              <p class="subtitle" style="font-size:0.9rem; color:#666; font-weight: 500;">Hover to explore ? Click to
-                book</p>
+              <div class="moroccan-divider" style="max-width: 320px; margin: 12px auto 16px;"></div>
+              <p class="subtitle" style="font-size:0.9rem; color:#666; font-weight: 500;">Hover to explore · Click to book</p>
             </div>
 
             <div class="marr-accordion">
 
               <div class="acc-item" onclick="openModal('ourika')">
-                <img src="images/Marrakech/ourika_1.png" alt="Ourika Valley" loading="lazy" decoding="async">
+                <img src="images/Marrakech/ourika_1.png" alt="Ourika Valley" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
                   <h4>Ourika Valley</h4>
-                  <p class="acc-desc">Atlas ? Waterfalls ? Villages</p>
+                  <p class="acc-desc">Atlas · Waterfalls · Berber Villages</p>
                 </div>
               </div>
 
               <div class="acc-item" onclick="openModal('ouzoud')">
-                <img src="images/Ouzoud/ouzoud-falls.jpg" alt="Ouzoud Waterfalls" loading="lazy" decoding="async">
+                <img src="images/Ouzoud/ouzoud-falls.jpg" alt="Ouzoud Waterfalls" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
                   <h4>Ouzoud Waterfalls</h4>
-                  <p class="acc-desc">Nature ? Hiking ? Panoramic Views</p>
+                  <p class="acc-desc">Nature · Hiking · Panoramic Views</p>
                 </div>
               </div>
 
               <div class="acc-item" onclick="openModal('agafay')">
-                <img src="images/Marrakech/agafay.jpg" alt="Agafay Desert" loading="lazy" decoding="async">
+                <img src="images/Marrakech/agafay.jpg" alt="Agafay Desert" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Evening</span>
                   <h4>Agafay Desert</h4>
-                  <p class="acc-desc">Quad ? Camel ? Dinner</p>
+                  <p class="acc-desc">Quad · Camel · Sunset Dinner</p>
                 </div>
               </div>
 
               <div class="acc-item" onclick="openModal('imlil')">
-                <img src="images/Marrakech/imlil-village.jpg" alt="Imlil & Atlas" loading="lazy" decoding="async">
+                <img src="images/Marrakech/imlil-village.jpg" alt="Imlil & Atlas" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">1 day</span>
                   <h4>Imlil & Atlas</h4>
-                  <p class="acc-desc">Hiking ? Villages ? Toubkal</p>
+                  <p class="acc-desc">Hiking · Berber Villages · Mt Toubkal</p>
                 </div>
               </div>
 
               <div class="acc-item" onclick="openModal('takerkoust')">
-                <img src="images/Marrakech/lac-lala-takerkoust.webp" alt="Lalla Takerkoust" loading="lazy" decoding="async">
+                <img src="images/Marrakech/lac-lala-takerkoust.webp" alt="Lalla Takerkoust" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Half-day</span>
                   <h4>Lalla Takerkoust Lake</h4>
-                  <p class="acc-desc">Lake ? Relaxation ? Outdoor</p>
+                  <p class="acc-desc">Desert Lake · Jet Ski · Relaxation</p>
                 </div>
               </div>
 
               <div class="acc-item" onclick="openModal('ballon')">
-                <img src="images/Marrakech/montgolfiere.webp" alt="Hot Air Balloon" loading="lazy" decoding="async">
+                <img src="images/Marrakech/montgolfiere.webp" alt="Hot Air Balloon" loading="eager" decoding="async">
                 <div class="acc-overlay"></div>
                 <div class="acc-content">
                   <span class="acc-tag">Sunrise</span>
                   <h4>Hot Air Balloon</h4>
-                  <p class="acc-desc">Sunrise ? Breakfast</p>
+                  <p class="acc-desc">Sunrise Flight · Berber Breakfast</p>
                 </div>
               </div>
             </div> <!-- closes marr-accordion -->
@@ -1647,6 +1789,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('ouarzazate')">&times;</span>
           <h2>Ouarzazate</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-ouarzazate">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Ouarzazat/ouarzazat1.jpeg" loading="lazy" decoding="async"></div>
@@ -1938,6 +2081,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('merzouga')">&times;</span>
           <h2>Merzouga</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-merzouga">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Merzouga/merzouga_1.jpg" loading="lazy" decoding="async"></div>
@@ -2187,6 +2331,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('chefchaouen')">&times;</span>
           <h2>Chefchaouen</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-chefchaouen">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Chfchaouen/chechaouen_1.jpg" loading="lazy" decoding="async"></div>
@@ -2445,6 +2590,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('essaouira')">&times;</span>
           <h2>Essaouira</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-essaouira">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Essaouira/essaouira_1.jpg" loading="lazy" decoding="async"></div>
@@ -2852,6 +2998,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('fes')">&times;</span>
           <h2>Fès</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-fes">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Fes/fes_1.jpg" loading="lazy" decoding="async"></div>
@@ -3216,6 +3363,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('casablanca')">&times;</span>
           <h2>Casablanca</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-casablanca">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Casablanca/casablanca.png"
@@ -3570,6 +3718,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('zagora')">&times;</span>
           <h2>Zagora</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-zagora">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Zagora/zagora_hero.png" alt="Zagora Desert" decoding="async"></div>
@@ -3840,6 +3989,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('agadir')">&times;</span>
           <h2>Agadir</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-agadir">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Agadir/agadir_hero.png" alt="Agadir" decoding="async"></div>
@@ -4522,6 +4672,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('ourika')">&times;</span>
           <h2>Ourika Valley</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-ourika">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/ourika.jpg" loading="lazy" decoding="async"></div>
@@ -4705,6 +4856,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('ouzoud')">&times;</span>
           <h2>Ouzoud Waterfalls</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-ouzoud">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Ouzoud/ouzoud-falls.jpg" loading="lazy" decoding="async"></div>
@@ -4750,6 +4902,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('agafay')">&times;</span>
           <h2>Agafay Desert</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-agafay">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/agafay_pic2.jpg" loading="lazy" decoding="async"></div>
@@ -4793,6 +4946,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('imlil')">&times;</span>
           <h2>Imlil & High Atlas</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-imlil">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/imlil-village.jpg" loading="lazy" decoding="async"></div>
@@ -4834,6 +4988,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('takerkoust')">&times;</span>
           <h2>Lalla Takerkoust Lake</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-takerkoust">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/lac-lala-takerkoust.webp" loading="lazy" decoding="async"></div>
@@ -4877,6 +5032,7 @@ p, a, button, input, select, textarea, label,
         <div class="modal-content">
           <span class="close" onclick="closeModal('ballon')">&times;</span>
           <h2>Sunrise Hot Air Balloon</h2>
+          <div class="moroccan-divider"></div>
           <div class="swiper mySwiper-ballon">
             <div class="swiper-wrapper">
               <div class="swiper-slide"><img src="images/Marrakech/montgolfiere.webp" loading="lazy" decoding="async"></div>
@@ -4920,7 +5076,7 @@ p, a, button, input, select, textarea, label,
 <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
+        <a href="/" class="hn-logo" style="margin-bottom: 18px;">
           <img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
@@ -4957,12 +5113,12 @@ p, a, button, input, select, textarea, label,
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="map.html">Interactive Map</a></li>
-          <li><a href="reviews.html">Reviews</a></li>
-          <li><a href="booking.html">Book Expedition</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="favorites.html">My Wishlist</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/map">Interactive Map</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/booking">Book Expedition</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/favorites">My Wishlist</a></li>
         </ul>
       </div>
 
@@ -4988,17 +5144,16 @@ p, a, button, input, select, textarea, label,
     <div class="footer-bottom">
       <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
       <div class="footer-bottom-links">
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-use.html">Terms of Use</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="/cookie-policy">Cookie Policy</a>
       </div>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11" defer></script>
+    <script src="script.js?v=20261025_v35" defer></script>
 
 
   
@@ -5069,14 +5224,14 @@ p, a, button, input, select, textarea, label,
         
         const readMoreBtn = document.createElement("button");
         readMoreBtn.className = "read-more-btn";
-        readMoreBtn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down"></i>';
+        readMoreBtn.textContent = 'Read More';
         
         article.appendChild(readMoreBtn);
         
         readMoreBtn.addEventListener("click", function() {
           if (hiddenContent.style.display === "none") {
             hiddenContent.style.display = "block";
-            readMoreBtn.innerHTML = 'Read Less <i class="fa-solid fa-chevron-up"></i>';
+            readMoreBtn.textContent = 'Read Less';
             // Remove ellipsis when expanded
             if (firstParagraph.innerHTML.endsWith('...')) {
                 firstParagraph.innerHTML = firstParagraph.innerHTML.slice(0, -3);
@@ -5088,7 +5243,7 @@ p, a, button, input, select, textarea, label,
             }
           } else {
             hiddenContent.style.display = "none";
-            readMoreBtn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down"></i>';
+            readMoreBtn.textContent = 'Read More';
             // Add ellipsis back when collapsed
             if (textNodes.length > 0) {
                 const lastTextNode = textNodes[textNodes.length - 1];

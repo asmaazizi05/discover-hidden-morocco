@@ -1,8 +1,323 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <script>
+    (function() {
+      var saved = localStorage.getItem('hm_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      document.documentElement.style.backgroundColor = saved === 'dark' ? '#151515' : '#FAF7F2';
+    })();
+    
+    function loadDayHeroImages() {
+      ['heroPicDay', 'heroPicDayFg'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && !el._loaded) {
+          el.querySelectorAll('[data-srcset]').forEach(function(s){ s.srcset = s.getAttribute('data-srcset'); });
+          el.querySelectorAll('[data-src]').forEach(function(i){ i.src = i.getAttribute('data-src'); });
+          el._loaded = true;
+        }
+      });
+    }
+
+window._lastThemeToggle = 0;
+    window.toggleTheme = function(e) {
+      if (e) { try { e.preventDefault(); e.stopPropagation(); } catch(err){} }
+      var now = Date.now();
+      if (window._lastThemeToggle && (now - window._lastThemeToggle < 350)) return;
+      window._lastThemeToggle = now;
+
+      var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      var nxt = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nxt);
+      if (document.body) document.body.setAttribute('data-theme', nxt);
+      try { localStorage.setItem('hm_theme', nxt); } catch(err){}
+      if (typeof AppState !== 'undefined') AppState.theme = nxt; if (nxt === 'light') loadDayHeroImages();
+      document.querySelectorAll('.theme-toggle').forEach(function(b) {
+        b.innerHTML = nxt === 'dark' 
+          ? '<i class="fa-solid fa-sun" style="color: #F59E0B; transition: transform 0.4s ease;"></i>' 
+          : '<i class="fa-solid fa-moon" style="color: #4A5568; transition: transform 0.4s ease;"></i>';
+      });
+    };
+    window.toggleThemeMobile = window.toggleTheme;
+    var toggleTheme = window.toggleTheme;
+  </script>
+  <style>
+    html, html[data-theme="dark"], html[data-theme="dark"] body {
+      background-color: #151515 !important;
+      color: #FAF7F2 !important;
+    }
+    html[data-theme="light"], html[data-theme="light"] body {
+      background-color: #FAF7F2 !important;
+      color: #151515 !important;
+    }
+  
+/* CRITICAL ABOVE-THE-FOLD NAVBAR CSS (INSTANT ZERO-FOUC LOAD) */
+.hn-nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 64px !important;
+  padding: 10px 14px !important;
+  z-index: 10000 !important;
+  background: rgba(21, 21, 21, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-sizing: border-box !important;
+  transition: background-color 0.4s ease, border-color 0.4s ease !important;
+}
+html[data-theme="light"] .hn-nav {
+  background: rgba(250, 247, 242, 0.85) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+.hn-nav-inner {
+  max-width: 1340px !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
+}
+.hn-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.hn-logo img {
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain !important;
+}
+.hn-logo-text {
+  font-family: 'Open Sans', Arial, sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
+  color: #FAF7F2 !important;
+}
+html[data-theme="light"] .hn-logo-text {
+  color: #151515 !important;
+}
+.hn-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 22px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+@media (max-width: 1024px) {
+  .hn-links { display: none !important; }
+}
+.hn-links a {
+  font-family: 'Open Sans', Arial, sans-serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+html[data-theme="light"] .hn-links a {
+  color: rgba(21, 21, 21, 0.82) !important;
+}
+.hn-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+.nav-icon-btn, .theme-toggle, .lang-toggle-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #FAF7F2 !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  position: relative !important;
+}
+html[data-theme="light"] .nav-icon-btn,
+html[data-theme="light"] .theme-toggle,
+html[data-theme="light"] .lang-toggle-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #151515 !important;
+}
+.hamburger {
+  display: none !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 8px !important;
+}
+.hamburger span {
+  display: block !important;
+  width: 24px !important;
+  height: 2px !important;
+  background-color: #FAF7F2 !important;
+  transition: all 0.3s ease !important;
+}
+html[data-theme="light"] .hamburger span {
+  background-color: #151515 !important;
+}
+@media (max-width: 1024px) {
+  .hamburger { display: flex !important; }
+}
+
+</style>
+  
+  
+  
+  <script>
+    // Always load at the top of Home (NB 3 fix)
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    window.addEventListener('beforeunload', function () {
+      window.scrollTo(0, 0);
+    });
+    window.addEventListener('DOMContentLoaded', function () {
+      if (window.location.hash === '#destinations' || window.location.hash === '#destinationsPreview') {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+      }
+      window.scrollTo(0, 0);
+    });
+  </script>
+
+
+  <!-- High-Priority WebP Preloads (Only Existing Files on Hostinger) -->
+  <link rel="preload" as="image" href="hero-night.webp" type="image/webp" fetchpriority="high">
+  <link rel="preload" as="image" href="hero-kasbah-night-foreground.webp" type="image/webp" fetchpriority="high">
+  
+  <!-- Preconnect & Asynchronous Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"></noscript>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <!-- V15 DNS prefetch for external resources -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+
+<script id="dhm-instant-theme">
+    (function () {
+      try {
+        if (localStorage.getItem('dhm_default_v12') !== '1') {
+          localStorage.setItem('hm_theme', 'dark');
+          localStorage.setItem('hm_lang', 'en');
+          localStorage.setItem('dhm_default_v12', '1');
+        }
+        var t = localStorage.getItem('hm_theme') || 'dark';
+        var d = document.documentElement;
+        d.setAttribute('data-theme', t);
+        d.classList.add('no-theme-transition');
+        d.style.backgroundColor = (t === 'dark') ? '#151515' : '#FAF7F2';
+        d.style.colorScheme = (t === 'dark') ? 'dark' : 'light';
+        window.addEventListener('DOMContentLoaded', function () {
+          if (document.body) document.body.setAttribute('data-theme', t);
+          setTimeout(function () { d.classList.remove('no-theme-transition'); }, 120);
+        });
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script id="dhm-clean-urls">
+    (function () {
+      try {
+        var p = window.location.pathname;
+        if (p && p.length > 1 && p.endsWith('.html')) {
+          var clean = p.replace(/\.html$/i, '');
+          if (clean.toLowerCase().endsWith('/index')) clean = clean.slice(0, -6) || '/';
+          window.history.replaceState(null, document.title, clean + window.location.search + window.location.hash);
+        }
+      } catch (e) {}
+
+      var routeMap = {
+        '/about': 'about.html',
+        '/destinations': 'destinations.html',
+        '/map': 'map.html',
+        '/reviews': 'reviews.html',
+        '/contact': 'contact.html',
+        '/booking': 'booking.html',
+        '/favorites': 'favorites.html',
+        '/privacy-policy': 'privacy-policy.html',
+        '/terms-of-use': 'terms-of-use.html',
+        '/cookie-policy': 'cookie-policy.html',
+        '/testimonials': 'reviews.html'
+      };
+
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href');
+        if (!h) return;
+        if (h.startsWith('http://') || h.startsWith('https://') || h.startsWith('mailto:') || h.startsWith('tel:') || h.startsWith('#') || h.startsWith('javascript:')) return;
+        if (a.classList.contains('custom-tour-trigger') && typeof window.openCustomTourModal === 'function') return;
+        var cleanPath = h.split('?')[0].split('#')[0];
+        if (routeMap[cleanPath]) {
+          e.preventDefault();
+          var q = h.indexOf('?') !== -1 ? '?' + h.split('?')[1].split('#')[0] : '';
+          var hash = h.indexOf('#') !== -1 ? '#' + h.split('#')[1] : '';
+          window.location.href = routeMap[cleanPath] + q + hash;
+        }
+      }, true);
+
+      // Auto-fallback for images: if requested under images/ but file is in root, auto-switch to root file
+      window.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG') {
+          var src = t.getAttribute('src');
+          if (src && src.includes('/') && !t.dataset.imgFallback) {
+            t.dataset.imgFallback = '1';
+            var file = src.split('?')[0].split('/').pop();
+            t.src = file;
+          }
+        }
+      }, true);
+
+      function updateLangDisplay(l) {
+        var code = (l || 'en').toLowerCase();
+        var txt = (code === 'es') ? 'Esp' : (code === 'fr' ? 'FR' : 'EN');
+        document.querySelectorAll('.lang-cur-text, #langCurText').forEach(function (b) {
+          b.textContent = txt;
+        });
+      }
+
+      try {
+        var savedL = localStorage.getItem('hm_lang') || 'en';
+        window.addEventListener('DOMContentLoaded', function () {
+          updateLangDisplay(savedL);
+        });
+      } catch (e) {}
+    })();
+  </script>
+<script>
     (function () {
       try {
         var p = window.location.pathname;
@@ -20,9 +335,9 @@
   </script>
       <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+    
+    
+    <noscript></noscript>
 
   <noscript></noscript>
   
@@ -31,8 +346,8 @@
   <meta name="google-adsense-account" content="ca-pub-3909226124363434">
   <meta name="p:domain_verify" content="1b437fcad847c5499e896ed22f8f59a7" />
   <meta name="facebook-domain-verification" content="1o6nicbyef1q3ukhzrju1uhfwc0pro" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
   <title>Hidden Morocco — Discover Extraordinary Authentic Journeys</title>
   <meta name="description"
     content="Boutique Moroccan travel agency. Private tours across imperial cities, Sahara desert, Atlas mountains, and the Atlantic coast.">
@@ -55,11 +370,9 @@
   <meta name="twitter:image" content="https://discoverhiddenmorocco.com/images/hero.jpg">
 
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="theme.css?v=20261014_v11">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="setTimeout(()=>{this.media='all'},300)">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <noscript></noscript>
     <style>
     .leaflet-control-attribution,
     .leaflet-control-attribution * {
@@ -186,34 +499,17 @@
       gap: 10px;
     }
 
-    .lang-switcher {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      padding: 7px 10px;
-      border-radius: 99px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s;
-      outline: none;
-    }
-
-    .hn-nav.glass-nav .lang-switcher {
-      background: var(--hm-bg-card-hover);
-      border-color: var(--hm-border);
-      color: var(--hm-text-body);
-    }
-
     .nav-icon-btn {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      max-width: 38px;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.3);
       background: rgba(255, 255, 255, 0.1);
       color: rgba(255, 255, 255, 0.9);
       font-size: 1rem;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -221,17 +517,86 @@
       transition: all 0.25s;
       position: relative;
       flex-shrink: 0;
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
     }
 
     .nav-icon-btn:hover {
       background: rgba(255, 255, 255, 0.25);
       color: #fff;
+      transform: translateY(-1px);
     }
 
     .hn-nav.glass-nav .nav-icon-btn {
       border-color: var(--hm-border);
       background: var(--hm-bg-card-hover);
       color: var(--hm-text-heading);
+    }
+
+    /* Language Button 38px Circular (Exact match to theme-toggle with centered EN / FR / Esp) */
+    .lang-btn {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .lang-cur-text {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #E7A93C;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Open Sans", sans-serif;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+
+    .lang-btn:hover .lang-cur-text {
+      color: #FFFFFF;
+      transform: scale(1.1);
+    }
+
+    .hn-nav.glass-nav .lang-cur-text {
+      color: #C85A32;
+    }
+
+    .hn-nav.glass-nav .lang-btn:hover .lang-cur-text {
+      color: #E7A93C;
+    }
+
+    .lang-btn .lang-switcher {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      border-radius: 50%;
+      -webkit-appearance: none;
+      appearance: none;
+      z-index: 5;
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+    }
+
+    .lang-btn .lang-switcher option {
+      background: #1E1E1E;
+      color: #F8FAFC;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 8px 12px;
+    }
+
+    [data-theme="light"] .lang-btn .lang-switcher option {
+      background: #FFFFFF;
+      color: #0F172A;
     }
 
     .fav-count-badge {
@@ -380,7 +745,7 @@
       background: linear-gradient(135deg, #FFFFFF 0%, #FAF7F2 35%, #F0BE86 70%, #E06D53 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.75));
+      filter: drop-shadow(0 10px 22px rgba(200, 90, 50, 0.30)) drop-shadow(0 22px 44px rgba(231, 169, 60, 0.22));
       letter-spacing: -0.5px;
       padding-right: 6px;
     }
@@ -2083,11 +2448,337 @@ p, a, button, input, select, textarea, label,
 .story-text h2, .story-text p, .story-stat-val,
 .card-header-block h2, .card-header-block p,
 .dest-clean-header h1, .dest-clean-header p,
-.destination-article, .destination-article * {
+.destination-article, .destination-article *:not(.fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], i) {
   font-family: 'Open Sans', Arial, sans-serif !important;
 }
 
-  </style>
+  
+    /* ==============================================================================
+       HERO 3D DEPTH KASBAH STACK & CINEMATIC SLIDE-DOWN (BBC EARTH AFRICA STYLE)
+       ============================================================================== */
+    .hero-section {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .hero-bg picture,
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      display: block;
+    }
+
+    .hero-sky-tint {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, 
+        rgba(0,0,0,0.32) 0%, 
+        rgba(0,0,0,0.06) 40%, 
+        rgba(0,0,0,0) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Layer 2: Animated Title Layer (between bg and kasbah foreground) */
+    .hero-stage-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: clamp(195px, 35vh, 320px) !important;
+      z-index: 3;
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+
+    /* Hero Title Animation enabled */
+    .hero-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
+  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  will-change: transform, opacity !important;
+  filter: none !important;
+}
+
+    /* DISCOVER - Bolder & clearer ("bynha chwiya ghladha ghir chwiya") */
+    .hero-eyebrow-discover {
+      display: block;
+      font-family: 'Open Sans', Arial, sans-serif !important;
+      font-weight: 700 !important;
+      font-size: clamp(1.05rem, 2.1vw, 1.5rem) !important;
+      color: #FFFFFF !important;
+      letter-spacing: clamp(12px, 1.8vw, 20px) !important;
+      text-indent: clamp(12px, 1.8vw, 20px) !important;
+      text-transform: uppercase !important;
+      margin-bottom: 8px !important;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.85) !important;
+      opacity: 1 !important;
+    }
+
+    /* Clean Hero styles handled in theme.css?v=20261025_v38 */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HERO 3D DEPTH + SLOW CINEMATIC DAY/NIGHT TRANSITION (EMBEDDED)
+   ══════════════════════════════════════════════════════════════════════════ */
+@keyframes heroSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-115px);
+    filter: none;
+  }
+  30% {
+    opacity: 0.6;
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-25px);
+    filter: none;
+  }
+}
+html body .hero-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
+  transform: translateY(-25px) !important;
+  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  will-change: transform, opacity !important;
+  filter: none !important;
+}
+
+@media (max-width: 768px) {
+  html body .hero-stage-container {
+    padding-top: clamp(140px, 22vh, 180px) !important;
+  }
+  html body .hero-word-hidden,
+  html body .hero-word-morocco {
+    font-size: clamp(2.5rem, 10.5vw, 3.6rem) !important;
+    line-height: 0.92 !important;
+  }
+  html body .hero-eyebrow-discover {
+    font-size: 0.82rem !important;
+    letter-spacing: 7px !important;
+    text-indent: 7px !important;
+    margin-bottom: 6px !important;
+  }
+  html body .hero-title-group {
+    transform: translateY(-12px) !important;
+  }
+}
+
+
+.hero-pic-day, .hero-pic-night, .hero-fg-pic-day, .hero-fg-pic-night {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+
+.hero-img-day,
+.hero-img-night,
+.hero-fg-day,
+.hero-fg-night {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center 35% !important;
+  display: block !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+/* Day layer stays rock-solid underneath (z-index 1 for bg, 4 for fg) */
+.hero-img-day {
+  z-index: 1 !important;
+  opacity: 1 !important;
+}
+.hero-fg-day {
+  z-index: 4 !important;
+  opacity: 1 !important;
+}
+
+/* Night layer smoothly crossfades ON TOP with 1.2s cinematic transition */
+.hero-img-night {
+  z-index: 2 !important;
+  opacity: 0 !important;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity !important;
+}
+.hero-fg-night {
+  z-index: 5 !important;
+  opacity: 0 !important;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity !important;
+}
+
+/* Dark Mode: Night layers fade IN smoothly to 1.0 */
+html[data-theme="dark"] .hero-img-night,
+body[data-theme="dark"] .hero-img-night,
+html[data-theme="dark"] .hero-fg-night,
+body[data-theme="dark"] .hero-fg-night {
+  opacity: 1 !important;
+}
+
+/* Global smooth transition on theme switch */
+body, .site-header, nav, .glass-panel, .card, footer {
+  transition: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease !important;
+}
+
+/* Theme toggle icon spin & bounce animation */
+.theme-toggle i {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.4s ease !important;
+}
+.theme-toggle:hover i {
+  transform: rotate(45deg) scale(1.15) !important;
+}
+
+/* Title Lighting transition between Day & Night */
+.hero-title-group,
+.hero-word-hidden,
+.hero-word-morocco,
+.hero-eyebrow-discover {
+  transition: color 1.5s ease, text-shadow 1.5s ease, filter 1.5s ease !important;
+}
+
+html[data-theme="dark"] .hero-word-hidden,
+html[data-theme="dark"] .hero-word-morocco,
+body[data-theme="dark"] .hero-word-hidden,
+body[data-theme="dark"] .hero-word-morocco {
+  color: #FFFFFF !important;
+  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+}
+
+
+/* ==============================================================================
+   PHOTO 1 EXACT HERO TITLE SPECIFICATION (HARD-LOCKED IN HTML HEAD)
+   ============================================================================== */
+html body .hero-stage-container {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding-top: clamp(195px, 35vh, 320px) !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+}
+
+html body .hero-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
+  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  will-change: transform, opacity !important;
+  filter: none !important;
+}
+
+html body .hero-eyebrow-discover {
+  display: block !important;
+  font-family: 'Open Sans', Arial, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(0.95rem, 1.8vw, 1.3rem) !important;
+  letter-spacing: clamp(12px, 1.8vw, 18px) !important;
+  text-indent: clamp(12px, 1.8vw, 18px) !important;
+  text-transform: uppercase !important;
+  color: #FFFFFF !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.85) !important;
+}
+
+html body .hero-title-depth {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  margin: 0 !important;
+}
+
+html body .hero-word-hidden,
+html body .hero-word-morocco {
+  display: block !important;
+  font-family: 'Open Sans', Arial, sans-serif !important;
+  font-weight: 800 !important;
+  font-size: clamp(3.7rem, 9.6vw, 6.8rem) !important;
+  line-height: 0.88 !important;
+  letter-spacing: clamp(4px, 1.1vw, 10px) !important;
+  text-indent: clamp(4px, 1.1vw, 10px) !important;
+  text-transform: uppercase !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+}
+
+html body .hero-word-morocco {
+  margin-top: 4px !important;
+}
+
+/* Foreground Kasbah Layer */
+html body .hero-kasbah-fg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 4 !important;
+  pointer-events: none !important;
+}
+
+html body .hero-kasbah-fg img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center 35% !important;
+  display: block !important;
+}
+
+</style>
+  
+  <!-- Non-Blocking Asynchronous Theme CSS (Critical Navbar & Hero are inlined) -->
+  <link rel="stylesheet" href="theme.css?v=20261025_v38" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="theme.css?v=20261025_v38"></noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+  <noscript></noscript>
+
+  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" media="print" onload="this.media='all'">
 </head>
 
 <body class="page-home">
@@ -2096,19 +2787,20 @@ p, a, button, input, select, textarea, label,
 
   <!-- Navigation -->
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
+  <!-- HEADER / NAVBAR -->
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a href="index.html" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async"><span
+      <a href="/" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async" loading="lazy"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
 
       <ul class="hn-links" id="navLinks">
-        <li><a href="index.html" class="active" data-i18n="nav_home">Home</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
-        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
-        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/" class="active" data-i18n="nav_home">Home</a></li>
+        <li><a href="/about" data-i18n="nav_about">About Us</a></li>
+        <li><a href="/destinations" data-i18n="nav_destinations">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger" onclick="window.openCustomTourModal && window.openCustomTourModal(); return false;" data-i18n="nav_customize">Customize Tour</a></li>
+        <li><a href="/map" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="/reviews" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/contact" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
@@ -2117,98 +2809,64 @@ p, a, button, input, select, textarea, label,
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="es">ES</option>
               </select>
             </div>
-            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
-              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+            <button class="setting-icon-item theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle-icon"><i class="fa-solid fa-sun" style="color: #F59E0B;"></i></span>
             </button>
-            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
+            <a href="/favorites" class="setting-icon-item wishlist-item" aria-label="Wishlist">
               <i class="fa-regular fa-heart"></i>
+              <span class="wishlist-badge">0</span>
             </a>
           </div>
         </li>
-
-        <!-- Customize My Tour Button -->
-        <li class="mobile-only-cta">
-          <a href="#" class="mobile-book-btn custom-tour-trigger">
-            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </li>
       </ul>
 
-      <div class="hn-nav-actions">
-        <div class="lang-wrapper">
-          <i class="fa-solid fa-globe lang-icon"></i>
-          <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
-          </select>
+            <div class="hn-actions">
+        <!-- Luxury Language Dropdown -->
+        <div class="lang-dropdown-wrapper" id="langDropdownWrapper">
+          <button type="button" class="lang-toggle-btn" id="langToggleBtn" onclick="window.toggleLangMenu(event)" aria-label="Select Language" aria-expanded="false">
+            <span class="lang-current-code" id="langCurText">EN</span>
+            <i class="fa-solid fa-chevron-down lang-chevron"></i>
+          </button>
+          <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu">
+            <button type="button" class="lang-dropdown-item is-selected" data-lang="en" onclick="window.selectAppLanguage('en', event)">
+              <span class="lang-item-flag">🇬🇧</span>
+              <span class="lang-item-name">English</span>
+              <span class="lang-item-code">EN</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="fr" onclick="window.selectAppLanguage('fr', event)">
+              <span class="lang-item-flag">🇫🇷</span>
+              <span class="lang-item-name">Français</span>
+              <span class="lang-item-code">FR</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="es" onclick="window.selectAppLanguage('es', event)">
+              <span class="lang-item-flag">🇪🇸</span>
+              <span class="lang-item-name">Español</span>
+              <span class="lang-item-code">Esp</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+          </div>
         </div>
 
-        <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme">
-          <i class="fa-solid fa-moon"></i>
+        <!-- Mode Sombre / Claire Toggle Button -->
+        <button class="nav-icon-btn theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme" title="Toggle Theme">
+          <i class="fa-solid fa-sun" style="color: #F59E0B;"></i>
         </button>
 
-        <a href="favorites.html" class="nav-icon-btn" aria-label="Wishlist">
+        <!-- Wishlist / Favorites Button -->
+        <a href="/favorites" class="nav-icon-btn nav-fav-btn" aria-label="Favorites" title="Favorites">
           <i class="fa-regular fa-heart"></i>
-          <span class="fav-count-badge">0</span>
+          <span class="fav-count-badge" id="favCountBadge">0</span>
         </a>
 
-        <button class="hamburger" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -2217,54 +2875,75 @@ p, a, button, input, select, textarea, label,
 
   <!-- Main Content Wrapper -->
   <main class="site-main">
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <!-- Hero Section (Photo 1 Split Frosted-Glass + Knockout Typography Design) -->
+    <!-- Hero Section (3D Depth Kasbah Fortress Stack — BBC Earth Africa Inspired) -->
+    <!-- Hero Section (3D Depth Kasbah Fortress Stack — BBC Earth Africa Inspired) -->
+    <section class="hero-section" id="heroSection">
+            <!-- Layer 1: Background image & sky tint (100% STATIC & FIXED) -->
       <div class="hero-bg">
-        <picture class="hero-picture">
-          <source media="(max-width: 768px)" srcset="images/hero-mobile.jpg">
-          <source media="(min-width: 769px)" srcset="images/hero.jpg">
-          <img src="images/hero-mobile.jpg" alt="Morocco Desert Kasbah - Ait Benhaddou" fetchpriority="high" width="1920" height="1080" decoding="async">
+        <picture class="hero-pic-day" id="heroPicDay">
+          <source type="image/webp" data-srcset="hero.webp">
+          <img class="hero-img-day" data-src="hero.jpg" alt="Morocco Desert Kasbah" width="1920" height="1238" loading="lazy" decoding="async">
         </picture>
-        <div class="hero-overlay"></div>
+        <picture class="hero-pic-night">
+          <source type="image/webp" srcset="hero-night.webp">
+          <img class="hero-img-night" src="hero-night.jpg" onerror="this.onerror=null;this.src='images/hero-night.jpg';" alt="Morocco Desert Kasbah Night" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
+        </picture>
+      </div>
+      <div class="hero-sky-tint" aria-hidden="true"></div>
+
+      <!-- Layer 2: Animated Title Layer (ONLY THIS ANIMATES ON LOAD/REFRESH) -->
+      <div class="hero-stage-container">
+        <div class="hero-title-group">
+          <span class="hero-eyebrow-discover" data-i18n="hero_eyebrow">DISCOVER</span>
+          <h1 class="hero-title-depth">
+            <span class="hero-word-hidden" data-i18n="hero_word_1">HIDDEN</span>
+            <span class="hero-word-morocco" data-i18n="hero_word_2">MOROCCO</span>
+          </h1>
+        </div>
       </div>
 
-      <div class="hero-content">
-        <div class="hero-eyebrow">✦ MOROCCO'S BOUTIQUE PRIVATE EXPEDITIONS ✦</div>
+            <!-- Layer 3: Kasbah Foreground Mask (100% STATIC & FIXED) -->
+      <div class="hero-kasbah-fg" aria-hidden="true">
+        <picture class="hero-fg-pic-day" id="heroPicDayFg">
+          <source type="image/webp" data-srcset="hero-kasbah-foreground.webp">
+          <img class="hero-fg-day" data-src="hero-kasbah-foreground.png" alt="" width="1920" height="1238" loading="lazy" decoding="async">
+        </picture>
+        <picture class="hero-fg-pic-night">
+          <source type="image/webp" srcset="hero-kasbah-night-foreground.webp">
+          <img class="hero-fg-night" src="hero-kasbah-night-foreground.png" onerror="this.onerror=null;this.src='images/hero-kasbah-night-foreground.png';" alt="" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
+        </picture>
+      </div>
+      </div>
+      <!-- Atmospheric Depth Overlay (100% STATIC & FIXED) -->
+      <div class="hero-global-overlay" aria-hidden="true"></div>
 
-        <h1 class="hero-title">
-          <span class="hero-title-discover">Discover</span>
-          <span class="hero-title-hidden">Hidden Morocco</span>
-        </h1>
+      <!-- Bottom-Right Frosted Glass Navigation Arrows -->
+      <div class="hero-corner-arrows">
+        <a href="/map" class="hca-btn" aria-label="Interactive Map" title="Interactive Map">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <a href="/destinations" class="hca-btn" aria-label="Explore Destinations" title="Explore Destinations">
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
 
-        <span class="hero-gold-line"></span>
-
-        <p class="hero-subtitle">
+      <!-- Layer 4: Interactive Subtitle, Link & Search (STRICTLY AT BOTTOM - NO OVERLAP) -->
+      <div class="hero-interactive-ui">
+        <p class="hero-subtitle" data-i18n="hero_sub">
           Uncover secret riads, vast Sahara dunes, and authentic cultural journeys tailored exclusively for you.
         </p>
-
-        <!-- Ultra-Luxury Search Bar -->
-        <div class="hero-search">
-          <span class="hero-search-icon"><i class="fa-solid fa-compass"></i></span>
-          <input type="text" id="heroSearchInput"
-            autocomplete="off">
-          <a href="destinations.html" class="hero-search-btn">
-            <span>Search</span> &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </div>
-
-        <div style="margin-top: 20px;">
-          <button type="button" class="btn-primary custom-tour-trigger"
-            style="padding: 13px 28px; font-size: 0.95rem; background: linear-gradient(135deg, #E7A93C 0%, #C85A32 100%) !important; box-shadow: 0 8px 25px rgba(231, 169, 60, 0.4) !important;">
-            Customize My Tour
-          </button>
-        </div>
+        <a href="#" class="hero-customize-link custom-tour-trigger" data-i18n="hero_cta_link">
+          LEARN ABOUT &amp; CUSTOMIZE YOUR MOROCCO TOUR &nbsp;<i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <form class="hero-search-card" action="destinations.html" method="get">
+          <i class="fa-solid fa-compass"></i>
+          <input type="text" id="heroSearchInput" name="q" placeholder="Where to? e.g. Sahara, Chefchaouen, Marrakech..." autocomplete="off">
+          <button type="submit" class="hero-search-submit-btn">Explore Destinations</button>
+        </form>
       </div>
 
-      <div class="scroll-indicator"
-        onclick="document.getElementById('featuresBar').scrollIntoView({behavior:'smooth'})">
-        <span>Scroll</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
+      
     </section>
 
     <!-- Features Bar (dark strip) -->
@@ -2330,7 +3009,7 @@ p, a, button, input, select, textarea, label,
         <div class="story-welcome-inner">
           <!-- Left Column: Riad Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/Marrakech/Marrakech.jpg" alt="Moroccan Riad Architecture & Ambiance" class="story-img" loading="lazy" width="800" height="533" decoding="async">
+            <img src="Marrakech.jpg" onerror="this.onerror=null;this.src='hero.jpg';" alt="Moroccan Riad Architecture & Ambiance" class="story-img" loading="lazy" width="800" height="533" decoding="async">
             <div class="story-img-badge">
               <i class="fa-solid fa-gem"></i>
               <span>100% Private Expeditions</span>
@@ -2343,6 +3022,7 @@ p, a, button, input, select, textarea, label,
               Morocco is not just a destination.<br>
               <span class="story-feeling-text">It's a feeling.</span>
             </h2>
+            <div class="moroccan-divider" style="max-width: 320px; margin: 14px auto 18px auto;"></div>
             <p class="story-paragraph">
               We are a team of passionate Moroccan guides and storytellers dedicated to showing you the kingdom beyond
               the
@@ -2367,7 +3047,7 @@ p, a, button, input, select, textarea, label,
               </div>
             </div>
 
-            <a href="about.html" class="btn-story-cta">
+            <a href="/about" class="btn-story-cta">
               Discover Our Story &nbsp;<i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -2383,6 +3063,7 @@ p, a, button, input, select, textarea, label,
         <div class="section-header">
           <span class="badge badge-gold" style="margin-bottom: 14px;">✦ Experience Categories</span>
           <h2>Ways to Experience Morocco</h2>
+        <div class="moroccan-divider"></div>
           <p>From silent desert dunes to vibrant imperial medinas, discover the diverse experiences waiting for you.</p>
         </div>
 
@@ -2390,7 +3071,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 1: Sahara Desert -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Merzouga/merzouga_1.jpg" alt="Sahara Desert Expedition" loading="lazy" width="600" height="400" decoding="async">
+              <img src="merzouga_1.jpg" onerror="this.onerror=null;this.src='hero.jpg';" alt="Sahara Desert Expedition" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-gold exp-cat-badge">Desert &amp; Dunes</span>
             </div>
             <div class="exp-cat-body">
@@ -2405,7 +3086,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 2: Imperial Medinas -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/marrakech_11.jpg" alt="Imperial Medinas &amp; Culture" loading="lazy" width="600" height="400" decoding="async">
+              <img src="marrakech_11.jpg" onerror="this.onerror=null;this.src='Marrakech.jpg';" alt="Imperial Medinas &amp; Culture" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-terracotta exp-cat-badge">Cultural Heritage</span>
             </div>
             <div class="exp-cat-body">
@@ -2420,7 +3101,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 3: Atlas Mountains -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Marrakech/imlil_1.jpg" alt="Atlas Mountains &amp; Treks" loading="lazy" width="600" height="400" decoding="async">
+              <img src="imlil_1.jpg" onerror="this.onerror=null;this.src='hero.jpg';" alt="Atlas Mountains &amp; Treks" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-gold exp-cat-badge">Mountain Treks</span>
             </div>
             <div class="exp-cat-body">
@@ -2436,7 +3117,7 @@ p, a, button, input, select, textarea, label,
           <!-- Category 4: Coastal Escapes -->
           <div class="exp-cat-card">
             <div class="exp-cat-img">
-              <img src="images/Essaouira/essaouira_1.jpg" alt="Atlantic Coastal Escapes" loading="lazy" width="600" height="400" decoding="async">
+              <img src="essaouira_1.jpg" onerror="this.onerror=null;this.src='hero.jpg';" alt="Atlantic Coastal Escapes" loading="lazy" width="600" height="400" decoding="async">
               <span class="badge badge-terracotta exp-cat-badge">Coastal Escape</span>
             </div>
             <div class="exp-cat-body">
@@ -2451,7 +3132,7 @@ p, a, button, input, select, textarea, label,
         </div>
 
         <div style="text-align: center; margin-top: 56px;">
-          <a href="destinations.html" class="btn-primary" style="padding: 14px 36px; font-size: 1rem;">
+          <a href="/destinations" class="btn-primary" style="padding: 14px 36px; font-size: 1rem;">
             View Full Destinations Catalog &nbsp;<i class="fa-solid fa-compass"></i>
           </a>
         </div>
@@ -2469,6 +3150,7 @@ p, a, button, input, select, textarea, label,
               Create Your Dream Trip With<br>
               <span class="story-feeling-text">Customize My Tour</span>
             </h2>
+            <div class="moroccan-divider" style="max-width: 320px; margin: 14px auto 18px auto;"></div>
             <p class="story-desc">
               Prefer a custom itinerary instead of a pre-set tour? Handpick your favorite imperial cities, Sahara desert
               camps, travel style, activities, accommodation, and transportation in 9 simple steps.
@@ -2503,7 +3185,7 @@ p, a, button, input, select, textarea, label,
 
           <!-- Right Column: Visual & Badge -->
           <div class="story-img-wrapper">
-            <img src="images/hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy" width="800" height="533" decoding="async">
+            <img src="hero.jpg" alt="Customize Your Tour - Morocco Expedition" class="story-img" loading="lazy" width="800" height="533" decoding="async">
             <div class="story-img-badge">
               <i class="fa-solid fa-sliders"></i>
               <span>100% Tailor-Made</span>
@@ -2519,9 +3201,10 @@ p, a, button, input, select, textarea, label,
           <div class="map-text">
             <span class="badge badge-gold">🧭 Interactive Exploration</span>
             <h2>Explore Morocco on an Interactive Map</h2>
+            <div class="moroccan-divider" style="max-width: 320px; margin: 14px auto 20px auto;"></div>
             <p>Plan your route effortlessly. Locate imperial cities, Sahara dunes, and coastal hideaways on our custom
               spatial map — click any pin for details.</p>
-            <a href="map.html" class="btn-primary">
+            <a href="/map" class="btn-primary">
               Open Fullscreen Map &nbsp;<i class="fa-solid fa-map"></i>
             </a>
           </div>
@@ -2535,6 +3218,7 @@ p, a, button, input, select, textarea, label,
           <span class="badge badge-terracotta" style="margin-bottom: 14px;" data-i18n="why_title">✦ Why Hidden
             Morocco?</span>
           <h2>Every Detail. Perfectly Crafted.</h2>
+        <div class="moroccan-divider"></div>
           <p data-i18n="why_sub">Handcrafted boutique private journeys tailored to your rhythm.</p>
         </div>
         <div class="why-grid">
@@ -2570,7 +3254,7 @@ p, a, button, input, select, textarea, label,
           <blockquote class="desert-quote-text">
             "Not all those who wander are lost — some are discovering Morocco."
           </blockquote>
-          <a href="destinations.html" class="btn-quote-cta">Start Your Journey</a>
+          <a href="/destinations" class="btn-quote-cta">Start Your Journey</a>
         </div>
       </section>
 
@@ -2579,13 +3263,14 @@ p, a, button, input, select, textarea, label,
         <div class="section-header">
           <span class="badge badge-gold" style="margin-bottom: 14px;">★ Real Stories</span>
           <h2>Traveler Reviews</h2>
+        <div class="moroccan-divider"></div>
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
         <div class="reviews-grid" id="homeReviewsGrid">
-          <!-- Rendered dynamically via script.js?v=20261014_v11 -->
+          <!-- Rendered dynamically via script.js?v=20261025_v38 -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
-          <a href="reviews.html" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="/reviews" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
         </div>
       </section>
 
@@ -2593,8 +3278,9 @@ p, a, button, input, select, textarea, label,
       <section class="cta-banner">
         <div class="cta-banner-inner">
           <h2>Ready to Discover Hidden Morocco?</h2>
+        <div class="moroccan-divider"></div>
           <p>Let us craft your perfect Moroccan adventure — fully private, fully tailored to you.</p>
-          <a href="booking.html" class="btn-cta-white">
+          <a href="/booking" class="btn-cta-white">
             <i class="fa-solid fa-compass"></i> Plan My Journey
           </a>
         </div>
@@ -2605,7 +3291,7 @@ p, a, button, input, select, textarea, label,
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="hn-logo" style="margin-bottom: 18px;">
+        <a href="/" class="hn-logo" style="margin-bottom: 18px;">
           <img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" loading="lazy" decoding="async">
           <span class="hn-logo-text">Discover Hidden Morocco</span>
         </a>
@@ -2642,12 +3328,12 @@ p, a, button, input, select, textarea, label,
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="map.html">Interactive Map</a></li>
-          <li><a href="reviews.html">Reviews</a></li>
-          <li><a href="booking.html">Book Expedition</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
-          <li><a href="favorites.html">My Wishlist</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/map">Interactive Map</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/booking">Book Expedition</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/favorites">My Wishlist</a></li>
         </ul>
       </div>
 
@@ -2673,13 +3359,52 @@ p, a, button, input, select, textarea, label,
     <div class="footer-bottom">
       <p>© 2026 Discover Hidden Morocco. All Rights Reserved. Crafted in Marrakech.</p>
       <div class="footer-bottom-links">
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-use.html">Terms of Use</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="/cookie-policy">Cookie Policy</a>
       </div>
     </div>
   </footer>
-<script src="script.js?v=20261014_v11" defer></script>
+
+  <script id="dhm-knockout-align">
+    (function () {
+      function align() {
+        var hero = document.getElementById('heroSection');
+        if (!hero) return;
+        var img = hero.querySelector('.hero-bg img');
+        if (!img || !img.naturalWidth) return;
+        var src = img.currentSrc || img.src;
+        var hr = hero.getBoundingClientRect();
+        var scale = Math.max(hr.width / img.naturalWidth, hr.height / img.naturalHeight);
+        var w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+        var ox = (hr.width - w) / 2, oy = (hr.height - h) / 2;
+        hero.querySelectorAll('.hero-word-knockout').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          var x = ox - (r.left - hr.left), y = oy - (r.top - hr.top);
+          el.style.setProperty('background-image', 'linear-gradient(rgba(12,7,3,0.30), rgba(12,7,3,0.30)), url("' + src + '")', 'important');
+          el.style.setProperty('background-size', '100% 100%, ' + w + 'px ' + h + 'px', 'important');
+          el.style.setProperty('background-position', '0 0, ' + x + 'px ' + y + 'px', 'important');
+          el.classList.add('dhm-aligned');
+        });
+      }
+      function run() { align(); setTimeout(align, 400); setTimeout(align, 1400); }
+      window.addEventListener('load', run);
+      window.addEventListener('resize', align);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+      document.addEventListener('DOMContentLoaded', function () {
+        var img = document.querySelector('#heroSection .hero-bg img');
+        if (img) { if (img.complete) run(); else img.addEventListener('load', run); }
+      });
+    })();
+  </script>
+<script src="script.js?v=20261025_v38" defer></script>
+<script id="dhm-crossfade-trigger">
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".theme-toggle") || e.target.closest(".theme-item")) {
+      document.body.classList.add("theme-crossfade");
+    }
+  });
+</script>
 </body>
 
 </html>

@@ -1,8 +1,145 @@
-<!DOCTYPE html>
-<html lang="fr">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
 <head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <script>
+    (function() {
+      var saved = localStorage.getItem('hm_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      document.documentElement.style.backgroundColor = saved === 'dark' ? '#151515' : '#FAF7F2';
+    })();
+    window._lastThemeToggle = 0;
+    window.toggleTheme = function(e) {
+      if (e) { try { e.preventDefault(); e.stopPropagation(); } catch(err){} }
+      var now = Date.now();
+      if (window._lastThemeToggle && (now - window._lastThemeToggle < 350)) return;
+      window._lastThemeToggle = now;
+
+      var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      var nxt = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nxt);
+      if (document.body) document.body.setAttribute('data-theme', nxt);
+      try { localStorage.setItem('hm_theme', nxt); } catch(err){}
+      if (typeof AppState !== 'undefined') AppState.theme = nxt;
+      document.querySelectorAll('.theme-toggle').forEach(function(b) {
+        b.innerHTML = nxt === 'dark' 
+          ? '<i class="fa-solid fa-sun" style="color: #F59E0B; transition: transform 0.4s ease;"></i>' 
+          : '<i class="fa-solid fa-moon" style="color: #4A5568; transition: transform 0.4s ease;"></i>';
+      });
+    };
+    window.toggleThemeMobile = window.toggleTheme;
+    var toggleTheme = window.toggleTheme;
+  </script>
+  <style>
+    html, html[data-theme="dark"], html[data-theme="dark"] body {
+      background-color: #151515 !important;
+      color: #FAF7F2 !important;
+    }
+    html[data-theme="light"], html[data-theme="light"] body {
+      background-color: #FAF7F2 !important;
+      color: #151515 !important;
+    }
+  </style>
+  
+  
+  
+  <script id="dhm-instant-theme">
+    (function () {
+      try {
+        if (localStorage.getItem('dhm_default_v12') !== '1') {
+          localStorage.setItem('hm_theme', 'dark');
+          localStorage.setItem('hm_lang', 'en');
+          localStorage.setItem('dhm_default_v12', '1');
+        }
+        var t = localStorage.getItem('hm_theme') || 'dark';
+        var d = document.documentElement;
+        d.setAttribute('data-theme', t);
+        d.classList.add('no-theme-transition');
+        d.style.backgroundColor = (t === 'dark') ? '#151515' : '#FAF7F2';
+        d.style.colorScheme = (t === 'dark') ? 'dark' : 'light';
+        window.addEventListener('DOMContentLoaded', function () {
+          if (document.body) document.body.setAttribute('data-theme', t);
+          setTimeout(function () { d.classList.remove('no-theme-transition'); }, 120);
+        });
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <script id="dhm-clean-urls">
+    (function () {
+      try {
+        var p = window.location.pathname;
+        if (p && p.length > 1 && p.endsWith('.html')) {
+          var clean = p.replace(/\.html$/i, '');
+          if (clean.toLowerCase().endsWith('/index')) clean = clean.slice(0, -6) || '/';
+          window.history.replaceState(null, document.title, clean + window.location.search + window.location.hash);
+        }
+      } catch (e) {}
+
+      var routeMap = {
+        '/about': 'about.html',
+        '/destinations': 'destinations.html',
+        '/map': 'map.html',
+        '/reviews': 'reviews.html',
+        '/contact': 'contact.html',
+        '/booking': 'booking.html',
+        '/favorites': 'favorites.html',
+        '/privacy-policy': 'privacy-policy.html',
+        '/terms-of-use': 'terms-of-use.html',
+        '/cookie-policy': 'cookie-policy.html',
+        '/testimonials': 'reviews.html'
+      };
+
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href');
+        if (!h) return;
+        if (h.startsWith('http://') || h.startsWith('https://') || h.startsWith('mailto:') || h.startsWith('tel:') || h.startsWith('#') || h.startsWith('javascript:')) return;
+        if (a.classList.contains('custom-tour-trigger') && typeof window.openCustomTourModal === 'function') return;
+        var cleanPath = h.split('?')[0].split('#')[0];
+        if (routeMap[cleanPath]) {
+          e.preventDefault();
+          var q = h.indexOf('?') !== -1 ? '?' + h.split('?')[1].split('#')[0] : '';
+          var hash = h.indexOf('#') !== -1 ? '#' + h.split('#')[1] : '';
+          window.location.href = routeMap[cleanPath] + q + hash;
+        }
+      }, true);
+
+      // Auto-fallback for images: if requested under images/ but file is in root, auto-switch to root file
+      window.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG') {
+          var src = t.getAttribute('src');
+          if (src && src.includes('/') && !t.dataset.imgFallback) {
+            t.dataset.imgFallback = '1';
+            var file = src.split('?')[0].split('/').pop();
+            t.src = file;
+          }
+        }
+      }, true);
+
+      function updateLangDisplay(l) {
+        var code = (l || 'en').toLowerCase();
+        var txt = (code === 'es') ? 'Esp' : (code === 'fr' ? 'FR' : 'EN');
+        document.querySelectorAll('.lang-cur-text, #langCurText').forEach(function (b) {
+          b.textContent = txt;
+        });
+      }
+
+      try {
+        var savedL = localStorage.getItem('hm_lang') || 'en';
+        window.addEventListener('DOMContentLoaded', function () {
+          updateLangDisplay(savedL);
+        });
+      } catch (e) {}
+    })();
+  </script>
+<script>
     (function () {
       try {
         var p = window.location.pathname;
@@ -46,13 +183,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap"></noscript>
+    <noscript></noscript>
   <!-- Swiper CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-<style>
+  
+  
+  <style>
 /* ==============================================================================
    CLEAN LUXURY EDITORIAL TYPOGRAPHY - ZERO GAPS BETWEEN WORDS
    ============================================================================== */
@@ -151,11 +287,14 @@ p, a, button, input, select, textarea, label,
 .story-text h2, .story-text p, .story-stat-val,
 .card-header-block h2, .card-header-block p,
 .dest-clean-header h1, .dest-clean-header p,
-.destination-article, .destination-article * {
+.destination-article, .destination-article *:not(.fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands, [class*="fa-"], i) {
   font-family: 'Open Sans', Arial, sans-serif !important;
 }
 
   </style>
+  
+  <link rel="stylesheet" href="theme.css?v=20261025_v35">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -164,18 +303,20 @@ p, a, button, input, select, textarea, label,
 
   <!-- Sticky Navbar -->
   <div class="drawer-backdrop" onclick="toggleMobileMenu()"></div>
+  <!-- HEADER / NAVBAR -->
   <nav class="hn-nav" id="siteNav">
     <div class="hn-nav-inner">
-      <a class="hn-logo" href="index.html"><img src="logo-icon.png" alt="Discover Hidden Morocco" decoding="async"><span
+      <a href="/" class="hn-logo"><img src="logo-icon.png" alt="Discover Hidden Morocco" width="48" height="48" decoding="async" loading="lazy"><span
           class="hn-logo-text">Discover Hidden Morocco</span></a>
+
       <ul class="hn-links" id="navLinks">
-        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
-        <li><a href="about.html" data-i18n="nav_about">About Us</a></li>
-        <li><a href="destinations.html" data-i18n="nav_destinations">Destinations</a></li>
-        <li><a href="#" class="custom-tour-trigger">Customize Tour</a></li>
-        <li><a href="map.html" data-i18n="nav_map">Interactive Map</a></li>
-        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
-        <li><a href="reviews.html" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/" data-i18n="nav_home">Home</a></li>
+        <li><a href="/about" data-i18n="nav_about">About Us</a></li>
+        <li><a href="/destinations" data-i18n="nav_destinations">Destinations</a></li>
+        <li><a href="#" class="custom-tour-trigger" onclick="window.openCustomTourModal && window.openCustomTourModal(); return false;" data-i18n="nav_customize">Customize Tour</a></li>
+        <li><a href="/map" data-i18n="nav_map">Interactive Map</a></li>
+        <li><a href="/reviews" data-i18n="nav_reviews">Reviews</a></li>
+        <li><a href="/contact" data-i18n="nav_contact">Contact</a></li>
 
         <!-- MORE SETTINGS Section -->
         <li class="mobile-only-settings-row">
@@ -184,95 +325,64 @@ p, a, button, input, select, textarea, label,
             <div class="setting-icon-item lang-item">
               <i class="fa-solid fa-globe"></i>
               <select class="mobile-lang-select" onchange="setLanguage(this.value)" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+            <option value="es">ES</option>
               </select>
             </div>
-            <button class="setting-icon-item theme-item" onclick="toggleThemeMobile(event)" aria-label="Toggle Theme">
-              <span class="theme-toggle"><i class="fa-solid fa-moon"></i></span>
+            <button class="setting-icon-item theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme">
+              <span class="theme-toggle-icon"><i class="fa-solid fa-sun" style="color: #F59E0B;"></i></span>
             </button>
-            <a href="favorites.html" class="setting-icon-item fav-item" aria-label="Wishlist">
+            <a href="/favorites" class="setting-icon-item wishlist-item" aria-label="Wishlist">
               <i class="fa-regular fa-heart"></i>
+              <span class="wishlist-badge">0</span>
             </a>
           </div>
         </li>
-
-        <!-- Customize My Tour Button -->
-        <li class="mobile-only-cta">
-          <a href="#" class="mobile-book-btn custom-tour-trigger">
-            Customize My Tour &nbsp;<i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </li>
       </ul>
-      <div class="hn-nav-actions">
-        <div class="lang-wrapper">
-          <i class="fa-solid fa-globe lang-icon"></i>
-          <select class="lang-switcher" id="langSwitcher" aria-label="Language">
-            <option value="en">EN — English</option>
-            <option value="fr">FR — Français</option>
-            <option value="es">ES — Español</option>
-            <option value="ar">AR — العربية</option>
-            <option value="de">DE — Deutsch</option>
-            <option value="it">IT — Italiano</option>
-            <option value="pt">PT — Português</option>
-            <option value="nl">NL — Nederlands</option>
-            <option value="ru">RU — Русский</option>
-            <option value="zh-CN">ZH — 中文 (简体)</option>
-            <option value="ja">JA — 日本語</option>
-            <option value="ko">KO — 한국어</option>
-            <option value="tr">TR — Türkçe</option>
-            <option value="pl">PL — Polski</option>
-            <option value="sv">SV — Svenska</option>
-            <option value="da">DA — Dansk</option>
-            <option value="no">NO — Norsk</option>
-            <option value="fi">FI — Suomi</option>
-            <option value="cs">CS — Čeština</option>
-            <option value="el">EL — Ελληνικά</option>
-            <option value="he">HE — עברית</option>
-            <option value="hi">HI — हिन्दी</option>
-            <option value="id">ID — Bahasa Indonesia</option>
-            <option value="ro">RO — Română</option>
-            <option value="hu">HU — Magyar</option>
-            <option value="uk">UK — Українська</option>
-            <option value="vi">VI — Tiếng Việt</option>
-            <option value="th">TH — ไทย</option>
-          </select>
+
+            <div class="hn-actions">
+        <!-- Luxury Language Dropdown -->
+        <div class="lang-dropdown-wrapper" id="langDropdownWrapper">
+          <button type="button" class="lang-toggle-btn" id="langToggleBtn" onclick="window.toggleLangMenu(event)" aria-label="Select Language" aria-expanded="false">
+            <span class="lang-current-code" id="langCurText">EN</span>
+            <i class="fa-solid fa-chevron-down lang-chevron"></i>
+          </button>
+          <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu">
+            <button type="button" class="lang-dropdown-item is-selected" data-lang="en" onclick="window.selectAppLanguage('en', event)">
+              <span class="lang-item-flag">🇬🇧</span>
+              <span class="lang-item-name">English</span>
+              <span class="lang-item-code">EN</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="fr" onclick="window.selectAppLanguage('fr', event)">
+              <span class="lang-item-flag">🇫🇷</span>
+              <span class="lang-item-name">Français</span>
+              <span class="lang-item-code">FR</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+            <button type="button" class="lang-dropdown-item" data-lang="es" onclick="window.selectAppLanguage('es', event)">
+              <span class="lang-item-flag">🇪🇸</span>
+              <span class="lang-item-name">Español</span>
+              <span class="lang-item-code">Esp</span>
+              <i class="fa-solid fa-check lang-item-check"></i>
+            </button>
+          </div>
         </div>
-        <button class="nav-icon-btn theme-toggle" aria-label="Toggle Theme">
-          <i class="fa-solid fa-moon"></i>
+
+        <!-- Mode Sombre / Claire Toggle Button -->
+        <button class="nav-icon-btn theme-toggle" onclick="toggleTheme(event)" aria-label="Toggle Theme" title="Toggle Theme">
+          <i class="fa-solid fa-sun" style="color: #F59E0B;"></i>
         </button>
-        <a href="favorites.html" class="nav-icon-btn" aria-label="Wishlist">
+
+        <!-- Wishlist / Favorites Button -->
+        <a href="/favorites" class="nav-icon-btn nav-fav-btn" aria-label="Favorites" title="Favorites">
           <i class="fa-regular fa-heart"></i>
-          <span class="fav-count-badge">0</span>
+          <span class="fav-count-badge" id="favCountBadge">0</span>
         </a>
-        <a href="booking.html" class="btn-primary hn-nav-book">Book Now</a>
-        <button class="hamburger" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -280,7 +390,7 @@ p, a, button, input, select, textarea, label,
   </nav>
 
   <!-- Clean Luxury Header Section -->
-  <div style="padding: 130px 24px 20px; text-align: center; background: var(--hm-bg-main);">
+  <div class="booking-hero page-hero" style="padding: 130px 24px 20px; text-align: center; position: relative;">
     <div style="max-width: 760px; margin: 0 auto;">
       <span
         style="display: inline-block; font-size: 0.78rem; font-weight: 700; color: #C85A32; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px;">✦
@@ -288,6 +398,7 @@ p, a, button, input, select, textarea, label,
       <h1
         style="font-family: 'Open Sans', sans-serif; font-size: clamp(2.4rem, 4.5vw, 3.4rem); color: var(--hm-text-heading); font-weight: 700; margin-bottom: 12px; line-height: 1.15;">
         Book Your Journey</h1>
+      <div class="moroccan-divider" style="max-width: 420px; margin: 16px auto 22px;"></div>
       <p style="font-size: 1.05rem; color: var(--hm-text-body); max-width: 600px; margin: 0 auto; line-height: 1.6;">Plan your 100%
         tailor-made private Moroccan adventure with our local travel specialists.</p>
     </div>
@@ -459,17 +570,16 @@ p, a, button, input, select, textarea, label,
     <div class="footer-bottom">
       <p>&copy; 2026 Discover Hidden Morocco. All rights reserved. Created with passion for travelers.</p>
       <div class="footer-bottom-links">
-        <a href="privacy-policy.html">Privacy Policy</a>
-        <a href="terms-of-use.html">Terms of Use</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-use">Terms of Use</a>
+        <a href="/cookie-policy">Cookie Policy</a>
       </div>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-<script src="script.js?v=20261014_v11" defer></script>
+    <script src="script.js?v=20261025_v35" defer></script>
 
 </body>
 
