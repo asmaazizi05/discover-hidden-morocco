@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
 <head>
@@ -51,6 +51,7 @@ window._lastThemeToggle = 0;
       if (window._lastThemeToggle && (now - window._lastThemeToggle < 350)) return;
       window._lastThemeToggle = now;
 
+      try { document.documentElement.classList.add('theme-switching'); } catch(err){}
       var cur = document.documentElement.getAttribute('data-theme') || 'dark';
       var nxt = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', nxt);
@@ -226,22 +227,19 @@ html[data-theme="light"] .hamburger span {
   </script>
 
 
-  <!-- High-Priority WebP Preloads (Only Existing Files on Hostinger) -->
-  <link rel="preload" as="image" href="hero-night.webp" type="image/webp" fetchpriority="high">
-  <link rel="preload" as="image" href="hero-kasbah-night-foreground.webp" type="image/webp" fetchpriority="high">
+  <!-- Responsive High-Priority Preloads: Ultra-light 56KB total on Mobile vs Desktop -->
+  <link rel="preload" as="image" href="/hero-mobile-night.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/hero-kasbah-mobile-night.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/hero-night.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
+  <link rel="preload" as="image" href="/hero-kasbah-night-foreground.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
   
   <!-- Preconnect & Asynchronous Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"></noscript>
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <!-- V15 DNS prefetch for external resources -->
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"></noscript>
 
 <script id="dhm-instant-theme">
     (function () {
@@ -352,14 +350,6 @@ html[data-theme="light"] .hamburger span {
       } catch (e) {}
     })();
   </script>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    
-    <noscript></noscript>
-
-  <noscript></noscript>
-  
   <link rel="preconnect" href="https://translate.googleapis.com">
   <link rel="preconnect" href="https://translate.google.com">
   <meta name="google-adsense-account" content="ca-pub-3909226124363434">
@@ -390,7 +380,7 @@ html[data-theme="light"] .hamburger span {
 
   <link rel="icon" type="image/png" href="/favicon.png">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
   <noscript></noscript>
     <style>
     .leaflet-control-attribution,
@@ -2631,6 +2621,17 @@ html[data-theme="dark"] body .hero-eyebrow-discover {
 }
 
 
+@keyframes heroSlideDownMobile {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-12px);
+  }
+}
+
 @media (max-width: 768px) {
   html body .hero-stage-container {
     padding-top: clamp(140px, 22vh, 180px) !important;
@@ -2648,6 +2649,7 @@ html[data-theme="dark"] body .hero-eyebrow-discover {
   }
   html body .hero-title-group {
     transform: translateY(-12px) !important;
+    animation: heroSlideDownMobile 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both !important;
   }
 }
 
@@ -2686,26 +2688,30 @@ html[data-theme="dark"] body .hero-eyebrow-discover {
   opacity: 1 !important;
 }
 
-/* Night layer smoothly crossfades ON TOP with 1.2s cinematic transition */
+/* Night layer crossfades ON TOP when switching theme */
 .hero-img-night {
   z-index: 2 !important;
-  opacity: 0 !important;
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: opacity !important;
+  opacity: 0;
+  will-change: opacity;
 }
 .hero-fg-night {
   z-index: 5 !important;
-  opacity: 0 !important;
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  will-change: opacity !important;
+  opacity: 0;
+  will-change: opacity;
 }
 
-/* Dark Mode: Night layers fade IN smoothly to 1.0 */
+/* Dark Mode: Night layers are immediately 100% visible on initial load (0ms delay) */
 html[data-theme="dark"] .hero-img-night,
 body[data-theme="dark"] .hero-img-night,
 html[data-theme="dark"] .hero-fg-night,
 body[data-theme="dark"] .hero-fg-night {
   opacity: 1 !important;
+}
+
+/* Smooth crossfade only runs during active theme switching */
+html.theme-switching .hero-img-night,
+html.theme-switching .hero-fg-night {
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Global smooth transition on theme switch */
@@ -2940,12 +2946,14 @@ html body .hero-kasbah-fg img {
             <!-- Layer 1: Background image & sky tint (100% STATIC & FIXED) -->
       <div class="hero-bg">
         <picture class="hero-pic-day" id="heroPicDay">
-          <source type="image/webp" data-srcset="hero.webp">
-          <img class="hero-img-day" data-src="hero.jpg" alt="Morocco Desert Kasbah" width="1920" height="1238" loading="lazy" decoding="async">
+          <source media="(max-width: 768px)" type="image/webp" data-srcset="/hero-mobile.webp">
+          <source type="image/webp" data-srcset="/hero.webp">
+          <img class="hero-img-day" data-src="/hero-mobile.webp" alt="Morocco Desert Kasbah" width="1920" height="1238" loading="lazy" decoding="async">
         </picture>
         <picture class="hero-pic-night">
-          <source type="image/webp" srcset="hero-night.webp">
-          <img class="hero-img-night" src="hero-night.jpg" onerror="this.onerror=null;this.src='images/hero-night.jpg';" alt="Morocco Desert Kasbah Night" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
+          <source media="(max-width: 768px)" type="image/webp" srcset="/hero-mobile-night.webp">
+          <source type="image/webp" srcset="/hero-night.webp">
+          <img class="hero-img-night" src="/hero-mobile-night.webp" alt="Morocco Desert Kasbah Night" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
         </picture>
       </div>
       <div class="hero-sky-tint" aria-hidden="true"></div>
@@ -2964,14 +2972,15 @@ html body .hero-kasbah-fg img {
             <!-- Layer 3: Kasbah Foreground Mask (100% STATIC & FIXED) -->
       <div class="hero-kasbah-fg" aria-hidden="true">
         <picture class="hero-fg-pic-day" id="heroPicDayFg">
-          <source type="image/webp" data-srcset="hero-kasbah-foreground.webp">
-          <img class="hero-fg-day" data-src="hero-kasbah-foreground.png" alt="" width="1920" height="1238" loading="lazy" decoding="async">
+          <source media="(max-width: 768px)" type="image/webp" data-srcset="/hero-kasbah-mobile.webp">
+          <source type="image/webp" data-srcset="/hero-kasbah-foreground.webp">
+          <img class="hero-fg-day" data-src="/hero-kasbah-mobile.webp" alt="" width="1920" height="1238" loading="lazy" decoding="async">
         </picture>
         <picture class="hero-fg-pic-night">
-          <source type="image/webp" srcset="hero-kasbah-night-foreground.webp">
-          <img class="hero-fg-night" src="hero-kasbah-night-foreground.png" onerror="this.onerror=null;this.src='images/hero-kasbah-night-foreground.png';" alt="" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
+          <source media="(max-width: 768px)" type="image/webp" srcset="/hero-kasbah-mobile-night.webp">
+          <source type="image/webp" srcset="/hero-kasbah-night-foreground.webp">
+          <img class="hero-fg-night" src="/hero-kasbah-mobile-night.webp" alt="" width="1920" height="1238" fetchpriority="high" loading="eager" decoding="async">
         </picture>
-      </div>
       </div>
       <!-- Atmospheric Depth Overlay (100% STATIC & FIXED) -->
       <div class="hero-global-overlay" aria-hidden="true"></div>
