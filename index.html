@@ -2559,38 +2559,77 @@ p, a, button, input, select, textarea, label,
       opacity: 1 !important;
     }
 
-    /* Clean Hero styles handled in theme.css?v=20261026_v40 */
+    /* Clean Hero styles handled in theme.css?v=20261026_v41 */
 
 /* ══════════════════════════════════════════════════════════════════════════
-   HERO 3D DEPTH + SLOW CINEMATIC DAY/NIGHT TRANSITION (EMBEDDED)
+   HERO 3D DEPTH + SLOW CINEMATIC SLIDE DOWN ANIMATION + DAY/NIGHT WHITE TEXT
    ══════════════════════════════════════════════════════════════════════════ */
 @keyframes heroSlideDown {
   0% {
     opacity: 0;
-    transform: translateY(-115px);
-    filter: none;
+    transform: translateY(-80px);
   }
   30% {
     opacity: 0.6;
-    filter: none;
   }
   100% {
     opacity: 1;
-    transform: translateY(-25px);
-    filter: none;
+    transform: translateY(0);
   }
 }
+
 html body .hero-title-group {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
   margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
-  transform: translateY(-25px) !important;
-  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both !important;
   will-change: transform, opacity !important;
   filter: none !important;
 }
+
+/* HARD LOCK: HERO TITLE ALWAYS PURE WHITE IN BOTH DAY & NIGHT MODES */
+html body .hero-title-group,
+html body .hero-title-group *,
+html body .hero-title-depth,
+html body .hero-title-depth *,
+html body .hero-word-hidden,
+html body .hero-word-morocco,
+html body .hero-eyebrow-discover,
+html[data-theme="dark"] body .hero-title-depth,
+html[data-theme="dark"] body .hero-title-depth *,
+html[data-theme="dark"] body .hero-word-hidden,
+html[data-theme="dark"] body .hero-word-morocco,
+html[data-theme="dark"] body .hero-eyebrow-discover,
+html:not([data-theme="dark"]) body .hero-title-depth,
+html:not([data-theme="dark"]) body .hero-title-depth *,
+html:not([data-theme="dark"]) body .hero-word-hidden,
+html:not([data-theme="dark"]) body .hero-word-morocco,
+html:not([data-theme="dark"]) body .hero-eyebrow-discover {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body .hero-word-hidden,
+html body .hero-word-morocco,
+html:not([data-theme="dark"]) body .hero-word-hidden,
+html:not([data-theme="dark"]) body .hero-word-morocco,
+html[data-theme="dark"] body .hero-word-hidden,
+html[data-theme="dark"] body .hero-word-morocco {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+}
+
+html body .hero-eyebrow-discover,
+html:not([data-theme="dark"]) body .hero-eyebrow-discover,
+html[data-theme="dark"] body .hero-eyebrow-discover {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.85) !important;
+}
+
 
 @media (max-width: 768px) {
   html body .hero-stage-container {
@@ -2790,8 +2829,8 @@ html body .hero-kasbah-fg img {
 </style>
   
   <!-- Non-Blocking Asynchronous Theme CSS (Critical Navbar & Hero are inlined) -->
-  <link rel="stylesheet" href="/theme.css?v=20261026_v40" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="/theme.css?v=20261026_v40"></noscript>
+  <link rel="stylesheet" href="/theme.css?v=20261026_v41" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/theme.css?v=20261026_v41"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
   <noscript></noscript>
 
@@ -2915,7 +2954,7 @@ html body .hero-kasbah-fg img {
       <div class="hero-stage-container">
         <div class="hero-title-group">
           <span class="hero-eyebrow-discover" data-i18n="hero_eyebrow">DISCOVER</span>
-          <h1 class="hero-title-depth">
+          <h1 class="hero-title-depth hero-title">
             <span class="hero-word-hidden" data-i18n="hero_word_1">HIDDEN</span>
             <span class="hero-word-morocco" data-i18n="hero_word_2">MOROCCO</span>
           </h1>
@@ -3286,7 +3325,7 @@ html body .hero-kasbah-fg img {
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
         <div class="reviews-grid" id="homeReviewsGrid">
-          <!-- Rendered dynamically via script.js?v=20261026_v40 -->
+          <!-- Rendered dynamically via script.js?v=20261026_v41 -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
           <a href="/reviews" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
@@ -3416,7 +3455,7 @@ html body .hero-kasbah-fg img {
       });
     })();
   </script>
-<script src="/script.js?v=20261026_v40" defer></script>
+<script src="/script.js?v=20261026_v41" defer></script>
 <script id="dhm-crossfade-trigger">
   document.addEventListener("click", function (e) {
     if (e.target.closest(".theme-toggle") || e.target.closest(".theme-item")) {

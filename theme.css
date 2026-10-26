@@ -6052,9 +6052,9 @@ h3, h4, h5, h6,
   filter: none !important;
 }
 
-/* Light mode headings: Clean crisp #0F172A */
-html:not([data-theme="dark"]) h1:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-title),
-html:not([data-theme="dark"]) h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title),
+/* Light mode headings: Clean crisp #0F172A (Strictly excludes Home Hero Title) */
+html:not([data-theme="dark"]) h1:not(.hero-title-depth):not(.hero-title):not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-section h1),
+html:not([data-theme="dark"]) h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title):not(.hero-section h2),
 html:not([data-theme="dark"]) h3,
 html:not([data-theme="dark"]) h4,
 html:not([data-theme="dark"]) .section-header h2,
@@ -6078,4 +6078,72 @@ html[data-theme="dark"] .ct-modal-content h2 {
   color: #FFFFFF !important;
   -webkit-text-fill-color: #FFFFFF !important;
   text-shadow: none !important;
+}
+
+/* ==============================================================================
+   CRITICAL LOCK: DISCOVER HIDDEN MOROCCO (HOME HERO) ALWAYS PURE WHITE & 3D SHADOW
+   ============================================================================== */
+@keyframes heroSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+  30% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html body .hero-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
+  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both !important;
+  will-change: transform, opacity !important;
+  filter: none !important;
+}
+
+html body .hero-title-group,
+html body .hero-title-group *,
+html body .hero-title-depth,
+html body .hero-title-depth *,
+html body .hero-word-hidden,
+html body .hero-word-morocco,
+html body .hero-eyebrow-discover,
+html[data-theme="dark"] body .hero-title-depth,
+html[data-theme="dark"] body .hero-title-depth *,
+html[data-theme="dark"] body .hero-word-hidden,
+html[data-theme="dark"] body .hero-word-morocco,
+html[data-theme="dark"] body .hero-eyebrow-discover,
+html:not([data-theme="dark"]) body .hero-title-depth,
+html:not([data-theme="dark"]) body .hero-title-depth *,
+html:not([data-theme="dark"]) body .hero-word-hidden,
+html:not([data-theme="dark"]) body .hero-word-morocco,
+html:not([data-theme="dark"]) body .hero-eyebrow-discover {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body .hero-word-hidden,
+html body .hero-word-morocco,
+html:not([data-theme="dark"]) body .hero-word-hidden,
+html:not([data-theme="dark"]) body .hero-word-morocco,
+html[data-theme="dark"] body .hero-word-hidden,
+html[data-theme="dark"] body .hero-word-morocco {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+}
+
+html body .hero-eyebrow-discover,
+html:not([data-theme="dark"]) body .hero-eyebrow-discover,
+html[data-theme="dark"] body .hero-eyebrow-discover {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.85) !important;
 }
