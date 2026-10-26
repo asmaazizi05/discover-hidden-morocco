@@ -5,65 +5,82 @@ Options -MultiViews
 # ==============================================================================
 
 DirectoryIndex index.html
+ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # 1. Force HTTPS
+  # 1. Stop rewrite loops on internal redirects and error documents
+  RewriteRule ^404(\.html)?$ - [L]
+  RewriteCond %{ENV:REDIRECT_STATUS} !^$
+  RewriteRule ^ - [L]
+
+  # 2. Force HTTPS
   RewriteCond %{HTTPS} off
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # 2. Canonical domain: remove www
+  # 3. Canonical domain: remove www
   RewriteCond %{HTTP_HOST} ^www\.discoverhiddenmorocco\.com$ [NC]
   RewriteRule ^ https://discoverhiddenmorocco.com%{REQUEST_URI} [L,R=301]
 
-  # 3. Canonical redirects
+  # 4. Canonical redirects for known aliases
   RewriteRule ^testimonials/?$ /reviews [R=301,L,NC]
   RewriteRule ^tours?/?$ /destinations [R=301,L,NC]
   RewriteRule ^experiences?/?$ /destinations [R=301,L,NC]
   RewriteRule ^explore/?$ /destinations [R=301,L,NC]
 
-  # 3b. Map /destinations/{city} or /destination/{city} -> /destinations#{city}
+  # 5. Fix nested relative subpaths (e.g. /about/destinations -> /destinations, /about/about -> /about)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(?:about|destinations|booking|contact|reviews|map|favorites)/(about|destinations|booking|contact|reviews|map|favorites)/?$ /$1 [R=301,L,NC]
+
+  # 5b. Map destination subpaths to hash anchor (e.g. /destinations/marrakech -> /destinations#marrakech)
   RewriteRule ^destinations?/([a-zA-Z0-9_-]+)/?$ /destinations#$1 [R=301,L,NE]
 
-  # 4. Redirect direct request for index.html -> /
+  # 6. Strip trailing slashes on clean page URLs (e.g. /about/ -> /about)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{THE_REQUEST} \s/+(.+?)/+[\s?]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # 7. Redirect direct request for index.html -> /
   RewriteCond %{THE_REQUEST} /index(\.html)?[\s?] [NC]
   RewriteRule ^index(\.html)?$ / [R=301,L]
 
-  # 5. External request with .html -> 301 redirect to clean URL
+  # 8. External request with .html -> 301 redirect to clean URL
   RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
   RewriteRule ^ /%1 [NC,L,R=301]
 
-  # 6. Skip rewriting if the requested path is already a real directory or file
+  # 9. Skip rewriting if the requested path is already a real directory or file
   RewriteCond %{REQUEST_FILENAME} -d [OR]
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^ - [L]
 
-  # 7. Image fallback: if requested under images/ but file is in root, serve from root
+  # 10. Image fallback: if requested under images/ but file is in root
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{DOCUMENT_ROOT}/$1 -f
   RewriteRule ^images/(?:.+/)?([^/]+\.(?:jpe?g|png|gif|webp|svg|ico|avif))$ /$1 [NC,L]
 
-  # 7b. Reverse Image fallback: if requested in root but file is under images/
+  # 10b. Reverse Image fallback: if requested in root but file is under images/
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{DOCUMENT_ROOT}/images/$1 -f
   RewriteRule ^([^/]+\.(?:jpe?g|png|gif|webp|svg|ico|avif))$ /images/$1 [NC,L]
 
-  # 8. Internally map clean URL to .html file
+  # 10c. Nested asset fallback: if requested as /about/images/... or /about/theme.css
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^[^/]+/(.+\.(?:css|js|jpe?g|png|gif|webp|svg|ico|avif|woff2?|ttf))$ /$1 [NC,L]
+
+  # 11. Internally map clean URL to .html file (single path segment only, avoiding subpath loops)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-  RewriteRule ^(.*?)/?$ /$1.html [NC,L,QSA]
+  RewriteRule ^([^/]+)/?$ /$1.html [NC,L,QSA]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.*?)/?$ /$1.html [NC,L,QSA]
+  RewriteRule ^([^/]+)/?$ /$1.html [NC,L,QSA]
 </IfModule>
-
-# Fallback error document
-ErrorDocument 404 /404.html
 
 # ------------------------------------------------------------------------------
 # Performance: Gzip Compression
