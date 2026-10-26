@@ -1,7 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
-<head>
+<head> 
+  <!-- Instant Cache-Busting & Legacy Service Worker Purger -->
+  <script>
+    (function() {
+      try {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then(function(keys) {
+            keys.forEach(function(k) { caches.delete(k); });
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2540,7 +2558,7 @@ p, a, button, input, select, textarea, label,
       opacity: 1 !important;
     }
 
-    /* Clean Hero styles handled in theme.css?v=20261025_v38 */
+    /* Clean Hero styles handled in theme.css?v=20261026_v40 */
 
 /* ══════════════════════════════════════════════════════════════════════════
    HERO 3D DEPTH + SLOW CINEMATIC DAY/NIGHT TRANSITION (EMBEDDED)
@@ -2771,8 +2789,8 @@ html body .hero-kasbah-fg img {
 </style>
   
   <!-- Non-Blocking Asynchronous Theme CSS (Critical Navbar & Hero are inlined) -->
-  <link rel="stylesheet" href="theme.css?v=20261025_v38" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="theme.css?v=20261025_v38"></noscript>
+  <link rel="stylesheet" href="theme.css?v=20261026_v40" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="theme.css?v=20261026_v40"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
   <noscript></noscript>
 
@@ -3078,7 +3096,7 @@ html body .hero-kasbah-fg img {
               <h3>Sahara Desert Expeditions</h3>
               <p>Sunset camel treks, stargazing at luxury Berber camps, sandboarding, and campfire drumming in Merzouga
                 &amp; Zagora.</p>
-              <a href="destinations.html#merzouga" class="exp-cat-link">Explore Desert Tours <i
+              <a href="/destinations#merzouga" class="exp-cat-link">Explore Desert Tours <i
                   class="fa-solid fa-arrow-right"></i></a>
             </div>
           </div>
@@ -3093,7 +3111,7 @@ html body .hero-kasbah-fg img {
               <h3>Imperial Medinas &amp; Palaces</h3>
               <p>Labyrinthine souks, historic palaces, ancient tanneries, and secret riads across Marrakech, Fès, and
                 Chefchaouen.</p>
-              <a href="destinations.html#marrakech" class="exp-cat-link">Explore Medina Tours <i
+              <a href="/destinations#marrakech" class="exp-cat-link">Explore Medina Tours <i
                   class="fa-solid fa-arrow-right"></i></a>
             </div>
           </div>
@@ -3109,7 +3127,7 @@ html body .hero-kasbah-fg img {
               <p>Guided village hikes, Toubkal panoramas, lush green valleys, and authentic Berber tea ceremonies in
                 Imlil
                 &amp; Ourika.</p>
-              <a href="destinations.html#marrakech" class="exp-cat-link">Explore Mountain Treks <i
+              <a href="/destinations#marrakech" class="exp-cat-link">Explore Mountain Treks <i
                   class="fa-solid fa-arrow-right"></i></a>
             </div>
           </div>
@@ -3125,7 +3143,7 @@ html body .hero-kasbah-fg img {
               <p>Historic sea ramparts, fresh grilled harbour seafood, argan forest visits, and ocean breezes in
                 Essaouira.
               </p>
-              <a href="destinations.html#essaouira" class="exp-cat-link">Explore Coastal Escapes <i
+              <a href="/destinations#essaouira" class="exp-cat-link">Explore Coastal Escapes <i
                   class="fa-solid fa-arrow-right"></i></a>
             </div>
           </div>
@@ -3267,7 +3285,7 @@ html body .hero-kasbah-fg img {
           <p>Authentic reviews from people who explored Morocco with us.</p>
         </div>
         <div class="reviews-grid" id="homeReviewsGrid">
-          <!-- Rendered dynamically via script.js?v=20261025_v38 -->
+          <!-- Rendered dynamically via script.js?v=20261026_v40 -->
         </div>
         <div style="text-align:center; margin-top: 48px;">
           <a href="/reviews" class="btn-ghost">Read All Reviews <i class="fa-solid fa-arrow-right"></i></a>
@@ -3316,12 +3334,12 @@ html body .hero-kasbah-fg img {
       <div class="footer-col">
         <h4>Destinations</h4>
         <ul>
-          <li><a href="destinations.html#marrakech">Marrakech</a></li>
-          <li><a href="destinations.html#merzouga">Merzouga Sahara</a></li>
-          <li><a href="destinations.html#chefchaouen">Chefchaouen</a></li>
-          <li><a href="destinations.html#essaouira">Essaouira</a></li>
-          <li><a href="destinations.html#fes">Fes El Bali</a></li>
-          <li><a href="destinations.html#ouarzazate">Ouarzazate</a></li>
+          <li><a href="/destinations#marrakech">Marrakech</a></li>
+          <li><a href="/destinations#merzouga">Merzouga Sahara</a></li>
+          <li><a href="/destinations#chefchaouen">Chefchaouen</a></li>
+          <li><a href="/destinations#essaouira">Essaouira</a></li>
+          <li><a href="/destinations#fes">Fes El Bali</a></li>
+          <li><a href="/destinations#ouarzazate">Ouarzazate</a></li>
         </ul>
       </div>
 
@@ -3397,7 +3415,7 @@ html body .hero-kasbah-fg img {
       });
     })();
   </script>
-<script src="script.js?v=20261025_v38" defer></script>
+<script src="script.js?v=20261026_v40" defer></script>
 <script id="dhm-crossfade-trigger">
   document.addEventListener("click", function (e) {
     if (e.target.closest(".theme-toggle") || e.target.closest(".theme-item")) {

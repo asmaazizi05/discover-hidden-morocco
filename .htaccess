@@ -16,8 +16,11 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^www\.discoverhiddenmorocco\.com$ [NC]
   RewriteRule ^ https://discoverhiddenmorocco.com%{REQUEST_URI} [L,R=301]
 
-  # 3. Canonical redirect: /testimonials -> /reviews
+  # 3. Canonical redirects
   RewriteRule ^testimonials/?$ /reviews [R=301,L,NC]
+  RewriteRule ^tours?/?$ /destinations [R=301,L,NC]
+  RewriteRule ^experiences?/?$ /destinations [R=301,L,NC]
+  RewriteRule ^explore/?$ /destinations [R=301,L,NC]
 
   # 4. Redirect direct request for index.html -> /
   RewriteCond %{THE_REQUEST} /index(\.html)?[\s?] [NC]
@@ -34,6 +37,7 @@ DirectoryIndex index.html
 
   # 7. Image fallback: if requested under images/ but file is in root, serve from root
   RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1 -f
   RewriteRule ^images/(?:.+/)?([^/]+\.(?:jpe?g|png|gif|webp|svg|ico|avif))$ /$1 [NC,L]
 
   # 7b. Reverse Image fallback: if requested in root but file is under images/
@@ -41,9 +45,16 @@ DirectoryIndex index.html
   RewriteCond %{DOCUMENT_ROOT}/images/$1 -f
   RewriteRule ^([^/]+\.(?:jpe?g|png|gif|webp|svg|ico|avif))$ /images/$1 [NC,L]
 
-  # 8. Internally map clean URL to .html file
+  # 8. Internally map clean URL to .html file (with both DOCUMENT_ROOT and relative fallbacks)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.*?)/?$ /$1.html [NC,L,QSA]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.*?)/?$ /$1.html [NC,L]
+  RewriteRule ^(.*?)/?$ /$1.html [NC,L,QSA]
 </IfModule>
 
 # Fallback error document
@@ -64,7 +75,7 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 # ------------------------------------------------------------------------------
-# Performance: Browser Caching & Zero-Lag Updates
+# Performance: Browser Caching & Zero-Lag Live Updates
 # ------------------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
@@ -74,28 +85,41 @@ ErrorDocument 404 /404.html
   ExpiresByType text/javascript "access plus 0 seconds"
   ExpiresByType application/javascript "access plus 0 seconds"
   ExpiresByType application/x-javascript "access plus 0 seconds"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/jpg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/jpg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
 </IfModule>
 
 <IfModule mod_headers.c>
-  # 1. Force all HTML files to NEVER cache so visitors get updates instantly
+  # 1. Force all HTML files to NEVER cache so visitors get fresh updates on refresh
   <FilesMatch "\.(html|htm)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
     Header set Pragma "no-cache"
     Header set Expires "0"
   </FilesMatch>
 
-  # 2. Static versioned assets cached efficiently
-  <FilesMatch "\.(css|js|webp|png|jpg|jpeg|svg|woff2|woff|ttf|otf|ico)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+  # 2. Kill Service Worker caching permanently
+  <FilesMatch "^sw\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
   </FilesMatch>
+
+  # 3. CSS & JS: Always revalidate so edits update instantly
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+
+  # 4. Media & Fonts: Cache smoothly
+  <FilesMatch "\.(webp|png|jpg|jpeg|gif|svg|woff2|woff|ttf|otf|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"

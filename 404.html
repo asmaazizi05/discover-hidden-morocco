@@ -1,32 +1,77 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
+
 <head>
+  <!-- Instant Cache-Busting & Legacy Service Worker Purger -->
+  <script>
+    (function() {
+      try {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then(function(keys) {
+            keys.forEach(function(k) { caches.delete(k); });
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>
-  (function () {
-    try {
-      var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-      var path = window.location.pathname || '';
-      var search = window.location.search || '';
-      var hash = window.location.hash || '';
-      var clean = path.replace(/\/+$/, '').replace(/^\/+/, '');
-      if (clean.toLowerCase().includes('testimonials')) clean = 'reviews';
-      if (clean && !clean.endsWith('.html')) {
-        window.location.replace(origin + '/' + clean + '.html' + search + hash);
-        return;
-      }
-    } catch (e) {}
-    window.location.replace(origin + '/index.html');
-  })();
-</script>
+  <title>404 — Page Not Found | Discover Hidden Morocco</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
-    
-  <link rel="stylesheet" href="theme.css?v=20261025_v35">
+  <link rel="stylesheet" href="theme.css?v=20261026_v40">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    // Safe non-looping path normalizer
+    (function() {
+      try {
+        var path = window.location.pathname.toLowerCase();
+        // Redirect legacy /testimonials to /reviews
+        if (path.includes('testimonials')) {
+          window.location.replace('/reviews');
+          return;
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
-<body style="background: #151515; color: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
-  <p style="color: #E7A93C; font-size: 1.1rem; letter-spacing: 1px;">Loading Discover Hidden Morocco...</p>
+
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--hm-bg-main, #151515); color: var(--hm-text-heading, #fff); font-family: 'Open Sans', Arial, sans-serif; margin: 0; padding: 24px; box-sizing: border-box; text-align: center;">
+
+  <div style="max-width: 580px; width: 100%; padding: 48px 32px; border-radius: 20px; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(231, 169, 60, 0.25); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+    
+    <span style="display: inline-block; padding: 6px 18px; border-radius: 99px; background: rgba(200, 90, 50, 0.2); color: #E7A93C; font-size: 0.85rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">
+      ✦ 404 — PAGE NOT FOUND ✦
+    </span>
+
+    <h1 style="font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; margin: 0 0 16px 0; color: #FFFFFF; text-shadow: none !important;">
+      Lost in the Medina?
+    </h1>
+
+    <p style="font-size: 1.05rem; color: #94A3B8; line-height: 1.7; margin: 0 auto 32px auto; max-width: 440px; text-align: center !important;">
+      The expedition route you are looking for does not exist or may have been relocated. Let's get you back on track.
+    </p>
+
+    <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+      <a href="/" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 99px; background: linear-gradient(135deg, #C85A32, #E7A93C); color: #FFFFFF; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: transform 0.2s;">
+        <i class="fa-solid fa-house"></i> Return Home
+      </a>
+      <a href="/destinations" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 99px; background: rgba(255, 255, 255, 0.08); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.2); font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: background 0.2s;">
+        <i class="fa-solid fa-compass"></i> Explore Destinations
+      </a>
+    </div>
+
+  </div>
+
 </body>
 </html>

@@ -54,16 +54,8 @@ p, a, button, input, select, textarea, label,
 .cta-strip h2,
 .privacy-cta h2,
 .card-header-block h2 {
-  /* Physical 3D thickness + soft ambient back-blur + 20% opacity contour */
-  text-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.08),
-    1px 2px 1px rgba(0, 0, 0, 0.06),
-    2px 3px 2px rgba(0, 0, 0, 0.05),
-    0 0 3px rgba(0, 0, 0, 0.20),
-    0 5px 12px rgba(0, 0, 0, 0.18),
-    0 12px 26px rgba(0, 0, 0, 0.12) !important;
+  text-shadow: none !important;
   letter-spacing: -0.015em;
-  transition: text-shadow 0.3s ease;
 }
 
 .hero-title {
@@ -113,7 +105,7 @@ p, a, button, input, select, textarea, label,
   letter-spacing: 0.12em;
 }
 
-/* All major page titles & section titles across the entire website */
+/* All major page titles & section titles across the entire website: CLEAN WITHOUT SHADOW */
 .page-hero h1,
 .contact-hero h1,
 .dest-clean-header h1,
@@ -130,8 +122,8 @@ p, a, button, input, select, textarea, label,
 .travel-form-left h2,
 .details-header h2,
 .section-title {
-  /* Strictly downward Y offset (+4px, +10px, +18px), NO top shadow, Warm Orange at ~20% opacity */
-  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 [data-theme="dark"] .page-hero h1,
@@ -146,8 +138,8 @@ p, a, button, input, select, textarea, label,
 [data-theme="dark"] .travel-form-left h2,
 [data-theme="dark"] .details-header h2,
 [data-theme="dark"] .section-title {
-  /* On dark background: radiant amber-orange underglow strictly downwards */
-  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 
@@ -199,7 +191,7 @@ h3, h4, h5, h6 {
 [data-theme="dark"] .legal-hero h1,
 [data-theme="dark"] .story-hero h1,
 [data-theme="dark"] .map-hero h1 {
-  text-shadow: 0 8px 32px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.6) !important;
+  text-shadow: none !important;
 }
 
 /* ==============================================================================
@@ -5973,4 +5965,117 @@ html body .hero-title-group {
   margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
   animation: heroSlideDown 1.4s cubic-bezier(0.16, 1, 0.3, 1) both !important;
   will-change: transform, opacity !important;
+}
+
+/* ==============================================================================
+   DEFINITIVE ZERO-SHADOW RULESET — CLEAN CRISP TEXT ACROSS ALL PAGES & MODES
+   (ONLY HOMEPAGE HERO RETAINS 3D KASBAH DEPTH)
+   ============================================================================== */
+h1:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-title),
+h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title),
+h3, h4, h5, h6,
+.page-hero h1,
+.contact-hero h1,
+.dest-clean-header h1,
+.section-header h2,
+.story-main-title,
+.about-hero h1,
+.story-hero h1,
+.map-hero h1,
+.legal-hero h1,
+.faq-header h2,
+.cta-banner h2,
+.cta-strip h2,
+.privacy-cta h2,
+.card-header-block h2,
+.travel-form-left h2,
+.details-header h2,
+.section-title,
+.modal-content h2,
+.ct-modal-content h2,
+.story-feeling-text {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+[data-theme="dark"] h1:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-title),
+[data-theme="dark"] h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title),
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] .page-hero h1,
+[data-theme="dark"] .contact-hero h1,
+[data-theme="dark"] .dest-clean-header h1,
+[data-theme="dark"] .section-header h2,
+[data-theme="dark"] .story-main-title,
+[data-theme="dark"] .about-hero h1,
+[data-theme="dark"] .story-hero h1,
+[data-theme="dark"] .map-hero h1,
+[data-theme="dark"] .legal-hero h1,
+[data-theme="dark"] .faq-header h2,
+[data-theme="dark"] .cta-banner h2,
+[data-theme="dark"] .cta-strip h2,
+[data-theme="dark"] .privacy-cta h2,
+[data-theme="dark"] .card-header-block h2,
+[data-theme="dark"] .travel-form-left h2,
+[data-theme="dark"] .details-header h2,
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .modal-content h2,
+[data-theme="dark"] .ct-modal-content h2,
+[data-theme="dark"] .story-feeling-text {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Original Clean Colors: Vibrant Terracotta / Gold Gradient with NO SHADOW */
+.story-feeling-text {
+  background: linear-gradient(135deg, #C85A32, #E7A93C) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #C85A32 !important;
+  font-style: italic !important;
+  font-weight: 800 !important;
+  display: inline-block !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+[data-theme="dark"] .story-feeling-text {
+  background: linear-gradient(135deg, #E7A93C, #F59E0B) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #E7A93C !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Light mode headings: Clean crisp #0F172A */
+html:not([data-theme="dark"]) h1:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-title),
+html:not([data-theme="dark"]) h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title),
+html:not([data-theme="dark"]) h3,
+html:not([data-theme="dark"]) h4,
+html:not([data-theme="dark"]) .section-header h2,
+html:not([data-theme="dark"]) .story-main-title,
+html:not([data-theme="dark"]) .page-hero h1 {
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  text-shadow: none !important;
+}
+
+/* Dark mode headings: Clean crisp pure #FFFFFF */
+html[data-theme="dark"] h1:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-eyebrow-discover):not(.hero-title),
+html[data-theme="dark"] h2:not(.hero-word-hidden):not(.hero-word-morocco):not(.hero-title),
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] .section-header h2,
+html[data-theme="dark"] .story-main-title,
+html[data-theme="dark"] .page-hero h1,
+html[data-theme="dark"] .modal-content h2,
+html[data-theme="dark"] .ct-modal-content h2 {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  text-shadow: none !important;
 }

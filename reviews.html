@@ -1,7 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark" style="background-color:#151515;color-scheme:dark;">
 
-<head>
+<head> 
+  <!-- Instant Cache-Busting & Legacy Service Worker Purger -->
+  <script>
+    (function() {
+      try {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+          });
+        }
+        if ('caches' in window) {
+          caches.keys().then(function(keys) {
+            keys.forEach(function(k) { caches.delete(k); });
+          });
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -928,8 +946,8 @@ p, a, button, input, select, textarea, label,
 
   </style>
   
-  <link rel="stylesheet" href="theme.css?v=20261025_v35">
-  <link rel="stylesheet" href="exp.css?v=20261019_v22">
+  <link rel="stylesheet" href="theme.css?v=20261026_v40">
+  <link rel="stylesheet" href="exp.css?v=20261026_v40">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
@@ -1283,7 +1301,7 @@ p, a, button, input, select, textarea, label,
     </div>
   </footer>
 
-    <script src="script.js?v=20261025_v35" defer></script>
+    <script src="script.js?v=20261026_v40" defer></script>
 </body>
 
 </html>
