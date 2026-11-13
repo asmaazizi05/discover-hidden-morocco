@@ -5588,7 +5588,7 @@ body[data-theme="dark"] .hero-word-morocco {
 html body .hero-section {
   --hh: max(100vh, 700px);
   --ih: max(calc(100vw * 0.6448), var(--hh));
-  --frac: 0.585;
+  --frac: 0.48;
   --anchor: calc(var(--hh) * 0.35 + (var(--frac) - 0.35) * var(--ih));
   position: relative !important;
   height: var(--hh) !important;
@@ -5678,12 +5678,75 @@ html body .hero-stage-container {
   box-sizing: border-box !important;
 }
 html body .hero-stage-container .hero-title-group { 
-  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important; 
+  margin: 0 0 clamp(95px, 14vh, 135px) 0 !important; 
 }
 html body .hero-interactive-ui { z-index: 7 !important; }
-@media (max-width: 767px) {
-  html body .hero-section .hero-bg picture .hero-img-day, html body .hero-section .hero-bg picture .hero-img-night,
-  html body .hero-section .hero-kasbah-fg .hero-fg-day, html body .hero-section .hero-kasbah-fg .hero-fg-night { object-position: 78% 35% !important; }
+
+/* Responsive Mobile Kasbah Framing & Title Sizing */
+@media (max-width: 768px) {
+  html body .hero-section {
+    --hh: 100dvh;
+    height: 100dvh !important;
+    min-height: 600px !important;
+    max-height: 850px !important;
+    background: #080C16 !important;
+    overflow: hidden !important;
+  }
+  html body .hero-section .hero-bg picture .hero-img-day, 
+  html body .hero-section .hero-bg picture .hero-img-night,
+  html body .hero-section .hero-kasbah-fg .hero-fg-day, 
+  html body .hero-section .hero-kasbah-fg .hero-fg-night { 
+    object-fit: cover !important;
+    object-position: 48% 46% !important; 
+  }
+  html body .hero-stage-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding-top: clamp(80px, 11.5vh, 100px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    z-index: 3 !important;
+  }
+  html body .hero-stage-container .hero-title-group,
+  html body .hero-title-group {
+    margin: 0 !important;
+    transform: none !important;
+    animation: heroSlideDownMobile 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both !important;
+  }
+  html body .hero-eyebrow-discover {
+    font-size: 0.78rem !important;
+    letter-spacing: 6px !important;
+    text-indent: 6px !important;
+    margin-bottom: 5px !important;
+    color: #FFFFFF !important;
+  }
+  html body .hero-word-hidden,
+  html body .hero-word-morocco {
+    font-size: clamp(2.05rem, 9.2vw, 2.65rem) !important;
+    line-height: 0.94 !important;
+    letter-spacing: 2.5px !important;
+    text-indent: 2.5px !important;
+    color: #FFFFFF !important;
+  }
+  html body .hero-interactive-ui {
+    position: absolute !important;
+    bottom: 18px !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 16px !important;
+    z-index: 7 !important;
+  }
+  html body .hero-interactive-ui .hero-subtitle {
+    font-size: 0.88rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+    max-width: 320px !important;
+  }
 }
 
 

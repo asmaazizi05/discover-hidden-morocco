@@ -2624,32 +2624,11 @@ html[data-theme="dark"] body .hero-eyebrow-discover {
 @keyframes heroSlideDownMobile {
   0% {
     opacity: 0;
-    transform: translateY(-40px);
+    transform: translateY(-30px);
   }
   100% {
     opacity: 1;
-    transform: translateY(-12px);
-  }
-}
-
-@media (max-width: 768px) {
-  html body .hero-stage-container {
-    padding-top: clamp(140px, 22vh, 180px) !important;
-  }
-  html body .hero-word-hidden,
-  html body .hero-word-morocco {
-    font-size: clamp(2.5rem, 10.5vw, 3.6rem) !important;
-    line-height: 0.92 !important;
-  }
-  html body .hero-eyebrow-discover {
-    font-size: 0.82rem !important;
-    letter-spacing: 7px !important;
-    text-indent: 7px !important;
-    margin-bottom: 6px !important;
-  }
-  html body .hero-title-group {
-    transform: translateY(-12px) !important;
-    animation: heroSlideDownMobile 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both !important;
+    transform: translateY(0);
   }
 }
 
@@ -2757,7 +2736,7 @@ html body .hero-stage-container {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  padding-top: clamp(195px, 35vh, 320px) !important;
+  padding-top: clamp(120px, 18vh, 185px) !important;
   z-index: 3 !important;
   pointer-events: none !important;
   box-sizing: border-box !important;
@@ -2768,7 +2747,7 @@ html body .hero-title-group {
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
+  margin: 0 0 clamp(90px, 13vh, 130px) 0 !important;
   animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
   will-change: transform, opacity !important;
   filter: none !important;
@@ -2832,11 +2811,79 @@ html body .hero-kasbah-fg img {
   display: block !important;
 }
 
+/* Responsive Mobile Kasbah Framing & Title Sizing */
+@media (max-width: 768px) {
+  html body .hero-section {
+    --hh: 100dvh;
+    height: 100dvh !important;
+    min-height: 600px !important;
+    max-height: 850px !important;
+    background: #080C16 !important;
+    overflow: hidden !important;
+  }
+  html body .hero-section .hero-bg picture .hero-img-day, 
+  html body .hero-section .hero-bg picture .hero-img-night,
+  html body .hero-section .hero-kasbah-fg .hero-fg-day, 
+  html body .hero-section .hero-kasbah-fg .hero-fg-night,
+  html body .hero-kasbah-fg img { 
+    object-fit: cover !important;
+    object-position: 48% 46% !important; 
+  }
+  html body .hero-stage-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding-top: clamp(80px, 11.5vh, 100px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    z-index: 3 !important;
+  }
+  html body .hero-stage-container .hero-title-group,
+  html body .hero-title-group {
+    margin: 0 !important;
+    transform: none !important;
+    animation: heroSlideDownMobile 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both !important;
+  }
+  html body .hero-eyebrow-discover {
+    font-size: 0.78rem !important;
+    letter-spacing: 6px !important;
+    text-indent: 6px !important;
+    margin-bottom: 5px !important;
+    color: #FFFFFF !important;
+  }
+  html body .hero-word-hidden,
+  html body .hero-word-morocco {
+    font-size: clamp(2.05rem, 9.2vw, 2.65rem) !important;
+    line-height: 0.94 !important;
+    letter-spacing: 2.5px !important;
+    text-indent: 2.5px !important;
+    color: #FFFFFF !important;
+  }
+  html body .hero-interactive-ui {
+    position: absolute !important;
+    bottom: 18px !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 16px !important;
+    z-index: 7 !important;
+  }
+  html body .hero-interactive-ui .hero-subtitle {
+    font-size: 0.88rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+    max-width: 320px !important;
+  }
+}
+
 </style>
   
   <!-- Non-Blocking Asynchronous Theme CSS (Critical Navbar & Hero are inlined) -->
-  <link rel="stylesheet" href="/theme.css?v=20261026_v41" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="/theme.css?v=20261026_v41"></noscript>
+  <link rel="stylesheet" href="/theme.css?v=20261113_v42" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="/theme.css?v=20261113_v42"></noscript>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
   <noscript></noscript>
 
@@ -3464,7 +3511,7 @@ html body .hero-kasbah-fg img {
       });
     })();
   </script>
-<script src="/script.js?v=20261026_v41" defer></script>
+<script src="/script.js?v=20261113_v42" defer></script>
 <script id="dhm-crossfade-trigger">
   document.addEventListener("click", function (e) {
     if (e.target.closest(".theme-toggle") || e.target.closest(".theme-item")) {
