@@ -6148,11 +6148,8 @@ html[data-theme="dark"] .ct-modal-content h2 {
    ============================================================================== */
 @keyframes heroSlideDown {
   0% {
-    opacity: 0;
-    transform: translateY(-80px);
-  }
-  30% {
-    opacity: 0.6;
+    opacity: 1;
+    transform: translateY(-24px);
   }
   100% {
     opacity: 1;
@@ -6165,8 +6162,8 @@ html body .hero-title-group {
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  margin: 0 0 clamp(55px, 7.8vh, 76px) 0 !important;
-  animation: heroSlideDown 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both !important;
+  margin: 0 0 clamp(95px, 14vh, 135px) 0 !important;
+  animation: heroSlideDown 1.4s cubic-bezier(0.16, 1, 0.3, 1) both !important;
   will-change: transform, opacity !important;
   filter: none !important;
 }
